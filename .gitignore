@@ -1,0 +1,40 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+*.ipch
+*.pdb
+*.ilk
+*.idb
+*.obj
+*.pch
+*.tlog
+*.lastbuildstate
+*.recipe
+*.log
+
+# Build outputs
+Debug/
+Release/
+x64/
+Win32/
+Framework/Debug/
+Framework/Release/
+Framework/x64/
+Framework/Win32/
+
+# Compiled binaries / shaders
+*.exe
+*.dll
+*.lib
+*.exp
+*.cso
+
+# NuGet packages generated locally
+packages/
+
+# OS / editor
+.DS_Store
+Thumbs.db

@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "enemies": {
+    "Zombie": {
+      "base": {
+        "maxHp": 100,
+        "attackPower": 10,
+        "defensePower": 5,
+        "moveSpeed": 20.0,
+        "autoAttackInterval": 2.0,
+        "criticalDamageRate": 1.5,
+        "criticalRate": 0.3,
+        "damageTakenRate": 1.0,
+        "evasionRate": 0.1
+      },
+      "perLevel": [
+        { "maxHp": 12, "attackPower": 2 },
+        { "maxHp": 15, "attackPower": 2, "moveSpeed": 1.5 }
+      ]
+    },
+    "SkeletonZombie": {
+      "base": {
+        "maxHp": 100,
+        "attackPower": 10,
+        "defensePower": 5,
+        "moveSpeed": 20.0,
+        "autoAttackInterval": 2.0,
+        "criticalDamageRate": 1.5,
+        "criticalRate": 0.3,
+        "damageTakenRate": 1.0,
+        "evasionRate": 0.1
+      },
+      "perLevel": [
+        { "maxHp": 10, "attackPower": 2 }
+      ]
+    },
+    "Mutant": {
+      "base": {
+        "maxHp": 250,
+        "attackPower": 15,
+        "defensePower": 8,
+        "moveSpeed": 25.0,
+        "autoAttackInterval": 1.5,
+        "criticalDamageRate": 1.5,
+        "criticalRate": 0.2,
+        "damageTakenRate": 1.0,
+        "evasionRate": 0.05
+      },
+      "perLevel": [
+        { "maxHp": 30, "attackPower": 3 },
+        { "maxHp": 35, "attackPower": 4 }
+      ]
+    }
+  }
+}

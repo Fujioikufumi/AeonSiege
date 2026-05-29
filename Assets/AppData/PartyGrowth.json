@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "party": {
+    "expToNext": [
+      100,
+      150,
+      220,
+      300,
+      322,
+      344,
+      366,
+      388,
+      410,
+      432,
+      454,
+      476,
+      498,
+      520,
+      542,
+      564,
+      586,
+      608,
+      630,
+      652,
+      674,
+      696,
+      718,
+      740,
+      762,
+      792,
+      822,
+      852,
+      882,
+      912,
+      942,
+      972,
+      1002,
+      1032,
+      1062,
+      1092,
+      1134,
+      1176,
+      1218,
+      1260,
+      1302,
+      1344,
+      1386,
+      1428,
+      1470,
+      1512,
+      1554,
+      1596,
+      1638
+    ]
+  },
+  "members": {
+    "Player": {
+      "base": {
+        "maxHp": 200,
+        "attackPower": 10,
+        "defensePower": 8,
+        "moveSpeed": 15.0,
+        "criticalRate": 0.00,
+        "evasionRate": 0.05
+      },
+      "perLevel": [
+        { "maxHp": 40, "attackPower": 3 },
+        { "maxHp": 45, "attackPower": 4 }
+      ]
+    },
+    "Paladin": {
+      "base": {
+        "maxHp": 300,
+        "attackPower": 5,
+        "defensePower": 25,
+        "moveSpeed": 14.0,
+        "criticalRate": 0.00,
+        "evasionRate": 0.01
+      },
+      "perLevel": [
+        { "maxHp": 50, "attackPower": 2 },
+        { "maxHp": 55, "attackPower": 3 }
+      ]
+    }
+  }
+}
