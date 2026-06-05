@@ -28,6 +28,7 @@ PSOutput main(VSOutput input)
     PSOutput output = (PSOutput) 0;
 
     float dist = distance(input.WorldPos, CameraPosition);
+  
     float farBlend = saturate((dist - TERRAIN_TILE_FAR_START) / TERRAIN_TILE_FAR_RANGE);
 
     float2 nearUV = input.WorldPos.xz * TERRAIN_TILE_SCALE_NEAR;

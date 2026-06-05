@@ -13,6 +13,9 @@ namespace
 {
 	constexpr float kNumOffsetX = 400.0f;
 	constexpr float kNumScale = 0.9f;
+	constexpr float kReturnBtnWidth = 150.0f;
+	constexpr float kReturnBtnHeight = 80.0f;
+	constexpr int kFadeInFrames = 90;
 
 	void SetupNumberUI(NumberUI* num, float x, float y)
 	{
@@ -37,7 +40,7 @@ bool ResultHud::Init()
 	m_pImgReturn = AddComponent<Sprite>();
 	m_pImgReturn->Init(L"Assets/Texture/Result/ReturnSpace.png");
 	m_pImgReturn->SetPosition(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT * 7.0f / 8.0f);
-	m_pImgReturn->SetSize(150.0f, 80.0f);
+	m_pImgReturn->SetSize(kReturnBtnWidth, kReturnBtnHeight);
 
 	// NumberUI は GameObject のため Scene に登録（Component 化は未対応）
 	Scene* scene = GameManager::GetScene();
@@ -123,7 +126,7 @@ void ResultHud::Update(float deltaTime)
 		if (IsKeyTrigger(VK_SPACE))
 		{
 			GameManager::ChangeScene(new TitleScene());
-			ScreenFade::Instance().FadeIn(90, nullptr);
+			ScreenFade::Instance().FadeIn(kFadeInFrames, nullptr);
 		}
 		break;
 	}

@@ -13,6 +13,10 @@ namespace
 {
 	static constexpr float kCullingMaxDistance = 150.0f; // 草のカリング距離
 	static constexpr float kGrassChunkSize = 30.0f; // 草チャンクのサイズ
+	constexpr uint32_t kMaxGrassPerChunk = 200;
+	constexpr uint32_t kMaxVisibleChunks = 100;
+	constexpr float kTerrainHeightScale = 2000.0f;
+
 }
 
 Meadow::Meadow() 
@@ -195,12 +199,11 @@ void Meadow::Draw(const RenderContext& context)
 	float tMinX, tMaxX, tMinZ, tMaxZ;
 	m_Terrain->GetTerrainWorldBounds(tMinX, tMaxX, tMinZ, tMaxZ);
 
-	const uint32_t grassPerChunk = 200; // 1チャンク(30x30m)あたりに生成を試みる最大の草の数。密度を上げたい場合はこの数値を増やします。
+	const uint32_t grassPerChunk = kMaxGrassPerChunk; // 1チャンク(30x30m)あたりに生成を試みる最大の草の数。密度を上げたい場合はこの数値を増やします。
 	Camera* pCam = m_Scene->GetCamera();
 	for (size_t i = 0; i < m_VisibleChunks.size(); ++i)
 	{
-		if (i >= 100) break; // スロット上限安全装置
-
+		if (i >= kMaxVisibleChunks) break; // スロット上限安全装置
 		CbGenerationParams* pParams = m_CbGeneration.GetPtr<CbGenerationParams>(static_cast<uint32_t>(i));
 		if (pParams)
 		{

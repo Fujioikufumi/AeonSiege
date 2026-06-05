@@ -31,6 +31,9 @@ namespace {
 	constexpr float kJumpPower = 3.0f; // ジャンプの初速
 	constexpr float kGravity = -9.8f;	// 重力の強さ
 
+	constexpr float kRotationSpeed = 10.0f;
+	constexpr float kMoveEpsilon = 1.0e-6f;
+
 	static constexpr WORD BTN_LOCK_ON = PAD_X;   // ロックオン（仕様に合わせて後で変更可）
 	static constexpr WORD BTN_ACTION  = PAD_B;   // 戦闘入り短押し等（T / PAD_B）
 	static constexpr WORD BTN_SKILL_1 = PAD_Y;   // スキル1
@@ -1032,7 +1035,7 @@ void Player::UpdateMovement(float deltaTime, Camera* camera, Terrain* terrain)
 
 	// 入力があるかどうかの判定
 	const float rawLenSq = mx * mx + mz * mz;
-	const bool bMove = (rawLenSq > 1.0e-6f);
+	const bool bMove = (rawLenSq > kMoveEpsilon);
 
 	const float stickMagSq = GetLeftStickX() * GetLeftStickX() + GetLeftStickY() * GetLeftStickY();
 
@@ -1069,7 +1072,7 @@ void Player::UpdateMovement(float deltaTime, Camera* camera, Terrain* terrain)
 	if (!isPlayingSkill)
 	{
 		const float currentYaw = std::atan2(GetForward().x, GetForward().z);
-		const float newYaw = MathUtility::SlerpYaw(currentYaw, targetYaw, 10.0f, deltaTime);
+		const float newYaw = MathUtility::SlerpYaw(currentYaw, targetYaw, kRotationSpeed, deltaTime);
 		m_Quaternion = XMQuaternionRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), newYaw);
 		m_Quaternion = XMQuaternionNormalize(m_Quaternion);
 	}

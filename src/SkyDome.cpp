@@ -28,6 +28,7 @@ namespace {
         XMFLOAT4X4 View;           
         XMFLOAT4X4 Proj;           
     };
+    constexpr float kSkyRotationSpeed = 0.00015f;
 
 } // namespace
 
@@ -90,7 +91,6 @@ bool SkyDome::Init
         return false;
     }
 
-    // ���[�g�V�O�j�`���̐���
     {
         auto flag = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
         flag |= D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS;
@@ -111,7 +111,6 @@ bool SkyDome::Init
         range[1].RegisterSpace = 0;
         range[1].OffsetInDescriptorsFromTableStart = 0;
 
-        // �X�^�e�B�b�N�T���v���[�̐ݒ�
         D3D12_STATIC_SAMPLER_DESC sampler = {};
         sampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
         sampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
@@ -244,12 +243,10 @@ bool SkyDome::Init
                 int bottomLeft = (i + 1) * (slices + 1) + j;
                 int bottomRight = bottomLeft + 1;
 
-                // �ŏ��̎O�p�`
                 indices.push_back(topLeft);
                 indices.push_back(bottomLeft);
                 indices.push_back(topRight);
 
-                // 2�Ԗڂ̎O�p�`
                 indices.push_back(topRight);
                 indices.push_back(bottomLeft);
                 indices.push_back(bottomRight);
@@ -327,7 +324,7 @@ void SkyDome::Draw
 	}
     else
     {
-        m_RatationY += 0.00015f;
+        m_RatationY += kSkyRotationSpeed;
     }
 
     Scene* scene = GameManager::GetScene();

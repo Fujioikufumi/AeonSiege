@@ -154,7 +154,11 @@ public:
 private:
 	//-----------------------------------------------------------
 	// 地形生成・リソース作成
+
+	// インデックス作成
 	[[nodiscard]] std::vector<uint32_t> CreateIndices(uint32_t gridWidth = 0, uint32_t gridHeight = 0);
+
+	// 
 	bool CreateHeightMapTexture(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
 	bool CreateVertexBufferForCompute(ID3D12Device* device);
 	bool ExecuteTerrainVertexGenCompute(ID3D12Device* device, ID3D12CommandQueue* queue, ID3D12GraphicsCommandList* cmdList);

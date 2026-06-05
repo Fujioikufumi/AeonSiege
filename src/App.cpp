@@ -25,6 +25,9 @@ namespace /* anonymous */ {
 		return std::max(0, std::min(ax2, bx2) - std::max(ax1, bx1))
 			* std::max(0, std::min(ay2, by2) - std::max(ay1, by1));
 	}
+	constexpr float kTargetFPS = 60.0f;
+	constexpr float kDefaultDeltaTime = 1.0f / kTargetFPS;
+	constexpr float kMaxDeltaTimeSpike = 0.1f;
 
 } // namespace /* anonymous */
 
@@ -437,7 +440,7 @@ void App::MainLoop()
 			// ======== デルタタイムの計算 ========
 			if (m_IsFirstFrame)
 			{
-				m_DeltaTime = 1.0f / 60.0f; // 初回は仮の値(約0.016秒)を入れておく
+				m_DeltaTime = kDefaultDeltaTime; // 初回は仮の値(約0.016秒)を入れておく
 				m_IsFirstFrame = false;
 			}
 			else
@@ -446,9 +449,9 @@ void App::MainLoop()
 				m_DeltaTime = static_cast<float>(currentTime.QuadPart - m_LastTime.QuadPart) / static_cast<float>(m_PerformanceFrequency.QuadPart);
 
 				// スパイク対策
-				if (m_DeltaTime > 0.1f)
+				if (m_DeltaTime > kMaxDeltaTimeSpike)
 				{
-					m_DeltaTime = 1.0f / 60.0f;
+					m_DeltaTime = kDefaultDeltaTime;
 				}
 			}
 

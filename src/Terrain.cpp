@@ -16,9 +16,12 @@
 static constexpr uint32_t kHeightMapPixelSize = 1024; // ハイトマップのピクセルサイズ
 static constexpr uint32_t kTerrainChunkDiv = 8;		  // 地形を何分割するか
 static constexpr uint32_t kTerrainLodLevels = 3;	  // LODレベル数
-static constexpr float    kLodDistanceNear = 2400.0f; // 近景LODの距離閾値
-static constexpr float    kLodDistanceMid = 3600.0f;  // 中景LODの距離閾値
+
+static constexpr float    kLodDistanceNear = 2400.0f;  // 近景LODの距離閾値
+static constexpr float    kLodDistanceMid  = 3600.0f;  // 中景LODの距離閾値
+
 static constexpr float	  kHeightOffset = 1.0f;		  // 高さオフセット
+
 
 // 各LODの解像度
 static constexpr uint32_t kLodSizes[kTerrainLodLevels] = 
@@ -274,7 +277,7 @@ void Terrain::Update(float deltaTime)
 	{
 		// チャンクの中心位置をロード
 		auto center = DirectX::XMLoadFloat3(&chunk->m_WorldCenter);
-		// カメラとチャンク中心の距離を計算（三次元ベクトル距離）
+		// カメラとチャンク中心の距離を計算
 		float dist = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(camP, center)));
 
 		// 定義された距離閾値に基づき LOD インデックスを決定
@@ -302,54 +305,59 @@ void Terrain::Draw(const RenderContext& context)
 			auto& chunk = *m_Chunks[i];
 
 			// 隣接チャンクの LOD 状態を確認（境界の隙間を埋める縫い合わせ処理に必要）
-			uint32_t targetLeft = (x > 0) ? m_Chunks[i - 1]->m_TargetLOD : chunk.m_TargetLOD;
-			uint32_t targetRight = (x < kTerrainChunkDiv - 1) ? m_Chunks[i + 1]->m_TargetLOD : chunk.m_TargetLOD;
-			uint32_t targetBottom = (z > 0) ? m_Chunks[i - kTerrainChunkDiv]->m_TargetLOD : chunk.m_TargetLOD;
-			uint32_t targetTop = (z < kTerrainChunkDiv - 1) ? m_Chunks[i + kTerrainChunkDiv]->m_TargetLOD : chunk.m_TargetLOD;
+			uint32_t targetLeft   = (x > 0)						? m_Chunks[i - 1]->m_TargetLOD					: chunk.m_TargetLOD;
+			uint32_t targetRight  = (x < kTerrainChunkDiv - 1)	? m_Chunks[i + 1]->m_TargetLOD					: chunk.m_TargetLOD;
+			uint32_t targetBottom = (z > 0)						? m_Chunks[i- kTerrainChunkDiv]->m_TargetLOD	: chunk.m_TargetLOD;
+			uint32_t targetTop    = (z < kTerrainChunkDiv - 1)	? m_Chunks[i + kTerrainChunkDiv]->m_TargetLOD	: chunk.m_TargetLOD;
 
 			// 自己または隣接の LOD に変化があった場合、コンピュートシェーダーで頂点を更新
-			if (chunk.m_TargetLOD != chunk.m_CurrentLOD || chunk.m_LODLeft != targetLeft ||
-				chunk.m_LODRight != targetRight || chunk.m_LODTop != targetTop ||
-				chunk.m_LODBottom != targetBottom || chunk.m_CurrentLOD == 999)
+			if (chunk.m_TargetLOD	!= chunk.m_CurrentLOD	|| chunk.m_LODLeft	!= targetLeft	||
+				chunk.m_LODRight	!= targetRight			|| chunk.m_LODTop	!= targetTop	||
+				chunk.m_LODBottom	!= targetBottom			|| chunk.m_CurrentLOD == 999)
 			{
 				// 最新の状態に同期
-				chunk.m_CurrentLOD = chunk.m_TargetLOD;
-				chunk.m_LODLeft = targetLeft;
-				chunk.m_LODRight = targetRight;
-				chunk.m_LODTop = targetTop;
-				chunk.m_LODBottom = targetBottom;
+				chunk.m_CurrentLOD	= chunk.m_TargetLOD;
+				chunk.m_LODLeft		= targetLeft;
+				chunk.m_LODRight	= targetRight;
+				chunk.m_LODTop		= targetTop;
+				chunk.m_LODBottom	= targetBottom;
 
 				// CS実行用の定数バッファをセットアップ
 				auto pGen = m_TerrainGenCB.GetPtr<CbTerrainGen>(i);
 				if (pGen)
 				{
 					// LODに応じたグリッド解像度を取得
-					uint32_t gridW = kLodSizes[chunk.m_CurrentLOD];
-					uint32_t gridH = kLodSizes[chunk.m_CurrentLOD];
-					uint32_t chunkPixelsX = m_Width / kTerrainChunkDiv;
-					uint32_t chunkPixelsZ = m_Height / kTerrainChunkDiv;
+					uint32_t gridW			= kLodSizes[chunk.m_CurrentLOD];
+					uint32_t gridH			= kLodSizes[chunk.m_CurrentLOD];
+					uint32_t chunkPixelsX	= m_Width / kTerrainChunkDiv;
+					uint32_t chunkPixelsZ	= m_Height / kTerrainChunkDiv;
 
 					float chunkWorldW = static_cast<float>(chunkPixelsX) * m_GridScale;
 					float chunkWorldH = static_cast<float>(chunkPixelsZ) * m_GridScale;
 
-					pGen->CurrentLOD = chunk.m_CurrentLOD;
-					pGen->LODLeft = chunk.m_LODLeft;
-					pGen->LODRight = chunk.m_LODRight;
-					pGen->LODTop = chunk.m_LODTop;
-					pGen->LODBottom = chunk.m_LODBottom;
-					pGen->Width = gridW;
-					pGen->Height = gridH;
-					pGen->GridScale = (chunkWorldW / (gridW - 1) + chunkWorldH / (gridH - 1)) * 0.5f;
+					pGen->CurrentLOD	= chunk.m_CurrentLOD;
+					pGen->LODLeft		= chunk.m_LODLeft;
+					pGen->LODRight		= chunk.m_LODRight;
+					pGen->LODTop		= chunk.m_LODTop;
+					pGen->LODBottom		= chunk.m_LODBottom;
+					pGen->Width			= gridW;
+					pGen->Height		= gridH;
+					pGen->GridScale		= (chunkWorldW / (gridW - 1) + chunkWorldH / (gridH - 1)) * 0.5f;
 
 					// ハイトマップ上のサンプリング開始座標
-					pGen->HeightMapStartX = x * chunkPixelsX;
-					pGen->HeightMapStartZ = z * chunkPixelsZ;
+					pGen->HeightMapStartX		= x * chunkPixelsX;
+					pGen->HeightMapStartZ		= z * chunkPixelsZ;
 					pGen->HeightMapChunkPixelsX = chunkPixelsX;
 					pGen->HeightMapChunkPixelsZ = chunkPixelsZ;
-					pGen->HeightScale = m_HeightScale;
-					pGen->HeightOffset = kHeightOffset;
+					pGen->HeightScale			= m_HeightScale;
+					pGen->HeightOffset			= kHeightOffset;
+
 					// チャンクの左上ワールド座標
-					pGen->ChunkWorldPos = { chunk.m_WorldCenter.x - chunkWorldW * 0.5f, m_CenterPosition.y, chunk.m_WorldCenter.z - chunkWorldH * 0.5f };
+					pGen->ChunkWorldPos = { 
+						chunk.m_WorldCenter.x - chunkWorldW * 0.5f, 
+						m_CenterPosition.y, 
+						chunk.m_WorldCenter.z - chunkWorldH * 0.5f 
+					};
 
 					// コンピュートシェーダーをディスパッチして頂点バッファを書き換え
 					ExecuteTerrainVertexGenComputeChunk(pDevice.Get(), pCmdList,

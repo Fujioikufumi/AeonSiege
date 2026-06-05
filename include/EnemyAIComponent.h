@@ -65,7 +65,8 @@ public:
 	bool IsAIActive() const { return m_IsAIActive; }
 
 public:
-	// EnemyAIStateに応じたアニメーション再生のためのコールバックと、攻撃発生時の処理のためのコールバックを設定
+	// EnemyAIStateに応じたアニメーション再生のためのコールバックと、
+	// 攻撃発生時の処理のためのコールバックを設定
 	using AnimCallback = std::function<void(EnemyAIState)>;
 	void SetAnimCallback(AnimCallback cb) { m_AnimCallback = cb; }
 	using AttackCallback = std::function<void(GameObject*)>;
