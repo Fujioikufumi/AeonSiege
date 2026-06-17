@@ -17,6 +17,20 @@
 #include "LoadGameObj.h"
 #include "ScreenFade.h"
 
+namespace {
+	// シーンライト設定
+	constexpr float kLightOrbitRadius = 300.0f; // ライトの周回半径
+	constexpr float kLightHeight = 100.0f; // ライトの高さ
+	constexpr float kLightIntensity = 6.0f;   // ライトの強度
+	constexpr float kAmbientIntensity = 0.6f;   // 環境光の強度
+	constexpr float kLightRotateDeg = -60.0f; // ライト初期回転角（度）
+
+	// プレビューカメラ設定
+	constexpr float kPreviewFovDeg = 37.5f;   // プレビューカメラのFOV（度）
+	constexpr float kPreviewNearZ = 1.0f;    // ニアクリップ
+	constexpr float kPreviewFarZ = 1000.0f; // ファークリップ
+}
+
 //-----------------------------------------------------------------------------
 //      コンストラクタ
 //-----------------------------------------------------------------------------
@@ -139,10 +153,10 @@ bool GameApp::OnInit()
 			XMVECTOR eyePos = XMVectorSet(0.0f, 1.0f, 2.0f, 0.0f);
 			XMVECTOR targetPos = XMVectorZero();
 			XMVECTOR upward = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-			float fovY = DirectX::XMConvertToRadians(37.5f);
+			float fovY = DirectX::XMConvertToRadians(kPreviewFovDeg);
 			float aspect = static_cast<float>(m_Width) / static_cast<float>(m_Height);
 			XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, targetPos, upward);
-			XMMATRIX projMatrix = XMMatrixPerspectiveFovLH(fovY, aspect, 1.0f, 1000.0f);
+			XMMATRIX projMatrix = XMMatrixPerspectiveFovLH(fovY, aspect, kPreviewNearZ, kPreviewFarZ);
 
 			auto ptr = m_TransformCB[i].GetPtr<CbTransform>();
 			XMMATRIX tv = XMMatrixTranspose(viewMatrix);
@@ -155,7 +169,7 @@ bool GameApp::OnInit()
 			XMStoreFloat4x4(&meshPtr->World, identity);
 		}
 
-		m_RotateAngle = DirectX::XMConvertToRadians(-60.0f);
+		m_RotateAngle = DirectX::XMConvertToRadians(kLightRotateDeg);
 	}
 
 	// 6. ライトマネージャーの初期化
@@ -252,7 +266,6 @@ void GameApp::OnTerm()
 	LockMouse(false);   // マウス固定解除
 	UninitInput();
 
-	/*SafeDelete(m_pCamera);*/
 	AnimationManager::GetInstance().Term();
 
 	// コンスタントバッファの終了処理
@@ -447,8 +460,8 @@ void GameApp::UpdateLightManager()
 	auto& lightManager = LightManager::GetInstance();
 
 	// ライトの設定
-	const float radius = 300.0f;
-	const float lightHeight = 100.0f;
+	const float radius = kLightOrbitRadius;
+	const float lightHeight = kLightHeight;
 	float lightX = radius * cosf(m_RotateAngle);
 	float lightZ = radius * sinf(m_RotateAngle);
 	float lightY = lightHeight;
@@ -462,11 +475,11 @@ void GameApp::UpdateLightManager()
 	XMFLOAT3 lightColor(1.0f, 1.0f, 1.0f);
 	lightManager.SetLightColor(lightColor);
 	lightManager.SetLightDirection(lightDirVec);
-	lightManager.SetLightIntensity(6.0f);
+	lightManager.SetLightIntensity(kLightIntensity);
 
 	XMFLOAT3 ambientColor(0.9f, 0.9f, 0.9f);
 	lightManager.SetAmbientColor(ambientColor);
-	lightManager.SetAmbientIntensity(0.6f);
+	lightManager.SetAmbientIntensity(kAmbientIntensity);
 
 	lightManager.Update(m_FrameIndex);
 	m_RotateAngle += 0.001f;

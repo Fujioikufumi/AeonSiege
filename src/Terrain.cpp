@@ -13,40 +13,44 @@
 
 //-----------------------------------------------------------
 // 定数
-static constexpr uint32_t kHeightMapPixelSize = 1024; // ハイトマップのピクセルサイズ
-static constexpr uint32_t kTerrainChunkDiv = 8;		  // 地形を何分割するか
-static constexpr uint32_t kTerrainLodLevels = 3;	  // LODレベル数
+namespace {
+	static constexpr uint32_t kHeightMapPixelSize = 1024; // ハイトマップのピクセルサイズ
+	static constexpr uint32_t kTerrainChunkDiv = 8;		  // 地形を何分割するか
+	static constexpr uint32_t kTerrainLodLevels = 3;	  // LODレベル数
 
-static constexpr float    kLodDistanceNear = 2400.0f;  // 近景LODの距離閾値
-static constexpr float    kLodDistanceMid  = 3600.0f;  // 中景LODの距離閾値
+	constexpr uint32_t kLodUninitialized = 999; // 未割り当てLODを示す番兵値
 
-static constexpr float	  kHeightOffset = 1.0f;		  // 高さオフセット
+	static constexpr float    kLodDistanceNear = 2400.0f;  // 近景LODの距離閾値
+	static constexpr float    kLodDistanceMid = 3600.0f;  // 中景LODの距離閾値
+
+	static constexpr float	  kHeightOffset = 1.0f;		  // 高さオフセット
 
 
-// 各LODの解像度
-static constexpr uint32_t kLodSizes[kTerrainLodLevels] = 
-{
-	kHeightMapPixelSize / kTerrainChunkDiv + 1u, // 近 (+1は重複頂点用)
-	kHeightMapPixelSize / kTerrainChunkDiv / 2,  // 中
-	kHeightMapPixelSize / kTerrainChunkDiv / 8   // 遠
-};
+	// 各LODの解像度
+	static constexpr uint32_t kLodSizes[kTerrainLodLevels] =
+	{
+		kHeightMapPixelSize / kTerrainChunkDiv + 1u, // 近 (+1は重複頂点用)
+		kHeightMapPixelSize / kTerrainChunkDiv / 2,  // 中
+		kHeightMapPixelSize / kTerrainChunkDiv / 8   // 遠
+	};
 
-// ルートパラメータのインデックス定義
-enum class RootParamIndex : UINT
-{
-	TransformCB = 0,
-	LightCB = 2,
-	CameraCB = 3,
-	MaterialCB = 4,
-	BaseColorMap = 6,
-	MetallicMap = 7,
-	RoughnessMap = 8,
-	NormalMap = 9,
-	FieldMap = 10,	  // 地形のどの箇所が岩肌なのかを示すテクスチャ
-	GrassTexture = 11,// 近景草テクスチャ
-	RockTexture = 12, // 岩肌用のテクスチャ
-	MacroTexture = 16 // 遠方の草テクスチャ用に使用
-};
+	// ルートパラメータのインデックス定義
+	enum class RootParamIndex : UINT
+	{
+		TransformCB = 0,
+		LightCB = 2,
+		CameraCB = 3,
+		MaterialCB = 4,
+		BaseColorMap = 6,
+		MetallicMap = 7,
+		RoughnessMap = 8,
+		NormalMap = 9,
+		FieldMap = 10,	  // 地形のどの箇所が岩肌なのかを示すテクスチャ
+		GrassTexture = 11,// 近景草テクスチャ
+		RockTexture = 12, // 岩肌用のテクスチャ
+		MacroTexture = 16 // 遠方の草テクスチャ用に使用
+	};
+} // namespace
 
 //-----------------------------------------------------------------------------
 // 		コンストラクタ
@@ -313,7 +317,7 @@ void Terrain::Draw(const RenderContext& context)
 			// 自己または隣接の LOD に変化があった場合、コンピュートシェーダーで頂点を更新
 			if (chunk.m_TargetLOD	!= chunk.m_CurrentLOD	|| chunk.m_LODLeft	!= targetLeft	||
 				chunk.m_LODRight	!= targetRight			|| chunk.m_LODTop	!= targetTop	||
-				chunk.m_LODBottom	!= targetBottom			|| chunk.m_CurrentLOD == 999)
+				chunk.m_LODBottom	!= targetBottom			|| chunk.m_CurrentLOD == kLodUninitialized)
 			{
 				// 最新の状態に同期
 				chunk.m_CurrentLOD	= chunk.m_TargetLOD;
@@ -410,7 +414,7 @@ void Terrain::Draw(const RenderContext& context)
 	for (const auto& chunk : m_Chunks)
 	{
 		// 999（未生成）の場合はスキップ
-		if (chunk->m_CurrentLOD == 999) continue;
+		if (chunk->m_CurrentLOD == kLodUninitialized) continue;
 
 		// 現在の LOD に対応するインデックスバッファビューを取得
 		auto ibv = chunk->m_IndexBuffers[chunk->m_CurrentLOD].GetView();

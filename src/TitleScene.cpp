@@ -10,6 +10,25 @@
 #include "TerrainScene.h"
 #include "ScreenFade.h"
 
+namespace {
+    // カメラの定数
+    constexpr float kTitleCamOffsetX = 3.0f;     // タイトルカメラ位置オフセットX
+    constexpr float kTitleCamOffsetY = 6.0f;     // 〃 Y
+    constexpr float kTitleCamOffsetZ = 10.0f;    // 〃 Z
+
+	// 注視点の定数
+    constexpr float kTitleTargetOffsetX = 3.5f;     // 注視点オフセットX
+    constexpr float kTitleTargetOffsetY = 6.0f;     // 注視点オフセットY（キャラの頭付近）
+
+    // 草原の定数
+	constexpr XMFLOAT3 kMeadowScale = {0.1f, 0.1f, 0.1f}; // 草原のスケール
+
+	// スカイドームの定数
+    constexpr float kTitleSkyRadius = 10000.0f; // タイトル天球の半径
+	constexpr int kTitleSkySlices = 32;        // タイトル天球のスライス数
+	constexpr int kTitleSkyStacks = 16;        // タイトル天球のスタック数
+}
+
 void TitleScene::Init()
 {
     m_TitleObject = AddGameObject<TitleObject>(eLayer::UI, "TitleObj");
@@ -31,15 +50,15 @@ void TitleScene::Init()
 
         // 位置はタイトルキャラに寄せる
 		XMFLOAT3 titleCamPos = titleChara->GetPosition();
-        titleCamPos.z += 10.0f;
-		titleCamPos.y += 6.0f;
-		titleCamPos.x += 3.0f;
+        titleCamPos.x += kTitleCamOffsetX;
+        titleCamPos.y += kTitleCamOffsetY;
+        titleCamPos.z += kTitleCamOffsetZ;
 		pCamera->SetPosition(titleCamPos); 
 
 
 		XMFLOAT3 titleCamTarget = titleChara->GetPosition();
-		titleCamTarget.y += 6.0f; // タイトルキャラの頭あたりを注視点にする
-        titleCamTarget.x += 3.5f;
+        titleCamTarget.x += kTitleTargetOffsetX;
+		titleCamTarget.y += kTitleTargetOffsetY; // タイトルキャラの頭あたりを注視点にする
 		pCamera->SetTarget(titleCamTarget);
         SetCamera(pCamera);
     }
@@ -48,10 +67,9 @@ void TitleScene::Init()
     AddGameObject<Wind>(eLayer::Environment, "Wind");
 
     // 草原の追加
-    float meadowSize = 0.1f;
     Meadow* pMeadow1 = AddGameObject<Meadow>(eLayer::TERRAIN, "Meadow01");
     pMeadow1->SetModelPath(L"Assets/Model/FieldObject/Grass.bmdl");
-    pMeadow1->SetScale(XMFLOAT3(meadowSize, meadowSize, meadowSize));
+    pMeadow1->SetScale(kMeadowScale);
     pMeadow1->Init(this, pTerrain);
 
 
@@ -60,9 +78,9 @@ void TitleScene::Init()
     if (pSkyDome)
     {
         pSkyDome->SetTexturePath(L"Assets/Texture/Sky/4kHDR");
-        pSkyDome->SetRadius(10000.0f);
-        pSkyDome->SetSlices(32);
-        pSkyDome->SetStacks(16);
+        pSkyDome->SetRadius(kTitleSkyRadius);
+        pSkyDome->SetSlices(kTitleSkySlices);
+        pSkyDome->SetStacks(kTitleSkyStacks);
     }
 
     m_CurrentTime = kStartTime;

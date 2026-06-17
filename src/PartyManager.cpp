@@ -10,6 +10,11 @@
 #include "CombatHud.h"
 
 namespace {
+	// パラダインの初期位置
+	constexpr XMFLOAT3 kpaladinStartPos = { -480.0f, 0.0f, -650.0f }; // 初期位置
+
+
+
 	// メンバーのステータスの更新
 	void ApplyStatusTo(GameObject* obj, const StatusData& data, bool healToFull)
 	{
@@ -149,7 +154,7 @@ void PartyManager::AddAlly(AllyId allyId)
 		Paladin* paladin = scene->AddGameObject<Paladin>(eLayer::ALLY, "Paladin");
 		if (paladin != nullptr)
 		{
-			paladin->SetPosition({ -450.0f, 0.0f, -620.0f });
+			paladin->SetPosition(kpaladinStartPos);
 			paladin->SetIsCulled(true);
 			m_Allies.push_back(allyId);
 			RefreshAllMemberStats(false);

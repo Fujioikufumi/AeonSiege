@@ -13,6 +13,11 @@
 #include "StatusComponent.h"
 using namespace DirectX;
 
+namespace
+{
+	constexpr float kFrustumMargin = 2.0f; // Ž‹‘ä“à”»’è‚Ì—]—Ti”¼Œaj
+} // namespace
+
 AllyAIComponent::AllyAIComponent(GameObject* pObj)
 	: Component(pObj)
 {
@@ -209,7 +214,7 @@ bool AllyAIComponent::IsValidWaitTarget(Camera* pCamera, const XMFLOAT3& targetP
 		return false;
 	}
 
-	return pCamera->CollisionViewFrus(targetPos, 2.0f) != 0;
+	return pCamera->CollisionViewFrus(targetPos, kFrustumMargin) != 0;
 }
 
 GameObject* AllyAIComponent::GetOrFindAttackTarget(Scene* pScene)

@@ -11,6 +11,13 @@
 #include "AllyAIComponent.h"
 #include "StatusComponent.h"
 
+namespace {
+	constexpr float kTargetHeightOffset = 10.0f;        // 接地時の高さオフセット
+	constexpr float kSkillPowerRate		= 2.0f;         // スキル威力倍率
+	constexpr float kMoveSpeed			= 45.0f;        // 移動速度
+	constexpr float kFixedTimeStep		= 1.0f / 60.0f; // 想定フレーム時間（60fps）
+}
+
 Paladin::Paladin()
 	: GameObject()
 {
@@ -45,7 +52,7 @@ bool Paladin::Init()
 
 	// ターゲットコンポーネントの追加
 	TargetComponent* target = AddComponent<TargetComponent>();
-	target->SetHeightOffset(10.0f);
+	target->SetHeightOffset(kTargetHeightOffset);
 
 	// アニメーションコントローラーの追加
 	m_Animation = AddComponent<AnimationController>();
@@ -141,17 +148,17 @@ void Paladin::Update(float deltaTime)
 AllyAIParams Paladin::CreateAIParams() const
 {
 	AllyAIParams params;
-	params.followStartDistance = kFollowStartDistance;
-	params.followStopDistance = kFollowStopDistance;
-	params.waitTargetForwardDistance = kWaitTargetForwardDistance;
-	params.waitTargetSideOffset = kWaitTargetSideOffset;
-	params.waitTargetArriveDistance = kWaitTargetArriveDistance;
-	params.maxWaitTargetDistanceFromPlayer = kMaxWaitTargetDistanceFromPlayer;
-	params.enemyDetectRange = kEnemyDetectRange;
-	params.targetKeepRange = kTargetKeepRange;
-	params.moveSpeed = GetMoveSpeed();
-	params.turnSpeed = kTurnSpeed;
-	params.playerMoveThreshold = kPlayerMoveThreshold;
+	params.followStartDistance				= kFollowStartDistance;
+	params.followStopDistance				= kFollowStopDistance;
+	params.waitTargetForwardDistance		= kWaitTargetForwardDistance;
+	params.waitTargetSideOffset				= kWaitTargetSideOffset;
+	params.waitTargetArriveDistance			= kWaitTargetArriveDistance;
+	params.maxWaitTargetDistanceFromPlayer	= kMaxWaitTargetDistanceFromPlayer;
+	params.enemyDetectRange					= kEnemyDetectRange;
+	params.targetKeepRange					= kTargetKeepRange;
+	params.moveSpeed						= GetMoveSpeed();
+	params.turnSpeed						= kTurnSpeed;
+	params.playerMoveThreshold				= kPlayerMoveThreshold;
 	return params;
 }
 
@@ -161,12 +168,12 @@ AllyAIParams Paladin::CreateAIParams() const
 SkillData Paladin::CreateGuardSkillData() const
 {
 	SkillData data;
-	data.id = SkillId::PlayerSlash1;
-	data.type = SkillType::Guard;
-	data.animationName = kAnimBlock;
-	data.cooldownSec = kGuardCooldownSec;
-	data.range = kGuardTriggerRange;
-	data.durationSec = kGuardDuration;
+	data.id				= SkillId::PlayerSlash1;
+	data.type			= SkillType::Guard;
+	data.animationName	= kAnimBlock;
+	data.cooldownSec	= kGuardCooldownSec;
+	data.range			= kGuardTriggerRange;
+	data.durationSec	= kGuardDuration;
 	return data;
 }
 
@@ -176,12 +183,12 @@ SkillData Paladin::CreateGuardSkillData() const
 SkillData Paladin::CreateSkillAttackData() const
 {
 	SkillData data;
-	data.id = SkillId::PlayerSlash2;
-	data.type = SkillType::Attack;
-	data.animationName = kAnimAttack;
-	data.skillPowerRate = 2.0f;
-	data.cooldownSec = kSkillAttackCooldownSec;
-	data.range = kSkillAttackRange;
+	data.id				= SkillId::PlayerSlash2;
+	data.type			= SkillType::Attack;
+	data.animationName	= kAnimAttack;
+	data.skillPowerRate = kSkillPowerRate;
+	data.cooldownSec	= kSkillAttackCooldownSec;
+	data.range			= kSkillAttackRange;
 	data.effectDelaySec = kSkillAttackDamageDelay;
 	return data;
 }
@@ -222,8 +229,9 @@ bool Paladin::UpdateCombat(float deltaTime, Scene* pScene)
 			{
 				// ターゲットの体力コンポーネントを取得してダメージを適用
 				HealthComponent* targetHp = m_AttackTarget->GetComponent<HealthComponent>();
-				if (targetHp != nullptr && targetHp->IsAlive() &&
-					MathUtility::IsInRange(m_Position, m_AttackTarget->GetPosition(), kAutoAttackRange))
+				if (targetHp != nullptr && // ターゲットコンポーネントが存在するか
+					targetHp->IsAlive() && // ターゲットが生存しているか
+					MathUtility::IsInRange(m_Position, m_AttackTarget->GetPosition(), kAutoAttackRange)) // ターゲットが攻撃範囲内にいるか
 				{
 					DamageContext context;
 					context.attacker = this;
@@ -447,7 +455,7 @@ bool Paladin::TryStartSkillAttack(Scene* pScene)
 	m_AttackTarget = enemy;
 
 	// スキル発動時はターゲットの方向を向く
-	m_AllyAI->FaceTarget(1.0f / 60.0f, enemy->GetPosition());
+	m_AllyAI->FaceTarget(kFixedTimeStep, enemy->GetPosition());
 
 	m_HasPendingSkillDamage = true;
 
@@ -494,7 +502,7 @@ bool Paladin::TryStartGuard(Scene* pScene)
 		: 1.0f;
 	m_GuardCooldown = m_GuardSkill.cooldownSec * cooldownRate;
 
-	m_AllyAI->FaceTarget(1.0f / 60.0f, enemy->GetPosition());
+	m_AllyAI->FaceTarget(kFixedTimeStep, enemy->GetPosition());
 	ChangeState(PaladinState::GuardStart);
 
 	return true;
@@ -591,7 +599,7 @@ StatusData Paladin::CreateStatusData() const
 {
 	StatusData data;
 	data.maxHp = 300;
-	data.moveSpeed = 45.0f;
+	data.moveSpeed = kMoveSpeed;
 	data.attackPower = kAutoAttackDamage;
 	data.autoAttackInterval = kAutoAttackInterval;
 	return data;

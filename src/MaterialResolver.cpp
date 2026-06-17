@@ -89,7 +89,7 @@ bool MaterialResolver::Build(
 
     const size_t count = std::max<size_t>(1, resMaterial.size());
 
-    // 1) Material(CB) ������
+    // 1) Material(CB)
     if (!outMaterial.Init(device, pool, sizeof(CbMaterial), count))
     {
         ELOG("MaterialResolver::Build: Material::Init failed");

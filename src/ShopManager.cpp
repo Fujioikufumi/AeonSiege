@@ -11,6 +11,14 @@
 #include <cstdlib>
 
 namespace {
+		// レアリティ確率テーブルを切り替えるフェーズしきい値
+		constexpr int kRarityPhaseTier1 = 10; // これ以上で kRarityRates[1]
+		constexpr int kRarityPhaseTier2 = 30; // これ以上で kRarityRates[2]
+		constexpr int kRarityPhaseTier3 = 50; // これ以上で kRarityRates[3]
+
+		constexpr int kRollMax = 100; // 抽選の母数（rand() % kRollMax）
+		constexpr int kSkillOfferMinPhase = 2;  // スキルオファーが出始めるフェーズ
+		constexpr int kSkillOfferChance = 30; // スキルオファー出現確率（%）
 
 	// 強化内容のメタ情報
 	struct UpgradeKindMeta
@@ -21,6 +29,7 @@ namespace {
 		float valuePerRarity;		// レアリティ1あたりの強化値の倍率 (例: 0.05f = レアリティ1で5%強化)
 	};
 
+	// 強化内容の種類ごとのメタ情報を定義
 	constexpr std::array<UpgradeKindMeta, kUpgradeKindCount> kUpgradeKindMeta = { {
 		{ UpgradeStatType::AttackRate,            "AttackUp",           L"Atk.png",       0.15f },
 		{ UpgradeStatType::MoveSpeedRate,         "MoveSpeedUp",        L"Spd.png",       0.05f },
@@ -52,11 +61,13 @@ namespace {
 		L"Skill6.png",
 	} };
 
+	// 強化内容のメタ情報を取得する関数
 	const UpgradeKindMeta& GetUpgradeMeta(UpgradeKind kind)
 	{
 		return kUpgradeKindMeta[static_cast<int>(kind)];
 	}
 
+	// スキルのテクスチャパスをスキルIDに基づいて取得する関数
 	std::wstring GetSkillTexturePath(SkillId skillId)
 	{
 		const int index = static_cast<int>(skillId) - static_cast<int>(SkillId::PlayerSlash1);
@@ -114,6 +125,7 @@ namespace {
 		return SkillId::None;
 	}
 
+	// フェーズごとのレアリティ出現率を表す構造体
 	struct RarityRate
 	{
 		int rarity1;
@@ -122,23 +134,25 @@ namespace {
 	};
 
 	constexpr std::array<RarityRate, 4> kRarityRates = { {
-		{ 80, 18,  2 }, // phase 0~2
-		{ 65, 28,  7 }, // phase 3~5
-		{ 50, 35, 15 }, // phase 6~8
-		{ 35, 40, 25 }, // phase 9~
+		// レアリティ1,レアリティ2,レアリティ3の出現率
+		{ 80, 18,  2 },  
+		{ 65, 28,  7 },  
+		{ 50, 35, 15 }, 
+		{ 35, 40, 25 }, 
 	} };
 
+	// フェーズ番号に応じたレアリティ出現率を取得する関数
 	const RarityRate& GetRarityRate(int phaseNo)
 	{
-		if (phaseNo >= 50)
+		if (phaseNo >= kRarityPhaseTier3)
 		{
 			return kRarityRates[3];
 		}
-		if (phaseNo >= 30)
+		if (phaseNo >= kRarityPhaseTier2)
 		{
 			return kRarityRates[2];
 		}
-		if (phaseNo >= 10)
+		if (phaseNo >= kRarityPhaseTier1)
 		{
 			return kRarityRates[1];
 		}
@@ -215,10 +229,10 @@ ShopOffer ShopManager::RollOffer(int phaseNo, bool& skillOfferAlreadyPlacedThisS
 {
 	SkillComponent* skills = GetPlayerSkills();
 
-	const int roll = rand() % 100;
+	const int roll = rand() % kRollMax;
 
 	// フェーズ2以降で30%の確率でスキル解除オファーを出す
-	const bool skillGateOk = phaseNo >= 2 && roll < 30;
+	const bool skillGateOk = phaseNo >= kSkillOfferMinPhase && roll < kSkillOfferChance;
 
 	// スキル解除オファーは1ショップにつき1つまで、かつプレイヤーがまだ持っていないスキルがある場合にのみ出す
 	if (skillGateOk && !skillOfferAlreadyPlacedThisShop && skills != nullptr)
@@ -492,7 +506,7 @@ UpgradeRarity ShopManager::RollRarity(int phaseNo) const
 {
 	// レアリティごとの出現率をフェーズ番号に応じて取得
 	const RarityRate& rate = GetRarityRate(phaseNo);
-	const int roll = rand() % 100;
+	const int roll = rand() % kRollMax;
 
 	if (roll < rate.rarity1)
 	{

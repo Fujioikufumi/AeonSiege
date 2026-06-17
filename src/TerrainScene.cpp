@@ -17,16 +17,39 @@
 #include "PartyManager.h"
 #include "GameMenu.h"
 #include "ResultHud.h"
+
+namespace {
+	// カメラの定数
+	constexpr XMFLOAT3 kCameraStartPos = { 0.0f, -800.0f, 0.0f }; // カメラの初期位置
+
+	// スカイドームの定数
+	constexpr float kSkyDomeRadius = 10000.0f; // スカイドームの半径
+	constexpr int kSkyDomeSlices = 32; // スカイドームのスライス数
+	constexpr int kSkyDomeStacks = 16; // スカイドームのスタック数
+
+	// 地形の定数
+	constexpr float kHeightScale = 2000.0f; // 地形の高さのスケール
+	constexpr float kGridSize = 10.0f; // 地形のグリッドサイズ
+	constexpr XMFLOAT3 kTerrainCenter = { 0.0f, 0.0f, 0.0f }; // 地形の中心座標
+
+	// バトルエリアの定数
+	constexpr float kBattleAreaRadius = 100.0f; // バトルエリアの半径
+	constexpr XMFLOAT3 kBattleAreaCenter = { -497.0f, 0.0f, -650.0f }; // バトルエリアの中心座標
+
+	// 草原の定数
+	constexpr float kMeadowSize = 0.1f; // 草原のスケール
+}
+
 //-----------------------------------------------------------------------------
 //	初期化
 //-----------------------------------------------------------------------------
 void TerrainScene::Init()
 {
 	// カメラの追加
-	auto* pCamera = AddGameObject<Camera>(eLayer::DEFAULT, "Camera");
+	Camera* pCamera = AddGameObject<Camera>(eLayer::DEFAULT, "Camera");
 	if (pCamera)
 	{
-		XMFLOAT3 pos = { 0.0f, -800.0f, 0.0f };
+		XMFLOAT3 pos = kCameraStartPos;
 		pCamera->SetPosition(pos);
 		pCamera->SetTarget({ pos.x , pos.y, pos.z + 10.0f });
 		SetCamera(pCamera);
@@ -42,13 +65,13 @@ void TerrainScene::Init()
 	AddGameObject<GameMenu>(eLayer::MENUUI, "GameMenu");
 
 	// スカイドームの追加
-	auto* pSkyDome = AddGameObject<SkyDomeObject>(eLayer::BACKGROUND, "SkyDome");
+	SkyDomeObject* pSkyDome = AddGameObject<SkyDomeObject>(eLayer::BACKGROUND, "SkyDome");
 	if (pSkyDome)
 	{
 		pSkyDome->SetTexturePath(L"Assets/Texture/Sky/4kHDR");
-		pSkyDome->SetRadius(10000.0f);
-		pSkyDome->SetSlices(32);
-		pSkyDome->SetStacks(16);
+		pSkyDome->SetRadius(kSkyDomeRadius);
+		pSkyDome->SetSlices(kSkyDomeSlices);
+		pSkyDome->SetStacks(kSkyDomeStacks);
 	}
 
 	// 地形の追加
@@ -56,28 +79,26 @@ void TerrainScene::Init()
 	m_Terrain->Init(
 		L"Assets/Texture/Terrain/HeightMap.png",
 		L"Assets/Texture/Terrain/FieldMap.png",
-		2000.0f, 10.0f);
-	m_Terrain->SetPosition({ 0.0f, 0.0f, 0.0f });
+		kHeightScale, kGridSize);
+	m_Terrain->SetPosition(kTerrainCenter);
 
 
-	const XMFLOAT3 battleAreaCenter = { -497.0f, 0.0f, -650.0f };
-	const float battleAreaRadius = 100.0f;
 
 	BattleArea* battleArea = AddGameObject<BattleArea>(eLayer::DEFAULT, "BattleArea");
 	if (battleArea != nullptr)
 	{
-		battleArea->Setup(battleAreaCenter, battleAreaRadius);
+		battleArea->Setup(kBattleAreaCenter, kBattleAreaRadius);
 	}
 	BattleAreaObj* battleAreaObj = AddGameObject<BattleAreaObj>(eLayer::DEFAULT , "BattleAreaObj");
 	if (battleAreaObj != nullptr)
 	{
-		battleAreaObj->Setup(battleAreaCenter, battleAreaRadius);
+		battleAreaObj->Setup(kBattleAreaCenter, kBattleAreaRadius);
 	}
 	// 風の追加
 	AddGameObject<Wind>(eLayer::Environment, "Wind");
 
 	// 草原の追加
-	float meadowSize = 0.1f;
+	float meadowSize = kMeadowSize;
 	Meadow* pMeadow1 = AddGameObject<Meadow>(eLayer::TERRAIN, "Meadow01");
 	pMeadow1->SetModelPath(L"Assets/Model/FieldObject/Grass.bmdl");
 	pMeadow1->SetScale(XMFLOAT3(meadowSize, meadowSize, meadowSize));

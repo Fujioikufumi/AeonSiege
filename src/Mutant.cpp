@@ -11,6 +11,11 @@
 #include "Player.h"
 #include "NameSpace.h"
 
+namespace {
+	constexpr float kTargetHeightOffset = 10.0f; // 接地時の高さオフセット
+	constexpr float kMoveSpeed = 25.0f; // 移動速度
+}
+
 Mutant::Mutant()
 	: GameObject()
 {
@@ -29,7 +34,7 @@ bool Mutant::Init()
 	AddComponent<MeshRenderer>()->Load(m_ModelPath, m_PipelineName);
 
 	TargetComponent* target = AddComponent<TargetComponent>();
-	target->SetHeightOffset(10.0f);
+	target->SetHeightOffset(kTargetHeightOffset);
 
 	AnimationController* anim = AddComponent<AnimationController>();
 	anim->Init(m_ModelPath);
@@ -56,7 +61,7 @@ bool Mutant::Init()
 		data.damageTakenRate = 1.0f;
 		data.defensePower = 8;
 		data.evasionRate = 0.05f;
-		data.moveSpeed = 25.0f;
+		data.moveSpeed = kMoveSpeed;
 	}
 	m_Status->Setup(data);
 

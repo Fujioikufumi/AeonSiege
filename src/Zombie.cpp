@@ -11,6 +11,14 @@
 #include "MathUtility.h"
 #include <random>
 
+namespace {
+	constexpr float kTargetHeightOffset = 6.0f;  // ターゲットHUDの高さオフセット
+	constexpr float kAutoAttackInterval = 2.0f;  // 通常攻撃の間隔（秒）
+	constexpr float kMoveSpeed = 20.0f;			 // 移動速度
+	constexpr float kChaseMoveSpeed = 35.0f;	 // 追跡時の移動速度
+	constexpr float kMeleeCooldownSec = 2.0f;	 // 近接攻撃のクールダウン（秒）
+}
+
 Zombie::Zombie()
 	: Zombie(ZombieType::Normal)
 {
@@ -36,19 +44,19 @@ bool Zombie::Init()
 	AddComponent<MeshRenderer>()->Load(m_ModelPath, m_PipelineName);
 
 	TargetComponent* target = AddComponent<TargetComponent>();
-	target->SetHeightOffset(6.0f);
+	target->SetHeightOffset(kTargetHeightOffset);
 
 	m_Status = AddComponent<StatusComponent>();
 	StatusData data;
 	data.maxHp = 100;
 	data.attackPower = 10;
-	data.autoAttackInterval = 2.0f;
+	data.autoAttackInterval = kAutoAttackInterval;
 	data.criticalDamageRate = 1.5f;
 	data.criticalRate = 0.3f;
 	data.damageTakenRate = 1.0f;
 	data.defensePower = 5;
 	data.evasionRate = 0.1f;
-	data.moveSpeed = 20.0f;
+	data.moveSpeed = kMoveSpeed;
 	m_Status->Setup(data);
 
 	HealthComponent* health = AddComponent<HealthComponent>();
@@ -63,9 +71,9 @@ bool Zombie::Init()
 	enemyAi->SetLevel(1);
 	enemyAi->SetUsePatrol(false);
 	enemyAi->SetAlwaysAggro(true);
-	enemyAi->SetMeleeRange(kMeleeHitRange); // 定数 kMeleeHitRange (22.0f) を使用してDRY原則を守る
-	enemyAi->SetChaseMoveSpeed(35.0f);
-	enemyAi->SetMeleeCooldownSec(2.0f);
+	enemyAi->SetMeleeRange(kMeleeHitRange);
+	enemyAi->SetChaseMoveSpeed(kChaseMoveSpeed);
+	enemyAi->SetMeleeCooldownSec(kMeleeCooldownSec);
 
 	// コールバック
 	enemyAi->SetAnimCallback([this](EnemyAIState newState) { OnAIStateChanged(newState); });

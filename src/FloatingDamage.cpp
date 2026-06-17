@@ -3,6 +3,15 @@
 #include "Scene.h"
 #include "Sprite.h"
 
+namespace {
+	constexpr float kMissSpriteWidth	= 96.0f; // MISS表示スプライトの幅
+	constexpr float kMissSpriteHeight	= 36.0f; // MISS表示スプライトの高さ
+	constexpr float kScale				= 0.5f; // 数字のスケール
+	constexpr float kFadeStartTime		= 0.5f; // フェード開始時間（秒）
+	constexpr XMFLOAT4 kDefaultColor	= { 1.0f, 1.0f, 1.0f, 1.0f }; // デフォルトの色（白）
+	constexpr XMFLOAT4 kFadeColor		= { 1.0f, 1.0f, 1.0f, 0.0f }; // フェードアウト時の色（透明）
+}
+
 static std::wstring GetNumberTexturePath(FloatingDamageType type)
 {
 	switch (type)
@@ -43,21 +52,21 @@ void FloatingDamage::Setup(int damage, float screenX, float screenY, FloatingDam
 	{
 		if (m_NumberUI != nullptr)
 		{
-			m_NumberUI->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+			m_NumberUI->SetColor(kFadeColor);
 		}
 		m_MissSprite = AddComponent<Sprite>();
 		m_MissSprite->Init(L"Assets/Texture/CombatHud/Miss.png");
 		m_MissSprite->SetPosition(m_PosX, m_PosY);
-		m_MissSprite->SetSize(96.0f, 36.0f);
-		m_MissSprite->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+		m_MissSprite->SetSize(kMissSpriteWidth, kMissSpriteHeight);
+		m_MissSprite->SetColor(kDefaultColor);
 		return;
 	}
 	const std::wstring texturePath = GetNumberTexturePath(type);
 	m_NumberUI->SetTexturePath(texturePath);
 	m_NumberUI->SetValue(damage);
 	m_NumberUI->SetPosition(m_PosX, m_PosY);
-	m_NumberUI->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_NumberUI->SetScale(0.5f);
+	m_NumberUI->SetColor(kDefaultColor);
+	m_NumberUI->SetScale(kScale);
 }
 
 void FloatingDamage::Update(float deltaTime)
@@ -77,7 +86,7 @@ void FloatingDamage::Update(float deltaTime)
 
 	// 寿命が近づくと徐々にフェードする
 	float alpha = 1.0f;
-	const float fadeStartTime = kMaxLifeTime * 0.5f;
+	const float fadeStartTime = kMaxLifeTime * kFadeStartTime;
 	if (m_LifeTime > fadeStartTime)
 	{
 		alpha = 1.0f - ((m_LifeTime - fadeStartTime) / (kMaxLifeTime - fadeStartTime));

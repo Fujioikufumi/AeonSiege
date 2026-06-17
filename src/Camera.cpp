@@ -13,6 +13,11 @@ using namespace DirectX;
 
 namespace {
 	constexpr float kPi = 3.14159265f;
+	constexpr float kDefaultDistance	= 30.0f;      // カメラの初期距離
+	constexpr float kDefaultFovDeg		= 37.5f;      // 垂直視野角（度）
+	constexpr float kYawStickSpeed		= 2.0f;       // 右スティックによる旋回速度
+	constexpr float kPitchLimitDeg		= 89.9f;      // ピッチの上下限（度）
+	
 	// 角度を [-π, π] に収める
 	float NormalizeAnglePi(float a)
 	{
@@ -31,10 +36,10 @@ namespace {
 //		コンストラクタ
 //-----------------------------------------------------------------------------
 Camera::Camera()
-	: m_CameraDistance(30.0f)
+	: m_CameraDistance(kDefaultDistance)
 	, m_RotationSpeed(0.0025f)
 {
-	m_FovY = DirectX::XMConvertToRadians(37.5f);
+	m_FovY = DirectX::XMConvertToRadians(kDefaultFovDeg);
 	m_Aspect = static_cast<float>(SCREEN_WIDTH) / static_cast<float>(SCREEN_HEIGHT);
 
 	// 視錐台の作成
@@ -84,7 +89,7 @@ void Camera::Update(float deltaTime)
 		if (!g_isDebugMode)
 		{
 			m_Rotation.y += mouseState.deltaX * m_RotationSpeed;
-			m_Rotation.y += GetRightStickX() * 2.0f * deltaTime;
+			m_Rotation.y += GetRightStickX() * kYawStickSpeed * deltaTime;
 		}
 		else if (IsMouseButtonPress(1))
 		{
@@ -345,15 +350,10 @@ void Camera::UpdateDebugView(float deltaTime, MouseState mouseState)
 		m_Rotation.x += mouseState.deltaY * m_RotationSpeed; // 上下回転（X軸回転、上下を反転）
 
 		// 回転角度の制限（上下の回転を制限）
-		auto maxRadX = DirectX::XMConvertToRadians(89.9f);
-		auto minRadX = -DirectX::XMConvertToRadians(89.9f);
+		auto maxRadX = DirectX::XMConvertToRadians(kPitchLimitDeg);
+		auto minRadX = -DirectX::XMConvertToRadians(kPitchLimitDeg);
 		if (m_Rotation.x > maxRadX) m_Rotation.x = maxRadX;
 		if (m_Rotation.x < minRadX) m_Rotation.x = minRadX;
-	}
-
-	if (IsKeyPress(VK_RIGHT))
-	{
-		m_Rotation.y += 0.3f / 60.0f;
 	}
 
 	// WASDキーでカメラ移動（カメラの向きに基づいて移動）

@@ -12,11 +12,18 @@
 using namespace DirectX;
 
 namespace {
+	
+	constexpr int   kAngleDegMax = 360;			// ランダム角度の上限（度）
+	constexpr int   kDistanceResol = 100;		// 距離正規化の分解能
+	constexpr int   kIdleWaitRandSec = 3;       // 待機時間のランダム加算上限（0?2秒）
+	constexpr float kRotationSpeed = 10.0f;		// 旋回速度
+	constexpr float kSomeBias = -3000.0f;		// 
+	
 	// 指定した中心点と半径の範囲内のランダムな座標を作成する
 	XMFLOAT3 GetRandomPointInRadius(const XMFLOAT3& center, float radius)
 	{
-		float angle = (rand() % 360) * (XM_PI / 180.0f);
-		float distance = (rand() % 100 / 100.0f) * radius;
+		float angle = (rand() % kAngleDegMax) * (XM_PI / 180.0f);
+		const float distance = (rand() % kDistanceResol) / static_cast<float>(kDistanceResol) * radius;
 
 		XMFLOAT3 result = center;
 		result.x += cosf(angle) * distance;
@@ -80,16 +87,15 @@ void EnemyAIComponent::Update(float deltaTime)
 	// -------------------------------------------------
 	Scene* pScene = GameManager::GetScene();
 
-	// 見つけたターゲットはメンバ変数 (m_CurrentTarget) にキャッシュすることを推奨します。
-	GameObject* pTarget = FindAttackTarget(pScene);
-	HealthComponent* targetHp = pTarget ? pTarget->GetComponent<HealthComponent>() : nullptr;
+	GameObject* pTarget			= FindAttackTarget(pScene);
+	HealthComponent* targetHp	= pTarget ? pTarget->GetComponent<HealthComponent>() : nullptr;
 
 	const bool targetIsAlive = targetHp && targetHp->IsAlive();
-	bool canSeeTarget = false;
+	bool canSeeTarget		 = false;
 
 	if (targetIsAlive)
 	{
-		const bool isDamaged = pHealth && (pHealth->GetHP() < pHealth->GetMaxHP());
+		const bool isDamaged	= pHealth && (pHealth->GetHP() < pHealth->GetMaxHP());
 		const bool inAggroRange = MathUtility::IsInRange(m_GameObject->GetPosition(), pTarget->GetPosition(), m_AggroRadius);
 
 		canSeeTarget = m_AlwaysAggro || isDamaged || inAggroRange;
@@ -155,7 +161,7 @@ void EnemyAIComponent::UpdateChaseAndAttack(float deltaTime, GameObject* target)
 	// 回転処理 (ターゲットを睨む)
 	const float targetYaw = atan2f(dx, dz);
 	XMFLOAT3 rot = m_GameObject->GetRotation();
-	rot.y = MathUtility::SlerpYaw(rot.y, targetYaw, 10.0f, deltaTime);
+	rot.y = MathUtility::SlerpYaw(rot.y, targetYaw, kRotationSpeed, deltaTime);
 	m_GameObject->SetRotation(rot);
 
 	if (m_CurrentState == EnemyAIState::Attack)
@@ -252,7 +258,7 @@ void EnemyAIComponent::UpdatePatrol(float deltaTime)
 	// 目的地に十分近づいたら再び待機
 	if (dist < 1.0f)
 	{
-		m_StateTimer = kIdleWaitTime + (rand() % 3); // 2～4秒待機
+		m_StateTimer = kIdleWaitTime + (rand() % kIdleWaitRandSec); // 2～4秒待機
 		ChangeState(EnemyAIState::Idle);
 		return;
 	}
@@ -264,7 +270,7 @@ void EnemyAIComponent::UpdatePatrol(float deltaTime)
 
 	float targetYaw = atan2f(dx, dz);
 	XMFLOAT3 rot = m_GameObject->GetRotation();
-	rot.y = MathUtility::SlerpYaw(rot.y, targetYaw, 10.0f, deltaTime);
+	rot.y = MathUtility::SlerpYaw(rot.y, targetYaw, kRotationSpeed, deltaTime);
 	m_GameObject->SetRotation(rot);
 
 	// 移動
@@ -318,10 +324,12 @@ GameObject* EnemyAIComponent::FindAttackTarget(Scene* pScene) const
 	{
 		GameObject* ally = allyPtr.get();
 		Paladin* paladin = dynamic_cast<Paladin*>(ally);
+		
+		// ガード中の味方がいる場合、スコアにバイアスをかける
 		float bias = 0.0f;
 		if (paladin != nullptr && paladin->IsGuarding())
 		{
-			bias = -3000.0f;
+			bias = kSomeBias;
 		}
 		checkTarget(ally, bias);
 	}

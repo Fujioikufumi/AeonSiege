@@ -13,6 +13,14 @@
 
 using namespace DirectX;
 
+namespace {
+	constexpr int   kAngleDegMax = 360;     // ランダム角度の上限（度）
+	constexpr int   kDistanceResol = 100;     // 距離正規化の分解能
+	constexpr float kCenterEpsilonSq = 0.0001f; // 中心一致とみなす距離の二乗閾値
+	constexpr float kSpreadStep = 0.45f;   // 敵を散らす際の角度ステップ（ラジアン）
+	constexpr float kDegtoRad = XM_PI / 180.0f; // ラジアンを度に変換するための係数
+}
+
 EnemySpawner::EnemySpawner()
 	: GameObject()
 {
@@ -46,10 +54,12 @@ void EnemySpawner::SpawnPhase(const PhaseData& phaseData)
 		ELOG("EnemySpawner: Player not found");
 		return;
 	}
-	const XMFLOAT3 center = battleArea->GetCenter();
-	const float radius = battleArea->GetRadius();
-	const XMFLOAT3 playerPos = player->GetPosition();
-	// フェーズ内の総出現数（spread 用）
+	
+	const XMFLOAT3	center		= battleArea->GetCenter();
+	const float		radius		= battleArea->GetRadius();
+	const XMFLOAT3	playerPos	= player->GetPosition();
+	
+	// フェーズ内の総出現数
 	int totalCount = 0;
 	for (const PhaseEnemyEntry& entry : phaseData.enemies)
 		totalCount += entry.count;
@@ -73,11 +83,11 @@ void EnemySpawner::SpawnPhase(const PhaseData& phaseData)
 
 XMFLOAT3 EnemySpawner::CreateRandomSpawnPosition(const XMFLOAT3& center, float radius) const
 {
-	Scene* pScene = GameManager::GetScene();
-	Terrain* pTerrain = (pScene != nullptr) ? pScene->GetGameObjectByName<Terrain>("Terrain") : nullptr;
+	Scene* pScene		= GameManager::GetScene();
+	Terrain* pTerrain   = (pScene != nullptr) ? pScene->GetGameObjectByName<Terrain>("Terrain") : nullptr;
 
-	const float angle = (rand() % 360) * (XM_PI / 180.0f);
-	const float distance = (rand() % 100 / 100.0f) * radius;
+	const float angle		= (rand() % kAngleDegMax) * kDegtoRad;
+	const float distance	= (rand() % kDistanceResol) / static_cast<float>(kDistanceResol) * radius;
 
 	XMFLOAT3 position = center;
 	position.x += cosf(angle) * distance;
@@ -99,16 +109,16 @@ DirectX::XMFLOAT3 EnemySpawner::CreateSpawnPosition(const DirectX::XMFLOAT3& cen
 	float angle = 0.0f;
 
 	// プレイヤーが中心とほぼ一致する場合はランダムな境界上
-	if (distSq < 0.0001f)
+	if (distSq < kCenterEpsilonSq)
 	{
-		angle = (rand() % 360) * (XM_PI / 180.0f);
+		angle = (rand() % kAngleDegMax) * (XM_PI / 180.0f);
 	}
 	else
 	{
 		// centerからplayerPosの逆方向の角度を計算
 		const float baseAngle = atan2f(-dz, -dx);
 		// 複数体の重なり防止
-		const float spreadStep = 0.45f; // 一定角度ずらす
+		const float spreadStep = kSpreadStep; // 一定角度ずらす
 		const float offset = (spreadCount <= 1)
 			? 0.0f
 			: (static_cast<float>(spreadIndex) - (spreadCount - 1) * 0.5f) * spreadStep;

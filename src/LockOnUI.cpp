@@ -15,6 +15,10 @@
 
 using namespace DirectX;
 namespace {
+	constexpr XMFLOAT2 kMarkerSize = {36.0f, 36.0f}; // ロックオンマーカーの一辺サイズ
+	constexpr XMFLOAT4 kMarkerColor = { 1.0f, 1.0f, 1.0f, 1.0f }; // ロックオンマーカーの色（RGBA）
+	constexpr XMFLOAT4 kMarkerColorTransparent = { 1.0f, 1.0f, 1.0f, 0.0f }; // ロックオンマーカーの透明色
+
 	// ビュー・射影と TextureVS.hlsl の NDC→スクリーン変換に合わせてピクセル座標を求める
 	bool WorldToScreenPixel(const XMFLOAT3& world, FXMMATRIX view, CXMMATRIX proj, float* outPx, float* outPy)
 	{
@@ -43,7 +47,7 @@ bool LockOnUI::Init()
 		return false;
 	}
 	Sprite* spr = GetComponent<Sprite>();
-	spr->SetSize(36.0f, 36.0f);
+	spr->SetSize(kMarkerSize);
 	spr->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
 	return true;
 }
@@ -63,19 +67,19 @@ void LockOnUI::Update(float deltaTime)
 	
 	if (cam == nullptr || target == nullptr)
 	{
-		spr->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+		spr->SetColor(kMarkerColorTransparent);
 		GameObject::Update(deltaTime);
 		return;
 	}
 	if (scene != nullptr && !scene->ContainsGameObject(target))
 	{
-		spr->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+		spr->SetColor(kMarkerColorTransparent);
 		GameObject::Update(deltaTime);
 		return;
 	}
 	if (target->IsDestroyed())
 	{
-		spr->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+		spr->SetColor(kMarkerColorTransparent);
 		GameObject::Update(deltaTime);
 		return;
 	}
@@ -83,14 +87,14 @@ void LockOnUI::Update(float deltaTime)
 	HealthComponent* targetHp = (target != nullptr) ? const_cast<GameObject*>(target)->GetComponent<HealthComponent>() : nullptr;
 	if (cam == nullptr || target == nullptr || targetHp == nullptr || !targetHp->IsAlive())
 	{
-		spr->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+		spr->SetColor(kMarkerColorTransparent);
 		GameObject::Update(deltaTime);
 		return;
 	}
 	TargetComponent* tComp = const_cast<GameObject*>(target)->GetComponent<TargetComponent>();
 	if (tComp == nullptr)
 	{
-		spr->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+		spr->SetColor(kMarkerColorTransparent);
 		GameObject::Update(deltaTime);
 		return;
 	}
@@ -101,11 +105,11 @@ void LockOnUI::Update(float deltaTime)
 	const XMMATRIX proj = cam->GetProj();
 	if (!WorldToScreenPixel(aim, view, proj, &px, &py))
 	{
-		spr->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
+		spr->SetColor(kMarkerColorTransparent);
 		GameObject::Update(deltaTime);
 		return;
 	}
 	spr->SetPosition(px, py);
-	spr->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+	spr->SetColor(kMarkerColor);
 	GameObject::Update(deltaTime);
 }

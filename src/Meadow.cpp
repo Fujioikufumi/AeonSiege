@@ -199,7 +199,7 @@ void Meadow::Draw(const RenderContext& context)
 	float tMinX, tMaxX, tMinZ, tMaxZ;
 	m_Terrain->GetTerrainWorldBounds(tMinX, tMaxX, tMinZ, tMaxZ);
 
-	const uint32_t grassPerChunk = kMaxGrassPerChunk; // 1チャンク(30x30m)あたりに生成を試みる最大の草の数。密度を上げたい場合はこの数値を増やします。
+	const uint32_t grassPerChunk = kMaxGrassPerChunk; // 1チャンク(30x30m)あたりに生成を試みる最大の草の数。密度を上げたい場合はこの数値を増やす。
 	Camera* pCam = m_Scene->GetCamera();
 	for (size_t i = 0; i < m_VisibleChunks.size(); ++i)
 	{
@@ -218,7 +218,7 @@ void Meadow::Draw(const RenderContext& context)
 			pParams->TerrainWidth = tMaxX - tMinX;
 			pParams->TerrainHeight = tMaxZ - tMinZ;
 			pParams->TerrainBaseY = 0.0f;
-			pParams->HeightScale = 2000.0f; // Terrainに合わせて調整
+			pParams->HeightScale = kTerrainHeightScale; // Terrainに合わせて調整
 			pParams->HeightOffset = 1.0f;
 		}
 
@@ -232,9 +232,6 @@ void Meadow::Draw(const RenderContext& context)
 		pCmd->Dispatch((grassPerChunk + 63) / 64, 1, 1);
 	}
 
-	// ==========================================
-	// 3. ExecuteIndirectによる爆速描画
-	// ==========================================
 	D3D12_RESOURCE_BARRIER bDraw[2] = {};
 	bDraw[0].Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 	bDraw[0].Transition.pResource = m_DrawArgsBuffer.Get();

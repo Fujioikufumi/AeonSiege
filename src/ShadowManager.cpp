@@ -12,6 +12,13 @@
 
 using namespace DirectX;
 
+namespace {
+	constexpr float kShadowLightDistance = 50.0f;  // シーン中心からライトまでの距離
+	constexpr float kShadowMapOrthoSize = 120.0f; // 影の直交投影サイズ（Plane=100より大きめ）
+	constexpr float kShadowNearZ = 0.1f;   // 影投影のニアクリップ
+	constexpr float kShadowFarZ = 200.0f; // 影投影のファークリップ
+}
+
 //----------------------------------------------------------
 // 		初期化処理
 //----------------------------------------------------------
@@ -166,7 +173,7 @@ void ShadowManager::CalculateLightMatrices(
 
 	// シーンの中心位置（原点）からライト方向に一定距離離れた位置にライトを配置
 	XMVECTOR sceneCenter = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-	float lightDistance = 50.0f;  // ライトまでの距離
+	float lightDistance = kShadowLightDistance;  // ライトまでの距離
 	XMVECTOR lightPos = XMVectorSubtract(sceneCenter, XMVectorScale(lightDirVec, lightDistance));
 
 	// DirectX11と同じ方法でライトのビュー行列を計算
@@ -176,8 +183,8 @@ void ShadowManager::CalculateLightMatrices(
 	outLightView = XMMatrixLookAtLH(lightPos, lookAt, up);
 
 	// DirectX11と同じ直交投影パラメータを使用
-	float shadowMapSize = 120.0f;  // Planeのサイズ（100）より大きめに設定
-	outLightProj = XMMatrixOrthographicLH(shadowMapSize, shadowMapSize, 0.1f, 200.0f);
+	float shadowMapSize = kShadowMapOrthoSize;  // Planeのサイズ（100）より大きめに設定
+	outLightProj = XMMatrixOrthographicLH(shadowMapSize, shadowMapSize, kShadowNearZ, kShadowFarZ);
 
 
 	// DirectX11では転置しているが、DirectX12では通常転置不要

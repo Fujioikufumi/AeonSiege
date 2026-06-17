@@ -34,6 +34,8 @@ namespace {
 	constexpr float kRotationSpeed = 10.0f;
 	constexpr float kMoveEpsilon = 1.0e-6f;
 
+	constexpr XMFLOAT3 kStartPos = { -497.0f, 0.0f, -650.0f };
+
 	static constexpr WORD BTN_LOCK_ON = PAD_X;   // ロックオン（仕様に合わせて後で変更可）
 	static constexpr WORD BTN_ACTION  = PAD_B;   // 戦闘入り短押し等（T / PAD_B）
 	static constexpr WORD BTN_SKILL_1 = PAD_Y;   // スキル1
@@ -48,7 +50,7 @@ Player::Player()
 {
 	m_ModelPath = L"../Assets/Characters/MariaWProp.bmdl";
 	m_PipelineName = L"SkinnedFBXPipeline";
-	m_Position = { -497.0f, 0.0f, -650.0f };
+	m_Position = kStartPos;
 	m_Scale = { 0.05f, 0.05f, 0.05f };
 }
 
