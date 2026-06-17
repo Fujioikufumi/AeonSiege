@@ -198,6 +198,7 @@
     <ClCompile Include="..\src\BinaryModelLoader.cpp" />
     <ClCompile Include="..\src\Camera.cpp" />
     <ClCompile Include="..\src\CharacterGrowthCatalog.cpp" />
+    <ClCompile Include="..\src\CharacterBase.cpp" />
     <ClCompile Include="..\src\ColorTarget.cpp" />
     <ClCompile Include="..\src\CombatHud.cpp" />
     <ClCompile Include="..\src\CombatHudSerializer.cpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="..\include\BinaryModelLoader.h" />
     <ClInclude Include="..\include\Camera.h" />
     <ClInclude Include="..\include\CharacterGrowthCatalog.h" />
+    <ClInclude Include="..\include\CharacterBase.h" />
     <ClInclude Include="..\include\ColorTarget.h" />
     <ClInclude Include="..\include\CombatHud.h" />
     <ClInclude Include="..\include\CombatHudLayout.h" />

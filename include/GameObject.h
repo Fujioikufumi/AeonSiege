@@ -76,6 +76,8 @@ public:
 	[[nodiscard]] std::string GetObjName() const { return m_Name; }
 	[[nodiscard]] std::wstring GetModelPath() const { return m_ModelPath; }
 	[[nodiscard]] std::list<std::unique_ptr<Component>>& GetComponents() { return m_Components; }
+	/// ガード中（被ダメージ軽減状態）かどうか。デフォルトは false。
+	[[nodiscard]] virtual bool IsGuarding() const { return false; }
 
 	/// ワールド行列を取得
 	[[nodiscard]] virtual XMMATRIX GetWorldMatrix() const;

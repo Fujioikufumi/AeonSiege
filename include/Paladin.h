@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "CharacterBase.h"
 #include "StatusComponent.h"
 #include "SkillData.h"
 #include "DamageTypes.h"
@@ -19,7 +19,7 @@ enum class PaladinState
 	Dead
 };
 
-class Paladin : public GameObject
+class Paladin : public CharacterBase
 {
 public:
 	Paladin();
@@ -33,7 +33,7 @@ public:
 	/// 現在ガード状態（被ダメージ軽減中）かどうかを判定します。
 	/// </summary>
 	/// <returns>ガード中であれば true、それ以外は false</returns>
-	bool IsGuarding() const;
+	bool IsGuarding() const override;
 
 	// Paladinが受けるダメージ処理。ガード状態やスキル攻撃の状態に応じてダメージを軽減など
 	DamageResult ApplyDamage(const DamageContext& context) override;
@@ -46,14 +46,6 @@ private:
 	/// <param name="newState">新しい状態（PaladinState）</param>
 	void ChangeState(PaladinState newState);
 
-	/// <summary>
-	/// アニメーションを変更します。アニメーションコントローラーが設定されていない場合は処理をスキップします。
-	/// </summary>
-	/// <param name="anim">アニメーションコントローラーのポインタ</param>
-	/// <param name="clipName">再生するアニメーションクリップの名前</param>
-	/// <param name="loop">ループ再生するかどうか</param>
-	/// <param name="speed">再生速度（デフォルトは1.0f）</param>
-	void ChangeAnimation(class AnimationController* anim, const char* clipName, bool loop, float speed = 1.0f);
 
 	/// <summary>
 	/// プレイヤーを追従するための更新処理。プレイヤーから一定以上離れている場合は追従を開始し、近づいたら停止します。また、プレイヤーが停止している場合は待機位置を計算して移動します。
@@ -92,8 +84,12 @@ private:
 	/// </summary>
 	bool TryStartSkillAttack(class Scene* pScene);
 
+
+	/// 遅延ダメージの解決処理（通常攻撃・スキル攻撃で共用）
+	void ResolvePendingDamage(bool& hasPending, float& timer,
+		float deltaTime, float range, int damage);
+
 private:
-	StatusComponent* m_Status = nullptr; // ステータス管理コンポーネント
 	StatusData CreateStatusData() const;
 
 	class AnimationController* m_Animation = nullptr; // アニメーション管理コンポーネント

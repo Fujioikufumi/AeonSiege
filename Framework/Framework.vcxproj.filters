@@ -473,6 +473,9 @@
     <ClCompile Include="..\src\FileUtil.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\CharacterBase.cpp">
+      <Filter>GameObject\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Camera.h">
@@ -799,6 +802,9 @@
     </ClInclude>
     <ClInclude Include="..\include\InlineUtil.h">
       <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\CharacterBase.h">
+      <Filter>GameObject\Character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

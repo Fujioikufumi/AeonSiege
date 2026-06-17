@@ -19,7 +19,6 @@ namespace {
 }
 
 Paladin::Paladin()
-	: GameObject()
 {
 	m_ModelPath = L"../Assets/Characters/Paladin.bmdl";
 	m_Scale = { 0.05f, 0.05f, 0.05f };
@@ -217,33 +216,7 @@ bool Paladin::UpdateCombat(float deltaTime, Scene* pScene)
 	// ダメージ発生の遅延を管理
 	if (m_HasPendingDamage)
 	{
-		m_DamageDelayTimer -= deltaTime;
-
-		if (m_DamageDelayTimer <= 0.0f)
-		{
-			//--------------------------------------------
-			// ダメージ発生
-			m_HasPendingDamage = false;
-
-			if (m_AttackTarget != nullptr && !m_AttackTarget->IsDestroyed())
-			{
-				// ターゲットの体力コンポーネントを取得してダメージを適用
-				HealthComponent* targetHp = m_AttackTarget->GetComponent<HealthComponent>();
-				if (targetHp != nullptr && // ターゲットコンポーネントが存在するか
-					targetHp->IsAlive() && // ターゲットが生存しているか
-					MathUtility::IsInRange(m_Position, m_AttackTarget->GetPosition(), kAutoAttackRange)) // ターゲットが攻撃範囲内にいるか
-				{
-					DamageContext context;
-					context.attacker = this;
-					context.damage = m_Status->GetAttackPower();
-					context.isCombo = false;
-					context.isCritical = false;
-
-					// 攻撃対象にダメージ情報を渡す。(AIなのでヒットストップなどはしない)
-					m_AttackTarget->ApplyDamage(context);
-				}
-			}
-		}
+		ResolvePendingDamage(m_HasPendingDamage, m_DamageDelayTimer, deltaTime, kAutoAttackRange, m_Status->GetAttackPower());
 	}
 
 	if (m_AllyAI == nullptr) return false;
@@ -379,27 +352,7 @@ bool Paladin::UpdateSkillAttack(float deltaTime, Scene* pScene)
 
 	if (m_HasPendingSkillDamage)
 	{
-		m_SkillDamageDelayTimer -= deltaTime;
-
-		if (m_SkillDamageDelayTimer <= 0.0f)
-		{
-			m_HasPendingSkillDamage = false;
-
-			if (m_AttackTarget != nullptr && !m_AttackTarget->IsDestroyed())
-			{
-				HealthComponent* targetHp = m_AttackTarget->GetComponent<HealthComponent>();
-				if (targetHp != nullptr && targetHp->IsAlive() &&
-					MathUtility::IsInRange(m_Position, m_AttackTarget->GetPosition(), m_SkillAttack.range))
-				{
-					DamageContext context;
-					context.attacker = this;
-					context.damage = m_Status->CalculateSkillDamage(m_SkillAttack.skillPowerRate);
-					context.isCombo = false;
-					context.isCritical = false;
-					m_AttackTarget->ApplyDamage(context);
-				}
-			}
-		}
+		ResolvePendingDamage(m_HasPendingSkillDamage, m_SkillDamageDelayTimer, deltaTime, m_SkillAttack.range, m_Status->CalculateSkillDamage(m_SkillAttack.skillPowerRate));
 	}
 
 	if (m_State == PaladinState::SkillAttack)
@@ -587,12 +540,28 @@ void Paladin::ChangeState(PaladinState newState)
 	ChangeAnimation(m_Animation, clipName, loop, speed);
 }
 
-void Paladin::ChangeAnimation(AnimationController* anim, const char* clipName, bool loop, float speed)
+void Paladin::ResolvePendingDamage(bool& hasPending, float& timer,
+	float deltaTime, float range, int damage)
 {
-	// ステートが変化したならアニメーションも変える。
-	anim->SetLoop(loop);
-	anim->SetSpeed(speed);
-	anim->Play(clipName);
+	if (!hasPending) return;
+
+	timer -= deltaTime;
+	if (timer > 0.0f) return;
+
+	hasPending = false;
+
+	// 発生時の m_AttackTarget を参照（元の挙動を維持）
+	if (m_AttackTarget == nullptr || m_AttackTarget->IsDestroyed()) return;
+
+	HealthComponent* targetHp = m_AttackTarget->GetComponent<HealthComponent>();
+	if (targetHp == nullptr || !targetHp->IsAlive()) return;
+
+	if (!MathUtility::IsInRange(m_Position, m_AttackTarget->GetPosition(), range)) return;
+
+	DamageContext context{};
+	context.attacker = this;
+	context.damage = damage;
+	m_AttackTarget->ApplyDamage(context);
 }
 
 StatusData Paladin::CreateStatusData() const

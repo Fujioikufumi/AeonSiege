@@ -323,11 +323,10 @@ GameObject* EnemyAIComponent::FindAttackTarget(Scene* pScene) const
 	for (const auto& allyPtr : allyList)
 	{
 		GameObject* ally = allyPtr.get();
-		Paladin* paladin = dynamic_cast<Paladin*>(ally);
-		
-		// ガード中の味方がいる場合、スコアにバイアスをかける
+
+		// ガード中の味方はヘイトにバイアスをかける（具象クラスに依存しない）
 		float bias = 0.0f;
-		if (paladin != nullptr && paladin->IsGuarding())
+		if (ally->IsGuarding())
 		{
 			bias = kSomeBias;
 		}

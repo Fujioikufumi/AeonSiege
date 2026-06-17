@@ -25,8 +25,7 @@ Zombie::Zombie()
 }
 
 Zombie::Zombie(ZombieType type)
-	: GameObject()
-	, m_Type(type)
+	: m_Type(type)
 {
 	m_ModelPath = L"../Assets/Characters/Zombie.bmdl";
 	m_Scale = { 0.05f, 0.05f, 0.05f };
@@ -66,6 +65,8 @@ bool Zombie::Init()
 	AnimationController* anim = AddComponent<AnimationController>();
 	anim->SetLoop(true);
 	anim->Play(kAnimRun);
+
+	m_MeleeHitRange = kMeleeHitRange; // CharacterBase の判定距離を設定
 
 	EnemyAIComponent* enemyAi = AddComponent<EnemyAIComponent>();
 	enemyAi->SetLevel(1);
@@ -202,73 +203,9 @@ void Zombie::OnAIStateChanged(EnemyAIState newState)
 
 void Zombie::OnAIAttack(GameObject* target)
 {
-	// EnemyAIComponent から攻撃イベントが呼ばれたときに、攻撃の種類を決定して、ダメージの遅延処理をセットアップ
 	if (target == nullptr)
 	{
 		return;
 	}
-	m_HasPendingMeleeDamage = true;
-	m_MeleeDamageDelayTimer = kMeleeDamageDelaySec;
-	m_PendingMeleeTarget = target;
-	m_PendingMeleeDamage = GetAttackDamage();
-}
-
-void Zombie::ChangeAnimation(AnimationController* anim, const char* clipName, bool loop, float speed)
-{
-	anim->SetLoop(loop);
-	anim->SetSpeed(speed);
-	anim->Play(clipName);
-}
-
-void Zombie::UpdatePendingMeleeDamage(float deltaTime)
-{
-	if (!m_HasPendingMeleeDamage)
-	{
-		return;
-	}
-
-	// ダメージの遅延タイマーを減算
-	m_MeleeDamageDelayTimer -= deltaTime;
-	if (m_MeleeDamageDelayTimer > 0.0f)
-	{
-		return;
-	}
-
-	m_HasPendingMeleeDamage = false;
-
-	GameObject* target = m_PendingMeleeTarget;
-	const int damage = m_PendingMeleeDamage;
-
-	m_PendingMeleeTarget = nullptr;
-	m_PendingMeleeDamage = 0;
-
-	if (target == nullptr || target->IsDestroyed())
-	{
-		return;
-	}
-
-	HealthComponent* hp = target->GetComponent<HealthComponent>();
-	if (hp == nullptr || !hp->IsAlive())
-	{
-		return;
-	}
-
-	if (!MathUtility::IsInRange(m_Position, target->GetPosition(), kMeleeHitRange))
-	{
-		return;
-	}
-
-	DamageContext ctx;
-	ctx.attacker = this;
-	ctx.damage = damage;
-
-	target->ApplyDamage(ctx);
-}
-
-void Zombie::CancelPendingMeleeDamage()
-{
-	m_HasPendingMeleeDamage = false;
-	m_MeleeDamageDelayTimer = 0.0f;
-	m_PendingMeleeTarget = nullptr;
-	m_PendingMeleeDamage = 0;
+	SchedulePendingMeleeDamage(target, GetAttackDamage(), kMeleeDamageDelaySec);
 }

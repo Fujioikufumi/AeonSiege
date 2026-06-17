@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "CharacterBase.h"
 #include "StatusComponent.h"
 
 class Terrain;
@@ -14,7 +15,7 @@ enum class MutantJumpSkillState
 	Executing,        // ジャンプアニメ再生中
 };
 
-class Mutant : public GameObject
+class Mutant : public CharacterBase
 {
 public:
 	Mutant();
@@ -26,11 +27,6 @@ public:
 private:
 	void OnAIStateChanged(EnemyAIState newState);
 	void OnAIAttack(GameObject* target);
-	void ChangeAnimation(class AnimationController* anim, const char* clipName, bool loop, float speed = 1.0f);
-
-	// 通常近接
-	void UpdatePendingMeleeDamage(float deltaTime);
-	void CancelPendingMeleeDamage();
 
 	//-----------------------------------------------
 	// ジャンプ攻撃スキル
@@ -62,7 +58,6 @@ private:
 	bool m_JumpDamageApplied = false;
 private:
 	class HealthComponent* m_pHealth = nullptr;
-	StatusComponent* m_Status = nullptr;
 
 	static constexpr const char* kAnimIdle = "Mutant_Normal_Idle";
 	static constexpr const char* kAnimWalk = "Mutant_Normal_Walk";
@@ -72,11 +67,6 @@ private:
 	static constexpr const char* kAnimJumpAttack = "Mutant_Combat_JumpAttack";
 
 	static constexpr float kMeleeHitRange = 25.0f;
-	bool m_HasPendingMeleeDamage = false;
-	float m_MeleeDamageDelayTimer = 0.0f;
-	GameObject* m_PendingMeleeTarget = nullptr;
-	int m_PendingMeleeDamage = 0;
-
 
 	MutantJumpSkillState m_JumpSkillState = MutantJumpSkillState::Disabled;
 	bool m_WasEnraged = false;

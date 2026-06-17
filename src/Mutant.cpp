@@ -17,7 +17,6 @@ namespace {
 }
 
 Mutant::Mutant()
-	: GameObject()
 {
 	m_ModelPath = L"../Assets/Characters/Mutant.bmdl";
 	m_Scale = { 0.1f, 0.1f, 0.1f };
@@ -31,6 +30,9 @@ Mutant::~Mutant()
 bool Mutant::Init()
 {
 	GameObject::Init();
+
+	m_MeleeHitRange = kMeleeHitRange; // CharacterBase の判定距離を設定
+
 	AddComponent<MeshRenderer>()->Load(m_ModelPath, m_PipelineName);
 
 	TargetComponent* target = AddComponent<TargetComponent>();
@@ -177,59 +179,19 @@ void Mutant::OnAIStateChanged(EnemyAIState newState)
 	}
 	ChangeAnimation(anim, clipName, loop, speed);
 }
+
 void Mutant::OnAIAttack(GameObject* target)
 {
 	if (target == nullptr)
 		return;
-	// ジャンプ発動待ち・実行中は通常攻撃を予約しない
 	if (m_JumpSkillState == MutantJumpSkillState::WaitCurrentAnim
 		|| m_JumpSkillState == MutantJumpSkillState::Executing)
 	{
 		return;
 	}
-	m_HasPendingMeleeDamage = true;
-	m_MeleeDamageDelayTimer = kMeleeDamageDelaySec;
-	m_PendingMeleeTarget = target;
-	m_PendingMeleeDamage = m_Status->GetAttackPower();
+	SchedulePendingMeleeDamage(target, m_Status->GetAttackPower(), kMeleeDamageDelaySec);
 }
-void Mutant::ChangeAnimation(AnimationController* anim, const char* clipName, bool loop, float speed)
-{
-	if (anim == nullptr || !anim->IsInitialized() || clipName == nullptr) return;
-	anim->SetLoop(loop);
-	anim->SetSpeed(speed);
-	anim->Play(clipName);
-}
-void Mutant::CancelPendingMeleeDamage()
-{
-	m_HasPendingMeleeDamage = false;
-	m_MeleeDamageDelayTimer = 0.0f;
-	m_PendingMeleeTarget = nullptr;
-	m_PendingMeleeDamage = 0;
-}
-void Mutant::UpdatePendingMeleeDamage(float deltaTime)
-{
-	if (!m_HasPendingMeleeDamage)
-		return;
-	m_MeleeDamageDelayTimer -= deltaTime;
-	if (m_MeleeDamageDelayTimer > 0.0f)
-		return;
-	m_HasPendingMeleeDamage = false;
-	GameObject* target = m_PendingMeleeTarget;
-	const int damage = m_PendingMeleeDamage;
-	m_PendingMeleeTarget = nullptr;
-	m_PendingMeleeDamage = 0;
-	if (target == nullptr || target->IsDestroyed())
-		return;
-	HealthComponent* hp = target->GetComponent<HealthComponent>();
-	if (hp == nullptr || !hp->IsAlive())
-		return;
-	if (!MathUtility::IsInRange(m_Position, target->GetPosition(), kMeleeHitRange))
-		return;
-	DamageContext context{};
-	context.attacker = this;
-	context.damage = damage;
-	target->ApplyDamage(context);
-}
+	
 //-----------------------------------------------------------------------------
 // ジャンプ攻撃スキル
 //-----------------------------------------------------------------------------
