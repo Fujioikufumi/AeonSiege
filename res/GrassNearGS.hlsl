@@ -1,15 +1,5 @@
-cbuffer CbTransform : register(b0)
-{
-	float4x4 View : packoffset(c0);
-	float4x4 Proj : packoffset(c4);
-};
 
-cbuffer CbCameraBuffer : register(b2)
-{
-	float3 CameraPosition : packoffset(c0);
-};
-
-// ‘‚ğ—h‚ç‚·‚½‚ß‚Ì•—ƒpƒ‰ƒ[ƒ^
+// è‰ã‚’æºã‚‰ã™ãŸã‚ã®é¢¨ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 cbuffer CbWind : register(b3)
 {
 	float g_Time;
@@ -25,7 +15,6 @@ cbuffer CbGenerationParams : register(b0)
     float4x4 ViewProj;
     float3 CameraPos;
     float MaxDistance;
-    // ˆÈ‰º‚ÌƒpƒfƒBƒ“ƒO‚ÍCS‚Æƒƒ‚ƒŠƒŒƒCƒAƒEƒg‚ğ‡‚í‚¹‚é
     float2 ChunkBasePos;
     float ChunkSize;
     float _pad;
@@ -38,7 +27,7 @@ cbuffer CbGenerationParams : register(b0)
     float _pad2;
 };
 
-// ’¸“_ƒVƒF[ƒ_[‚©‚çó‚¯æ‚éî•ñ
+// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‹ã‚‰å—ã‘å–ã‚‹æƒ…å ±
 struct VSOutput
 {
 	float3 PositionWS : POSITION_WS;
@@ -46,7 +35,7 @@ struct VSOutput
 	float2 TerrainUV : TEXCOORD;
 };
 
-// ƒWƒIƒƒgƒŠƒVƒF[ƒ_[‚©‚çŸ‚ÌƒVƒF[ƒ_[(ƒsƒNƒZƒ‹ƒVƒF[ƒ_[)‚É“n‚·î•ñ
+// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‹ã‚‰æ¬¡ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼(ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼)ã«æ¸¡ã™æƒ…å ±
 struct GSOutput
 {
 	float4 Position : SV_POSITION;
@@ -55,10 +44,10 @@ struct GSOutput
 	float2 TerrainUV : TEXCOORD1;
 };
 
-[maxvertexcount(4)] // 4’¸“_‚Å1–‡‚ÌlŠpŒ`‚ğ\¬‚·‚é‚½‚ßAÅ‘å4’¸“_‚ğo—Í‚·‚é
+[maxvertexcount(4)] // 4é ‚ç‚¹ã§1æšã®å››è§’å½¢ã‚’æ§‹æˆã™ã‚‹ãŸã‚ã€æœ€å¤§4é ‚ç‚¹ã‚’å‡ºåŠ›ã™ã‚‹
 void main(point VSOutput input[1], inout TriangleStream<GSOutput> triStream)
 {
-    float3 basePos = input[0].PositionWS; // ‘‚ÌªŒ³‚Ìƒ[ƒ‹ƒhÀ•W
+    float3 basePos = input[0].PositionWS; // è‰ã®æ ¹å…ƒã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™
     float seed = input[0].Seed;
     float h = 3.0f;
     float w = 1.5f;
@@ -72,17 +61,17 @@ void main(point VSOutput input[1], inout TriangleStream<GSOutput> triStream)
     float3 p2 = basePos - right * (w * 0.35f) + up * h;
     float3 p3 = basePos + right * (w * 0.35f) + up * h;
 	
-	// •—‚É‚æ‚é—h‚ê‚ÌŒvZ
+	// é¢¨ã«ã‚ˆã‚‹æºã‚Œã®è¨ˆç®—
 	float2 windXZ = float2(g_WindDirX, g_WindDirZ);
 	float lenW = length(windXZ);
-	// •—Œü‚ğ³‹K‰»i0ƒxƒNƒgƒ‹‚Ìê‡‚ÍƒfƒtƒHƒ‹ƒg•ûŒü‚ğİ’èj
+	// é¢¨å‘ã‚’æ­£è¦åŒ–ï¼ˆ0ãƒ™ã‚¯ãƒˆãƒ«ã®å ´åˆã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ–¹å‘ã‚’è¨­å®šï¼‰
 	float2 windDir = (lenW > 1e-5f) ? (windXZ / lenW) : float2(1.0f, 0.0f);
 	
-	// sin”g‚É‚æ‚éüŠú“I‚È—h‚ê
+	// sinæ³¢ã«ã‚ˆã‚‹å‘¨æœŸçš„ãªæºã‚Œ
 	float phase = seed * 6.2831853f + (basePos.x + basePos.z) * g_Frequency + g_Time * g_Speed;
 	float sway = sin(phase) * g_Amplitude;
 	float3 bend = float3(windDir.x, 0.0f, windDir.y) * sway;
-	// ‘‚Ìã•”‚ğ—h‚ç‚·
+	// è‰ã®ä¸Šéƒ¨ã‚’æºã‚‰ã™
     p2 += bend;
     p3 += bend;
     
@@ -94,31 +83,31 @@ void main(point VSOutput input[1], inout TriangleStream<GSOutput> triStream)
     float4 v2 = mul(float4(p2, 1.0f), ViewProj);
     float4 v3 = mul(float4(p3, 1.0f), ViewProj);
 
-	// ƒgƒ‰ƒCƒAƒ“ƒOƒ‹ƒXƒgƒŠƒbƒv‚Æ‚µ‚Ä4’¸“_‚ÅlŠpŒ`‚ğ\¬‚·‚é
-	// 1. ¶‰º (Bottom Left)
+	// ãƒˆãƒ©ã‚¤ã‚¢ãƒ³ã‚°ãƒ«ã‚¹ãƒˆãƒªãƒƒãƒ—ã¨ã—ã¦4é ‚ç‚¹ã§å››è§’å½¢ã‚’æ§‹æˆã™ã‚‹
+	// 1. å·¦ä¸‹ (Bottom Left)
 	o.Position = v0;
 	o.TexCoord = float2(0, 1);
 	o.WorldPos = p0;
 	triStream.Append(o);
 
-	// 2. ¶ã (Top Left)
+	// 2. å·¦ä¸Š (Top Left)
 	o.Position = v2;
 	o.TexCoord = float2(0, 0);
 	o.WorldPos = p2;
 	triStream.Append(o);
 
-	// 3. ‰E‰º (Bottom Right)
+	// 3. å³ä¸‹ (Bottom Right)
 	o.Position = v1;
 	o.TexCoord = float2(1, 1);
 	o.WorldPos = p1;
 	triStream.Append(o);
 
-	// 4. ‰Eã (Top Right)
+	// 4. å³ä¸Š (Top Right)
 	o.Position = v3;
 	o.TexCoord = float2(1, 0);
 	o.WorldPos = p3;
 	triStream.Append(o);
 
-	// ƒgƒ‰ƒCƒAƒ“ƒOƒ‹ƒXƒgƒŠƒbƒv‚ÌI—¹
+	// ãƒˆãƒ©ã‚¤ã‚¢ãƒ³ã‚°ãƒ«ã‚¹ãƒˆãƒªãƒƒãƒ—ã®çµ‚äº†
 	triStream.RestartStrip();
 }
