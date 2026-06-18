@@ -1,7 +1,7 @@
 ﻿#pragma once
 #pragma once
-#include "IModelLoader.h"
-#include "ModelFormat.h"
+#include "Graphics/Model/IModelLoader.h"
+#include "Graphics/Model/ModelFormat.h"
 
 class BinaryAnimLoader : public IModelLoader
 {

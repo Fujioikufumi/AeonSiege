@@ -1,7 +1,7 @@
-﻿#include "FloatingDamage.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "Sprite.h"
+﻿#include "Combat/FloatingDamage.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Graphics/Sprite/Sprite.h"
 
 namespace {
 	constexpr float kMissSpriteWidth	= 96.0f; // MISS表示スプライトの幅

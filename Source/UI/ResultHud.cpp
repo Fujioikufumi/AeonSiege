@@ -1,12 +1,12 @@
-﻿#include "ResultHud.h"
-#include "Sprite.h"
-#include "NumberUI.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "Input.h"
-#include "NameSpace.h"
-#include "TitleScene.h"
-#include "ScreenFade.h"
+﻿#include "UI/ResultHud.h"
+#include "Graphics/Sprite/Sprite.h"
+#include "UI/NumberUI.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Input/Input.h"
+#include "Core/NameSpace.h"
+#include "UI/TitleScene.h"
+#include "Flow/ScreenFade.h"
 #include <algorithm>
 
 namespace

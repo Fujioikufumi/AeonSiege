@@ -10,16 +10,16 @@
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <d3dcompiler.h>
-#include <ComPtr.h>
-#include <DescriptorPool.h>
-#include <ColorTarget.h>
-#include <DepthTarget.h>
-#include <CommandList.h>
-#include <Fence.h>
-#include <Mesh.h>
-#include <Texture.h>
-#include <InlineUtil.h>
-#include "NameSpace.h"
+#include "EncodingUtils/ComPtr.h"
+#include "Graphics/D3D12/DescriptorPool.h"
+#include "Graphics/D3D12/ColorTarget.h"
+#include "Graphics/D3D12/DepthTarget.h"
+#include "Graphics/D3D12/CommandList.h"
+#include "Graphics/D3D12/Fence.h"
+#include "Graphics/Model/Mesh.h"
+#include "Graphics/D3D12/Texture.h"
+#include "Utility/InlineUtil.h"
+#include "Core/NameSpace.h"
 
 //-----------------------------------------------------------------------------
 // Linker

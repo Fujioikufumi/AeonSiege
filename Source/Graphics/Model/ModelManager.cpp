@@ -1,13 +1,13 @@
-﻿#include "ModelManager.h"
-#include "Logger.h"
-#include "FileUtil.h"
+﻿#include "Graphics/Model/ModelManager.h"
+#include "Utility/Logger.h"
+#include "Utility/FileUtil.h"
 #include <algorithm>
-#include "ResourceManager.h"
-#include "main.h"
-#include "AnimationManager.h"
-#include "MaterialResolver.h"
-#include "BinaryModelLoader.h"
-#include "ConstantBuffer.h"
+#include "Graphics/D3D12/ResourceManager.h"
+#include "Core/main.h"
+#include "Graphics/Animation/AnimationManager.h"
+#include "Graphics/Renderer/MaterialResolver.h"
+#include "Graphics/Model/BinaryModelLoader.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
 
 //-----------------------------------------------------------------------------
 //	  初期化処理

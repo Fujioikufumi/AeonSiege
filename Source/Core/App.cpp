@@ -1,7 +1,7 @@
 ﻿//-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
-#include "App.h"
+#include "Core/App.h"
 #include <algorithm>
 #pragma comment( lib, "winmm.lib" )
 namespace /* anonymous */ {

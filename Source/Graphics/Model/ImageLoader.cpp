@@ -1,7 +1,7 @@
-﻿#include "ImageLoader.h"
-#include "Logger.h"
+﻿#include "Graphics/Model/ImageLoader.h"
+#include "Utility/Logger.h"
 #include <wincodec.h>
-#include <ComPtr.h>
+#include "EncodingUtils/ComPtr.h"
 
 
 bool LoadImageWithWIC(

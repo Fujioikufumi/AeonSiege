@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Zombie.h"
+#include "Character/Zombie.h"
 
 class SkeletonZombie : public Zombie
 {

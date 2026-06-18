@@ -3,9 +3,9 @@
 //-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
-#include <ResMesh.h>
-#include <VertexBuffer.h>
-#include <IndexBuffer.h>
+#include "Graphics/Model/ResMesh.h"
+#include "Graphics/D3D12/VertexBuffer.h"
+#include "Graphics/D3D12/IndexBuffer.h"
 
 
 //-----------------------------------------------------------------------------

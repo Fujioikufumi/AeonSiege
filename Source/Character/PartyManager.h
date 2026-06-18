@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "GameObject.h"
-#include "ShopOffer.h"
+#include "Core/GameObject.h"
+#include "Flow/ShopOffer.h"
 #include <vector>
 
 /// <summary>

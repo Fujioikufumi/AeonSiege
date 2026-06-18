@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "GameObject.h"
-#include "SkyDome.h"
-#include "Texture.h"
+#include "Core/GameObject.h"
+#include "World/SkyDome.h"
+#include "Graphics/D3D12/Texture.h"
 #include <memory>
 
 /// <summary>

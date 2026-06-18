@@ -1,8 +1,8 @@
 ﻿//-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
-#include "ColorTarget.h"
-#include "DescriptorPool.h"
+#include "Graphics/D3D12/ColorTarget.h"
+#include "Graphics/D3D12/DescriptorPool.h"
 
 
 namespace {

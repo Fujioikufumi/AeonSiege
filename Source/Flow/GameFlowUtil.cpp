@@ -1,8 +1,8 @@
-﻿#include "GameFlowUtil.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "ShopManager.h"
-#include "GameMenu.h"
+﻿#include "Flow/GameFlowUtil.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Flow/ShopManager.h"
+#include "UI/GameMenu.h"
 
 namespace GameFlowUtil
 {

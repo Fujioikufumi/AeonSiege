@@ -1,11 +1,11 @@
-﻿#include "PhaseHudPanel.h"
-#include "GameObject.h"
-#include "Sprite.h"
-#include "NumberUI.h"
-#include "CombatHudLayout.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "NameSpace.h"
+﻿#include "UI/HUD/PhaseHudPanel.h"
+#include "Core/GameObject.h"
+#include "Graphics/Sprite/Sprite.h"
+#include "UI/NumberUI.h"
+#include "UI/HUD/CombatHudLayout.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Core/NameSpace.h"
 
 PhaseHudPanel::PhaseHudPanel(GameObject* owner)
 {

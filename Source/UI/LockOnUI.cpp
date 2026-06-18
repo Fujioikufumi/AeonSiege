@@ -1,17 +1,17 @@
-﻿#include "LockOnUI.h"
-#include "Sprite.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "Player.h"
-#include "Mutant.h"
-#include "Camera.h"
-#include "NameSpace.h"
-#include "Logger.h"
+﻿#include "UI/LockOnUI.h"
+#include "Graphics/Sprite/Sprite.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Character/Player.h"
+#include "Character/Mutant.h"
+#include "Input/Camera.h"
+#include "Core/NameSpace.h"
+#include "Utility/Logger.h"
 #include <DirectXMath.h>
 
 // コンポーネント
-#include "HealthComponent.h"
-#include "TargetComponent.h"
+#include "Combat/HealthComponent.h"
+#include "Component/TargetComponent.h"
 
 using namespace DirectX;
 namespace {

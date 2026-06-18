@@ -4,10 +4,10 @@
 //----------------------------------------------------------------------
 #include <d3d12.h>
 #include <d3dcompiler.h>
-#include <ComPtr.h>
+#include "EncodingUtils/ComPtr.h"
 #include <string>
 #include <map>
-#include "SingletonManager.h"
+#include "Core/SingletonManager.h"
 
 //----------------------------------------------------------------------
 //		Linker

@@ -1,4 +1,4 @@
-﻿#include "SkillCatalog.h"
+﻿#include "Combat/SkillCatalog.h"
 
 namespace {
 

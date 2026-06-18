@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "CombatHudLayout.h"
+#include "UI/HUD/CombatHudLayout.h"
 #include <string>
 
 class GameObject;

@@ -1,10 +1,10 @@
-﻿#include "GameManager.h"
-#include "Input.h"
-#include "TitleScene.h"
-#include "TerrainScene.h"
-#include "Camera.h"
-#include "RenderContext.h"
-#include "ScreenFade.h"
+﻿#include "Core/GameManager.h"
+#include "Input/Input.h"
+#include "UI/TitleScene.h"
+#include "World/TerrainScene.h"
+#include "Input/Camera.h"
+#include "Core/RenderContext.h"
+#include "Flow/ScreenFade.h"
 
 // 静的メンバ変数の定義
 std::unique_ptr<Scene> GameManager::m_ActiveScene = nullptr;

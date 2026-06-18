@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "Component.h"
-#include "Texture.h"
-#include "VertexBuffer.h"
-#include "ConstantBuffer.h"
+#include "Core/Component.h"
+#include "Graphics/D3D12/Texture.h"
+#include "Graphics/D3D12/VertexBuffer.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
 #include <string>
 #include <memory>
 #include <DirectXMath.h>

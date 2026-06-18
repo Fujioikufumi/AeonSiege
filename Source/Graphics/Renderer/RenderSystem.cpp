@@ -1,11 +1,11 @@
 ﻿//-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
-#include "RenderSystem.h"
-#include "Logger.h"
-#include "NameSpace.h"
-#include "ResourceManager.h"
-#include "MeshRenderer.h"
+#include "Graphics/Renderer/RenderSystem.h"
+#include "Utility/Logger.h"
+#include "Core/NameSpace.h"
+#include "Graphics/D3D12/ResourceManager.h"
+#include "Graphics/Renderer/MeshRenderer.h"
 
 //-----------------------------------------------------------------------------
 //          コンストラクタ

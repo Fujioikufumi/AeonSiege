@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Component.h"
+#include "Core/Component.h"
 
 /// <summary>
 ///	体力管理コンポーネント

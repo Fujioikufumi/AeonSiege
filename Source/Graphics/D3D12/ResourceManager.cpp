@@ -1,5 +1,5 @@
-﻿#include "ResourceManager.h"
-#include "Logger.h"
+﻿#include "Graphics/D3D12/ResourceManager.h"
+#include "Utility/Logger.h"
 
 
 bool ResourceManager::Init(

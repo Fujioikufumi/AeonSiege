@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "GameObject.h"
-#include "Scene.h"
-#include "StatusComponent.h"
-#include "SkillComponent.h"
-#include "AnimationController.h"
-#include "SkillData.h"
+#include "Core/GameObject.h"
+#include "Core/Scene.h"
+#include "Combat/StatusComponent.h"
+#include "Combat/SkillComponent.h"
+#include "Graphics/Animation/AnimationController.h"
+#include "Combat/SkillData.h"
 #include <vector>
 
 class Camera;

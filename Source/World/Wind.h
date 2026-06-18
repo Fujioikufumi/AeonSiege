@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "GameObject.h"
+#include "Core/GameObject.h"
 
 /// <summary>
 /// 草原やに適用される風の定数バッファ構造体。

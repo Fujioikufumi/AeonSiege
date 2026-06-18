@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "ResourceManager.h"
-#include "RenderContext.h"
+#include "Graphics/D3D12/ResourceManager.h"
+#include "Core/RenderContext.h"
 #include <nlohmann/json.hpp>
 #include <string>
 

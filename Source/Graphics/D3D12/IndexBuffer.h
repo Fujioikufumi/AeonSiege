@@ -4,7 +4,7 @@
 // Includes
 //-----------------------------------------------------------------------------
 #include <d3d12.h>
-#include "ComPtr.h"
+#include "EncodingUtils/ComPtr.h"
 #include <cstdint>
 
 /// <summary>

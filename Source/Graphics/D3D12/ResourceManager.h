@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include "NameSpace.h"
-#include "DescriptorPool.h"
+#include "Core/NameSpace.h"
+#include "Graphics/D3D12/DescriptorPool.h"
 #include <d3d12.h>
-#include <ComPtr.h>
-#include "SingletonManager.h"
+#include "EncodingUtils/ComPtr.h"
+#include "Core/SingletonManager.h"
 
 class RenderSystem;
 

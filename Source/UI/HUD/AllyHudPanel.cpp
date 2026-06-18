@@ -1,11 +1,11 @@
-﻿#include "AllyHudPanel.h"
-#include "GameObject.h"
-#include "Sprite.h"
-#include "MaskedSprite.h"
-#include "NumberUI.h"
-#include "NameSpace.h"
-#include "GameManager.h"
-#include "Scene.h"
+﻿#include "UI/HUD/AllyHudPanel.h"
+#include "Core/GameObject.h"
+#include "Graphics/Sprite/Sprite.h"
+#include "Graphics/Sprite/MaskedSprite.h"
+#include "UI/NumberUI.h"
+#include "Core/NameSpace.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
 #include <algorithm>
 
 namespace {

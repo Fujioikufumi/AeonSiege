@@ -1,7 +1,7 @@
-﻿#include "LightManager.h"
-#include "ResourceManager.h"
-#include "Logger.h"
-#include "App.h"
+﻿#include "Graphics/Renderer/LightManager.h"
+#include "Graphics/D3D12/ResourceManager.h"
+#include "Utility/Logger.h"
+#include "Core/App.h"
 
 //----------------------------------------------------------
 // 		初期化処理

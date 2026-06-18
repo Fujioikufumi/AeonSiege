@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "CharacterBase.h"
-#include "StatusComponent.h"
-#include "SkillData.h"
-#include "DamageTypes.h"
+#include "Character/CharacterBase.h"
+#include "Combat/StatusComponent.h"
+#include "Combat/SkillData.h"
+#include "Combat/DamageTypes.h"
 
 struct AllyAIParams;
 class AllyAIComponent;

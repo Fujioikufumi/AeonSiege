@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "Component.h"
-#include "ResMesh.h"
-#include "AnimationManager.h"
-#include "ConstantBuffer.h"
+#include "Core/Component.h"
+#include "Graphics/Model/ResMesh.h"
+#include "Graphics/Animation/AnimationManager.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
 #include <string>
 #include <unordered_map>
 #include <DirectXMath.h>

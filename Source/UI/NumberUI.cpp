@@ -1,5 +1,5 @@
-﻿#include "NumberUI.h"
-#include "Sprite.h"
+﻿#include "UI/NumberUI.h"
+#include "Graphics/Sprite/Sprite.h"
 #include <cmath>
 #include <vector>
 #include <algorithm>

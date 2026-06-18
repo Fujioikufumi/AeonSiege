@@ -1,5 +1,5 @@
-﻿#include "SkillComponent.h"
-#include "GameObject.h"
+﻿#include "Combat/SkillComponent.h"
+#include "Core/GameObject.h"
 #include <algorithm>
 
 SkillComponent::SkillComponent(GameObject* owner)

@@ -6,15 +6,15 @@
 #include <d3d12.h>
 #include <DirectXMath.h>
 
-#include "GameObject.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "Texture.h"
-#include "Fence.h"
-#include "CommandList.h"
-#include "DescriptorPool.h"
-#include "ConstantBuffer.h"
-#include "Material.h"
+#include "Core/GameObject.h"
+#include "Graphics/D3D12/VertexBuffer.h"
+#include "Graphics/D3D12/IndexBuffer.h"
+#include "Graphics/D3D12/Texture.h"
+#include "Graphics/D3D12/Fence.h"
+#include "Graphics/D3D12/CommandList.h"
+#include "Graphics/D3D12/DescriptorPool.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
+#include "Graphics/Renderer/Material.h"
 
 /// <summary>
 /// 地形テクスチャタイプ

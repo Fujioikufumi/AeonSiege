@@ -1,13 +1,13 @@
-﻿#include "Meadow.h"
-#include "Scene.h"
-#include "Terrain.h"
-#include "Camera.h"
-#include "ModelManager.h"
-#include "ResourceManager.h"
-#include "RenderSystem.h"
-#include "ComputeUtil.h"
-#include "Logger.h"
-#include "Wind.h"
+﻿#include "World/Meadow.h"
+#include "Core/Scene.h"
+#include "World/Terrain.h"
+#include "Input/Camera.h"
+#include "Graphics/Model/ModelManager.h"
+#include "Graphics/D3D12/ResourceManager.h"
+#include "Graphics/Renderer/RenderSystem.h"
+#include "Graphics/D3D12/ComputeUtil.h"
+#include "Utility/Logger.h"
+#include "World/Wind.h"
 
 namespace
 {

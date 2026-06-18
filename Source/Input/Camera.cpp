@@ -1,11 +1,11 @@
 ﻿// #include
 //-----------------------------------------------------------------------------
-#include "Camera.h"
-#include "Input.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "NameSpace.h"
-#include "Terrain.h"
+#include "Input/Camera.h"
+#include "Input/Input.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Core/NameSpace.h"
+#include "World/Terrain.h"
 #include <random>
 #include <algorithm>
 

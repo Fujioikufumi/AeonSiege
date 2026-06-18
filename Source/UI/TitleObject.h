@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "GameObject.h"
-#include "Sprite.h"
+#include "Core/GameObject.h"
+#include "Graphics/Sprite/Sprite.h"
 
 /// <summary>
 /// タイトルシーンのUI表示（ロゴ、選択肢）を管理する

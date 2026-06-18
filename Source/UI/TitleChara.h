@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "GameObject.h"
+#include "Core/GameObject.h"
 
 /// <summary>
 /// タイトル画面で背景の演出キャラクター

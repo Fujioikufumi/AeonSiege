@@ -1,13 +1,13 @@
-﻿#include "PartyManager.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "Paladin.h"
-#include "Player.h"
-#include "PartyGrowthCatalog.h"
-#include "StatusComponent.h"
-#include "HealthComponent.h"
-#include "Logger.h"
-#include "CombatHud.h"
+﻿#include "Character/PartyManager.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Character/Paladin.h"
+#include "Character/Player.h"
+#include "Combat/PartyGrowthCatalog.h"
+#include "Combat/StatusComponent.h"
+#include "Combat/HealthComponent.h"
+#include "Utility/Logger.h"
+#include "UI/HUD/CombatHud.h"
 
 namespace {
 	// パラダインの初期位置

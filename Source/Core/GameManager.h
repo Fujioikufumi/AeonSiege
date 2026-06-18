@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <functional>
-#include "RenderSystem.h"
-#include "Scene.h"
+#include "Graphics/Renderer/RenderSystem.h"
+#include "Core/Scene.h"
 
 /// <summary>
 /// ゲームのリザルトで表示させる情報

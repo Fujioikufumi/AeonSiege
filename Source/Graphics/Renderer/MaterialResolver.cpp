@@ -1,8 +1,8 @@
-﻿#include "MaterialResolver.h"
+﻿#include "Graphics/Renderer/MaterialResolver.h"
 #include <Windows.h>
 #include <algorithm>
-#include "Logger.h"
-#include "NameSpace.h"
+#include "Utility/Logger.h"
+#include "Core/NameSpace.h"
 #include <ResourceUploadBatch.h> // DirectXTK
 
 std::wstring MaterialResolver::GetFileNameOnly(const std::wstring& p)

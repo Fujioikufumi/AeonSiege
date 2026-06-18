@@ -1,13 +1,13 @@
-﻿#include "CombatHud.h"
-#include "CombatHudSerializer.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "Player.h"
-#include "HealthComponent.h"
-#include "FileUtil.h"
-#include "NameSpace.h"
-#include "PartyManager.h"
-#include "PhaseManager.h"
+﻿#include "UI/HUD/CombatHud.h"
+#include "UI/HUD/CombatHudSerializer.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Character/Player.h"
+#include "Combat/HealthComponent.h"
+#include "Utility/FileUtil.h"
+#include "Core/NameSpace.h"
+#include "Character/PartyManager.h"
+#include "Flow/PhaseManager.h"
 
 bool CombatHud::Init() 
 {

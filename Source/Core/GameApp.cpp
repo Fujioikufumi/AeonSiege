@@ -1,21 +1,21 @@
 ﻿//-----------------------------------------------------------------------------
 //      Includes
 //-----------------------------------------------------------------------------
-#include "GameApp.h"
-#include "FileUtil.h"
+#include "Core/GameApp.h"
+#include "Utility/FileUtil.h"
 #include "CommonStates.h"
 #include "DirectXHelpers.h"
-#include "Input.h"
-#include "ResourceManager.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "LightManager.h"
-#include "ShadowManager.h"
-#include "AnimationManager.h"
-#include "PipelineInitializer.h"
-#include "Camera.h"
-#include "LoadGameObj.h"
-#include "ScreenFade.h"
+#include "Input/Input.h"
+#include "Graphics/D3D12/ResourceManager.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Graphics/Renderer/LightManager.h"
+#include "Graphics/Renderer/ShadowManager.h"
+#include "Graphics/Animation/AnimationManager.h"
+#include "Graphics/Renderer/PipelineInitializer.h"
+#include "Input/Camera.h"
+#include "Graphics/Model/LoadGameObj.h"
+#include "Flow/ScreenFade.h"
 
 namespace {
 	// シーンライト設定

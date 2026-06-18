@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "GameObject.h"
+#include "Core/GameObject.h"
 #include <array>
 
 class Sprite;

@@ -1,7 +1,7 @@
-﻿#include "ComputeUtil.h"
-#include "PipelineStateManager.h"
-#include "DescriptorPool.h"
-#include "Logger.h"
+﻿#include "Graphics/D3D12/ComputeUtil.h"
+#include "Graphics/Renderer/PipelineStateManager.h"
+#include "Graphics/D3D12/DescriptorPool.h"
+#include "Utility/Logger.h"
 
 bool BindComputePipeline(ID3D12GraphicsCommandList* pCmdList, const std::wstring& pipelineName, DescriptorPool* pPool)
 {

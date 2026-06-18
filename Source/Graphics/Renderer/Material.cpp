@@ -1,12 +1,12 @@
 ﻿//-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
-#include "Material.h"
-#include "FileUtil.h"
-#include "Logger.h"
-#include "DescriptorPool.h"
-#include "Texture.h"
-#include "ConstantBuffer.h"
+#include "Graphics/Renderer/Material.h"
+#include "Utility/FileUtil.h"
+#include "Utility/Logger.h"
+#include "Graphics/D3D12/DescriptorPool.h"
+#include "Graphics/D3D12/Texture.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
 
 namespace {
 

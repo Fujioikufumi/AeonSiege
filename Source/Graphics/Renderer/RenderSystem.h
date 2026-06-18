@@ -1,14 +1,14 @@
 ﻿#pragma once
-#include "PipelineStateManager.h"
-#include "ShaderManager.h"
-#include "ModelManager.h"
-#include "GameObject.h"
-#include "RenderContext.h"
+#include "Graphics/Renderer/PipelineStateManager.h"
+#include "Graphics/Renderer/ShaderManager.h"
+#include "Graphics/Model/ModelManager.h"
+#include "Core/GameObject.h"
+#include "Core/RenderContext.h"
 #include <d3d12.h>
-#include <ComPtr.h>
+#include "EncodingUtils/ComPtr.h"
 #include <string>
 #include <map>
-#include "main.h"
+#include "Core/main.h"
 
 /// <summary>
 /// DirectX12を用いた描画処理を管理するシステムクラス。

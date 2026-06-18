@@ -1,12 +1,12 @@
 ﻿//-----------------------------------------------------------------------------
 // Include
 //-----------------------------------------------------------------------------
-#include "MovementComponent.h"
-#include "Input.h"
-#include "GameObject.h"
-#include "Scene.h"
-#include "Manager.h"
-#include "Terrain.h"
+#include "Component/MovementComponent.h"
+#include "Input/Input.h"
+#include "Core/GameObject.h"
+#include "Core/Scene.h"
+#include "Core/GameManager.h"
+#include "World/Terrain.h"
 
 //-----------------------------------------------------------------------------
 //		コンストラクタ

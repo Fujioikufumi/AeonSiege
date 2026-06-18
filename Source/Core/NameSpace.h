@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "main.h"
+#include "Core/main.h"
 
 // 画面サイズ
 const uint32_t SCREEN_WIDTH = 1280;//960;

@@ -1,16 +1,16 @@
-﻿#include "AllyAIComponent.h"
-#include "GameObject.h"
-#include "Scene.h"
-#include "Player.h"
-#include "Camera.h"
-#include "Terrain.h"
-#include "MathUtility.h"
-#include "Component.h"
-#include "HealthComponent.h"
+﻿#include "AI/AllyAIComponent.h"
+#include "Core/GameObject.h"
+#include "Core/Scene.h"
+#include "Character/Player.h"
+#include "Input/Camera.h"
+#include "World/Terrain.h"
+#include "Utility/MathUtility.h"
+#include "Core/Component.h"
+#include "Combat/HealthComponent.h"
 #include <algorithm>
 #include <cmath>
 
-#include "StatusComponent.h"
+#include "Combat/StatusComponent.h"
 using namespace DirectX;
 
 namespace

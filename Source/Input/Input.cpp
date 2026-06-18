@@ -1,4 +1,4 @@
-﻿#include "Input.h"
+﻿#include "Input/Input.h"
 #include <Windows.h>
 #include <Xinput.h>
 #include <cstring>

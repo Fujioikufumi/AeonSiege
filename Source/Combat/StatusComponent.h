@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "Component.h"
-#include "StatusData.h"
+#include "Core/Component.h"
+#include "Combat/StatusData.h"
 
 /// <summary>
 /// 戦闘キャラクターのステータスを管理するコンポーネント。

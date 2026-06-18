@@ -1,8 +1,8 @@
-﻿#include "BattleAreaObj.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "Terrain.h"
-#include "Tree.h"
+﻿#include "World/BattleAreaObj.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "World/Terrain.h"
+#include "World/Tree.h"
 #include <cstdlib>
 #include <cmath>
 

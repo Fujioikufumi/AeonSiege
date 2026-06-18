@@ -1,7 +1,7 @@
-﻿#include "MathUtility.h"
-#include "Camera.h"
+﻿#include "Utility/MathUtility.h"
+#include "Input/Camera.h"
 #include <cmath>
-#include "NameSpace.h"
+#include "Core/NameSpace.h"
 
 namespace MathUtility {
 	using namespace DirectX;

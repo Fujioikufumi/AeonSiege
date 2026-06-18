@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "GameObject.h"
-#include "PhaseData.h"
+#include "Core/GameObject.h"
+#include "Flow/PhaseData.h"
 #include <vector>
 
 class EnemySpawner;

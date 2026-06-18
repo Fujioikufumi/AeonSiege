@@ -1,8 +1,8 @@
-﻿#include "MeshRenderer.h"
-#include "Logger.h"
-#include "AnimationController.h"
-#include "Texture.h"
-#include "GameObject.h"
+﻿#include "Graphics/Renderer/MeshRenderer.h"
+#include "Utility/Logger.h"
+#include "Graphics/Animation/AnimationController.h"
+#include "Graphics/D3D12/Texture.h"
+#include "Core/GameObject.h"
 
 //-----------------------------------------------------------------------------
 // 	       コンストラクタ

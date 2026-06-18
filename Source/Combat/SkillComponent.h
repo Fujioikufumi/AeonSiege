@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "Component.h"
-#include "SkillData.h"
+#include "Core/Component.h"
+#include "Combat/SkillData.h"
 #include <vector>
 
 /// <summary>

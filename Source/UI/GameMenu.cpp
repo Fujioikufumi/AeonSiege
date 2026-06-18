@@ -1,12 +1,12 @@
-﻿#include "GameMenu.h"
-#include "Sprite.h"
-#include "NameSpace.h"
-#include "Input.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "TitleScene.h"
-#include "ScreenFade.h"
-#include "GameFlowUtil.h"
+﻿#include "UI/GameMenu.h"
+#include "Graphics/Sprite/Sprite.h"
+#include "Core/NameSpace.h"
+#include "Input/Input.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "UI/TitleScene.h"
+#include "Flow/ScreenFade.h"
+#include "Flow/GameFlowUtil.h"
 #include <algorithm>
 
 bool GameMenu::s_MenuOpen = false;

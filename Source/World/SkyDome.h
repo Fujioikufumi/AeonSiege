@@ -4,11 +4,11 @@
 // Includes
 //-----------------------------------------------------------------------------
 #include <d3d12.h>
-#include <DescriptorPool.h>
-#include <ConstantBuffer.h>
-#include <VertexBuffer.h>
-#include <IndexBuffer.h>
-#include "main.h"
+#include "Graphics/D3D12/DescriptorPool.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
+#include "Graphics/D3D12/VertexBuffer.h"
+#include "Graphics/D3D12/IndexBuffer.h"
+#include "Core/main.h"
 
 class SkyDome
 {

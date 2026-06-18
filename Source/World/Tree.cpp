@@ -1,8 +1,8 @@
-﻿#include "Tree.h"
-#include "MeshRenderer.h"
-#include "Scene.h"
-#include "Terrain.h"
-#include "GameManager.h"
+﻿#include "World/Tree.h"
+#include "Graphics/Renderer/MeshRenderer.h"
+#include "Core/Scene.h"
+#include "World/Terrain.h"
+#include "Core/GameManager.h"
 
 //-----------------------------------------------------------------------------
 // 		コンストラクタ

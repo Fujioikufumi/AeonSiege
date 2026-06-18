@@ -1,13 +1,13 @@
 ﻿//-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
-#include "SkyDome.h"
-#include "Logger.h"
+#include "World/SkyDome.h"
+#include "Utility/Logger.h"
 #include "CommonStates.h"
-#include "ShaderManager.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "Camera.h"
+#include "Graphics/Renderer/ShaderManager.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Input/Camera.h"
 
 #include <cmath>
 

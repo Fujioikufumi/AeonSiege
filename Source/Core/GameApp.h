@@ -2,20 +2,20 @@
 //-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
-#include "App.h"
-#include "RenderSystem.h"
-#include "ShaderManager.h"
-#include "PipelineStateManager.h"
-#include "ModelManager.h"
-#include "ConstantBuffer.h"
-#include "ColorTarget.h"
-#include "DepthTarget.h"
-#include "Logger.h"
-#include "NameSpace.h"
-#include "main.h"
-#include "Scene.h"
-#include "ImGuiUtil.h"
-#include "DebugUI.h"
+#include "Core/App.h"
+#include "Graphics/Renderer/RenderSystem.h"
+#include "Graphics/Renderer/ShaderManager.h"
+#include "Graphics/Renderer/PipelineStateManager.h"
+#include "Graphics/Model/ModelManager.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
+#include "Graphics/D3D12/ColorTarget.h"
+#include "Graphics/D3D12/DepthTarget.h"
+#include "Utility/Logger.h"
+#include "Core/NameSpace.h"
+#include "Core/main.h"
+#include "Core/Scene.h"
+#include "Debug/ImGuiUtil.h"
+#include "Debug/DebugUI.h"
 
 //-----------------------------------------------------------------------------
 //  GameApp class

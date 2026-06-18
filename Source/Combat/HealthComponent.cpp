@@ -1,7 +1,7 @@
-﻿#include "HealthComponent.h"
-#include "MathUtility.h"
-#include "Scene.h"
-#include "Camera.h"
+﻿#include "Combat/HealthComponent.h"
+#include "Utility/MathUtility.h"
+#include "Core/Scene.h"
+#include "Input/Camera.h"
 #include <algorithm>
 #include "imgui.h"
 

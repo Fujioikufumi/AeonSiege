@@ -1,7 +1,7 @@
-﻿#include "TitleObject.h"
-#include "Input.h"
-#include "Scene.h"
-#include "NameSpace.h"
+﻿#include "UI/TitleObject.h"
+#include "Input/Input.h"
+#include "Core/Scene.h"
+#include "Core/NameSpace.h"
 
 namespace {
 	constexpr float kLogoOffsetY = 100.0f; // ロゴのY位置オフセット

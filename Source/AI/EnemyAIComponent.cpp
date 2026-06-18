@@ -1,12 +1,12 @@
-﻿#include "EnemyAIComponent.h"
-#include "GameObject.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "Player.h"
-#include "Paladin.h"
-#include "HealthComponent.h"
-#include "MathUtility.h"
-#include "GameFlowUtil.h"
+﻿#include "AI/EnemyAIComponent.h"
+#include "Core/GameObject.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Character/Player.h"
+#include "Character/Paladin.h"
+#include "Combat/HealthComponent.h"
+#include "Utility/MathUtility.h"
+#include "Flow/GameFlowUtil.h"
 #include <cstdlib>
 
 using namespace DirectX;

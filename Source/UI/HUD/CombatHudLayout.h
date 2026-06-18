@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <array>
-#include "NameSpace.h"
+#include "Core/NameSpace.h"
 
 namespace HudLayoutUtil
 {

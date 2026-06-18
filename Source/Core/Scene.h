@@ -6,7 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include "GameObject.h"
+#include "Core/GameObject.h"
 #include "d3d12.h"
 
 

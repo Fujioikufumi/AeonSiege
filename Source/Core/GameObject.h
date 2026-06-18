@@ -3,16 +3,16 @@
 //		Includes
 //======================================================================
 #include "DirectXMath.h"
-#include "Mesh.h"
-#include "Material.h"
-#include "RenderContext.h"
-#include "VertexBuffer.h"
-#include "ConstantBuffer.h"
-#include "DescriptorPool.h"
-#include "Logger.h"
-#include "FileUtil.h"
-#include "Component.h"
-#include "DamageTypes.h"
+#include "Graphics/Model/Mesh.h"
+#include "Graphics/Renderer/Material.h"
+#include "Core/RenderContext.h"
+#include "Graphics/D3D12/VertexBuffer.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
+#include "Graphics/D3D12/DescriptorPool.h"
+#include "Utility/Logger.h"
+#include "Utility/FileUtil.h"
+#include "Core/Component.h"
+#include "Combat/DamageTypes.h"
 #include <string>
 #include <vector>
 #include <memory>

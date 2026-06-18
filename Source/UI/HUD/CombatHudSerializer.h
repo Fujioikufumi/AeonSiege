@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "CombatHudLayout.h"
+#include "UI/HUD/CombatHudLayout.h"
 
 /// <summary>
 /// 戦闘中UIのレイアウトデータをJsonから読み込むシリアライザー

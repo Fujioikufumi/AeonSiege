@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "GameObject.h"
+#include "Core/GameObject.h"
 #include <vector>
 #include <DirectXMath.h>
 #include <d3d12.h>
-#include "RenderContext.h"
-#include "ConstantBuffer.h"
+#include "Core/RenderContext.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
 
 /// <summary>
 /// GPU-Drivenを用いた大量の草（草原）の描画・生成を管理するクラス。

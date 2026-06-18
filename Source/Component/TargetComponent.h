@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "Component.h"
+#include "Core/Component.h"
 #include <DirectXMath.h>
-#include "GameObject.h"
+#include "Core/GameObject.h"
 /// <summary>
 /// ロックオンの目標を示すコンポーネント (戦闘対象の登録)
 /// </summary>

@@ -1,17 +1,17 @@
 ﻿#pragma once
-#include "SingletonManager.h"
+#include "Core/SingletonManager.h"
 #include <map>
 #include <string>
 #include <memory>
 #include <vector>
-#include "Mesh.h"
-#include "Material.h"
-#include "ResMesh.h"
-#include "nameSpace.h"
+#include "Graphics/Model/Mesh.h"
+#include "Graphics/Renderer/Material.h"
+#include "Graphics/Model/ResMesh.h"
+#include "Core/NameSpace.h"
 #include <optional>
-#include "IModelLoader.h"
-#include "ConstantBuffer.h"
-#include "Texture.h"
+#include "Graphics/Model/IModelLoader.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
+#include "Graphics/D3D12/Texture.h"
 
 // 並列処理
 #include <mutex>

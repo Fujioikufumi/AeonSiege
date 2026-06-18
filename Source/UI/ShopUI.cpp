@@ -1,11 +1,11 @@
-﻿#include "ShopUI.h"
-#include "Sprite.h"
-#include "ShopManager.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "NameSpace.h"
-#include "Input.h"
-#include "CombatHudLayout.h"
+﻿#include "UI/ShopUI.h"
+#include "Graphics/Sprite/Sprite.h"
+#include "Flow/ShopManager.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Core/NameSpace.h"
+#include "Input/Input.h"
+#include "UI/HUD/CombatHudLayout.h"
 
 namespace
 {

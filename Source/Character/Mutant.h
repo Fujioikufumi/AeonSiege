@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "GameObject.h"
-#include "CharacterBase.h"
-#include "StatusComponent.h"
+#include "Core/GameObject.h"
+#include "Character/CharacterBase.h"
+#include "Combat/StatusComponent.h"
 
 class Terrain;
 enum class EnemyAIState;

@@ -4,8 +4,8 @@
 //-----------------------------------------------------------------------
 #include <d3d12.h>
 #include <atomic>
-#include <ComPtr.h>
-#include <Pool.h>
+#include "EncodingUtils/ComPtr.h"
+#include "Core/Pool.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // DescriptorHandle class

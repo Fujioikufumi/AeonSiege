@@ -1,7 +1,7 @@
-﻿#include "BattleArea.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "Terrain.h"
+﻿#include "World/BattleArea.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "World/Terrain.h"
 #include <cmath>
 
 using namespace DirectX;

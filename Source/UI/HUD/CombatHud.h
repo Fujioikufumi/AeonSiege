@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "GameObject.h"
-#include "CombatHudLayout.h"
-#include "AllyHudPanel.h"
-#include "EnemyHudPanel.h"
-#include "SkillHudPanel.h"
-#include "PhaseHudPanel.h"
+#include "Core/GameObject.h"
+#include "UI/HUD/CombatHudLayout.h"
+#include "UI/HUD/AllyHudPanel.h"
+#include "UI/HUD/EnemyHudPanel.h"
+#include "UI/HUD/SkillHudPanel.h"
+#include "UI/HUD/PhaseHudPanel.h"
 #include <vector>
 #include <memory>
 

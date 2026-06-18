@@ -1,4 +1,4 @@
-﻿#include "IndexBuffer.h"
+﻿#include "Graphics/D3D12/IndexBuffer.h"
 #include <cstring>
 
 //-----------------------------------------------------------------------------

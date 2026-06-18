@@ -1,7 +1,7 @@
-﻿#include "AnimationController.h"
-#include "Logger.h"
-#include "ResourceManager.h"
-#include "GameObject.h"
+﻿#include "Graphics/Animation/AnimationController.h"
+#include "Utility/Logger.h"
+#include "Graphics/D3D12/ResourceManager.h"
+#include "Core/GameObject.h"
 #include <algorithm>
 
 namespace {

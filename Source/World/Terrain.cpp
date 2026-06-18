@@ -1,15 +1,15 @@
 ﻿
-#include "Terrain.h"
-#include "ResourceManager.h"
-#include "Logger.h"
+#include "World/Terrain.h"
+#include "Graphics/D3D12/ResourceManager.h"
+#include "Utility/Logger.h"
 #include <wincodec.h>
-#include "LightManager.h"
-#include "RenderSystem.h"
-#include "ComputeUtil.h"
-#include "Scene.h"
-#include "GameManager.h"
-#include "ImageLoader.h"
-#include "Camera.h"
+#include "Graphics/Renderer/LightManager.h"
+#include "Graphics/Renderer/RenderSystem.h"
+#include "Graphics/D3D12/ComputeUtil.h"
+#include "Core/Scene.h"
+#include "Core/GameManager.h"
+#include "Graphics/Model/ImageLoader.h"
+#include "Input/Camera.h"
 
 //-----------------------------------------------------------
 // 定数

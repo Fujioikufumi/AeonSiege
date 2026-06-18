@@ -1,7 +1,7 @@
-﻿#include "PartyGrowthCatalog.h"
-#include "Logger.h"
-#include "FileUtil.h"
-#include "EncodingUtils.h"
+﻿#include "Combat/PartyGrowthCatalog.h"
+#include "Utility/Logger.h"
+#include "Utility/FileUtil.h"
+#include "EncodingUtils/EncodingUtils.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <unordered_map>

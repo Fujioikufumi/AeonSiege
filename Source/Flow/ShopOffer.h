@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "UpgradeData.h"
-#include "SkillData.h"
+#include "Flow/UpgradeData.h"
+#include "Combat/SkillData.h"
 #include <string>
 
 enum class ShopOfferType

@@ -1,26 +1,26 @@
 ﻿//-----------------------------------------------------------------------------
 //  Include
 //-----------------------------------------------------------------------------
-#include "Player.h"
-#include "ResourceManager.h"
-#include "Input.h"
-#include "GameManager.h"
+#include "Character/Player.h"
+#include "Graphics/D3D12/ResourceManager.h"
+#include "Input/Input.h"
+#include "Core/GameManager.h"
 #include <algorithm>
-#include "NameSpace.h"
+#include "Core/NameSpace.h"
 #include <vector>
-#include "MathUtility.h"
-#include "GameFlowUtil.h"
-#include "SkillCatalog.h"
-#include "CombatHud.h"
+#include "Utility/MathUtility.h"
+#include "Flow/GameFlowUtil.h"
+#include "Combat/SkillCatalog.h"
+#include "UI/HUD/CombatHud.h"
 // ゲームオブジェクト
-#include "Camera.h"
-#include "Terrain.h"
+#include "Input/Camera.h"
+#include "World/Terrain.h"
 // コンポーネント
-#include "MeshRenderer.h"
-#include "AnimationController.h"
-#include "HealthComponent.h"
-#include "TargetComponent.h"
-#include "StatusComponent.h"
+#include "Graphics/Renderer/MeshRenderer.h"
+#include "Graphics/Animation/AnimationController.h"
+#include "Combat/HealthComponent.h"
+#include "Component/TargetComponent.h"
+#include "Combat/StatusComponent.h"
 
 namespace {
 	constexpr float kLockMaxDist = 400.0f;	// ロックオン可能な最大距離

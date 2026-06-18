@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include "Component.h"
-#include "ModelManager.h"
+#include "Core/Component.h"
+#include "Graphics/Model/ModelManager.h"
 #include <string>
-#include "RenderSystem.h"
-#include "ConstantBuffer.h"
+#include "Graphics/Renderer/RenderSystem.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
 
 /// <summary>
 /// 3Dモデルの描画を制御するコンポーネント。

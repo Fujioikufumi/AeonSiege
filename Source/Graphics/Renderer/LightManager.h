@@ -3,12 +3,12 @@
 //----------------------------------------------------------------------
 // 		Includes
 //----------------------------------------------------------------------
-#include "ConstantBuffer.h"
-#include "NameSpace.h"
-#include "ComPtr.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
+#include "Core/NameSpace.h"
+#include "EncodingUtils/ComPtr.h"
 #include <d3d12.h>
 #include <DirectXMath.h>
-#include "SingletonManager.h"
+#include "Core/SingletonManager.h"
 
 using namespace DirectX;
 

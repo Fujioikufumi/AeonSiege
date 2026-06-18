@@ -1,6 +1,6 @@
-﻿#include "LoadGameObj.h"
-#include "ModelManager.h"
-#include "AnimationManager.h"
+﻿#include "Graphics/Model/LoadGameObj.h"
+#include "Graphics/Model/ModelManager.h"
+#include "Graphics/Animation/AnimationManager.h"
 #include <vector>
 #include <future>
 void LoadGameObj();

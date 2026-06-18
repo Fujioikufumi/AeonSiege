@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "GameObject.h"
-#include "NumberUI.h"
+#include "Core/GameObject.h"
+#include "UI/NumberUI.h"
 #include <DirectXMath.h>
 
 class Sprite;

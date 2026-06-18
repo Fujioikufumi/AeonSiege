@@ -1,11 +1,11 @@
 ﻿//-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
-#include <Texture.h>
+#include "Graphics/D3D12/Texture.h"
 #include <DDSTextureLoader.h> // DDS
 #include <WICTextureLoader.h> // PNG, JPG
-#include <DescriptorPool.h>
-#include <Logger.h>
+#include "Graphics/D3D12/DescriptorPool.h"
+#include "Utility/Logger.h"
 #include <string>
 
 namespace {

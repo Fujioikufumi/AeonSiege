@@ -1,9 +1,9 @@
 ﻿//-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
-#include "ShaderManager.h"
-#include "Logger.h"
-#include "FileUtil.h"
+#include "Graphics/Renderer/ShaderManager.h"
+#include "Utility/Logger.h"
+#include "Utility/FileUtil.h"
 
 //----------------------------------------------------------------------
 /// シェーダファイルを読み込む

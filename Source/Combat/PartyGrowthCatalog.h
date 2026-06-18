@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "StatusData.h"
+#include "Combat/StatusData.h"
 #include <string>
 
 namespace PartyGrowth

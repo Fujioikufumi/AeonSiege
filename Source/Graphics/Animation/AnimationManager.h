@@ -3,8 +3,8 @@
 //-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
-#include "ResMesh.h"
-#include "SingletonManager.h"
+#include "Graphics/Model/ResMesh.h"
+#include "Core/SingletonManager.h"
 #include <map>
 #include <string>
 #include <set>

@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "GameObject.h"
-#include "ShopOffer.h"
-#include "UpgradeData.h"
+#include "Core/GameObject.h"
+#include "Flow/ShopOffer.h"
+#include "Flow/UpgradeData.h"
 #include <array>
 #include <string>
 

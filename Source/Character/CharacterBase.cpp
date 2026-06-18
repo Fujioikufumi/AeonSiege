@@ -1,8 +1,8 @@
-﻿#include "CharacterBase.h"
-#include "AnimationController.h"
-#include "HealthComponent.h"
-#include "MathUtility.h"
-#include "DamageTypes.h"
+﻿#include "Character/CharacterBase.h"
+#include "Graphics/Animation/AnimationController.h"
+#include "Combat/HealthComponent.h"
+#include "Utility/MathUtility.h"
+#include "Combat/DamageTypes.h"
 
 void CharacterBase::ChangeAnimation(AnimationController* anim, const char* clipName, bool loop, float speed)
 {

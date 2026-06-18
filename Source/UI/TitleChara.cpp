@@ -1,9 +1,9 @@
-﻿#include "TitleChara.h"
-#include "MeshRenderer.h"
-#include "AnimationController.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "Terrain.h"
+﻿#include "UI/TitleChara.h"
+#include "Graphics/Renderer/MeshRenderer.h"
+#include "Graphics/Animation/AnimationController.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "World/Terrain.h"
 TitleChara::TitleChara()
 {
 	m_ModelPath = L"../Assets/Characters/MariaWProp.bmdl";

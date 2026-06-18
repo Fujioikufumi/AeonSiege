@@ -1,6 +1,6 @@
-﻿#include "CombatHudSerializer.h"
-#include "EncodingUtils.h"
-#include "Logger.h"
+﻿#include "UI/HUD/CombatHudSerializer.h"
+#include "EncodingUtils/EncodingUtils.h"
+#include "Utility/Logger.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
 

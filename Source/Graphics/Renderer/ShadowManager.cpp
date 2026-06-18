@@ -1,14 +1,14 @@
-﻿#include "ShadowManager.h"
-#include "ResourceManager.h"
-#include "Logger.h"
-#include "RenderSystem.h"
-#include "PipelineStateManager.h"
-#include "ShaderManager.h"
-#include "RenderContext.h"
+﻿#include "Graphics/Renderer/ShadowManager.h"
+#include "Graphics/D3D12/ResourceManager.h"
+#include "Utility/Logger.h"
+#include "Graphics/Renderer/RenderSystem.h"
+#include "Graphics/Renderer/PipelineStateManager.h"
+#include "Graphics/Renderer/ShaderManager.h"
+#include "Core/RenderContext.h"
 #include <DirectXMath.h>
-#include "MeshRenderer.h"
+#include "Graphics/Renderer/MeshRenderer.h"
 #include "DirectXHelpers.h"
-#include "Texture.h"
+#include "Graphics/D3D12/Texture.h"
 
 using namespace DirectX;
 

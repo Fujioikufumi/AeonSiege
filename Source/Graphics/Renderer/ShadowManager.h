@@ -2,16 +2,16 @@
 //======================================================================
 // 		Includes
 //======================================================================
-#include "ConstantBuffer.h"
-#include "DepthTarget.h"
-#include "NameSpace.h"
-#include "ComPtr.h"
-#include "GameObject.h"
-#include "SingletonManager.h"
+#include "Graphics/D3D12/ConstantBuffer.h"
+#include "Graphics/D3D12/DepthTarget.h"
+#include "Core/NameSpace.h"
+#include "EncodingUtils/ComPtr.h"
+#include "Core/GameObject.h"
+#include "Core/SingletonManager.h"
 #include <d3d12.h>
 #include <DirectXMath.h>
 #include <list>
-#include "ModelManager.h"
+#include "Graphics/Model/ModelManager.h"
 
 using namespace DirectX;
 

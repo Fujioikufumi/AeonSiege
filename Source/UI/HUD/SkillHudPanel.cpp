@@ -1,7 +1,7 @@
-﻿#include "SkillHudPanel.h"
-#include "GameObject.h"
-#include "Sprite.h"
-#include "MaskedSprite.h"
+﻿#include "UI/HUD/SkillHudPanel.h"
+#include "Core/GameObject.h"
+#include "Graphics/Sprite/Sprite.h"
+#include "Graphics/Sprite/MaskedSprite.h"
 #include <algorithm>
 
 SkillHudPanel::SkillHudPanel(GameObject* owner, const std::wstring& iconPath, int slotIndex)

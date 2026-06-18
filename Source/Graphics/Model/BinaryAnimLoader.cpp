@@ -1,4 +1,4 @@
-﻿#include "BinaryAnimLoader.h"
+﻿#include "Graphics/Model/BinaryAnimLoader.h"
 #include <fstream>
 #include <iostream>
 

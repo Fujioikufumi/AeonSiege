@@ -1,4 +1,4 @@
-﻿#include "Wind.h"
+﻿#include "World/Wind.h"
 
 Wind::Wind()
 	: GameObject()

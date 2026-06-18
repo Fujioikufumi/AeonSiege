@@ -1,12 +1,12 @@
-﻿#include "ShopManager.h"
-#include "GameManager.h"
-#include "Scene.h"
-#include "StatusComponent.h"
-#include "PartyManager.h"
-#include "Player.h"
-#include "SkillComponent.h"
-#include "SkillCatalog.h"
-#include "UpgradeData.h"
+﻿#include "Flow/ShopManager.h"
+#include "Core/GameManager.h"
+#include "Core/Scene.h"
+#include "Combat/StatusComponent.h"
+#include "Character/PartyManager.h"
+#include "Character/Player.h"
+#include "Combat/SkillComponent.h"
+#include "Combat/SkillCatalog.h"
+#include "Flow/UpgradeData.h"
 #include <array>
 #include <cstdlib>
 

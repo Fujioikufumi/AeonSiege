@@ -1,11 +1,11 @@
-﻿#include "Sprite.h"
-#include "ResourceManager.h"
-#include "FileUtil.h"
-#include "Logger.h"
+﻿#include "Graphics/Sprite/Sprite.h"
+#include "Graphics/D3D12/ResourceManager.h"
+#include "Utility/FileUtil.h"
+#include "Utility/Logger.h"
 #include "ResourceUploadBatch.h"
-#include "PipelineStateManager.h"
+#include "Graphics/Renderer/PipelineStateManager.h"
 #include <DirectXHelpers.h>
-#include "NameSpace.h"
+#include "Core/NameSpace.h"
 //----------------------------------------------------------------------
 //		2Dスプライトコンポーネント
 //----------------------------------------------------------------------

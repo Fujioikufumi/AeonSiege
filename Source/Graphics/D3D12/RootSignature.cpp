@@ -1,5 +1,5 @@
-﻿#include "RootSignature.h"
-#include "Logger.h"
+﻿#include "Graphics/D3D12/RootSignature.h"
+#include "Utility/Logger.h"
 #include <cstring>
 
 //-----------------------------------------------------------------------------

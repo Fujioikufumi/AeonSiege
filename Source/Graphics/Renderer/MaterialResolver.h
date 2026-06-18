@@ -3,9 +3,9 @@
 #include <vector>
 #include <d3d12.h>
 
-#include "ResMesh.h"     // ResMaterial
-#include "Material.h"    // Material
-#include "DescriptorPool.h"
+#include "Graphics/Model/ResMesh.h"     // ResMaterial
+#include "Graphics/Renderer/Material.h"    // Material
+#include "Graphics/D3D12/DescriptorPool.h"
 
 class MaterialResolver
 {

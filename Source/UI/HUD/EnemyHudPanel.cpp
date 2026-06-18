@@ -1,8 +1,8 @@
-﻿#include "EnemyHudPanel.h"
-#include "GameObject.h"
-#include "Sprite.h"
-#include "MaskedSprite.h"
-#include "NameSpace.h"
+﻿#include "UI/HUD/EnemyHudPanel.h"
+#include "Core/GameObject.h"
+#include "Graphics/Sprite/Sprite.h"
+#include "Graphics/Sprite/MaskedSprite.h"
+#include "Core/NameSpace.h"
 #include <algorithm>
 
 EnemyHudPanel::EnemyHudPanel(GameObject* owner, const CombatHudLayout& layout)

@@ -1,4 +1,4 @@
-﻿#include "StatusComponent.h"
+﻿#include "Combat/StatusComponent.h"
 #include <algorithm>
 
 StatusComponent::StatusComponent(GameObject* pObj)

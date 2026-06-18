@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "SingletonManager.h"
-#include "RootSignature.h"
-#include "DescriptorPool.h"
+#include "Core/SingletonManager.h"
+#include "Graphics/D3D12/RootSignature.h"
+#include "Graphics/D3D12/DescriptorPool.h"
 #include <d3d12.h>
 #include <string>
 #include <map>

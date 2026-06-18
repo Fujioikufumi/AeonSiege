@@ -1,4 +1,4 @@
-﻿#include "SkeletonZombie.h"
+﻿#include "Character/SkeletonZombie.h"
 
 SkeletonZombie::SkeletonZombie()
 	: Zombie(ZombieType::SkeletonZombie)

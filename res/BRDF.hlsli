@@ -5,12 +5,12 @@
 // Constant Values.
 //-----------------------------------------------------------------------------
 #ifndef F_PI
-#define F_PI        3.14159265358979323f   // ‰~ü—¦.
+#define F_PI        3.14159265358979323f   // å††å‘¨ç‡.
 #endif//F_PI
 
 
 //-----------------------------------------------------------------------------
-//      Schlick‚É‚æ‚éƒtƒŒƒlƒ‹€‚Ì‹ß—®.
+//      Schlickã«ã‚ˆã‚‹ãƒ•ãƒ¬ãƒãƒ«é …ã®è¿‘ä¼¼å¼.
 //-----------------------------------------------------------------------------
 float3 SchlickFresnel(float3 specular, float VH)
 {
@@ -18,7 +18,7 @@ float3 SchlickFresnel(float3 specular, float VH)
 }
 
 //-----------------------------------------------------------------------------
-//      GGX‚É‚æ‚é–@ü•ª•zŠÖ”.
+//      GGXã«ã‚ˆã‚‹æ³•ç·šåˆ†å¸ƒé–¢æ•°.
 //-----------------------------------------------------------------------------
 float D_GGX(float a, float NH)
 {
@@ -28,11 +28,11 @@ float D_GGX(float a, float NH)
 }
 
 //-----------------------------------------------------------------------------
-//      Height Correlated Smith‚É‚æ‚éŠô‰½Œ¸Š€.
+//      Height Correlated Smithã«ã‚ˆã‚‹å¹¾ä½•æ¸›è¡°é ….
 //-----------------------------------------------------------------------------
 float G2_Smith(float NL, float NV, float a)
 {
-    // ƒ[ƒœZ‚ğ–h‚®‚½‚ßA”ñí‚É¬‚³‚¢’l‚ÅƒNƒ‰ƒ“ƒv
+    // ã‚¼ãƒ­é™¤ç®—ã‚’é˜²ããŸã‚ã€éå¸¸ã«å°ã•ã„å€¤ã§ã‚¯ãƒ©ãƒ³ãƒ—
     const float epsilon = 0.0001f;
     NL = max(NL, epsilon);
     NV = max(NV, epsilon);
@@ -47,7 +47,7 @@ float G2_Smith(float NL, float NV, float a)
 }
 
 //-----------------------------------------------------------------------------
-//      Lambert BRDF‚ğŒvZ‚µ‚Ü‚·.
+//      Lambert BRDFã‚’è¨ˆç®—ã—ã¾ã™.
 //-----------------------------------------------------------------------------
 float3 ComputeLambert(float3 Kd)
 {
@@ -55,7 +55,7 @@ float3 ComputeLambert(float3 Kd)
 }
 
 //-----------------------------------------------------------------------------
-//      Phong BRDF‚ğŒvZ‚µ‚Ü‚·.
+//      Phong BRDFã‚’è¨ˆç®—ã—ã¾ã™.
 //-----------------------------------------------------------------------------
 float3 ComputePhong
 (
@@ -68,7 +68,7 @@ float3 ComputePhong
 }
 
 //-----------------------------------------------------------------------------
-//      GGX BRDF‚ğŒvZ‚µ‚Ü‚·.
+//      GGX BRDFã‚’è¨ˆç®—ã—ã¾ã™.
 //-----------------------------------------------------------------------------
 float3 ComputeGGX
 (
@@ -79,18 +79,20 @@ float3 ComputeGGX
     float NdotL
 )
 {
-    // ƒ[ƒœZ‚ğ–h‚®‚½‚ßANdotL‚Ü‚½‚ÍNdotV‚ª0‚Ìê‡‚Í0‚ğ•Ô‚·
-    if (NdotL <= 0.0f || NdotV <= 0.0f)
-    {
-        return float3(0.0f, 0.0f, 0.0f);
-    }
-    
-    float a = roughness * roughness;
-    float D = D_GGX(a, NdotH);
-    float G = G2_Smith(NdotL, NdotV, a);
-    float3 F = SchlickFresnel(Ks, NdotL);
+    // 0ã§åˆæœŸåŒ–ã—ã€æœ‰åŠ¹ãªå ´åˆã®ã¿è¨ˆç®—ã™ã‚‹ï¼ˆNdotL/NdotVãŒ0ä»¥ä¸‹ãªã‚‰0ã®ã¾ã¾ï¼‰
+	float3 result = float3(0.0f, 0.0f, 0.0f);
 
-    return (D * G * F) / (4.0f * NdotV * NdotL);
+	if (NdotL > 0.0f && NdotV > 0.0f)
+	{
+		float a = roughness * roughness;
+		float D = D_GGX(a, NdotH);
+		float G = G2_Smith(NdotL, NdotV, a);
+		float3 F = SchlickFresnel(Ks, NdotL);
+
+		result = (D * G * F) / (4.0f * NdotV * NdotL);
+	}
+
+	return result;
 }
 
 #endif//BRDF_HLSLI

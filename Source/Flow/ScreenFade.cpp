@@ -1,8 +1,8 @@
-﻿#include "ScreenFade.h"
+﻿#include "Flow/ScreenFade.h"
 #include <algorithm>
-#include "Sprite.h"
-#include "RenderContext.h"
-#include "main.h"
+#include "Graphics/Sprite/Sprite.h"
+#include "Core/RenderContext.h"
+#include "Core/main.h"
 
 ScreenFade& ScreenFade::Instance()
 {

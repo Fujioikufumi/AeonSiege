@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "SkillData.h"
+#include "Combat/SkillData.h"
 
 /// <summary>
 /// スキルカタログ：個々のスキルのデータを定義している。

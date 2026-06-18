@@ -1,13 +1,13 @@
-﻿#include "SkyDomeObject.h"
-#include "Logger.h"
-#include "ResourceManager.h"
-#include "NameSpace.h"
-#include "FileUtil.h"
+﻿#include "World/SkyDomeObject.h"
+#include "Utility/Logger.h"
+#include "Graphics/D3D12/ResourceManager.h"
+#include "Core/NameSpace.h"
+#include "Utility/FileUtil.h"
 #include "ResourceUploadBatch.h"
-#include "main.h"
-#include "Scene.h"
-#include "GameManager.h"
-#include "Camera.h"
+#include "Core/main.h"
+#include "Core/Scene.h"
+#include "Core/GameManager.h"
+#include "Input/Camera.h"
 
 //-----------------------------------------------------------------------------
 //      コンストラクタ

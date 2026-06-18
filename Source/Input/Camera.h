@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <DirectXMath.h>
-#include "GameObject.h"
-#include "Input.h"
+#include "Core/GameObject.h"
+#include "Input/Input.h"
 
 class Camera : public GameObject
 {
