@@ -234,9 +234,6 @@
     <ClCompile Include="..\Source\Component\MovementComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Debug\DebugMenu.cpp">
-      <Filter>Debug</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\Debug\DebugUI.cpp">
       <Filter>Debug</Filter>
     </ClCompile>
@@ -298,9 +295,6 @@
       <Filter>Graphics\Animation</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Graphics\Animation\AnimationManager.cpp">
-      <Filter>Graphics\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Graphics\Animation\SkeletonDebugDraw.cpp">
       <Filter>Graphics\Animation</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Graphics\Model\BinaryAnimLoader.cpp">
@@ -566,9 +560,6 @@
     <ClInclude Include="..\Source\Component\TargetComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Debug\DebugMenu.h">
-      <Filter>Debug</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\Debug\DebugUI.h">
       <Filter>Debug</Filter>
     </ClInclude>
@@ -642,9 +633,6 @@
       <Filter>Graphics\Animation</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Graphics\Animation\AnimationManager.h">
-      <Filter>Graphics\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Graphics\Animation\SkeletonDebugDraw.h">
       <Filter>Graphics\Animation</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Graphics\Model\BinaryAnimLoader.h">

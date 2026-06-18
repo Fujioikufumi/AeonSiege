@@ -207,7 +207,6 @@
     <ClCompile Include="..\Source\Core\main.cpp" />
     <ClCompile Include="..\Source\Core\NameSpace.cpp" />
     <ClCompile Include="..\Source\Core\Scene.cpp" />
-    <ClCompile Include="..\Source\Debug\DebugMenu.cpp" />
     <ClCompile Include="..\Source\Debug\DebugUI.cpp" />
     <ClCompile Include="..\Source\Debug\ImGuiUtil.cpp" />
     <ClCompile Include="..\Source\EncodingUtils\EncodingUtils.cpp" />
@@ -217,7 +216,6 @@
     <ClCompile Include="..\Source\Flow\ShopManager.cpp" />
     <ClCompile Include="..\Source\Graphics\Animation\AnimationController.cpp" />
     <ClCompile Include="..\Source\Graphics\Animation\AnimationManager.cpp" />
-    <ClCompile Include="..\Source\Graphics\Animation\SkeletonDebugDraw.cpp" />
     <ClCompile Include="..\Source\Graphics\D3D12\ColorTarget.cpp" />
     <ClCompile Include="..\Source\Graphics\D3D12\CommandList.cpp" />
     <ClCompile Include="..\Source\Graphics\D3D12\ComputeUtil.cpp" />
@@ -319,7 +317,6 @@
     <ClInclude Include="..\Source\Core\RenderContext.h" />
     <ClInclude Include="..\Source\Core\Scene.h" />
     <ClInclude Include="..\Source\Core\SingletonManager.h" />
-    <ClInclude Include="..\Source\Debug\DebugMenu.h" />
     <ClInclude Include="..\Source\Debug\DebugUI.h" />
     <ClInclude Include="..\Source\Debug\ImGuiUtil.h" />
     <ClInclude Include="..\Source\EncodingUtils\ComPtr.h" />
@@ -333,7 +330,6 @@
     <ClInclude Include="..\Source\Flow\UpgradeData.h" />
     <ClInclude Include="..\Source\Graphics\Animation\AnimationController.h" />
     <ClInclude Include="..\Source\Graphics\Animation\AnimationManager.h" />
-    <ClInclude Include="..\Source\Graphics\Animation\SkeletonDebugDraw.h" />
     <ClInclude Include="..\Source\Graphics\D3D12\ColorTarget.h" />
     <ClInclude Include="..\Source\Graphics\D3D12\CommandList.h" />
     <ClInclude Include="..\Source\Graphics\D3D12\ComputeUtil.h" />
