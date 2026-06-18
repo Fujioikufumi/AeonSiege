@@ -1,4 +1,4 @@
-#include "PartyManager.h"
+ï»¿#include "PartyManager.h"
 #include "GameManager.h"
 #include "Scene.h"
 #include "Paladin.h"
@@ -10,12 +10,12 @@
 #include "CombatHud.h"
 
 namespace {
-	// ƒpƒ‰ƒ_ƒCƒ“‚Ì‰ŠúˆÊ’u
-	constexpr XMFLOAT3 kpaladinStartPos = { -480.0f, 0.0f, -650.0f }; // ‰ŠúˆÊ’u
+	// ãƒ‘ãƒ©ãƒ€ã‚¤ãƒ³ã®åˆæœŸä½ç½®
+	constexpr XMFLOAT3 kpaladinStartPos = { -480.0f, 0.0f, -650.0f }; // åˆæœŸä½ç½®
 
 
 
-	// ƒƒ“ƒo[‚ÌƒXƒe[ƒ^ƒX‚ÌXV
+	// ãƒ¡ãƒ³ãƒãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®æ›´æ–°
 	void ApplyStatusTo(GameObject* obj, const StatusData& data, bool healToFull)
 	{
 		if (obj == nullptr) return;
@@ -54,7 +54,7 @@ int PartyManager::GetPartyExpNeededForNext() const
 
 float PartyManager::GetPartyExpRatio() const
 {
-	// Ÿ‚ÌƒŒƒxƒ‹‚É•K—v‚ÈŒoŒ±’l‚ğæ“¾
+	// æ¬¡ã®ãƒ¬ãƒ™ãƒ«ã«å¿…è¦ãªçµŒé¨“å€¤ã‚’å–å¾—
 	const int need = GetPartyExpNeededForNext();
 	if (need <= 0)
 		return 1.0f;
@@ -65,7 +65,7 @@ void PartyManager::ProcessPartyLevelUps()
 {
 	bool leveled = false;
 
-	for (;;) // ƒ‹[ƒv‚Å•¡”ƒŒƒxƒ‹ƒAƒbƒv‚É‘Î‰
+	for (;;) // ãƒ«ãƒ¼ãƒ—ã§è¤‡æ•°ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—ã«å¯¾å¿œ
 	{
 		const int need = PartyGrowth::GetExpNeededForNextLevel(m_PartyLevel);
 		if (need <= 0)
@@ -73,14 +73,14 @@ void PartyManager::ProcessPartyLevelUps()
 		if (m_PartyExpTowardNext < need)
 			break;
 
-		m_PartyExpTowardNext -= need; // ŒoŒ±’l‚ğŒ¸Z‚µ‚ÄŸ‚ÌƒŒƒxƒ‹‚Éi‚Ş
-		m_PartyLevel++;				  // ƒŒƒxƒ‹ƒAƒbƒv
+		m_PartyExpTowardNext -= need; // çµŒé¨“å€¤ã‚’æ¸›ç®—ã—ã¦æ¬¡ã®ãƒ¬ãƒ™ãƒ«ã«é€²ã‚€
+		m_PartyLevel++;				  // ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—
 		leveled = true;
 	}
 
 	if (leveled)
 	{
-		// ƒƒ“ƒo[‚ÌƒXƒe[ƒ^ƒX‚ğXV‚µ‘Ì—Í‚ğ‘S‰ñ•œ‚³‚¹‚é
+		// ãƒ¡ãƒ³ãƒãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æ›´æ–°ã—ä½“åŠ›ã‚’å…¨å›å¾©ã•ã›ã‚‹
 		RefreshAllMemberStats(true);
 	}
 }
@@ -103,14 +103,14 @@ void PartyManager::RefreshAllMemberStats(bool healToFull)
 	StatusData data;
 
 	
-	// ƒvƒŒƒCƒ„[‚ÌƒXƒe[ƒ^ƒXXV
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹æ›´æ–°
 	if (Player* player = scene->GetGameObjectByName<Player>("Player"))
 	{
 		if (PartyGrowth::BuildMemberStatus("Player", m_PartyLevel, data))
 			ApplyStatusTo(player, data, healToFull);
 	}
 
-	// Paladin‚ÌƒXƒe[ƒ^ƒX‚ğXV
+	// Paladinã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æ›´æ–°
 	if (HasAlly(AllyId::Oscar))
 	{
 		if (Paladin* paladin = scene->GetGameObjectByName<Paladin>("Paladin"))
@@ -146,7 +146,7 @@ void PartyManager::AddAlly(AllyId allyId)
 		return;
 	}
 
-	// ‰Á“ü‚³‚¹‚é–¡•û‚ÌƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚ÄƒXƒe[ƒ^ƒX‚ğXV‚·‚é
+	// åŠ å…¥ã•ã›ã‚‹å‘³æ–¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¦ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æ›´æ–°ã™ã‚‹
 	switch (allyId)
 	{
 	case AllyId::Oscar:

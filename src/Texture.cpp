@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+ï»¿//-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
 #include <Texture.h>
@@ -11,7 +11,7 @@
 namespace {
 
     //-----------------------------------------------------------------------------
-    //      SRGBƒtƒH[ƒ}ƒbƒg‚É•ÏŠ·‚µ‚Ü‚·.
+    //      SRGBãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«å¤‰æ›ã—ã¾ã™.
     //-----------------------------------------------------------------------------
     DXGI_FORMAT ConvertToSRGB(DXGI_FORMAT format)
     {
@@ -61,7 +61,7 @@ namespace {
 ///////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
-//      ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Å‚·.
+//      ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§ã™.
 //-----------------------------------------------------------------------------
 Texture::Texture()
     : m_Texture(nullptr)
@@ -71,7 +71,7 @@ Texture::Texture()
 }
 
 //-----------------------------------------------------------------------------
-//      ƒfƒXƒgƒ‰ƒNƒ^‚Å‚·.
+//      ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§ã™.
 //-----------------------------------------------------------------------------
 Texture::~Texture()
 {
@@ -79,7 +79,7 @@ Texture::~Texture()
 }
 
 //-----------------------------------------------------------------------------
-//      ‰Šú‰»ˆ—‚ğs‚¢‚Ü‚·.
+//      åˆæœŸåŒ–å‡¦ç†ã‚’è¡Œã„ã¾ã™.
 //-----------------------------------------------------------------------------
 bool Texture::Init
 (
@@ -93,7 +93,7 @@ bool Texture::Init
 }
 
 //-----------------------------------------------------------------------------
-//      ‰Šú‰»ˆ—‚ğs‚¢‚Ü‚·.
+//      åˆæœŸåŒ–å‡¦ç†ã‚’è¡Œã„ã¾ã™.
 //-----------------------------------------------------------------------------
 bool Texture::Init
 (
@@ -104,7 +104,7 @@ bool Texture::Init
     DirectX::ResourceUploadBatch& batch
 )
 {
-    // ˆø”ƒ`ƒFƒbƒN.
+    // å¼•æ•°ãƒã‚§ãƒƒã‚¯.
     if (pDevice == nullptr || pPool == nullptr || filename == nullptr)
     {
         ELOG("Error : Invalid Argument.");
@@ -121,38 +121,38 @@ bool Texture::Init
     assert(m_Pool == nullptr);
     assert(m_Handle == nullptr);
 
-    // ƒfƒBƒXƒNƒŠƒvƒ^ƒv[ƒ‹‚ğİ’è.
+    // ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ—ãƒ¼ãƒ«ã‚’è¨­å®š.
     m_Pool = pPool;
     m_Pool->AddRef();
 
-    // ƒfƒBƒXƒNƒŠƒvƒ^ƒnƒ“ƒhƒ‹‚ğæ“¾.
+    // ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—.
     m_Handle = pPool->AllocHandle();
     if (m_Handle == nullptr)
     {
         return false;
     }
 
-    // ƒtƒ@ƒCƒ‹Šg’£q‚ğæ“¾
+    // ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã‚’å–å¾—
     std::wstring filePath(filename);
     std::wstring ext;
     size_t dotPos = filePath.find_last_of(L".");
     if (dotPos != std::wstring::npos)
     {
         ext = filePath.substr(dotPos);
-        // ¬•¶š‚É•ÏŠ·
+        // å°æ–‡å­—ã«å¤‰æ›
         for (auto& c : ext)
         {
             c = towlower(c);
         }
     }
 
-    // ƒtƒ@ƒCƒ‹Šg’£q‚É‰‚¶‚Ä“Ç‚İ‚İ•û–@‚ğ‘I‘ğ.
+    // ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã«å¿œã˜ã¦èª­ã¿è¾¼ã¿æ–¹æ³•ã‚’é¸æŠ.
     bool isCube = false;
 
     HRESULT hr = E_FAIL;
     if (ext == L".dds")
     {
-        // DDSƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+        // DDSãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
         auto hr = DirectX::CreateDDSTextureFromFile(
             pDevice,
             batch,
@@ -170,7 +170,7 @@ bool Texture::Init
     }
     else
     {
-        // PNG/JPEG“™‚ÌWICŒ`®‚Ì“Ç‚İ‚İ
+        // PNG/JPEGç­‰ã®WICå½¢å¼ã®èª­ã¿è¾¼ã¿
         hr = DirectX::CreateWICTextureFromFile(
             pDevice,
             batch,
@@ -183,26 +183,26 @@ bool Texture::Init
             ELOG("Error : DirectX::CreateWICTextureFromFile() Failed. filename = %ls,  retcode = 0x%x", filename, hr);
             return false;
         }
-		isCube = false; // WICŒ`®‚ÍƒLƒ…[ƒuƒ}ƒbƒv”ñ‘Î‰
+		isCube = false; // WICå½¢å¼ã¯ã‚­ãƒ¥ãƒ¼ãƒ–ãƒãƒƒãƒ—éå¯¾å¿œ
     }
-    // ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìİ’è‚ğ‹‚ß‚é.
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®è¨­å®šã‚’æ±‚ã‚ã‚‹.
     auto viewDesc = GetViewDesc(isCube);
 
-    // SRGBƒtƒH[ƒ}ƒbƒg‚É•ÏŠ·‚µ‚Ü‚·.
+    // SRGBãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«å¤‰æ›ã—ã¾ã™.
     if (isSRGB)
     {
         viewDesc.Format = ConvertToSRGB(viewDesc.Format);
     }
 
-    // ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ğ¶¬‚µ‚Ü‚·.
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ç”Ÿæˆã—ã¾ã™.
     pDevice->CreateShaderResourceView(m_Texture.Get(), &viewDesc, m_Handle->HandleCPU);
 
-    // ³íI—¹.
+    // æ­£å¸¸çµ‚äº†.
     return true;
 }
 
 //-----------------------------------------------------------------------------
-//      ‰Šú‰»ˆ—‚ğs‚¢‚Ü‚·.
+//      åˆæœŸåŒ–å‡¦ç†ã‚’è¡Œã„ã¾ã™.
 //-----------------------------------------------------------------------------
 bool Texture::Init(
     ID3D12Device* pDevice,
@@ -216,7 +216,7 @@ bool Texture::Init(
 }
 
 //-----------------------------------------------------------------------------
-//      ‰Šú‰»ˆ—‚ğs‚¢‚Ü‚·.
+//      åˆæœŸåŒ–å‡¦ç†ã‚’è¡Œã„ã¾ã™.
 //-----------------------------------------------------------------------------
 bool Texture::Init
 (
@@ -236,11 +236,11 @@ bool Texture::Init
     assert(m_Pool == nullptr);
     assert(m_Handle == nullptr);
 
-    // ƒfƒBƒXƒNƒŠƒvƒ^ƒv[ƒ‹‚ğİ’è.
+    // ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ—ãƒ¼ãƒ«ã‚’è¨­å®š.
     m_Pool = pPool;
     m_Pool->AddRef();
 
-    // ƒfƒBƒXƒNƒŠƒvƒ^ƒnƒ“ƒhƒ‹‚ğæ“¾.
+    // ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—.
     m_Handle = pPool->AllocHandle();
     if (m_Handle == nullptr)
     {
@@ -268,36 +268,36 @@ bool Texture::Init
         return false;
     }
 
-    // ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìİ’è‚ğ‹‚ß‚é.
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®è¨­å®šã‚’æ±‚ã‚ã‚‹.
     auto viewDesc = GetViewDesc(isCube);
 
-    // SRGBƒtƒH[ƒ}ƒbƒg‚É•ÏŠ·‚µ‚Ü‚·.
+    // SRGBãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«å¤‰æ›ã—ã¾ã™.
     if (isSRGB)
     {
         viewDesc.Format = ConvertToSRGB(viewDesc.Format);
     }
 
-    // ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ğ¶¬‚µ‚Ü‚·.
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ç”Ÿæˆã—ã¾ã™.
     pDevice->CreateShaderResourceView(m_Texture.Get(), &viewDesc, m_Handle->HandleCPU);
 
     return true;
 }
 
 //-----------------------------------------------------------------------------
-//      I—¹ˆ—‚ğs‚¢‚Ü‚·.
+//      çµ‚äº†å‡¦ç†ã‚’è¡Œã„ã¾ã™.
 //-----------------------------------------------------------------------------
 void Texture::Term()
 {
     m_Texture.Reset();
 
-    // ƒfƒBƒXƒNƒŠƒvƒ^ƒnƒ“ƒhƒ‹‚ğ‰ğ•ú.
+    // ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒãƒ³ãƒ‰ãƒ«ã‚’è§£æ”¾.
     if (m_Handle != nullptr && m_Pool != nullptr)
     {
         m_Pool->FreeHandle(m_Handle);
         m_Handle = nullptr;
     }
 
-    // ƒfƒBƒXƒNƒŠƒvƒ^ƒv[ƒ‹‚ğ‰ğ•ú.
+    // ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ—ãƒ¼ãƒ«ã‚’è§£æ”¾.
     if (m_Pool != nullptr)
     {
         m_Pool->Release();
@@ -306,7 +306,7 @@ void Texture::Term()
 }
 
 //-----------------------------------------------------------------------------
-//      CPUƒfƒBƒXƒNƒŠƒvƒ^ƒnƒ“ƒhƒ‹‚ğæ“¾‚µ‚Ü‚·.
+//      CPUãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã—ã¾ã™.
 //-----------------------------------------------------------------------------
 D3D12_CPU_DESCRIPTOR_HANDLE Texture::GetHandleCPU() const
 {
@@ -319,7 +319,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE Texture::GetHandleCPU() const
 }
 
 //-----------------------------------------------------------------------------
-//      GPUƒfƒBƒXƒNƒŠƒvƒ^ƒnƒ“ƒhƒ‹‚ğæ“¾‚µ‚Ü‚·.
+//      GPUãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã—ã¾ã™.
 //-----------------------------------------------------------------------------
 D3D12_GPU_DESCRIPTOR_HANDLE Texture::GetHandleGPU() const
 {
@@ -332,7 +332,7 @@ D3D12_GPU_DESCRIPTOR_HANDLE Texture::GetHandleGPU() const
 }
 
 //-----------------------------------------------------------------------------
-//      ƒŠƒ\[ƒX‚ğæ“¾‚µ‚Ü‚·.
+//      ãƒªã‚½ãƒ¼ã‚¹ã‚’å–å¾—ã—ã¾ã™.
 //-----------------------------------------------------------------------------
 ID3D12Resource* Texture::GetResource() const
 {
@@ -340,7 +340,7 @@ ID3D12Resource* Texture::GetResource() const
 }
 
 //-----------------------------------------------------------------------------
-//      ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìİ’è‚ğ‹‚ß‚Ü‚·.
+//      ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®è¨­å®šã‚’æ±‚ã‚ã¾ã™.
 //-----------------------------------------------------------------------------
 D3D12_SHADER_RESOURCE_VIEW_DESC Texture::GetViewDesc(bool isCube) const
 {
@@ -354,8 +354,8 @@ D3D12_SHADER_RESOURCE_VIEW_DESC Texture::GetViewDesc(bool isCube) const
     {
     case D3D12_RESOURCE_DIMENSION_BUFFER:
     {
-        // ƒoƒbƒtƒ@‚Í‘ÎÛŠO‚Æ‚µ‚Ü‚·.
-        abort();    // ƒAƒvƒŠ‚ğ~‚ß‚é.
+        // ãƒãƒƒãƒ•ã‚¡ã¯å¯¾è±¡å¤–ã¨ã—ã¾ã™.
+        abort();    // ã‚¢ãƒ—ãƒªã‚’æ­¢ã‚ã‚‹.
     }
     break;
 
@@ -430,10 +430,10 @@ D3D12_SHADER_RESOURCE_VIEW_DESC Texture::GetViewDesc(bool isCube) const
             }
             else
             {
-                // 2D ƒeƒNƒXƒ`ƒƒiƒ~ƒbƒv‚ ‚èE‚È‚µ‚Ç‚¿‚ç‚à TEXTURE2D ‚Å‘Sƒ~ƒbƒv‚ğQÆj
+                // 2D ãƒ†ã‚¯ã‚¹ãƒãƒ£ï¼ˆãƒŸãƒƒãƒ—ã‚ã‚Šãƒ»ãªã—ã©ã¡ã‚‰ã‚‚ TEXTURE2D ã§å…¨ãƒŸãƒƒãƒ—ã‚’å‚ç…§ï¼‰
                 viewDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
                 viewDesc.Texture2D.MostDetailedMip = 0;
-                viewDesc.Texture2D.MipLevels = desc.MipLevels;  // 0 ‚Ì‚Æ‚«‚Íu‘S’iv‚ÌˆÓ–¡‚É‚È‚éê‡‚ ‚èB—vŠm”FB
+                viewDesc.Texture2D.MipLevels = desc.MipLevels;  // 0 ã®ã¨ãã¯ã€Œå…¨æ®µã€ã®æ„å‘³ã«ãªã‚‹å ´åˆã‚ã‚Šã€‚è¦ç¢ºèªã€‚
                 viewDesc.Texture2D.PlaneSlice = 0;
                 viewDesc.Texture2D.ResourceMinLODClamp = 0.0f;
             }
@@ -453,8 +453,8 @@ D3D12_SHADER_RESOURCE_VIEW_DESC Texture::GetViewDesc(bool isCube) const
 
     default:
     {
-        // ‘z’èŠO
-        abort();    // ƒAƒvƒŠ‚ğ~‚ß‚é.
+        // æƒ³å®šå¤–
+        abort();    // ã‚¢ãƒ—ãƒªã‚’æ­¢ã‚ã‚‹.
     }
     break;
     }

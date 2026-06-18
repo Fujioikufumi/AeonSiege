@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+ï»¿//-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
 #include "ShaderManager.h"
@@ -6,20 +6,20 @@
 #include "FileUtil.h"
 
 //----------------------------------------------------------------------
-/// ƒVƒF[ƒ_ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
+/// ã‚·ã‚§ãƒ¼ãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
 //----------------------------------------------------------------------
 bool ShaderManager::LoadShaderFile(const std::wstring& shaderPath, ComPtr<ID3DBlob>& pBlob)
 {
-	// ƒtƒ@ƒCƒ‹ƒpƒX‚ğŒŸõ
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’æ¤œç´¢
 	std::wstring fullPath;
-	// ƒtƒ@ƒCƒ‹ƒpƒX‚ª‘¶İ‚·‚é‚©Šm”F
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ãŒå­˜åœ¨ã™ã‚‹ã‹ç¢ºèª
 	if (!SearchFilePath(shaderPath.c_str(), fullPath))
 	{
 		ELOG("Error : Shader file not found. path = %ls", shaderPath.c_str());
 		return false;
 	}
 
-	// ƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
 	HRESULT hr = D3DReadFileToBlob(fullPath.c_str(), pBlob.GetAddressOf());
 	if (FAILED(hr))
 	{
@@ -31,28 +31,28 @@ bool ShaderManager::LoadShaderFile(const std::wstring& shaderPath, ComPtr<ID3DBl
 }
 
 //----------------------------------------------------------------------
-/// ƒVƒF[ƒ_[‚ğ“Ç‚İ‚Ş
+/// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã‚€
 //----------------------------------------------------------------------
 bool ShaderManager::LoadShader(const std::wstring& shaderName,
 	const std::wstring& vsPath,
 	const std::wstring& psPath)
 {
 
-	// Šù‚É“Ç‚İ‚Ü‚ê‚Ä‚¢‚é‚©Šm”F
+	// æ—¢ã«èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª
 	auto it = m_LoadedShaders.find(shaderName);
 	if (it != m_LoadedShaders.end())
 	{
 		DLOG("Shader already loaded: %ls", shaderName.c_str());
-		return true;  // Šù‚É“Ç‚İ‚Ü‚ê‚Ä‚¢‚é
+		return true;  // æ—¢ã«èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹
 	}
 
-	// V‚µ‚¢ƒVƒF[ƒ_[î•ñ‚ğì¬
+	// æ–°ã—ã„ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼æƒ…å ±ã‚’ä½œæˆ
 	ShaderInfo shaderInfo;
 	shaderInfo.vsPath = vsPath;
 	shaderInfo.psPath = psPath;
 	shaderInfo.isValid = false;
 
-	// ’¸“_ƒVƒF[ƒ_[‚ğ“Ç‚İ‚Ş
+	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã‚€
 	if (!LoadShaderFile(vsPath, shaderInfo.pVSBlob))
 	{
 		ELOG("Error : Failed to load vertex shader. name = %ls, path = %ls",
@@ -60,7 +60,7 @@ bool ShaderManager::LoadShader(const std::wstring& shaderName,
 		return false;
 	}
 
-	// ƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚ğ“Ç‚İ‚Ş
+	// ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã‚€
 	if (!LoadShaderFile(psPath, shaderInfo.pPSBlob))
 	{
 		ELOG("Error : Failed to load pixel shader. name = %ls, path = %ls",
@@ -68,7 +68,7 @@ bool ShaderManager::LoadShader(const std::wstring& shaderName,
 		return false;
 	}
 
-	// “Ç‚İ‚İ¬Œ÷
+	// èª­ã¿è¾¼ã¿æˆåŠŸ
 	shaderInfo.isValid = true;
 	m_LoadedShaders[shaderName] = std::move(shaderInfo);
 
@@ -77,11 +77,11 @@ bool ShaderManager::LoadShader(const std::wstring& shaderName,
 }
 
 //----------------------------------------------------------------------
-//	ƒWƒIƒƒgƒŠƒVƒF[ƒ_[‚àŠÜ‚ß‚ÄƒVƒF[ƒ_[‚ğ“Ç‚İ‚Ş
+//	ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚‚å«ã‚ã¦ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã‚€
 //----------------------------------------------------------------------
 bool ShaderManager::LoadShader(const std::wstring& shaderName, const std::wstring& vsPath, const std::wstring& psPath, const std::wstring& gsPath)
 {
-	// Šù‚É“Ç‚İ‚Ü‚ê‚Ä‚¢‚é‚©Šm”F
+	// æ—¢ã«èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª
 	auto it = m_LoadedShaders.find(shaderName);
 	if(it != m_LoadedShaders.end())
 	{
@@ -89,14 +89,14 @@ bool ShaderManager::LoadShader(const std::wstring& shaderName, const std::wstrin
 		return true;
 	}
 
-	// ƒVƒF[ƒ_[î•ñ‚ğì¬
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼æƒ…å ±ã‚’ä½œæˆ
 	ShaderInfo shaderInfo;
 	shaderInfo.vsPath = vsPath;
 	shaderInfo.psPath = psPath;
 	shaderInfo.gsPath = gsPath;
 	shaderInfo.isValid = false;
 
-	// ’¸“_ƒVƒF[ƒ_[‚ğ“Ç‚İ‚Ş
+	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã‚€
 	if(!LoadShaderFile(vsPath, shaderInfo.pVSBlob))
 	{
 		ELOG("Error : Failed to load vertex shader. name = %ls, path = %ls",
@@ -104,7 +104,7 @@ bool ShaderManager::LoadShader(const std::wstring& shaderName, const std::wstrin
 		return false;
 	}
 
-	// ƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚ğ“Ç‚İ‚Ş
+	// ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã‚€
 	if(!LoadShaderFile(psPath, shaderInfo.pPSBlob))
 	{
 		ELOG("Error : Failed to load pixel shader. name = %ls, path = %ls",
@@ -112,7 +112,7 @@ bool ShaderManager::LoadShader(const std::wstring& shaderName, const std::wstrin
 		return false;
 	}
 
-	// ƒWƒIƒƒgƒŠƒVƒF[ƒ_[‚ğ“Ç‚İ‚Ş
+	// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã‚€
 	if(!LoadShaderFile(gsPath, shaderInfo.pGSBlob))
 	{
 		ELOG("Error : Failed to load geometry shader. name = %ls, path = %ls",
@@ -120,7 +120,7 @@ bool ShaderManager::LoadShader(const std::wstring& shaderName, const std::wstrin
 		return false;
 	}
 	
-	// “Ç‚İ‚İ¬Œ÷
+	// èª­ã¿è¾¼ã¿æˆåŠŸ
 	shaderInfo.isValid = true;
 	m_LoadedShaders[shaderName] = std::move(shaderInfo);
 
@@ -130,32 +130,32 @@ bool ShaderManager::LoadShader(const std::wstring& shaderName, const std::wstrin
 }
 
 //----------------------------------------------------------------------
-//  ƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_[‚ğ“Ç‚İ‚Ş
+//  ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã‚€
 //----------------------------------------------------------------------
 bool ShaderManager::LoadComputeShader(const std::wstring& shaderName, const std::wstring& csPath)
 {
-	// Šù‚Éƒ[ƒhÏ‚İ‚©Šm”F
+	// æ—¢ã«ãƒ­ãƒ¼ãƒ‰æ¸ˆã¿ã‹ç¢ºèª
 	auto it = m_LoadedShaders.find(shaderName);
 
-	// ƒ[ƒhÏ‚İ‚©‚Ç‚¤‚©
+	// ãƒ­ãƒ¼ãƒ‰æ¸ˆã¿ã‹ã©ã†ã‹
 	if (it != m_LoadedShaders.end())
 	{
 		return true;
 	}
 
-	// V‹Kì¬
+	// æ–°è¦ä½œæˆ
 	ShaderInfo info;
 	info.csPath = csPath;
 	info.isValid = true;
 
-	// ƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_[‚ğ“Ç‚İ‚Ş
+	// ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã‚€
 	if (!LoadShaderFile(csPath, info.pCSBlob))
 	{
 		ELOG("Error : Failed to load compute shader. name = %ls, path = %ls", shaderName.c_str(), csPath.c_str());
 		return false;
 	}
 
-	// “Ç‚İ‚İ¬Œ÷
+	// èª­ã¿è¾¼ã¿æˆåŠŸ
 	m_LoadedShaders[shaderName] = std::move(info);
 
 	DLOG("Compute shader loaded: %ls", shaderName.c_str());
@@ -163,15 +163,15 @@ bool ShaderManager::LoadComputeShader(const std::wstring& shaderName, const std:
 }
 
 //----------------------------------------------------------------------
-/// ƒVƒF[ƒ_[î•ñ‚ğæ“¾
+/// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼æƒ…å ±ã‚’å–å¾—
 //----------------------------------------------------------------------
 ShaderInfo* ShaderManager::GetShader(const std::wstring& shaderName)
 {
-	// ˆø”‚ÌƒVƒF[ƒ_[‚ğŒŸõ
+	// å¼•æ•°ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’æ¤œç´¢
 	auto it = m_LoadedShaders.find(shaderName);
 	if (it != m_LoadedShaders.end() && it->second.isValid)
 	{
-		// pVSBlob‚ÆpPSBlob‚ª—LŒø‚©ƒ`ƒFƒbƒN
+		// pVSBlobã¨pPSBlobãŒæœ‰åŠ¹ã‹ãƒã‚§ãƒƒã‚¯
 		if (it->second.pVSBlob.Get() != nullptr && it->second.pPSBlob.Get() != nullptr)
 		{
 			return &it->second;
@@ -186,7 +186,7 @@ ShaderInfo* ShaderManager::GetShader(const std::wstring& shaderName)
 }
 
 //----------------------------------------------------------------------
-//  ƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_[î•ñ‚ğæ“¾
+//  ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼æƒ…å ±ã‚’å–å¾—
 //----------------------------------------------------------------------
 ShaderInfo* ShaderManager::GetComputeShader(const std::wstring& shaderName)
 {
@@ -197,7 +197,7 @@ ShaderInfo* ShaderManager::GetComputeShader(const std::wstring& shaderName)
 }
 
 //----------------------------------------------------------------------
-/// ƒVƒF[ƒ_[‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚é‚©Šm”F
+/// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª
 //----------------------------------------------------------------------
 bool ShaderManager::IsShaderLoaded(const std::wstring& shaderName) const
 {
@@ -206,14 +206,14 @@ bool ShaderManager::IsShaderLoaded(const std::wstring& shaderName) const
 }
 
 //----------------------------------------------------------------------
-/// ƒVƒF[ƒ_[‚ğƒAƒ“ƒ[ƒh
+/// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ã‚¢ãƒ³ãƒ­ãƒ¼ãƒ‰
 //----------------------------------------------------------------------
 void ShaderManager::UnloadShader(const std::wstring& shaderName)
 {
 	auto it = m_LoadedShaders.find(shaderName);
 	if (it != m_LoadedShaders.end())
 	{
-		// ƒŠƒ\[ƒXŠJ•ú
+		// ãƒªã‚½ãƒ¼ã‚¹é–‹æ”¾
 		it->second.pVSBlob;
 		it->second.pPSBlob;
 		m_LoadedShaders.erase(it);
@@ -222,25 +222,25 @@ void ShaderManager::UnloadShader(const std::wstring& shaderName)
 }
 
 //----------------------------------------------------------------------
-/// ‘S‚Ä‚ÌƒVƒF[ƒ_[‚ğƒAƒ“ƒ[ƒh
+/// å…¨ã¦ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ã‚¢ãƒ³ãƒ­ãƒ¼ãƒ‰
 //----------------------------------------------------------------------
 void ShaderManager::UnloadAll()
 {
 	for (auto& pair : m_LoadedShaders)
 	{
-		pair.second.pVSBlob.Reset(); // ’¸“_ƒVƒF[ƒ_[
-		pair.second.pPSBlob.Reset(); // ƒsƒNƒZƒ‹ƒVƒF[ƒ_[
-		pair.second.pCSBlob.Reset(); // ƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_[
+		pair.second.pVSBlob.Reset(); // é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
+		pair.second.pPSBlob.Reset(); // ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
+		pair.second.pCSBlob.Reset(); // ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 	}
 	m_LoadedShaders.clear();
 	DLOG("All shaders unloaded");
 }
 
 //----------------------------------------------------------------------
-// I—¹ˆ—
+// çµ‚äº†å‡¦ç†
 //----------------------------------------------------------------------
 void ShaderManager::Term()
 {
-	// ‘S‚Ä‚ÌƒVƒF[ƒ_[‚ğƒAƒ“ƒ[ƒh
+	// å…¨ã¦ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ã‚¢ãƒ³ãƒ­ãƒ¼ãƒ‰
 	UnloadAll();
 }

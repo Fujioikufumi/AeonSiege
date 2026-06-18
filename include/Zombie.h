@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "CharacterBase.h"
 #include "StatusComponent.h"
 
@@ -18,7 +18,7 @@ enum class ZombieAttackType
 };
 
 /// <summary>
-/// ƒ]ƒ“ƒrƒNƒ‰ƒX
+/// ã‚¾ãƒ³ãƒ“ã‚¯ãƒ©ã‚¹
 /// </summary>
 class Zombie : public CharacterBase
 {
@@ -34,7 +34,7 @@ protected:
 	explicit Zombie(ZombieType type);
 
 private:
-	// EnemyAIComponent ‚©‚çŒÄ‚Ño‚³‚ê‚éƒXƒe[ƒg•Ï‰»EUŒ‚ƒCƒxƒ“ƒg‚Ìƒnƒ“ƒhƒ‰[
+	// EnemyAIComponent ã‹ã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆå¤‰åŒ–ãƒ»æ”»æ’ƒã‚¤ãƒ™ãƒ³ãƒˆã®ãƒãƒ³ãƒ‰ãƒ©ãƒ¼
 	void OnAIStateChanged(EnemyAIState newState);
 	void OnAIAttack(GameObject* target);
 
@@ -47,14 +47,14 @@ private:
 	static constexpr const char* kAnimKick = "Zombie_Kick";
 	static constexpr const char* kAnimDying = "Zombie_Dying";
 
-	ZombieType m_Type = ZombieType::Normal; // ƒ]ƒ“ƒr‚Ìí—Ş
-	ZombieAttackType m_CurrentAttackType = ZombieAttackType::Punch; // Œ»İ‚ÌUŒ‚ƒ^ƒCƒv
+	ZombieType m_Type = ZombieType::Normal; // ã‚¾ãƒ³ãƒ“ã®ç¨®é¡
+	ZombieAttackType m_CurrentAttackType = ZombieAttackType::Punch; // ç¾åœ¨ã®æ”»æ’ƒã‚¿ã‚¤ãƒ—
 
 	StatusComponent* m_Status = nullptr;
 
-	// ‹ßÚUŒ‚‚Ìƒqƒbƒg‚ğƒAƒjƒ‚É‡‚í‚¹‚Ä’x‰„‚³‚¹‚éiPaladin ‚Ì pending ƒpƒ^[ƒ“j
-	static constexpr float kMeleeDamageDelaySec = 1.0f; // ƒAƒjƒ‚Ì“–‚½‚è•t‹ß‚É‡‚í‚¹‚Ä’²®
-	static constexpr float kMeleeHitRange = 22.0f;      // Init ‚Ì SetMeleeRange ‚Æˆê’v‚³‚¹‚é
-	static constexpr float kKickAttackRate = 35.0f; // ƒLƒbƒNUŒ‚‚Ì”­“®Šm—¦
-	static constexpr float kKickDamageRate = 2.0f; // ƒLƒbƒN‚ÌˆĞ—Í”{—¦
+	// è¿‘æ¥æ”»æ’ƒã®ãƒ’ãƒƒãƒˆã‚’ã‚¢ãƒ‹ãƒ¡ã«åˆã‚ã›ã¦é…å»¶ã•ã›ã‚‹ï¼ˆPaladin ã® pending ãƒ‘ã‚¿ãƒ¼ãƒ³ï¼‰
+	static constexpr float kMeleeDamageDelaySec = 1.0f; // ã‚¢ãƒ‹ãƒ¡ã®å½“ãŸã‚Šä»˜è¿‘ã«åˆã‚ã›ã¦èª¿æ•´
+	static constexpr float kMeleeHitRange = 22.0f;      // Init ã® SetMeleeRange ã¨ä¸€è‡´ã•ã›ã‚‹
+	static constexpr float kKickAttackRate = 35.0f; // ã‚­ãƒƒã‚¯æ”»æ’ƒã®ç™ºå‹•ç¢ºç‡
+	static constexpr float kKickDamageRate = 2.0f; // ã‚­ãƒƒã‚¯ã®å¨åŠ›å€ç‡
 };

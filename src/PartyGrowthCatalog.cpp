@@ -1,4 +1,4 @@
-#include "PartyGrowthCatalog.h"
+﻿#include "PartyGrowthCatalog.h"
 #include "Logger.h"
 #include "FileUtil.h"
 #include "EncodingUtils.h"

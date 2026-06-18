@@ -1,22 +1,22 @@
-#include "SkillCatalog.h"
+ï»¿#include "SkillCatalog.h"
 
 namespace {
 
-	// ƒXƒLƒ‹1‚Ì’è”
-	constexpr float kSkill1PowerRate		= 1.5f;	// ƒXƒLƒ‹‚ÌUŒ‚”{—¦(StatusComponent‚Ìm_Status.attackPower‚ÉŠ|‚¯‚é)
-	constexpr float kSkill1CooldownSec		= 3.0f; // ƒXƒLƒ‹‚ÌƒN[ƒ‹ƒ_ƒEƒ“ŠÔi•bj
-	constexpr float kSkill1Range			= 50.0f;// ƒXƒLƒ‹‚ÌË’ö‹——£
-	constexpr int	kSkill1HitCount			= 1;	// ƒXƒLƒ‹‚Ìƒqƒbƒg‰ñ”i•¡”‰ñUŒ‚‚·‚éƒXƒLƒ‹‚Ìê‡j
-	constexpr float kSkill1EffectDelaySec	= 0.75f;// ƒXƒLƒ‹”­“®Œã‚ÌŒø‰Ê”­¶‚Ü‚Å‚Ì’x‰„ŠÔi•bj
+	// ã‚¹ã‚­ãƒ«1ã®å®šæ•°
+	constexpr float kSkill1PowerRate		= 1.5f;	// ã‚¹ã‚­ãƒ«ã®æ”»æ’ƒå€ç‡(StatusComponentã®m_Status.attackPowerã«æ›ã‘ã‚‹)
+	constexpr float kSkill1CooldownSec		= 3.0f; // ã‚¹ã‚­ãƒ«ã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³æ™‚é–“ï¼ˆç§’ï¼‰
+	constexpr float kSkill1Range			= 50.0f;// ã‚¹ã‚­ãƒ«ã®å°„ç¨‹è·é›¢
+	constexpr int	kSkill1HitCount			= 1;	// ã‚¹ã‚­ãƒ«ã®ãƒ’ãƒƒãƒˆå›æ•°ï¼ˆè¤‡æ•°å›æ”»æ’ƒã™ã‚‹ã‚¹ã‚­ãƒ«ã®å ´åˆï¼‰
+	constexpr float kSkill1EffectDelaySec	= 0.75f;// ã‚¹ã‚­ãƒ«ç™ºå‹•å¾Œã®åŠ¹æœç™ºç”Ÿã¾ã§ã®é…å»¶æ™‚é–“ï¼ˆç§’ï¼‰
 
-	// ƒXƒLƒ‹2‚Ì’è”
+	// ã‚¹ã‚­ãƒ«2ã®å®šæ•°
 	constexpr float kSkill2PowerRate		= 1.8f;
 	constexpr float kSkill2CooldownSec		= 5.0f;
 	constexpr float kSkill2Range			= 55.0f;
 	constexpr int	kSkill2HitCount			= 2;
 	constexpr float kSkill2EffectDelaySec	= 0.65f;
 
-	// ƒXƒLƒ‹3‚Ì’è”
+	// ã‚¹ã‚­ãƒ«3ã®å®šæ•°
 	constexpr float kSkill3PowerRate		= 2.0f;
 	constexpr float kSkill3CooldownSec		= 4.0f;
 	constexpr float kSkill3Range			= 55.0f;
@@ -24,7 +24,7 @@ namespace {
 	constexpr int	kSkill3HitCount			= 1;
 	constexpr float kSkill3EffectDelaySec	= 0.55f;
 
-	// ƒXƒLƒ‹4‚Ì’è”
+	// ã‚¹ã‚­ãƒ«4ã®å®šæ•°
 	constexpr float kSkill4PowerRate		= 3.0f;
 	constexpr float kSkill4CooldownSec		= 10.0f;
 	constexpr float kSkill4Range			= 90.0f;
@@ -32,7 +32,7 @@ namespace {
 	constexpr int	kSkill4HitCount			= 1;
 	constexpr float kSkill4EffectDelaySec	= 0.6f;
 
-	// ƒXƒLƒ‹5‚Ì’è”
+	// ã‚¹ã‚­ãƒ«5ã®å®šæ•°
 	constexpr float kSkill5PowerRate		= 1.6f;
 	constexpr float kSkill5CooldownSec		= 7.0f;
 	constexpr float kSkill5Range			= 65.0f;
@@ -40,7 +40,7 @@ namespace {
 	constexpr float kSkill5HitIntervalSec	= 0.3f;
 	constexpr float kSkill5EffectDelaySec	= 0.8f;
 
-	// ƒXƒLƒ‹6‚Ì’è”
+	// ã‚¹ã‚­ãƒ«6ã®å®šæ•°
 	constexpr float kSkill6PowerRate = 1.6f;
 	constexpr float kSkill6CooldownSec = 13.0f;
 	constexpr float kSkill6Range = 80.0f;

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 #include "ShopOffer.h"
 #include "UpgradeData.h"
@@ -18,28 +18,28 @@ public:
 	void Update(float deltaTime = 0.0f) override;
 
 private:
-	// ƒVƒ‡ƒbƒvUI‚ÌƒXƒvƒ‰ƒCƒg‚ğ‰Šú‰»
+	// ã‚·ãƒ§ãƒƒãƒ—UIã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–
 	void SetupSprites();
 	
-	// ƒŒƒAƒŠƒeƒB‚ğ•\‚·ƒXƒvƒ‰ƒCƒg‚ğ‰Šú‰»
+	// ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã‚’è¡¨ã™ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–
 	void SetupRaritySprites();
 	
-	// ‹­‰»“à—e‚ğ•\‚·ƒXƒvƒ‰ƒCƒg‚ğ‰Šú‰»
+	// å¼·åŒ–å†…å®¹ã‚’è¡¨ã™ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–
 	void SetupContentSprites();
 	
-	// –¡•û‰Á“ü‚âƒXƒLƒ‹‰ğ•ú‚ÌƒIƒtƒ@[—pƒXƒvƒ‰ƒCƒg‚ğ‰Šú‰»
+	// å‘³æ–¹åŠ å…¥ã‚„ã‚¹ã‚­ãƒ«è§£æ”¾ã®ã‚ªãƒ•ã‚¡ãƒ¼ç”¨ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–
 	void SetupOfferSprites();
 
-	// ƒVƒ‡ƒbƒvUI‚ÌƒŒƒCƒAƒEƒg‚ğXVB‰æ–ÊƒTƒCƒY‚âƒJ[ƒh‚Ì”z’u‚È‚Ç‚ğ’²®
+	// ã‚·ãƒ§ãƒƒãƒ—UIã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’æ›´æ–°ã€‚ç”»é¢ã‚µã‚¤ã‚ºã‚„ã‚«ãƒ¼ãƒ‰ã®é…ç½®ãªã©ã‚’èª¿æ•´
 	void UpdateLayout();
 
-	// ShopManager‚©‚çŒ»İ‚ÌƒIƒtƒ@[î•ñ‚ğæ“¾‚µ‚ÄAUI‚ÌƒXƒvƒ‰ƒCƒg‚É”½‰f‚·‚é
+	// ShopManagerã‹ã‚‰ç¾åœ¨ã®ã‚ªãƒ•ã‚¡ãƒ¼æƒ…å ±ã‚’å–å¾—ã—ã¦ã€UIã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã«åæ˜ ã™ã‚‹
 	void UpdateOptions(const ShopManager* shopManager);
 
-	/// ShopManager ‚ªİ’è‚µ‚½ ShopOffer.contentTexturePath ‚ğƒRƒ“ƒeƒ“ƒc—pƒXƒvƒ‰ƒCƒg‚É“K—p‚·‚é
+	/// ShopManager ãŒè¨­å®šã—ãŸ ShopOffer.contentTexturePath ã‚’ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ç”¨ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã«é©ç”¨ã™ã‚‹
 	void ApplyOfferContentSprite(int cardIndex, const ShopOffer& offer, Sprite* contentSprite);
 
-	// ƒVƒ‡ƒbƒvUI‘S‘Ì‚Ì•\¦E”ñ•\¦‚ğØ‚è‘Ö‚¦‚é
+	// ã‚·ãƒ§ãƒƒãƒ—UIå…¨ä½“ã®è¡¨ç¤ºãƒ»éè¡¨ç¤ºã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 	void SetVisible(bool visible);
 
 	void HideAllOptionSprites();
@@ -54,7 +54,7 @@ private:
 	int ToRarityIndex(UpgradeRarity rarity) const;
 	int ToKindIndex(UpgradeKind kind) const;
 
-	// ShopManager‚É‚à“¯—l‚ÌŠÖ”‚ª‚ ‚é
+	// ShopManagerã«ã‚‚åŒæ§˜ã®é–¢æ•°ãŒã‚ã‚‹
 	std::wstring GetRarityTexturePath(UpgradeRarity rarity) const;
 	std::wstring GetContentTexturePath(UpgradeKind kind) const;
 
@@ -62,36 +62,36 @@ private:
 	void ApplyCardVisual(Sprite* raritySprite, Sprite* contentSprite, bool selected);
 
 private:
-	Sprite* m_pBackground = nullptr; // ƒVƒ‡ƒbƒv‚Ì”wŒi
-	Sprite* m_pEffectA = nullptr;	 // ƒVƒ‡ƒbƒv‚Ì”wŒiƒGƒtƒFƒNƒgA
-	Sprite* m_pEffectB = nullptr;	 // ƒVƒ‡ƒbƒv‚Ì”wŒiƒGƒtƒFƒNƒgB
+	Sprite* m_pBackground = nullptr; // ã‚·ãƒ§ãƒƒãƒ—ã®èƒŒæ™¯
+	Sprite* m_pEffectA = nullptr;	 // ã‚·ãƒ§ãƒƒãƒ—ã®èƒŒæ™¯ã‚¨ãƒ•ã‚§ã‚¯ãƒˆA
+	Sprite* m_pEffectB = nullptr;	 // ã‚·ãƒ§ãƒƒãƒ—ã®èƒŒæ™¯ã‚¨ãƒ•ã‚§ã‚¯ãƒˆB
 	Sprite* m_pRedPanel = nullptr;
 
-	// ƒŒƒAƒŠƒeƒBƒXƒvƒ‰ƒCƒg
+	// ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	std::array<std::array<Sprite*, kShopOfferCount>, kUpgradeRarityCount> m_RaritySprites = {};
 
-	// ‹­‰»“à—eƒXƒvƒ‰ƒCƒgBUpgradeKind ‚Æ UpgradeRarity ‚Ì‘g‚İ‡‚í‚¹‚ÅŠÇ—
+	// å¼·åŒ–å†…å®¹ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã€‚UpgradeKind ã¨ UpgradeRarity ã®çµ„ã¿åˆã‚ã›ã§ç®¡ç†
 	std::array<std::array<std::array<Sprite*, kShopOfferCount>, kUpgradeKindCount>, kUpgradeRarityCount> m_ContentSprites = {};
 
-	// –¡•û‰Á“üƒXƒvƒ‰ƒCƒg
+	// å‘³æ–¹åŠ å…¥ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	std::array<Sprite*, kShopOfferCount> m_AllySprites = {};
 	
-	// ƒXƒLƒ‹‰ğ•úƒXƒvƒ‰ƒCƒg
+	// ã‚¹ã‚­ãƒ«è§£æ”¾ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	std::array<Sprite*, kShopOfferCount> m_SkillSprites = {};
 
-	// ShopManager ‚ªİ’è‚µ‚½ ShopOffer.contentTexturePath ‚ğƒRƒ“ƒeƒ“ƒc—pƒXƒvƒ‰ƒCƒg‚É“K—p‚·‚é‚½‚ß‚ÌƒpƒX‚ÌƒLƒƒƒbƒVƒ…
+	// ShopManager ãŒè¨­å®šã—ãŸ ShopOffer.contentTexturePath ã‚’ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ç”¨ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã«é©ç”¨ã™ã‚‹ãŸã‚ã®ãƒ‘ã‚¹ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥
 	std::array<std::wstring, kShopOfferCount> m_LastOfferContentPaths{};
 
 	float m_EffectScrollX = 0.0f;
-	static constexpr float kEffectScrollSpeed = 80.0f; // ƒGƒtƒFƒNƒg‚ÌƒXƒNƒ[ƒ‹‘¬“x
-	static constexpr float kSelectedCardScale = 1.08f; // ‘I‘ğ’†‚ÌƒJ[ƒh‚ÌƒXƒP[ƒ‹
-	static constexpr float kUnselectedCardScale = 1.0f;// ‘I‘ğ’†‚ÌƒJ[ƒh‚ÌƒXƒP[ƒ‹	
-	static constexpr float kSelectedCardAlpha = 1.0f;  // ‘I‘ğ’†‚ÌƒJ[ƒh‚ÌƒAƒ‹ƒtƒ@’l
-	static constexpr float kUnselectedCardAlpha = 0.85f; // ‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢ƒJ[ƒh‚ÌƒAƒ‹ƒtƒ@’l
+	static constexpr float kEffectScrollSpeed = 80.0f; // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«é€Ÿåº¦
+	static constexpr float kSelectedCardScale = 1.08f; // é¸æŠä¸­ã®ã‚«ãƒ¼ãƒ‰ã®ã‚¹ã‚±ãƒ¼ãƒ«
+	static constexpr float kUnselectedCardScale = 1.0f;// é¸æŠä¸­ã®ã‚«ãƒ¼ãƒ‰ã®ã‚¹ã‚±ãƒ¼ãƒ«	
+	static constexpr float kSelectedCardAlpha = 1.0f;  // é¸æŠä¸­ã®ã‚«ãƒ¼ãƒ‰ã®ã‚¢ãƒ«ãƒ•ã‚¡å€¤
+	static constexpr float kUnselectedCardAlpha = 0.85f; // é¸æŠã•ã‚Œã¦ã„ãªã„ã‚«ãƒ¼ãƒ‰ã®ã‚¢ãƒ«ãƒ•ã‚¡å€¤
 
-	static constexpr float kCardYRatio = 0.43f;		// screenH ‚É‘Î‚·‚éƒJ[ƒh‚ÌYÀ•W
-	static constexpr float kCardSizeRatio = 0.2f;   // screenH ‚É‘Î‚·‚éƒJ[ƒhƒTƒCƒY
-	static constexpr float kCardXRatios[kShopOfferCount] = { 0.20f, 0.50f, 0.80f }; // screenW ‚É‘Î‚·‚éŠeƒJ[ƒh‚ÌXÀ•W
-	static constexpr float kPanelSizeRatioW = 0.5f;	// screenW ‚É‘Î‚·‚éƒpƒlƒ‹‚Ì•‚ÌŠ„‡
-	static constexpr float kPanelSizeRatioH = 0.5f;	// screenH ‚É‘Î‚·‚éƒpƒlƒ‹‚Ì‚‚³‚ÌŠ„‡
+	static constexpr float kCardYRatio = 0.43f;		// screenH ã«å¯¾ã™ã‚‹ã‚«ãƒ¼ãƒ‰ã®Yåº§æ¨™
+	static constexpr float kCardSizeRatio = 0.2f;   // screenH ã«å¯¾ã™ã‚‹ã‚«ãƒ¼ãƒ‰ã‚µã‚¤ã‚º
+	static constexpr float kCardXRatios[kShopOfferCount] = { 0.20f, 0.50f, 0.80f }; // screenW ã«å¯¾ã™ã‚‹å„ã‚«ãƒ¼ãƒ‰ã®Xåº§æ¨™
+	static constexpr float kPanelSizeRatioW = 0.5f;	// screenW ã«å¯¾ã™ã‚‹ãƒ‘ãƒãƒ«ã®å¹…ã®å‰²åˆ
+	static constexpr float kPanelSizeRatioH = 0.5f;	// screenH ã«å¯¾ã™ã‚‹ãƒ‘ãƒãƒ«ã®é«˜ã•ã®å‰²åˆ
 };

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Zombie.h"
 
 class SkeletonZombie : public Zombie

@@ -1,4 +1,4 @@
-#include "PhaseHudPanel.h"
+ï»¿#include "PhaseHudPanel.h"
 #include "GameObject.h"
 #include "Sprite.h"
 #include "NumberUI.h"
@@ -9,11 +9,11 @@
 
 PhaseHudPanel::PhaseHudPanel(GameObject* owner)
 {
-	// Phase ƒ‰ƒxƒ‹iCombatHud ‚Ì Component ‚Æ‚µ‚ÄŠ—Lj
+	// Phase ãƒ©ãƒ™ãƒ«ï¼ˆCombatHud ã® Component ã¨ã—ã¦æ‰€æœ‰ï¼‰
 	m_Label = owner->AddComponent<Sprite>();
 	m_Label->Init(kPhaseLabelTex);
 
-	// ”ŽšiNumberUI ‚Í GameObject ‚Ì‚½‚ß Scene “o˜^j
+	// æ•°å­—ï¼ˆNumberUI ã¯ GameObject ã®ãŸã‚ Scene ç™»éŒ²ï¼‰
 	Scene* scene = GameManager::GetScene();
 	m_Number = scene->AddGameObject<NumberUI>(eLayer::UI, "CombatHudPhaseNumber");
 	m_Number->Init();

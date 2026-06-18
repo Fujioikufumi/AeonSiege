@@ -1,4 +1,4 @@
-#include "PhaseManager.h"
+ï»¿#include "PhaseManager.h"
 #include "EnemySpawner.h"
 #include "GameManager.h"
 #include "Scene.h"
@@ -15,7 +15,7 @@ namespace {
 
 	static constexpr wchar_t kPhasesJsonPath[] = L"Assets/AppData/Phases.json";
 
-	// JSON ‚Ì type •¶š—ñ‚ğ EnemyType ‚É•ÏŠ·‚·‚é
+	// JSON ã® type æ–‡å­—åˆ—ã‚’ EnemyType ã«å¤‰æ›ã™ã‚‹
 	static bool ParseEnemyTypeString(const std::string& key, EnemyType& outType)
 	{
 		if (key == "Zombie") { outType = EnemyType::Zombie; return true; }
@@ -24,17 +24,17 @@ namespace {
 		return false;
 	}
 
-	// Json‚É‘‚©‚ê‚½ƒtƒF[ƒY‚Ìî•ñ‚ğ PhaseData ‚É•ÏŠ·‚·‚é
+	// Jsonã«æ›¸ã‹ã‚ŒãŸãƒ•ã‚§ãƒ¼ã‚ºã®æƒ…å ±ã‚’ PhaseData ã«å¤‰æ›ã™ã‚‹
 	static PhaseData ParsePhaseJson(const nlohmann::json& jp, int defaultMaxSpawn)
 	{
 		PhaseData p{};
 
-		// ƒtƒF[ƒY”Ô†‚ğæ“¾Bw’è‚ª‚È‚¢ê‡‚Í1‚Æ‚·‚é
+		// ãƒ•ã‚§ãƒ¼ã‚ºç•ªå·ã‚’å–å¾—ã€‚æŒ‡å®šãŒãªã„å ´åˆã¯1ã¨ã™ã‚‹
 		p.phaseNo = jp.value("phaseNo", 1);
 
 		int remaining = max(0, defaultMaxSpawn);
 
-		// enemies ”z—ñ‚ğæ“¾B‘¶İ‚µ‚È‚¢A‚Ü‚½‚Í”z—ñ‚Å‚È‚¢ê‡‚Í nullptr ‚Æ‚·‚é
+		// enemies é…åˆ—ã‚’å–å¾—ã€‚å­˜åœ¨ã—ãªã„ã€ã¾ãŸã¯é…åˆ—ã§ãªã„å ´åˆã¯ nullptr ã¨ã™ã‚‹
 		const nlohmann::json* enemiesJson = nullptr;
 		if (jp.contains("enemies") && jp["enemies"].is_array())
 			enemiesJson = &jp["enemies"];
@@ -56,12 +56,12 @@ namespace {
 				int count = je.value("count", 1);
 				if (count <= 0)
 					continue;
-				// maxEnemiesPerPhase ‚ğ’´‚¦‚È‚¢‚æ‚¤AƒtƒF[ƒY“à‚Ì‡ŒvoŒ»”‚Å‘Å‚¿Ø‚è
+				// maxEnemiesPerPhase ã‚’è¶…ãˆãªã„ã‚ˆã†ã€ãƒ•ã‚§ãƒ¼ã‚ºå†…ã®åˆè¨ˆå‡ºç¾æ•°ã§æ‰“ã¡åˆ‡ã‚Š
 				count = min(count, remaining);
 				if (count <= 0)
 					break;
 
-				// ƒtƒF[ƒY“à‚ÌƒGƒlƒ~[î•ñ‚ğì¬
+				// ãƒ•ã‚§ãƒ¼ã‚ºå†…ã®ã‚¨ãƒãƒŸãƒ¼æƒ…å ±ã‚’ä½œæˆ
 				PhaseEnemyEntry e{};
 				e.type = t;
 				e.count = count;
@@ -84,7 +84,7 @@ void PhaseManager::LoadPhaseData()
 {
 	m_Phases.clear();
 
-	// ƒtƒ@ƒCƒ‹ƒpƒX‚ÌŒŸõ
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã®æ¤œç´¢
 	std::wstring fullPath;
 	if (!SearchFilePathW(kPhasesJsonPath, fullPath))
 	{
@@ -92,7 +92,7 @@ void PhaseManager::LoadPhaseData()
 		return;
 	}
 
-	// JSONƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+	// JSONãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
 	std::ifstream ifs(EncodeWideToUtf8(fullPath));
 	if (!ifs)
 	{
@@ -100,7 +100,7 @@ void PhaseManager::LoadPhaseData()
 		return;
 	}
 
-	// nlohmann::json ‚Å‚Ìƒp[ƒX
+	// nlohmann::json ã§ã®ãƒ‘ãƒ¼ã‚¹
 	nlohmann::json root;
 	try
 	{
@@ -147,7 +147,7 @@ bool PhaseManager::Init()
 	}
 
 	m_State = PhaseState::Spawning;
-	m_CurrentPhaseIndex = 0; // ƒQ[ƒ€ŠJn‚ÌƒtƒF[ƒY”Ô†
+	m_CurrentPhaseIndex = 0; // ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚ã®ãƒ•ã‚§ãƒ¼ã‚ºç•ªå·
 	m_PhaseClearTimer = 0.0f;
 
 	BeginSpawnPhase();
@@ -163,7 +163,7 @@ void PhaseManager::Update(float deltaTime)
 		break;
 
 	case PhaseState::Spawning:
-		// ƒGƒlƒ~[‚ÌƒXƒ|[ƒ“‚ÍƒtƒF[ƒYŠJn‚©‚ç­‚µ’x‚ç‚¹‚é
+		// ã‚¨ãƒãƒŸãƒ¼ã®ã‚¹ãƒãƒ¼ãƒ³ã¯ãƒ•ã‚§ãƒ¼ã‚ºé–‹å§‹ã‹ã‚‰å°‘ã—é…ã‚‰ã›ã‚‹
 		m_SpawnDelayTimer -= deltaTime;
 		if (m_SpawnDelayTimer > 0.0f)
 			break;
@@ -205,7 +205,7 @@ int PhaseManager::GetCurrentPhaseNumber() const
 	if (m_Phases.empty())
 		return 0;
 
-	// ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Ìê‡‚ÍÅIƒtƒF[ƒY‚Ì”Ô†‚ğ•Ô‚·
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã®å ´åˆã¯æœ€çµ‚ãƒ•ã‚§ãƒ¼ã‚ºã®ç•ªå·ã‚’è¿”ã™
 	if (m_CurrentPhaseIndex < 0 ||
 		m_CurrentPhaseIndex >= static_cast<int>(m_Phases.size()))
 	{
@@ -227,15 +227,15 @@ void PhaseManager::StartCurrentPhase()
 
 	if (m_CurrentPhaseIndex < 0 || m_CurrentPhaseIndex >= static_cast<int>(m_Phases.size()))
 	{
-		// ƒtƒF[ƒYƒf[ƒ^‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍƒQ[ƒ€ƒNƒŠƒA‚Æ‚·‚é
+		// ãƒ•ã‚§ãƒ¼ã‚ºãƒ‡ãƒ¼ã‚¿ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢ã¨ã™ã‚‹
 		m_State = PhaseState::GameClear;
 		return;
 	}
 
-	// Œ»İ‚ÌƒtƒF[ƒY”Ô†‚ğƒQ[ƒ€ƒXƒe[ƒ^ƒX‚É”½‰f
+	// ç¾åœ¨ã®ãƒ•ã‚§ãƒ¼ã‚ºç•ªå·ã‚’ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã«åæ˜ 
 	GameManager::GetStatus().currentPhase = m_Phases[m_CurrentPhaseIndex].phaseNo;
 
-	// ƒGƒlƒ~[‚ğoŒ»‚³‚¹‚é
+	// ã‚¨ãƒãƒŸãƒ¼ã‚’å‡ºç¾ã•ã›ã‚‹
 	m_EnemySpawner->SpawnPhase(m_Phases[m_CurrentPhaseIndex]);
 }
 
@@ -244,7 +244,7 @@ bool PhaseManager::AreAllEnemiesDefeated() const
 	Scene* scene = GameManager::GetScene();
 	if (scene == nullptr) return false;
 
-	// ƒV[ƒ““à‚ÉeLayer::ENEMY‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍA‘S‚Ä“|‚³‚ê‚½‚Æ‚İ‚È‚·
+	// ã‚·ãƒ¼ãƒ³å†…ã«eLayer::ENEMYã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ã€å…¨ã¦å€’ã•ã‚ŒãŸã¨ã¿ãªã™
 	const auto& enemies = scene->GetGameObjectsByLayer(eLayer::ENEMY);
 
 	for (const auto& enemy : enemies)
@@ -291,7 +291,7 @@ bool PhaseManager::ShouldOpenShop() const
 	}
 	const int clearedPhaseNo = m_Phases[m_CurrentPhaseIndex].phaseNo;
 
-	// ƒtƒF[ƒY1I—¹ŒãA‚Ü‚½‚Íw’è‚ÌŠÔŠui5ƒtƒF[ƒY‚²‚Æj‚ÉƒVƒ‡ƒbƒv‚ğŠJ‚­
+	// ãƒ•ã‚§ãƒ¼ã‚º1çµ‚äº†å¾Œã€ã¾ãŸã¯æŒ‡å®šã®é–“éš”ï¼ˆ5ãƒ•ã‚§ãƒ¼ã‚ºã”ã¨ï¼‰ã«ã‚·ãƒ§ãƒƒãƒ—ã‚’é–‹ã
 	return clearedPhaseNo == 1 || (clearedPhaseNo > 0 && (clearedPhaseNo % kShopIntervalPhase) == 0);
 }
 

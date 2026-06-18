@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 #include "CharacterBase.h"
 #include "StatusComponent.h"
@@ -6,13 +6,13 @@
 class Terrain;
 enum class EnemyAIState;
 
-// ƒWƒƒƒ“ƒvUŒ‚ƒXƒLƒ‹‚Ì“à•”ó‘Ô
+// ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã‚¹ã‚­ãƒ«ã®å†…éƒ¨çŠ¶æ…‹
 enum class MutantJumpSkillState
 {
 	Disabled,         // HP > 50%
-	Cooldown,         // ƒGƒ“ƒŒ[ƒW’†ECD ‰ñ“]’†i’ÊíUŒ‚‚Í‰Â”\j
-	WaitCurrentAnim,  // CD Š®—¹ESwiping I—¹‘Ò‚¿
-	Executing,        // ƒWƒƒƒ“ƒvƒAƒjƒÄ¶’†
+	Cooldown,         // ã‚¨ãƒ³ãƒ¬ãƒ¼ã‚¸ä¸­ãƒ»CD å›è»¢ä¸­ï¼ˆé€šå¸¸æ”»æ’ƒã¯å¯èƒ½ï¼‰
+	WaitCurrentAnim,  // CD å®Œäº†ãƒ»Swiping çµ‚äº†å¾…ã¡
+	Executing,        // ã‚¸ãƒ£ãƒ³ãƒ—ã‚¢ãƒ‹ãƒ¡å†ç”Ÿä¸­
 };
 
 class Mutant : public CharacterBase
@@ -29,30 +29,30 @@ private:
 	void OnAIAttack(GameObject* target);
 
 	//-----------------------------------------------
-	// ƒWƒƒƒ“ƒvUŒ‚ƒXƒLƒ‹
+	// ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã‚¹ã‚­ãƒ«
 
-	// ƒGƒ“ƒQ[ƒWó‘Ô‚Ì”»’èiHP 60%ˆÈ‰º‚ÅƒGƒ“ƒŒ[ƒWj
+	// ã‚¨ãƒ³ã‚²ãƒ¼ã‚¸çŠ¶æ…‹ã®åˆ¤å®šï¼ˆHP 60%ä»¥ä¸‹ã§ã‚¨ãƒ³ãƒ¬ãƒ¼ã‚¸ï¼‰
 	bool IsEnraged() const;
 	
-	// ƒWƒƒƒ“ƒvUŒ‚‚ªŒ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ó‘Ô‚Åg—p‰Â”\‚©‚Ç‚¤‚©‚Ì”»’è
+	// ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒãŒç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çŠ¶æ…‹ã§ä½¿ç”¨å¯èƒ½ã‹ã©ã†ã‹ã®åˆ¤å®š
 	bool CanStartJumpAttackNow(const class AnimationController* anim) const;
 	
-	// ƒWƒƒƒ“ƒvUŒ‚‚ÌŠJn
+	// ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã®é–‹å§‹
 	void StartJumpAttack();
 
-	// ƒWƒƒƒ“ƒvUŒ‚‚ÌXV
+	// ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã®æ›´æ–°
 	void UpdateJumpAttackSkill(float deltaTime);
 	
-	// ƒWƒƒƒ“ƒvUŒ‚‚ÌÀsiƒ_ƒ[ƒW”»’è‚ÆŒø‰Ê“K—pj
+	// ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã®å®Ÿè¡Œï¼ˆãƒ€ãƒ¡ãƒ¼ã‚¸åˆ¤å®šã¨åŠ¹æœé©ç”¨ï¼‰
 	void UpdateJumpAttackExecution(float deltaTime);
 	
-	// ƒWƒƒƒ“ƒvUŒ‚‚Ìƒ_ƒ[ƒW‚ğ‘S‚Ä‚Ì–¡•û‚É“K—p
+	// ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å…¨ã¦ã®å‘³æ–¹ã«é©ç”¨
 	void ApplyJumpAttackDamageToAllAllies();
 	
-	// ƒWƒƒƒ“ƒvUŒ‚‚ÌI—¹ˆ—iƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒŠƒZƒbƒg‚âƒtƒ‰ƒO‚ÌƒNƒŠƒA‚È‚Çj
+	// ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã®çµ‚äº†å‡¦ç†ï¼ˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒªã‚»ãƒƒãƒˆã‚„ãƒ•ãƒ©ã‚°ã®ã‚¯ãƒªã‚¢ãªã©ï¼‰
 	void FinishJumpAttack();
 	
-	// ƒWƒƒƒ“ƒvUŒ‚‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğˆê’â~
+	// ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ä¸€æ™‚åœæ­¢
 	void ResumeAutoAttackAnimation();
 	
 	bool m_JumpDamageApplied = false;
@@ -74,14 +74,14 @@ private:
 	float m_JumpLandTimer = 0.0f;
 
 
-	static constexpr float kTargetHeightOffset = 10.0f;   // ƒ^[ƒQƒbƒg‚Ì’†S‚©‚ç‚Ç‚ê‚¾‚¯ã‚ğ‘_‚¤‚©iƒWƒƒƒ“ƒvUŒ‚‚Ì’…’n“_‚Ì‚‚³’²®j
-	static constexpr float kMeleeRange = 25.0f;           // AIË’ö = ƒ_ƒ[ƒW”»’è‹——£
-	static constexpr float kChaseMoveSpeed = 38.0f;		  // ’ÇÕˆÚ“®‘¬“x
-	static constexpr float kMeleeCooldownSec = 3.0f;      // ©“®UŒ‚ŠÔŠuiAI CDj
-	static constexpr float kMeleeDamageDelaySec = 1.4f;   // Swiping ƒqƒbƒgƒ^ƒCƒ~ƒ“ƒO
-	// --- ƒWƒƒƒ“ƒvUŒ‚ ---
-	static constexpr float kEnrageHPRatio = 0.6f;		  // ƒGƒ“ƒŒ[ƒW HP ”ä—¦
-	static constexpr float kJumpAttackCooldownSec = 6.0f; // ƒWƒƒƒ“ƒvUŒ‚‚ÌƒN[ƒ‹ƒ_ƒEƒ“ŠÔ
-	static constexpr float kJumpAttackDamageDelaySec = 1.6f; // ƒWƒƒƒ“ƒvUŒ‚‚Ìƒ_ƒ[ƒW”»’è‚ª”­¶‚·‚é‚Ü‚Å‚ÌŠÔiƒWƒƒƒ“ƒvUŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìƒqƒbƒgƒ^ƒCƒ~ƒ“ƒO‚É‡‚í‚¹‚éj
-	static constexpr float kJumpAttackDamageRate = 1.5f;	 // ƒWƒƒƒ“ƒvUŒ‚‚Ìƒ_ƒ[ƒW”{—¦iŠî–{UŒ‚—Í‚É‘Î‚·‚é”{—¦j
+	static constexpr float kTargetHeightOffset = 10.0f;   // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ä¸­å¿ƒã‹ã‚‰ã©ã‚Œã ã‘ä¸Šã‚’ç‹™ã†ã‹ï¼ˆã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã®ç€åœ°ç‚¹ã®é«˜ã•èª¿æ•´ï¼‰
+	static constexpr float kMeleeRange = 25.0f;           // AIå°„ç¨‹ = ãƒ€ãƒ¡ãƒ¼ã‚¸åˆ¤å®šè·é›¢
+	static constexpr float kChaseMoveSpeed = 38.0f;		  // è¿½è·¡ç§»å‹•é€Ÿåº¦
+	static constexpr float kMeleeCooldownSec = 3.0f;      // è‡ªå‹•æ”»æ’ƒé–“éš”ï¼ˆAI CDï¼‰
+	static constexpr float kMeleeDamageDelaySec = 1.4f;   // Swiping ãƒ’ãƒƒãƒˆã‚¿ã‚¤ãƒŸãƒ³ã‚°
+	// --- ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒ ---
+	static constexpr float kEnrageHPRatio = 0.6f;		  // ã‚¨ãƒ³ãƒ¬ãƒ¼ã‚¸ HP æ¯”ç‡
+	static constexpr float kJumpAttackCooldownSec = 6.0f; // ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³æ™‚é–“
+	static constexpr float kJumpAttackDamageDelaySec = 1.6f; // ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸åˆ¤å®šãŒç™ºç”Ÿã™ã‚‹ã¾ã§ã®æ™‚é–“ï¼ˆã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ’ãƒƒãƒˆã‚¿ã‚¤ãƒŸãƒ³ã‚°ã«åˆã‚ã›ã‚‹ï¼‰
+	static constexpr float kJumpAttackDamageRate = 1.5f;	 // ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸å€ç‡ï¼ˆåŸºæœ¬æ”»æ’ƒåŠ›ã«å¯¾ã™ã‚‹å€ç‡ï¼‰
 };

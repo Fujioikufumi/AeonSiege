@@ -1,4 +1,4 @@
-#include "Mutant.h"
+ï»¿#include "Mutant.h"
 #include "MeshRenderer.h"
 #include "Terrain.h"
 #include "Scene.h"
@@ -12,8 +12,8 @@
 #include "NameSpace.h"
 
 namespace {
-	constexpr float kTargetHeightOffset = 10.0f; // Ú’n‚Ì‚‚³ƒIƒtƒZƒbƒg
-	constexpr float kMoveSpeed = 25.0f; // ˆÚ“®‘¬“x
+	constexpr float kTargetHeightOffset = 10.0f; // æ¥åœ°æ™‚ã®é«˜ã•ã‚ªãƒ•ã‚»ãƒƒãƒˆ
+	constexpr float kMoveSpeed = 25.0f; // ç§»å‹•é€Ÿåº¦
 }
 
 Mutant::Mutant()
@@ -31,7 +31,7 @@ bool Mutant::Init()
 {
 	GameObject::Init();
 
-	m_MeleeHitRange = kMeleeHitRange; // CharacterBase ‚Ì”»’è‹——£‚ğİ’è
+	m_MeleeHitRange = kMeleeHitRange; // CharacterBase ã®åˆ¤å®šè·é›¢ã‚’è¨­å®š
 
 	AddComponent<MeshRenderer>()->Load(m_ModelPath, m_PipelineName);
 
@@ -43,11 +43,11 @@ bool Mutant::Init()
 	anim->SetLoop(true);
 	anim->Play(kAnimIdle);
 
-	// AIƒRƒ“ƒ|[ƒlƒ“ƒg
+	// AIã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	EnemyAIComponent* ai = AddComponent<EnemyAIComponent>();
 	ai->SetLevel(1);
 	ai->SetUsePatrol(false);
-	ai->SetAlwaysAggro(true); // í‚É“G‘Îó‘Ô
+	ai->SetAlwaysAggro(true); // å¸¸ã«æ•µå¯¾çŠ¶æ…‹
 	ai->SetMeleeRange(kMeleeRange);
 	ai->SetChaseMoveSpeed(kChaseMoveSpeed);
 	ai->SetMeleeCooldownSec(kMeleeCooldownSec);
@@ -71,13 +71,13 @@ bool Mutant::Init()
 	m_pHealth->SetMaxHP(m_Status->GetMaxHp());
 	m_pHealth->SetHP(m_Status->GetMaxHp());
 
-	// AI‚©‚ç‚ÌƒR[ƒ‹ƒoƒbƒN
-	// ó‘Ô‚ª•Ï‚í‚Á‚½‚Æ‚«‚ÉƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•Ï‚¦‚é
+	// AIã‹ã‚‰ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
+	// çŠ¶æ…‹ãŒå¤‰ã‚ã£ãŸã¨ãã«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤‰ãˆã‚‹
 	ai->SetAnimCallback([this](EnemyAIState newState) {
 		this->OnAIStateChanged(newState);
 		});
 
-	// AIƒRƒ“ƒ|[ƒlƒ“ƒg‚©‚çUŒ‚‹——£‚É“ü‚Á‚ÄƒN[ƒ‹ƒ_ƒEƒ“‚ª–¾‚¯‚½‚Æ‚«‚ÉUŒ‚ƒƒWƒbƒN‚ğÀs‚µ‚Ä‚à‚ç‚¤
+	// AIã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‹ã‚‰æ”»æ’ƒè·é›¢ã«å…¥ã£ã¦ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ãŒæ˜ã‘ãŸã¨ãã«æ”»æ’ƒãƒ­ã‚¸ãƒƒã‚¯ã‚’å®Ÿè¡Œã—ã¦ã‚‚ã‚‰ã†
 	ai->SetAttackCallback([this](GameObject* target) {
 		this->OnAIAttack(target);
 		});
@@ -89,7 +89,7 @@ bool Mutant::Init()
 		if (pTerrain)
 			m_Position.y = pTerrain->GetHeightAt(m_Position.x, m_Position.z);
 
-		// —N‚«ˆÊ’u‚ğŒ»İ‚ÌÀ•W‚Æ‚µ‚ÄAI‚Éİ’è
+		// æ¹§ãä½ç½®ã‚’ç¾åœ¨ã®åº§æ¨™ã¨ã—ã¦AIã«è¨­å®š
 		ai->SetSpawnPosition(m_Position);
 	}
 
@@ -109,7 +109,7 @@ void Mutant::Update(float deltaTime)
 	if (pTerrain == nullptr) return;
 	const float fGroundY = pTerrain->GetHeightAt(m_Position.x, m_Position.z);
 
-	// €–S‚Í’n–Ê‚ÉÚ’n‚³‚¹‚é
+	// æ­»äº¡æ™‚ã¯åœ°é¢ã«æ¥åœ°ã•ã›ã‚‹
 	if (!m_pHealth->IsAlive())
 	{
 		m_Position.y = fGroundY;
@@ -120,8 +120,8 @@ void Mutant::Update(float deltaTime)
 	{
 		CancelPendingMeleeDamage();
 
-		// €–SƒAƒjƒ[ƒVƒ‡ƒ“‚ªŠJn‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í‹­§“I‚ÉŠJn‚·‚é
-		// (ƒWƒƒƒ“ƒv’†‚È‚Ç‚ÅAI‚ª’â~‚µ‚Ä‚¨‚èAOnAIStateChanged‚ªŒÄ‚Î‚ê‚È‚©‚Á‚½ê‡‚Ö‚Ì‘Îˆ)
+		// æ­»äº¡ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒé–‹å§‹ã•ã‚Œã¦ã„ãªã„å ´åˆã¯å¼·åˆ¶çš„ã«é–‹å§‹ã™ã‚‹
+		// (ã‚¸ãƒ£ãƒ³ãƒ—ä¸­ãªã©ã§AIãŒåœæ­¢ã—ã¦ãŠã‚Šã€OnAIStateChangedãŒå‘¼ã°ã‚Œãªã‹ã£ãŸå ´åˆã¸ã®å¯¾å‡¦)
 		if (pAnim != nullptr && pAnim->GetCurrentAnimationName() != kAnimDying)
 		{
 			ChangeAnimation(pAnim, kAnimDying, false, 1.0f);
@@ -137,7 +137,7 @@ void Mutant::Update(float deltaTime)
 		return;
 	}
 
-	// Às’†‚Ìê‡‚ÍYÀ•W‚Ì©—¥§Œä‚ğs‚¤iƒWƒƒƒ“ƒv’†‚È‚Çj
+	// å®Ÿè¡Œä¸­ã®å ´åˆã¯Yåº§æ¨™ã®è‡ªå¾‹åˆ¶å¾¡ã‚’è¡Œã†ï¼ˆã‚¸ãƒ£ãƒ³ãƒ—ä¸­ãªã©ï¼‰
 	if (m_JumpSkillState != MutantJumpSkillState::Executing)
 	{
 		m_Position.y = fGroundY;
@@ -149,7 +149,7 @@ void Mutant::Update(float deltaTime)
 }
 void Mutant::OnAIStateChanged(EnemyAIState newState)
 {
-	// ƒWƒƒƒ“ƒv’†‚Í AI ‚É‚æ‚éƒAƒjƒã‘‚«‚ğ–h‚®
+	// ã‚¸ãƒ£ãƒ³ãƒ—ä¸­ã¯ AI ã«ã‚ˆã‚‹ã‚¢ãƒ‹ãƒ¡ä¸Šæ›¸ãã‚’é˜²ã
 	if (m_JumpSkillState == MutantJumpSkillState::Executing && newState != EnemyAIState::Dead)
 		return;
 	AnimationController* anim = GetComponent<AnimationController>();
@@ -193,7 +193,7 @@ void Mutant::OnAIAttack(GameObject* target)
 }
 	
 //-----------------------------------------------------------------------------
-// ƒWƒƒƒ“ƒvUŒ‚ƒXƒLƒ‹
+// ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã‚¹ã‚­ãƒ«
 //-----------------------------------------------------------------------------
 bool Mutant::IsEnraged() const
 {
@@ -204,7 +204,7 @@ bool Mutant::CanStartJumpAttackNow(const AnimationController* anim) const
 	if (anim == nullptr || !anim->IsInitialized())
 		return true;
 	const std::string& name = anim->GetCurrentAnimationName();
-	// ©“®UŒ‚i1ƒVƒ‡ƒbƒgj‚ÌÅ’†‚ÍI—¹‚ğ‘Ò‚Â
+	// è‡ªå‹•æ”»æ’ƒï¼ˆ1ã‚·ãƒ§ãƒƒãƒˆï¼‰ã®æœ€ä¸­ã¯çµ‚äº†ã‚’å¾…ã¤
 	if (name == kAnimSwiping)
 		return !anim->IsPlaying();
 	if (name == kAnimJumpAttack || name == kAnimDying)
@@ -220,7 +220,7 @@ void Mutant::UpdateJumpAttackSkill(float deltaTime)
 		m_WasEnraged = false;
 		return;
 	}
-	// ‰‚ß‚Ä HP 50% ˆÈ‰º‚É‚È‚Á‚½uŠÔ‚É CD ‚ğŠJn
+	// åˆã‚ã¦ HP 50% ä»¥ä¸‹ã«ãªã£ãŸç¬é–“ã« CD ã‚’é–‹å§‹
 	if (!m_WasEnraged)
 	{
 		m_JumpSkillState = MutantJumpSkillState::Cooldown;
@@ -258,7 +258,7 @@ void Mutant::StartJumpAttack()
 void Mutant::UpdateJumpAttackExecution(float deltaTime)
 {
 	AnimationController* anim = GetComponent<AnimationController>();
-	// ’…’nƒ_ƒ[ƒW
+	// ç€åœ°ãƒ€ãƒ¡ãƒ¼ã‚¸
 	if (!m_JumpDamageApplied)
 	{
 		m_JumpLandTimer -= deltaTime;
@@ -267,9 +267,9 @@ void Mutant::UpdateJumpAttackExecution(float deltaTime)
 			ApplyJumpAttackDamageToAllAllies();
 			m_JumpDamageApplied = true;
 		}
-		return;  // ƒ_ƒ[ƒW‘O‚ÍƒAƒjƒI—¹”»’è‚µ‚È‚¢
+		return;  // ãƒ€ãƒ¡ãƒ¼ã‚¸å‰ã¯ã‚¢ãƒ‹ãƒ¡çµ‚äº†åˆ¤å®šã—ãªã„
 	}
-	// ‡A ƒWƒƒƒ“ƒvƒAƒjƒI—¹‘Ò‚¿
+	// â‘¡ ã‚¸ãƒ£ãƒ³ãƒ—ã‚¢ãƒ‹ãƒ¡çµ‚äº†å¾…ã¡
 	if (anim == nullptr || !anim->IsInitialized())
 		return;
 	if (anim->GetCurrentAnimationName() != kAnimJumpAttack)

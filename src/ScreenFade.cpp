@@ -1,4 +1,4 @@
-#include "ScreenFade.h"
+﻿#include "ScreenFade.h"
 #include <algorithm>
 #include "Sprite.h"
 #include "RenderContext.h"

@@ -1,4 +1,4 @@
-#include "AllyAIComponent.h"
+ï»¿#include "AllyAIComponent.h"
 #include "GameObject.h"
 #include "Scene.h"
 #include "Player.h"
@@ -15,7 +15,7 @@ using namespace DirectX;
 
 namespace
 {
-	constexpr float kFrustumMargin = 2.0f; // ‹‘ä“à”»’è‚Ì—]—Ti”¼Œaj
+	constexpr float kFrustumMargin = 2.0f; // è¦–éŒå°å†…åˆ¤å®šã®ä½™è£•ï¼ˆåŠå¾„ï¼‰
 } // namespace
 
 AllyAIComponent::AllyAIComponent(GameObject* pObj)
@@ -53,30 +53,30 @@ bool AllyAIComponent::UpdateFollowPlayer(float deltaTime, Scene* pScene, float m
 	const float distanceToPlayer = MathUtility::CalculateDistanceXZ(m_GameObject->GetPosition(), playerPos);
 	if (isPlayerMoving)
 	{
-		// ƒvƒŒƒCƒ„[‚ªˆÚ“®‚µ‚½‚ç
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒç§»å‹•ã—ãŸã‚‰
 		m_HasWaitTarget = false;
 		m_IsFollowing = true;
 		return MoveToTargetPosition(deltaTime, playerPos, m_Params.followStopDistance, m_Params.moveSpeed);
 	}
 	if (!m_IsFollowing && distanceToPlayer > m_Params.followStartDistance)
 	{
-		// ƒvƒŒƒCƒ„[‚©‚ç—£‚ê‚·‚¬‚Ä‚¢‚½‚ç’Ç]ŠJn
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰é›¢ã‚Œã™ãã¦ã„ãŸã‚‰è¿½å¾“é–‹å§‹
 		m_IsFollowing = true;
 	}
 	if (m_IsFollowing && distanceToPlayer <= m_Params.followStopDistance)
 	{
-		// ƒvƒŒƒCƒ„[‚É‹ß‚Ã‚«‚·‚¬‚½‚ç’Ç]’â~
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è¿‘ã¥ãã™ããŸã‚‰è¿½å¾“åœæ­¢
 		m_IsFollowing = false;
 	}
 	if (m_IsFollowing)
 	{
-		// ƒvƒŒƒCƒ„[‚É’Ç]
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è¿½å¾“
 		m_HasWaitTarget = false;
 		return MoveToTargetPosition(deltaTime, playerPos, m_Params.followStopDistance, m_Params.moveSpeed);
 	}
 	if (!m_HasWaitTarget)
 	{
-		// ‘Ò‹@–Ú•WˆÊ’u‚ğŒvZ‚µ‚Ä•Û‘¶
+		// å¾…æ©Ÿç›®æ¨™ä½ç½®ã‚’è¨ˆç®—ã—ã¦ä¿å­˜
 		m_WaitTargetPos = CreateWaitTargetPosition(pScene, pPlayer, pCamera);
 		m_HasWaitTarget = true;
 	}
@@ -87,7 +87,7 @@ bool AllyAIComponent::MoveToTargetPosition(float deltaTime, const XMFLOAT3& targ
 {
 	if (m_GameObject == nullptr) return false;
 
-	// ‹——£‚ğŒvZ
+	// è·é›¢ã‚’è¨ˆç®—
 	XMFLOAT3 pos = m_GameObject->GetPosition();
 	const float dx = targetPos.x - pos.x;
 	const float dz = targetPos.z - pos.z;
@@ -219,16 +219,16 @@ bool AllyAIComponent::IsValidWaitTarget(Camera* pCamera, const XMFLOAT3& targetP
 
 GameObject* AllyAIComponent::GetOrFindAttackTarget(Scene* pScene)
 {
-	// Œ»İ‚Ìƒ^[ƒQƒbƒg‚ª–{“–‚Éu¶‚«‚Ä‚¢‚év‚©‚Âu”jŠü‚³‚ê‚Ä‚¢‚È‚¢v‚©ƒ`ƒFƒbƒN
+	// ç¾åœ¨ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒæœ¬å½“ã«ã€Œç”Ÿãã¦ã„ã‚‹ã€ã‹ã¤ã€Œç ´æ£„ã•ã‚Œã¦ã„ãªã„ã€ã‹ãƒã‚§ãƒƒã‚¯
 	if (!IsValidAttackTarget(m_AttackTarget))
 	{
 		m_AttackTarget = nullptr;
 	}
 
-	// ƒ^[ƒQƒbƒg‚ª‚Ü‚¾—LŒø‚Å‚ ‚ê‚ÎA‹——£ƒ`ƒFƒbƒN‚Ì‚İs‚¤
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒã¾ã æœ‰åŠ¹ã§ã‚ã‚Œã°ã€è·é›¢ãƒã‚§ãƒƒã‚¯ã®ã¿è¡Œã†
 	if (m_AttackTarget != nullptr)
 	{
-		// ‚±‚±‚Å”O‚Ì‚½‚ßƒV[ƒ“‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é‚©‚à’Ç‰Á‚Åƒ`ƒFƒbƒNiContainsGameObject‚Íd‚¢‚½‚ßƒ|ƒCƒ“ƒ^‚Ì¶‘¶Šm”F‚ğ—Dæj
+		// ã“ã“ã§å¿µã®ãŸã‚ã‚·ãƒ¼ãƒ³ã«å«ã¾ã‚Œã¦ã„ã‚‹ã‹ã‚‚è¿½åŠ ã§ãƒã‚§ãƒƒã‚¯ï¼ˆContainsGameObjectã¯é‡ã„ãŸã‚ãƒã‚¤ãƒ³ã‚¿ã®ç”Ÿå­˜ç¢ºèªã‚’å„ªå…ˆï¼‰
 		if (pScene != nullptr && pScene->ContainsGameObject(m_AttackTarget))
 		{
 			if (MathUtility::IsInRange(
@@ -240,11 +240,11 @@ GameObject* AllyAIComponent::GetOrFindAttackTarget(Scene* pScene)
 			}
 		}
 
-		// ”ÍˆÍŠO or ƒV[ƒ“‚É‚¢‚È‚¢ê‡‚Íˆê’U‰ğœ
+		// ç¯„å›²å¤– or ã‚·ãƒ¼ãƒ³ã«ã„ãªã„å ´åˆã¯ä¸€æ—¦è§£é™¤
 		m_AttackTarget = nullptr;
 	}
 
-	// ƒ^[ƒQƒbƒg‚ª‚¢‚È‚¢A‚Ü‚½‚Í–³Œø‚É‚È‚Á‚½‚Ì‚ÅV‚µ‚­’T‚·
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒã„ãªã„ã€ã¾ãŸã¯ç„¡åŠ¹ã«ãªã£ãŸã®ã§æ–°ã—ãæ¢ã™
 	m_AttackTarget = FindNearestEnemy(pScene);
 	return m_AttackTarget;
 }
@@ -253,7 +253,7 @@ GameObject* AllyAIComponent::FindNearestEnemy(Scene* pScene) const
 {
 	if (pScene == nullptr || m_GameObject == nullptr) return nullptr;
 
-	// ƒvƒŒƒCƒ„[‚ğ’†S‚É“G‚ğõ“G‚µAÅ‚à‹ß‚¢“G‚ğ•Ô‚·
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ä¸­å¿ƒã«æ•µã‚’ç´¢æ•µã—ã€æœ€ã‚‚è¿‘ã„æ•µã‚’è¿”ã™
 	GameObject* nearestEnemy = nullptr;
 	float nearestDistSq = m_Params.enemyDetectRange * m_Params.enemyDetectRange;
 

@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 #include <DirectXMath.h>
 
 /// <summary>
-/// í“¬ƒGƒŠƒA
+/// æˆ¦é—˜ã‚¨ãƒªã‚¢
 /// </summary>
 class BattleArea : public GameObject
 {
@@ -14,7 +14,7 @@ public:
 	bool Init() override;
 	void Update(float deltaTime = 0.0f) override;
 
-	// ’†S‚Æ”¼Œa‚ğİ’è‚·‚éB
+	// ä¸­å¿ƒã¨åŠå¾„ã‚’è¨­å®šã™ã‚‹ã€‚
 	void Setup(const DirectX::XMFLOAT3& center, float radius);
 	const DirectX::XMFLOAT3& GetCenter() const noexcept { return m_Center; }
 	float GetRadius() const noexcept { return m_Radius; }

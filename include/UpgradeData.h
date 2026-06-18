@@ -1,12 +1,12 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 
-const int kShopOfferCount = 3; // ƒVƒ‡ƒbƒv‚Å’ñ¦‚³‚ê‚é‹­‰»‚Ì”
-const int kUpgradeKindCount = 11; // ‹­‰»“à—e‚Ìí—Ş”
-const int kUpgradeRarityCount = 3; // ‹­‰»‚ÌƒŒƒAƒŠƒeƒB” (1,2,3)
+const int kShopOfferCount = 3; // ã‚·ãƒ§ãƒƒãƒ—ã§æç¤ºã•ã‚Œã‚‹å¼·åŒ–ã®æ•°
+const int kUpgradeKindCount = 11; // å¼·åŒ–å†…å®¹ã®ç¨®é¡æ•°
+const int kUpgradeRarityCount = 3; // å¼·åŒ–ã®ãƒ¬ã‚¢ãƒªãƒ†ã‚£æ•° (1,2,3)
 
 /// <summary>
-/// ‹­‰»‚ÌƒŒƒAƒŠƒeƒBA”’l‚ª‚‚¢‚Ù‚Ç‹­—Í‚ÈŒø‰Ê‚ğ‚ÂB
+/// å¼·åŒ–ã®ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã€æ•°å€¤ãŒé«˜ã„ã»ã©å¼·åŠ›ãªåŠ¹æœã‚’æŒã¤ã€‚
 /// </summary>
 enum class UpgradeRarity
 {
@@ -16,25 +16,25 @@ enum class UpgradeRarity
 };
 
 /// <summary>
-/// ‹­‰»“à—e‚Ìí—Ş
+/// å¼·åŒ–å†…å®¹ã®ç¨®é¡
 /// </summary>
 enum class UpgradeKind
 {
-	AttackUp,			// UŒ‚—Íã¸
-	MoveSpeedUp,		// ˆÚ“®‘¬“xã¸
-	DamageReduction,	// ”íƒ_ƒ[ƒWŒ¸­
-	SkillPowerUp,		// ƒXƒLƒ‹‚ÌˆĞ—Íã¸
-	SkillCooldownUp,	// ƒXƒLƒ‹‚ÌƒN[ƒ‹ƒ_ƒEƒ“Œ¸­
-	SkillDurationUp,	// ƒXƒLƒ‹‚ÌŒø‰ÊŠÔã¸
-	CriticalRateUp,		// ƒNƒŠƒeƒBƒJƒ‹—¦ã¸
-	CriticalDamageUp,   // ƒNƒŠƒeƒBƒJƒ‹ƒ_ƒ[ƒWã¸
-	EvasionUp,			// ‰ñ”ğ—¦ã¸
-	SkillChainDamageUp, // ƒXƒLƒ‹‚ÌƒRƒ“ƒ{ƒ_ƒ[ƒWã¸
-	SkillRangeUp,		// ƒXƒLƒ‹‚Ì”ÍˆÍã¸
+	AttackUp,			// æ”»æ’ƒåŠ›ä¸Šæ˜‡
+	MoveSpeedUp,		// ç§»å‹•é€Ÿåº¦ä¸Šæ˜‡
+	DamageReduction,	// è¢«ãƒ€ãƒ¡ãƒ¼ã‚¸æ¸›å°‘
+	SkillPowerUp,		// ã‚¹ã‚­ãƒ«ã®å¨åŠ›ä¸Šæ˜‡
+	SkillCooldownUp,	// ã‚¹ã‚­ãƒ«ã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³æ¸›å°‘
+	SkillDurationUp,	// ã‚¹ã‚­ãƒ«ã®åŠ¹æœæ™‚é–“ä¸Šæ˜‡
+	CriticalRateUp,		// ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡ä¸Šæ˜‡
+	CriticalDamageUp,   // ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ãƒ€ãƒ¡ãƒ¼ã‚¸ä¸Šæ˜‡
+	EvasionUp,			// å›é¿ç‡ä¸Šæ˜‡
+	SkillChainDamageUp, // ã‚¹ã‚­ãƒ«ã®ã‚³ãƒ³ãƒœãƒ€ãƒ¡ãƒ¼ã‚¸ä¸Šæ˜‡
+	SkillRangeUp,		// ã‚¹ã‚­ãƒ«ã®ç¯„å›²ä¸Šæ˜‡
 };
 
 /// <summary>
-/// ‹­‰»‚ÌŒø‰Ê‚Ìí—ŞB
+/// å¼·åŒ–ã®åŠ¹æœã®ç¨®é¡ã€‚
 /// </summary>
 enum class UpgradeStatType
 {

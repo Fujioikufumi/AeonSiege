@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Component.h"
 #include "Texture.h"
 #include "VertexBuffer.h"
@@ -8,23 +8,23 @@
 #include <DirectXMath.h>
 
 /// <summary>
-/// ƒ}ƒXƒNˆ—‚âi’»iƒvƒƒOƒŒƒXj•\¦‚ª‰Â”\‚È2D UI•`‰æƒRƒ“ƒ|[ƒlƒ“ƒgB
-/// HPƒo[‚âƒXƒLƒ‹ƒQ[ƒW‚È‚Ç‚Ég—p‚³‚ê‚Ü‚·B
+/// ãƒã‚¹ã‚¯å‡¦ç†ã‚„é€²æ—ï¼ˆãƒ—ãƒ­ã‚°ãƒ¬ã‚¹ï¼‰è¡¨ç¤ºãŒå¯èƒ½ãª2D UIæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+/// HPãƒãƒ¼ã‚„ã‚¹ã‚­ãƒ«ã‚²ãƒ¼ã‚¸ãªã©ã«ä½¿ç”¨ã•ã‚Œã¾ã™ã€‚
 /// </summary>
 class MaskedSprite : public Component
 {
 public:
-	// ƒ}ƒXƒN‚Ì”½‰f•û–@
+	// ãƒã‚¹ã‚¯ã®åæ˜ æ–¹æ³•
 	enum class MaskMode : int
 	{
 		None = 0,
-		RectUV = 1,       // w’è‚µ‚½UV‹éŒ`“à‚Ì‚İ•`‰æ
-		Horizontal = 2,   // …•½•ûŒüiUV.x <= Progressj‚Å•`‰æ
-		Vertical = 3,     // ‚’¼•ûŒüiUV.y <= Progressj‚Å•`‰æ
+		RectUV = 1,       // æŒ‡å®šã—ãŸUVçŸ©å½¢å†…ã®ã¿æç”»
+		Horizontal = 2,   // æ°´å¹³æ–¹å‘ï¼ˆUV.x <= Progressï¼‰ã§æç”»
+		Vertical = 3,     // å‚ç›´æ–¹å‘ï¼ˆUV.y <= Progressï¼‰ã§æç”»
 	};
 
 private:
-	// ’¸“_ƒVƒF[ƒ_[—p’è”ƒoƒbƒtƒ@ (b0)
+	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ç”¨å®šæ•°ãƒãƒƒãƒ•ã‚¡ (b0)
 	struct alignas(16) SpriteBuffer
 	{
 		DirectX::XMFLOAT4 Position_Padding;
@@ -35,7 +35,7 @@ private:
 		DirectX::XMFLOAT4 Color;
 	};
 
-	// ƒsƒNƒZƒ‹ƒVƒF[ƒ_[—pƒ}ƒXƒN’è”ƒoƒbƒtƒ@ (b1)
+	// ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ç”¨ãƒã‚¹ã‚¯å®šæ•°ãƒãƒƒãƒ•ã‚¡ (b1)
 	struct alignas(16) MaskBuffer
 	{
 		DirectX::XMFLOAT4 MaskRectUV;  // (u0,v0,u1,v1)
@@ -70,34 +70,34 @@ public:
 	void SetAlpha(float a) { m_Color.w = a; }
 	[[nodiscard]] DirectX::XMFLOAT4 GetColor() const { return m_Color; }
 
-	// Šî–{‚Æ‚È‚éUVÀ•W‚Ì”ÍˆÍ‚ğ‚Ìİ’è
+	// åŸºæœ¬ã¨ãªã‚‹UVåº§æ¨™ã®ç¯„å›²ã‚’ã®è¨­å®š
 	void SetUV(const DirectX::XMFLOAT2& uvMin, const DirectX::XMFLOAT2& uvMax);
 
-	// ƒQ[ƒW‚Ìi’»—¦i0.0`1.0j‚ğİ’è
+	// ã‚²ãƒ¼ã‚¸ã®é€²æ—ç‡ï¼ˆ0.0ï½1.0ï¼‰ã‚’è¨­å®š
 	void SetProgress(float progress) { m_Progress = progress; }
 
-	// ƒ}ƒXƒN‹éŒ`‚ÌUV”ÍˆÍ‚ğ’¼Úİ’è
+	// ãƒã‚¹ã‚¯çŸ©å½¢ã®UVç¯„å›²ã‚’ç›´æ¥è¨­å®š
 	void SetMaskRectUV(float u0, float v0, float u1, float v1);
 
-	// ƒ}ƒXƒN‹«ŠE‚ÌƒtƒFƒU[i‚Ú‚©‚µj‹­“x‚ğİ’è
+	// ãƒã‚¹ã‚¯å¢ƒç•Œã®ãƒ•ã‚§ã‚¶ãƒ¼ï¼ˆã¼ã‹ã—ï¼‰å¼·åº¦ã‚’è¨­å®š
 	void SetFeather(float feather) { m_Feather = feather; }
 
-	// ƒ}ƒXƒN‚Ì“®ìƒ‚[ƒh‚ğİ’è
+	// ãƒã‚¹ã‚¯ã®å‹•ä½œãƒ¢ãƒ¼ãƒ‰ã‚’è¨­å®š
 	void SetMaskMode(MaskMode mode) { m_MaskMode = mode; }
 
 private:
-	// •`‰æ‚É•K—v‚È’¸“_ƒoƒbƒtƒ@‚ğ¶¬
+	// æç”»ã«å¿…è¦ãªé ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ç”Ÿæˆ
 	void CreateVertexBuffer();
 
-	// Šeí’è”ƒoƒbƒtƒ@‚ğÅV‚Ìó‘Ô‚ÉXV
+	// å„ç¨®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’æœ€æ–°ã®çŠ¶æ…‹ã«æ›´æ–°
 	void UpdateConstantBuffers();
 
 private:
-	std::unique_ptr<Texture> m_Texture;         // ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX
-	std::wstring m_TexturePath;                 // ƒeƒNƒXƒ`ƒƒƒpƒX
-	VertexBuffer m_VertexBuffer;                // ’¸“_ƒoƒbƒtƒ@
-	ConstantBuffer m_SpriteCB;                  // ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€—p’è”ƒoƒbƒtƒ@
-	ConstantBuffer m_MaskCB;                    // ƒ}ƒXƒNƒpƒ‰ƒ[ƒ^—p’è”ƒoƒbƒtƒ@
+	std::unique_ptr<Texture> m_Texture;         // ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹
+	std::wstring m_TexturePath;                 // ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‘ã‚¹
+	VertexBuffer m_VertexBuffer;                // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
+	ConstantBuffer m_SpriteCB;                  // ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ç”¨å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	ConstantBuffer m_MaskCB;                    // ãƒã‚¹ã‚¯ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç”¨å®šæ•°ãƒãƒƒãƒ•ã‚¡
 
 	DirectX::XMFLOAT2 m_Position = { 0.0f, 0.0f };
 	DirectX::XMFLOAT2 m_Size = { 100.0f, 100.0f };

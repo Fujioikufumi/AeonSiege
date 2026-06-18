@@ -1,19 +1,19 @@
-#pragma once
+ï»¿#pragma once
 #include "UpgradeData.h"
 #include "SkillData.h"
 #include <string>
 
 enum class ShopOfferType
 {
-	StatusUpgrade, // ƒXƒe[ƒ^ƒX‹­‰»
-	JoinAlly,	   // ’‡ŠÔ‰Á“ü
-	UnlockSkill	   // ƒXƒLƒ‹‰ğ•ú
+	StatusUpgrade, // ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å¼·åŒ–
+	JoinAlly,	   // ä»²é–“åŠ å…¥
+	UnlockSkill	   // ã‚¹ã‚­ãƒ«è§£æ”¾
 };
 
 enum class AllyId
 {
 	None, 
-	Oscar // ƒIƒXƒJ[(Paladin)
+	Oscar // ã‚ªã‚¹ã‚«ãƒ¼(Paladin)
 };
 
 struct ShopOffer

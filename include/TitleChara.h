@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 
 /// <summary>
-/// ƒ^ƒCƒgƒ‹‰æ–Ê‚Å”wŒi‚Ì‰‰oƒLƒƒƒ‰ƒNƒ^[
+/// ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã§èƒŒæ™¯ã®æ¼”å‡ºã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼
 /// </summary>
 class TitleChara : public GameObject
 {

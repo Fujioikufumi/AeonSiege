@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "GameObject.h"
 #include <array>
@@ -6,8 +6,8 @@
 class Sprite;
 
 /// <summary>
-/// ƒCƒ“ƒtƒB[ƒ‹ƒh—p‚ÌƒVƒXƒeƒ€ƒƒjƒ…[iƒ|[ƒYƒƒjƒ…[jB
-/// •\¦’†‚Í GameMenu::IsMenuOpen() ‚ª trueBScene ‘¤‚Å dt=0 ’â~‚È‚Ç‚É—˜—p‚·‚éB
+/// ã‚¤ãƒ³ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ç”¨ã®ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼ˆãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼‰ã€‚
+/// è¡¨ç¤ºä¸­ã¯ GameMenu::IsMenuOpen() ãŒ trueã€‚Scene å´ã§ dt=0 åœæ­¢ãªã©ã«åˆ©ç”¨ã™ã‚‹ã€‚
 /// </summary>
 class GameMenu : public GameObject
 {
@@ -21,7 +21,7 @@ public:
 	static bool IsMenuOpen();
 
 private:
-	// ƒƒjƒ…[‚Ìƒpƒlƒ‹
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒ‘ãƒãƒ«
 	enum class Panel : int
 	{
 		Main,
@@ -29,7 +29,7 @@ private:
 		SkillInfo,
 	};
 
-	// ƒƒCƒ“ƒpƒlƒ‹‚Ì€–Ú
+	// ãƒ¡ã‚¤ãƒ³ãƒ‘ãƒãƒ«ã®é …ç›®
 	enum class MainItem : int
 	{
 		CloseMenu = 0,
@@ -39,69 +39,69 @@ private:
 		Count = 4,
 	};
 
-	// ƒƒjƒ…[‚ğŠJ‚­ˆ—
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ãå‡¦ç†
 	void OpenMenu();
 
-	// ƒƒjƒ…[‚ğ•Â‚¶‚éˆ—
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‰ã˜ã‚‹å‡¦ç†
 	void CloseMenu();
 
-	// ‘€ì•û–@
+	// æ“ä½œæ–¹æ³•
 	void EnterControlsHelp();
 	
-	// ƒXƒLƒ‹î•ñ
+	// ã‚¹ã‚­ãƒ«æƒ…å ±
 	void EnterSkillInfo();
 	
-	// ƒƒCƒ“ƒpƒlƒ‹‚É–ß‚é
+	// ãƒ¡ã‚¤ãƒ³ãƒ‘ãƒãƒ«ã«æˆ»ã‚‹
 	void ReturnToMainPanel();
 
-	// ƒXƒvƒ‰ƒCƒg‚Ì•\¦E”ñ•\¦‚âƒAƒ‹ƒtƒ@’l‚Ìİ’è
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®è¡¨ç¤ºãƒ»éè¡¨ç¤ºã‚„ã‚¢ãƒ«ãƒ•ã‚¡å€¤ã®è¨­å®š
 	static void SetSpriteVisible(Sprite* sprite, bool visible);
 	static void SetSpriteAlpha(Sprite* sprite, float alpha);
 
-	// ‘I‘ğ’†‚Ì€–Ú‚ÌŒ©‚½–Ú‚ğXV‚·‚éiƒXƒP[ƒ‹‚âF‚ğ•Ï‚¦‚éj
+	// é¸æŠä¸­ã®é …ç›®ã®è¦‹ãŸç›®ã‚’æ›´æ–°ã™ã‚‹ï¼ˆã‚¹ã‚±ãƒ¼ãƒ«ã‚„è‰²ã‚’å¤‰ãˆã‚‹ï¼‰
 	void RefreshSelectVisual();
 
-	// ƒƒjƒ…[‚Ì€–Ú‚âƒXƒvƒ‰ƒCƒg‚ÌˆÊ’u‚ğAŒ»İ‚Ìƒpƒlƒ‹‚É‰‚¶‚½ƒŒƒCƒAƒEƒg‚ÉXV‚·‚é
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã‚„ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ä½ç½®ã‚’ã€ç¾åœ¨ã®ãƒ‘ãƒãƒ«ã«å¿œã˜ãŸãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã«æ›´æ–°ã™ã‚‹
 	void ApplyPanelLayout();
 
-	// ƒƒjƒ…[•\¦ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŠJn
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¡¨ç¤ºã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é–‹å§‹
 	void BeginMenuIntro();
 
-	// ƒƒjƒ…[•\¦ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌXV
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¡¨ç¤ºã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æ›´æ–°
 	void UpdateMenuIntro(float deltaTime);
 	
-	// ƒƒjƒ…[‚Ì€–Ú‚âƒXƒvƒ‰ƒCƒg‚ÌˆÊ’u‚ğAƒAƒjƒ[ƒVƒ‡ƒ“‚Ìó‘Ô‚É‰‚¶‚ÄXV‚·‚é
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã‚„ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ä½ç½®ã‚’ã€ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®çŠ¶æ…‹ã«å¿œã˜ã¦æ›´æ–°ã™ã‚‹
 	void RestPositions();
 
-	static bool s_MenuOpen; // ƒƒjƒ…[‚ªŠJ‚¢‚Ä‚¢‚é‚©(GameFlowUtil—p)
+	static bool s_MenuOpen; // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé–‹ã„ã¦ã„ã‚‹ã‹(GameFlowUtilç”¨)
 
-	Sprite* m_ControlsHelpSprite = nullptr; // ‘€ì•û–@‚ÌƒXƒvƒ‰ƒCƒg
-	Sprite* m_SkillInfoSprite = nullptr;	// ƒXƒLƒ‹î•ñ‚ÌƒXƒvƒ‰ƒCƒg
+	Sprite* m_ControlsHelpSprite = nullptr; // æ“ä½œæ–¹æ³•ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
+	Sprite* m_SkillInfoSprite = nullptr;	// ã‚¹ã‚­ãƒ«æƒ…å ±ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 
-	std::array<DirectX::XMFLOAT2, static_cast<size_t>(MainItem::Count)> m_MainItemRestPos{}; // ƒƒjƒ…[‚Ì€–Ú‚Ì‰æ–ÊÀ•W
+	std::array<DirectX::XMFLOAT2, static_cast<size_t>(MainItem::Count)> m_MainItemRestPos{}; // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã®ç”»é¢åº§æ¨™
 	
-	DirectX::XMFLOAT2 m_ControlsHelpRestPos{}; // ‘€ì•û–@‚ÌƒXƒvƒ‰ƒCƒg‚Ì‰æ–ÊÀ•W
-	DirectX::XMFLOAT2 m_SkillInfoRestPos{};    // ƒXƒLƒ‹î•ñ‚ÌƒXƒvƒ‰ƒCƒg‚Ì‰æ–ÊÀ•W
+	DirectX::XMFLOAT2 m_ControlsHelpRestPos{}; // æ“ä½œæ–¹æ³•ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ç”»é¢åº§æ¨™
+	DirectX::XMFLOAT2 m_SkillInfoRestPos{};    // ã‚¹ã‚­ãƒ«æƒ…å ±ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ç”»é¢åº§æ¨™
 
-	float m_MenuIntroElapsed = 0.0f; // ƒƒjƒ…[•\¦ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŒo‰ßŠÔ
-	bool m_MenuIntroPlaying = false; // ƒƒjƒ…[•\¦ƒAƒjƒ[ƒVƒ‡ƒ“‚ªÄ¶’†‚©‚Ç‚¤‚©
+	float m_MenuIntroElapsed = 0.0f; // ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¡¨ç¤ºã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®çµŒéæ™‚é–“
+	bool m_MenuIntroPlaying = false; // ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¡¨ç¤ºã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒå†ç”Ÿä¸­ã‹ã©ã†ã‹
 
-	static constexpr float kMenuIntroDurationSec = 0.5f; // ƒƒjƒ…[•\¦ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŠÔ
-	static constexpr float kMenuSlideOffsetPx = 720.0f;  // ƒƒjƒ…[•\¦ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒXƒ‰ƒCƒh‹——£
-	static constexpr float kSelectedScale = 1.1f; // ‘I‘ğ’†‚Ì€–Ú‚ÌƒXƒP[ƒ‹
-	static constexpr float kNormalScale = 1.0f;	   // ‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢€–Ú‚ÌƒXƒP[ƒ‹
+	static constexpr float kMenuIntroDurationSec = 0.5f; // ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¡¨ç¤ºã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æ™‚é–“
+	static constexpr float kMenuSlideOffsetPx = 720.0f;  // ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¡¨ç¤ºã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¹ãƒ©ã‚¤ãƒ‰è·é›¢
+	static constexpr float kSelectedScale = 1.1f; // é¸æŠä¸­ã®é …ç›®ã®ã‚¹ã‚±ãƒ¼ãƒ«
+	static constexpr float kNormalScale = 1.0f;	   // é¸æŠã•ã‚Œã¦ã„ãªã„é …ç›®ã®ã‚¹ã‚±ãƒ¼ãƒ«
 
-	static constexpr XMFLOAT2 kPanelSize = { 600.0f, 400.0f }; // ƒpƒlƒ‹‚ÌƒTƒCƒY
+	static constexpr XMFLOAT2 kPanelSize = { 600.0f, 400.0f }; // ãƒ‘ãƒãƒ«ã®ã‚µã‚¤ã‚º
 
-	static constexpr float kMainItemBaseX = 180.0f; // ƒƒjƒ…[€–Ú‚ÌŠî–{XÀ•W
-	static constexpr float kMainItemBaseY = 220.0f; // ƒƒjƒ…[€–Ú‚ÌŠî–{YÀ•W
-	static constexpr float kMainItemStepY = 120.0f; // ƒƒjƒ…[€–Ú‚ÌYÀ•W‚ÌŠÔŠu
+	static constexpr float kMainItemBaseX = 180.0f; // ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®åŸºæœ¬Xåº§æ¨™
+	static constexpr float kMainItemBaseY = 220.0f; // ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®åŸºæœ¬Yåº§æ¨™
+	static constexpr float kMainItemStepY = 120.0f; // ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®Yåº§æ¨™ã®é–“éš”
 
-	bool m_IsMenuOpen = false;	 // ƒƒjƒ…[‚ªŠJ‚¢‚Ä‚¢‚é‚©
-	Panel m_Panel = Panel::Main; // Œ»İ‚Ìƒpƒlƒ‹
-	int m_MainSelectIndex = 0;	 // ƒƒCƒ“ƒpƒlƒ‹‚ÅŒ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚é€–Ú‚ÌƒCƒ“ƒfƒbƒNƒX
+	bool m_IsMenuOpen = false;	 // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé–‹ã„ã¦ã„ã‚‹ã‹
+	Panel m_Panel = Panel::Main; // ç¾åœ¨ã®ãƒ‘ãƒãƒ«
+	int m_MainSelectIndex = 0;	 // ãƒ¡ã‚¤ãƒ³ãƒ‘ãƒãƒ«ã§ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹é …ç›®ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 
-	Sprite* m_Dim = nullptr; // ƒƒjƒ…[‚Ì”wŒi‚ğˆÃ‚­‚·‚éƒXƒvƒ‰ƒCƒg
+	Sprite* m_Dim = nullptr; // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®èƒŒæ™¯ã‚’æš—ãã™ã‚‹ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	std::array<Sprite*, static_cast<size_t>(MainItem::Count)> m_MainItemSprites{};
 
 

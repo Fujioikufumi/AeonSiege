@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 //-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
@@ -28,14 +28,14 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     enum TEXTURE_USAGE
     {
-        TEXTURE_USAGE_DIFFUSE = 0,  // ƒfƒBƒtƒ…[ƒYƒ}ƒbƒv
-        TEXTURE_USAGE_SPECULAR,     // ƒXƒyƒLƒ…ƒ‰[ƒ}ƒbƒv
-        TEXTURE_USAGE_SHININESS,    // ƒVƒƒƒCƒjƒlƒXƒ}ƒbƒv
-        TEXTURE_USAGE_NORMAL,       // –@üƒ}ƒbƒv
+        TEXTURE_USAGE_DIFFUSE = 0,  // ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºãƒžãƒƒãƒ—
+        TEXTURE_USAGE_SPECULAR,     // ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ãƒžãƒƒãƒ—
+        TEXTURE_USAGE_SHININESS,    // ã‚·ãƒ£ã‚¤ãƒ‹ãƒã‚¹ãƒžãƒƒãƒ—
+        TEXTURE_USAGE_NORMAL,       // æ³•ç·šãƒžãƒƒãƒ—
 
-        TEXTURE_USAGE_BASE_COLOR,   // ƒx[ƒXƒJƒ‰[ƒ}ƒbƒv
-        TEXTURE_USAGE_METALLIC,     // ƒƒ^ƒŠƒbƒNƒ}ƒbƒv
-        TEXTURE_USAGE_ROUGHNESS,    // ƒ‰ƒtƒlƒXƒ}ƒbƒv
+        TEXTURE_USAGE_BASE_COLOR,   // ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼ãƒžãƒƒãƒ—
+        TEXTURE_USAGE_METALLIC,     // ãƒ¡ã‚¿ãƒªãƒƒã‚¯ãƒžãƒƒãƒ—
+        TEXTURE_USAGE_ROUGHNESS,    // ãƒ©ãƒ•ãƒã‚¹ãƒžãƒƒãƒ—
 
         TEXTURE_USAGE_COUNT
     };
@@ -103,14 +103,14 @@ private:
     ///////////////////////////////////////////////////////////////////////////
     struct Subset
     {
-        ConstantBuffer* constantBuffer;                     // ’è”ƒoƒbƒtƒ@
-        D3D12_GPU_DESCRIPTOR_HANDLE     TextureHandle[TEXTURE_USAGE_COUNT]; // ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
+        ConstantBuffer* constantBuffer;                     // å®šæ•°ãƒãƒƒãƒ•ã‚¡
+        D3D12_GPU_DESCRIPTOR_HANDLE     TextureHandle[TEXTURE_USAGE_COUNT]; // ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«
     };
 
-    std::map<std::wstring, Texture*>    m_Texture;      // ƒeƒNƒXƒ`ƒƒ
-    std::vector<Subset>                 m_Subset;       // ƒTƒuƒZƒbƒg
-    ID3D12Device* m_Device;       // ƒfƒoƒCƒX
-    DescriptorPool* m_Pool;         // ƒfƒBƒXƒNƒŠƒvƒ^ƒv[ƒ‹
+    std::map<std::wstring, Texture*>    m_Texture;      // ãƒ†ã‚¯ã‚¹ãƒãƒ£
+    std::vector<Subset>                 m_Subset;       // ã‚µãƒ–ã‚»ãƒƒãƒˆ
+    ID3D12Device* m_Device;       // ãƒ‡ãƒã‚¤ã‚¹
+    DescriptorPool* m_Pool;         // ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ—ãƒ¼ãƒ«
 
     Material(const Material&) = delete;
     void operator = (const Material&) = delete;

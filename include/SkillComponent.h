@@ -1,19 +1,19 @@
-#pragma once
+ï»¿#pragma once
 #include "Component.h"
 #include "SkillData.h"
 #include <vector>
 
 /// <summary>
-/// ƒXƒLƒ‹‚Ì”­“®‚Ìƒf[ƒ^\‘¢‘Ì
+/// ã‚¹ã‚­ãƒ«ã®ç™ºå‹•æ™‚ã®ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 /// </summary>
 struct SkillRuntime
 {
-	SkillData Data;				  // ƒXƒLƒ‹‚ÌŠî–{ƒf[ƒ^
-	float CurrentCooldown = 0.0f; // Œ»İ‚ÌƒN[ƒ‹ƒ_ƒEƒ“ŠÔ
+	SkillData Data;				  // ã‚¹ã‚­ãƒ«ã®åŸºæœ¬ãƒ‡ãƒ¼ã‚¿
+	float CurrentCooldown = 0.0f; // ç¾åœ¨ã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³æ™‚é–“
 };
 
 /// <summary>
-/// ƒXƒLƒ‹ƒRƒ“ƒ|[ƒlƒ“ƒgFƒXƒLƒ‹‚ÌƒN[ƒ‹ƒ_ƒEƒ“ŠÇ—‚ğ’S“–
+/// ã‚¹ã‚­ãƒ«ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆï¼šã‚¹ã‚­ãƒ«ã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ç®¡ç†ã‚’æ‹…å½“
 /// </summary>
 class SkillComponent : public Component
 {
@@ -23,29 +23,29 @@ public:
 
 	void Update(float deltaTime) override;
 
-	// ƒXƒLƒ‹‚ğ’Ç‰Á
+	// ã‚¹ã‚­ãƒ«ã‚’è¿½åŠ 
 	void AddSkill(const SkillData& data);
 
-	// w’è‚µ‚½ƒXƒLƒ‹ID‚ğ‚Á‚Ä‚¢‚é‚©‚ÌŠm”F
+	// æŒ‡å®šã—ãŸã‚¹ã‚­ãƒ«IDã‚’æŒã£ã¦ã„ã‚‹ã‹ã®ç¢ºèª
 	[[nodiscard]] bool HasSkill(SkillId id) const;
 
-	// w’è‚µ‚½ƒXƒLƒ‹ƒXƒƒbƒg‚ÌƒXƒLƒ‹ƒf[ƒ^‚ğæ“¾
+	// æŒ‡å®šã—ãŸã‚¹ã‚­ãƒ«ã‚¹ãƒ­ãƒƒãƒˆã®ã‚¹ã‚­ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
 	[[nodiscard]] const SkillRuntime* GetSkillBySlot(int slotIndex) const;
 	[[nodiscard]] SkillRuntime* GetSkillBySlot(int slotIndex);
 
-	// w’è‚µ‚½ƒXƒLƒ‹ƒXƒƒbƒg‚ÌƒN[ƒ‹ƒ_ƒEƒ“‚ğŠJn
+	// æŒ‡å®šã—ãŸã‚¹ã‚­ãƒ«ã‚¹ãƒ­ãƒƒãƒˆã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ã‚’é–‹å§‹
 	void StartCooldown(int slotIndex, float cooldownSec);
 
-	// w’è‚µ‚½ƒXƒLƒ‹‚ÌƒN[ƒ‹ƒ_ƒEƒ“”ä—¦‚ğæ“¾i0.0f`1.0fj
+	// æŒ‡å®šã—ãŸã‚¹ã‚­ãƒ«ã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³æ¯”ç‡ã‚’å–å¾—ï¼ˆ0.0fï½1.0fï¼‰
 	[[nodiscard]] float GetCooldownRatio(int slotIndex) const;
 
-	// Œ»İ•Û‚µ‚Ä‚¢‚éƒXƒLƒ‹‚Ì”‚ğæ“¾
+	// ç¾åœ¨ä¿æŒã—ã¦ã„ã‚‹ã‚¹ã‚­ãƒ«ã®æ•°ã‚’å–å¾—
 	[[nodiscard]] int GetSkillCount() const { return static_cast<int>(m_Skills.size()); }
 
 private:
-	// ƒN[ƒ‹ƒ_ƒEƒ“‚ÌXV
+	// ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ã®æ›´æ–°
 	void UpdateCooldowns(float deltaTime);
 
-	std::vector<SkillRuntime> m_Skills;		// ƒXƒLƒ‹ƒf[ƒ^‚ÌƒŠƒXƒg
+	std::vector<SkillRuntime> m_Skills;		// ã‚¹ã‚­ãƒ«ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
 	static constexpr int kMaxSkillSlot = 6;
 };

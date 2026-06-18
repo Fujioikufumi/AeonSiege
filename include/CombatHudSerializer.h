@@ -1,17 +1,17 @@
-#pragma once
+ï»¿#pragma once
 #include "CombatHudLayout.h"
 
 /// <summary>
-/// í“¬’†UI‚ÌƒŒƒCƒAƒEƒgƒf[ƒ^‚ğJson‚©‚ç“Ç‚İ‚ŞƒVƒŠƒAƒ‰ƒCƒU[
+/// æˆ¦é—˜ä¸­UIã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’Jsonã‹ã‚‰èª­ã¿è¾¼ã‚€ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚¶ãƒ¼
 /// </summary>
 class CombatHudSerializer {
 public:
-    // Jsonƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+    // Jsonãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
     static bool Load(const std::wstring& path, CombatHudLayout& outLayout);
 
-	// Jsonƒtƒ@ƒCƒ‹‚Ö‚Ì‘‚«o‚µ
+	// Jsonãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®æ›¸ãå‡ºã—
     static bool Save(const std::wstring& path, const CombatHudLayout& layout);
     
-	// ƒfƒtƒHƒ‹ƒg’l‚ğİ’è‚·‚éiLoad‚Ìæ“ª‚ÅŒÄ‚Ño‚³‚ê‚éj
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’è¨­å®šã™ã‚‹ï¼ˆLoadã®å…ˆé ­ã§å‘¼ã³å‡ºã•ã‚Œã‚‹ï¼‰
     static void ApplyDefaults(CombatHudLayout& out);
 };

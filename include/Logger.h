@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 
 /// <summary>
-/// ƒƒO‚ğo—Í‚µ‚Ü‚·.
+/// ãƒ­ã‚°ã‚’å‡ºåŠ›ã—ã¾ã™.
 /// </summary>
-/// <param name="format"><ƒtƒH[ƒ}ƒbƒg‚Å‚·./param>
+/// <param name="format"><ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã§ã™./param>
 /// <param name=""></param>
 void OutputLog(const char* format, ...);
 

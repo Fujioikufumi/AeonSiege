@@ -1,30 +1,30 @@
-#pragma once
+ï»¿#pragma once
 
 /// <summary>
-/// ƒLƒƒƒ‰ƒNƒ^[‚ÌƒXƒe[ƒ^ƒXƒf[ƒ^
+/// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ‡ãƒ¼ã‚¿
 /// </summary>
 struct StatusData
 {
-	// Šî–{’l
+	// åŸºæœ¬å€¤
 	int   maxHp = 100;
 	int   attackPower = 10;
 	int   defensePower = 5;
 	float moveSpeed = 30.0f;
 	float autoAttackInterval = 1.0f;
 
-	// í“¬•â³
+	// æˆ¦é—˜è£œæ­£
 	float criticalRate = 0.0f;
 	float criticalDamageRate = 1.5f;
 	float evasionRate = 0.0f;
 	float skillChainDamageRate = 1.25f;
 
-	// ƒXƒLƒ‹•â³
+	// ã‚¹ã‚­ãƒ«è£œæ­£
 	float skillRangeRate = 1.0f;
 	float skillCooldownRate = 1.0f;
 	float skillPowerRate = 1.0f;
 	float skillDurationRate = 1.0f;
 
-	// ÅI”{—¦
+	// æœ€çµ‚å€ç‡
 	float attackRate = 1.0f;
 	float maxHpRate = 1.0f;
 	float moveSpeedRate = 1.0f;

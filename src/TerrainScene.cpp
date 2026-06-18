@@ -1,4 +1,4 @@
-#include "Terrain.h"
+ï»¿#include "Terrain.h"
 #include "TerrainScene.h"
 #include "Camera.h"
 #include "Player.h"
@@ -19,33 +19,33 @@
 #include "ResultHud.h"
 
 namespace {
-	// ƒJƒƒ‰‚Ì’è”
-	constexpr XMFLOAT3 kCameraStartPos = { 0.0f, -800.0f, 0.0f }; // ƒJƒƒ‰‚Ì‰ŠúˆÊ’u
+	// ã‚«ãƒ¡ãƒ©ã®å®šæ•°
+	constexpr XMFLOAT3 kCameraStartPos = { 0.0f, -800.0f, 0.0f }; // ã‚«ãƒ¡ãƒ©ã®åˆæœŸä½ç½®
 
-	// ƒXƒJƒCƒh[ƒ€‚Ì’è”
-	constexpr float kSkyDomeRadius = 10000.0f; // ƒXƒJƒCƒh[ƒ€‚Ì”¼Œa
-	constexpr int kSkyDomeSlices = 32; // ƒXƒJƒCƒh[ƒ€‚ÌƒXƒ‰ƒCƒX”
-	constexpr int kSkyDomeStacks = 16; // ƒXƒJƒCƒh[ƒ€‚ÌƒXƒ^ƒbƒN”
+	// ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ ã®å®šæ•°
+	constexpr float kSkyDomeRadius = 10000.0f; // ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ ã®åŠå¾„
+	constexpr int kSkyDomeSlices = 32; // ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ ã®ã‚¹ãƒ©ã‚¤ã‚¹æ•°
+	constexpr int kSkyDomeStacks = 16; // ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ ã®ã‚¹ã‚¿ãƒƒã‚¯æ•°
 
-	// ’nŒ`‚Ì’è”
-	constexpr float kHeightScale = 2000.0f; // ’nŒ`‚Ì‚‚³‚ÌƒXƒP[ƒ‹
-	constexpr float kGridSize = 10.0f; // ’nŒ`‚ÌƒOƒŠƒbƒhƒTƒCƒY
-	constexpr XMFLOAT3 kTerrainCenter = { 0.0f, 0.0f, 0.0f }; // ’nŒ`‚Ì’†SÀ•W
+	// åœ°å½¢ã®å®šæ•°
+	constexpr float kHeightScale = 2000.0f; // åœ°å½¢ã®é«˜ã•ã®ã‚¹ã‚±ãƒ¼ãƒ«
+	constexpr float kGridSize = 10.0f; // åœ°å½¢ã®ã‚°ãƒªãƒƒãƒ‰ã‚µã‚¤ã‚º
+	constexpr XMFLOAT3 kTerrainCenter = { 0.0f, 0.0f, 0.0f }; // åœ°å½¢ã®ä¸­å¿ƒåº§æ¨™
 
-	// ƒoƒgƒ‹ƒGƒŠƒA‚Ì’è”
-	constexpr float kBattleAreaRadius = 100.0f; // ƒoƒgƒ‹ƒGƒŠƒA‚Ì”¼Œa
-	constexpr XMFLOAT3 kBattleAreaCenter = { -497.0f, 0.0f, -650.0f }; // ƒoƒgƒ‹ƒGƒŠƒA‚Ì’†SÀ•W
+	// ãƒãƒˆãƒ«ã‚¨ãƒªã‚¢ã®å®šæ•°
+	constexpr float kBattleAreaRadius = 100.0f; // ãƒãƒˆãƒ«ã‚¨ãƒªã‚¢ã®åŠå¾„
+	constexpr XMFLOAT3 kBattleAreaCenter = { -497.0f, 0.0f, -650.0f }; // ãƒãƒˆãƒ«ã‚¨ãƒªã‚¢ã®ä¸­å¿ƒåº§æ¨™
 
-	// ‘Œ´‚Ì’è”
-	constexpr float kMeadowSize = 0.1f; // ‘Œ´‚ÌƒXƒP[ƒ‹
+	// è‰åŸã®å®šæ•°
+	constexpr float kMeadowSize = 0.1f; // è‰åŸã®ã‚¹ã‚±ãƒ¼ãƒ«
 }
 
 //-----------------------------------------------------------------------------
-//	‰Šú‰»
+//	åˆæœŸåŒ–
 //-----------------------------------------------------------------------------
 void TerrainScene::Init()
 {
-	// ƒJƒƒ‰‚Ì’Ç‰Á
+	// ã‚«ãƒ¡ãƒ©ã®è¿½åŠ 
 	Camera* pCamera = AddGameObject<Camera>(eLayer::DEFAULT, "Camera");
 	if (pCamera)
 	{
@@ -55,7 +55,7 @@ void TerrainScene::Init()
 		SetCamera(pCamera);
 	}
 
-	// ƒvƒŒƒCƒ„[‚Ì’Ç‰Á
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¿½åŠ 
 	AddGameObject<Player>(eLayer::PLAYER, "Player");
 
 	AddGameObject<PartyManager>(eLayer::DEFAULT, "PartyManager");
@@ -64,7 +64,7 @@ void TerrainScene::Init()
 
 	AddGameObject<GameMenu>(eLayer::MENUUI, "GameMenu");
 
-	// ƒXƒJƒCƒh[ƒ€‚Ì’Ç‰Á
+	// ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ ã®è¿½åŠ 
 	SkyDomeObject* pSkyDome = AddGameObject<SkyDomeObject>(eLayer::BACKGROUND, "SkyDome");
 	if (pSkyDome)
 	{
@@ -74,7 +74,7 @@ void TerrainScene::Init()
 		pSkyDome->SetStacks(kSkyDomeStacks);
 	}
 
-	// ’nŒ`‚Ì’Ç‰Á
+	// åœ°å½¢ã®è¿½åŠ 
 	m_Terrain = AddGameObject<Terrain>(eLayer::TERRAIN, "Terrain");
 	m_Terrain->Init(
 		L"Assets/Texture/Terrain/HeightMap.png",
@@ -94,10 +94,10 @@ void TerrainScene::Init()
 	{
 		battleAreaObj->Setup(kBattleAreaCenter, kBattleAreaRadius);
 	}
-	// •—‚Ì’Ç‰Á
+	// é¢¨ã®è¿½åŠ 
 	AddGameObject<Wind>(eLayer::Environment, "Wind");
 
-	// ‘Œ´‚Ì’Ç‰Á
+	// è‰åŸã®è¿½åŠ 
 	float meadowSize = kMeadowSize;
 	Meadow* pMeadow1 = AddGameObject<Meadow>(eLayer::TERRAIN, "Meadow01");
 	pMeadow1->SetModelPath(L"Assets/Model/FieldObject/Grass.bmdl");
@@ -123,13 +123,13 @@ void TerrainScene::Term()
 
 void TerrainScene::Update(float deltaTime)
 {
-	// ƒŠƒUƒ‹ƒg•\¦’†‚Í‘¼‚ÌXV‚ğ~‚ß‚é
+	// ãƒªã‚¶ãƒ«ãƒˆè¡¨ç¤ºä¸­ã¯ä»–ã®æ›´æ–°ã‚’æ­¢ã‚ã‚‹
 	if (m_ResultHud && m_ResultHud->IsOpen()) {
 		m_ResultHud->Update(deltaTime);
 		return;
 	}
 
-	// ƒƒjƒ…[‚ªŠJ‚¢‚Ä‚¢‚éê‡Aƒƒjƒ…[ˆÈŠO‚ÌƒIƒuƒWƒFƒNƒg‚ÌXV‚ğ’â~(deltaTime = 0)‚·‚é
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé–‹ã„ã¦ã„ã‚‹å ´åˆã€ãƒ¡ãƒ‹ãƒ¥ãƒ¼ä»¥å¤–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°ã‚’åœæ­¢(deltaTime = 0)ã™ã‚‹
 	const bool menuOpen = GameMenu::IsMenuOpen();
 	for (auto& list : m_GameObjectList)
 	{
@@ -143,7 +143,7 @@ void TerrainScene::Update(float deltaTime)
 		}
 	}
 
-	// ”jŠü—\’è‚ÌƒIƒuƒWƒFƒNƒg‚ğƒŠƒXƒg‚©‚çíœ
+	// ç ´æ£„äºˆå®šã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
 	for (auto& list : m_GameObjectList)
 	{
 		list.remove_if([](const std::unique_ptr<GameObject>& o) {
@@ -151,13 +151,13 @@ void TerrainScene::Update(float deltaTime)
 			});
 	}
 
-	// I—¹”»’è
+	// çµ‚äº†åˆ¤å®š
 	auto* player = GetGameObjectByName<Player>("Player");
 	auto* phaseManager = GetGameObjectByName<PhaseManager>("PhaseManager");
 
-	// ƒvƒŒƒCƒ„[‚Ì€–SƒAƒjƒ[ƒVƒ‡ƒ“I—¹A‚à‚µ‚­‚ÍƒtƒF[ƒY101“’Bi100ƒNƒŠƒAŒãj
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ­»äº¡ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†ã€ã‚‚ã—ãã¯ãƒ•ã‚§ãƒ¼ã‚º101åˆ°é”ï¼ˆ100ã‚¯ãƒªã‚¢å¾Œï¼‰
 	if ((player && player->IsDeadAnimFinished()) || (phaseManager && phaseManager->IsGameClear()))
 	{
-		m_ResultHud->Show(); // ƒŠƒUƒ‹ƒg‰‰oŠJn
+		m_ResultHud->Show(); // ãƒªã‚¶ãƒ«ãƒˆæ¼”å‡ºé–‹å§‹
 	}
 }

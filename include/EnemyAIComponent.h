@@ -1,17 +1,17 @@
-#pragma once
+ï»¿#pragma once
 #include "Component.h"
 #include <DirectXMath.h>
 #include <string>
 #include <functional>
 
-// “G‚ÌAIƒXƒe[ƒg
+// æ•µã®AIã‚¹ãƒ†ãƒ¼ãƒˆ
 enum class EnemyAIState
 {
-	Idle,	// ‘Ò‹@
-	Patrol, // „‰ñ
-	Chase,	// ’ÇÕ
-	Attack, // UŒ‚
-	Dead	// €–S
+	Idle,	// å¾…æ©Ÿ
+	Patrol, // å·¡å›
+	Chase,	// è¿½è·¡
+	Attack, // æ”»æ’ƒ
+	Dead	// æ­»äº¡
 };
 
 class EnemyAIComponent : public Component
@@ -24,100 +24,100 @@ public:
 	void Update(float deltaTime) override;
 
 	//---------------------------------------------------------
-	// AI‚Ìƒpƒ‰ƒ[ƒ^İ’è
+	// AIã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 	//---------------------------------------------------------
 
-	/// “G‚ÌƒŒƒxƒ‹‚ğİ’è
+	/// æ•µã®ãƒ¬ãƒ™ãƒ«ã‚’è¨­å®š
 	void SetLevel(int level) { m_Level = level; }
 
-	/// “G‚ÌƒŒƒxƒ‹‚ğæ“¾
+	/// æ•µã®ãƒ¬ãƒ™ãƒ«ã‚’å–å¾—
 	int GetLevel() const { return m_Level; }
 
-	/// “G‚ÌƒXƒ|[ƒ“ˆÊ’u‚ğİ’è
+	/// æ•µã®ã‚¹ãƒãƒ¼ãƒ³ä½ç½®ã‚’è¨­å®š
 	void SetSpawnPosition(const DirectX::XMFLOAT3& pos) { m_SpawnPosition = pos; }
 
-	/// œpœj‚·‚é”¼Œa‚ğİ’è
+	/// å¾˜å¾Šã™ã‚‹åŠå¾„ã‚’è¨­å®š
 	void SetPatrolRadius(float radius) { m_PatrolRadius = radius; }
 
-	/// ƒvƒŒƒCƒ„[‚ğ”­Œ©‚·‚éõ“G”¼Œa‚ğİ’è
+	/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ç™ºè¦‹ã™ã‚‹ç´¢æ•µåŠå¾„ã‚’è¨­å®š
 	void SetAggroRadius(float radius) { m_AggroRadius = radius; }
 
-	/// œpœj‚·‚é‚©‚Ç‚¤‚©‚ğİ’è
+	/// å¾˜å¾Šã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®š
 	void SetUsePatrol(bool usePatrol) { m_UsePatrol = usePatrol; }
 
-	/// í‚É“G‘Îó‘Ô‚É‚·‚é‚©‚Ç‚¤‚©‚ğİ’è
+	/// å¸¸ã«æ•µå¯¾çŠ¶æ…‹ã«ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®š
 	void SetAlwaysAggro(bool alwaysAggro) { m_AlwaysAggro = alwaysAggro; }
 
-	/// UŒ‚Ë’ö‚ğİ’è
+	/// æ”»æ’ƒå°„ç¨‹ã‚’è¨­å®š
 	void SetMeleeRange(float range) { m_MeleeRange = range; }
 
-	/// ˆÚ“®‘¬“x‚ğİ’è
+	/// ç§»å‹•é€Ÿåº¦ã‚’è¨­å®š
 	void SetMoveSpeed(float speed) { m_MoveSpeed = speed; }
 
-	/// ’ÇÕ‚ÌˆÚ“®‘¬“x‚ğİ’è
+	/// è¿½è·¡æ™‚ã®ç§»å‹•é€Ÿåº¦ã‚’è¨­å®š
 	void SetChaseMoveSpeed(float speed) { m_ChaseMoveSpeed = speed; }
 
-	/// UŒ‚‚ÌƒN[ƒ‹ƒ_ƒEƒ“ŠÔ‚ğİ’è(Œ»ó’ÊíUŒ‚‚Ì‚İ)
+	/// æ”»æ’ƒã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³æ™‚é–“ã‚’è¨­å®š(ç¾çŠ¶é€šå¸¸æ”»æ’ƒã®ã¿)
 	void SetMeleeCooldownSec(float sec) { m_MeleeCooldownSec = sec; }
 
-	// AI‚Ì—LŒø/–³Œø‚ğİ’è
+	// AIã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’è¨­å®š
 	void SetAIActive(bool active) { m_IsAIActive = active; }
 	bool IsAIActive() const { return m_IsAIActive; }
 
 public:
-	// EnemyAIState‚É‰‚¶‚½ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶‚Ì‚½‚ß‚ÌƒR[ƒ‹ƒoƒbƒN‚ÆA
-	// UŒ‚”­¶‚Ìˆ—‚Ì‚½‚ß‚ÌƒR[ƒ‹ƒoƒbƒN‚ğİ’è
+	// EnemyAIStateã«å¿œã˜ãŸã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿã®ãŸã‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã¨ã€
+	// æ”»æ’ƒç™ºç”Ÿæ™‚ã®å‡¦ç†ã®ãŸã‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’è¨­å®š
 	using AnimCallback = std::function<void(EnemyAIState)>;
 	void SetAnimCallback(AnimCallback cb) { m_AnimCallback = cb; }
 	using AttackCallback = std::function<void(GameObject*)>;
 	void SetAttackCallback(AttackCallback cb) { m_AttackCallback = cb; }
 
-	// ŒoŒ±’l•ñV‚ğİ’è
+	// çµŒé¨“å€¤å ±é…¬ã‚’è¨­å®š
 	void SetExpReward(int value) { m_ExpReward = value; }
 	int GetExpReward() const { return m_ExpReward; }
 private:
-	// ‘Ò‹@ó‘Ô‚ÌXV
+	// å¾…æ©ŸçŠ¶æ…‹ã®æ›´æ–°
 	void UpdateIdle(float deltaTime);
 
-	// œpœjó‘Ô‚ÌXV
+	// å¾˜å¾ŠçŠ¶æ…‹ã®æ›´æ–°
 	void UpdatePatrol(float deltaTime);
 
-	// ’ÇÕó‘Ô‚ÌXV
+	// è¿½è·¡çŠ¶æ…‹ã®æ›´æ–°
 	void UpdateChaseAndAttack(float deltaTime, class GameObject* player);
 
-	// UŒ‚ó‘Ô‚ÌXV
+	// æ”»æ’ƒçŠ¶æ…‹ã®æ›´æ–°
 	GameObject* FindAttackTarget(class Scene* pScene) const;
 
-	// ó‘Ô‘JˆÚˆ—
+	// çŠ¶æ…‹é·ç§»å‡¦ç†
 	void ChangeState(EnemyAIState newState);
 private:
-	static constexpr float kIdleWaitTime = 3.0f; // ‘Ò‹@ó‘Ô‚Å‚Ì‘Ò‚¿ŠÔ
+	static constexpr float kIdleWaitTime = 3.0f; // å¾…æ©ŸçŠ¶æ…‹ã§ã®å¾…ã¡æ™‚é–“
 
 	EnemyAIState m_CurrentState = EnemyAIState::Idle;
 
 	bool m_IsAIActive = true;
 
-	int m_Level = 1; // “G‚ÌƒŒƒxƒ‹
-	int m_ExpReward = 0; // Œ‚”j‚³‚ê‚½‚çƒvƒŒƒCƒ„[‚ª“¾‚éŒoŒ±’l—Ê
-	DirectX::XMFLOAT3 m_SpawnPosition = { 0, 0, 0 }; // ‰ŠúÀ•W
-	DirectX::XMFLOAT3 m_TargetPatrolPos = { 0, 0, 0 }; // Ÿ‚Ìœpœj–Ú“I’n
+	int m_Level = 1; // æ•µã®ãƒ¬ãƒ™ãƒ«
+	int m_ExpReward = 0; // æ’ƒç ´ã•ã‚ŒãŸã‚‰ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå¾—ã‚‹çµŒé¨“å€¤é‡
+	DirectX::XMFLOAT3 m_SpawnPosition = { 0, 0, 0 }; // åˆæœŸåº§æ¨™
+	DirectX::XMFLOAT3 m_TargetPatrolPos = { 0, 0, 0 }; // æ¬¡ã®å¾˜å¾Šç›®çš„åœ°
 
-	float m_PatrolRadius = 30.0f; // œpœj”ÍˆÍ
-	float m_AggroRadius = 60.0f;  // õ“G”ÍˆÍ
-	float m_MeleeRange = 25.0f;   // UŒ‚Ë’ö
+	float m_PatrolRadius = 30.0f; // å¾˜å¾Šç¯„å›²
+	float m_AggroRadius = 60.0f;  // ç´¢æ•µç¯„å›²
+	float m_MeleeRange = 25.0f;   // æ”»æ’ƒå°„ç¨‹
 
-	float m_MoveSpeed = 10.0f;      // ’ÊíˆÚ“®‘¬“x
-	float m_ChaseMoveSpeed = 25.0f; // ’ÇÕ‚ÌˆÚ“®‘¬“x
+	float m_MoveSpeed = 10.0f;      // é€šå¸¸ç§»å‹•é€Ÿåº¦
+	float m_ChaseMoveSpeed = 25.0f; // è¿½è·¡æ™‚ã®ç§»å‹•é€Ÿåº¦
 
-	float m_StateTimer = 0.0f;    // ‘Ò‹@ŠÔ‚È‚Ç‚ğŒv‚é”Ä—pƒ^ƒCƒ}[
-	float m_MeleeCooldown = 0.0f; // UŒ‚‚ÌƒN[ƒ‹ƒ_ƒEƒ“
+	float m_StateTimer = 0.0f;    // å¾…æ©Ÿæ™‚é–“ãªã©ã‚’è¨ˆã‚‹æ±ç”¨ã‚¿ã‚¤ãƒãƒ¼
+	float m_MeleeCooldown = 0.0f; // æ”»æ’ƒã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³
 	float m_MeleeCooldownSec = 4.0f;
 
-	bool m_IsAttacking = false; // UŒ‚’†‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+	bool m_IsAttacking = false; // æ”»æ’ƒä¸­ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 
-	bool m_UsePatrol = true; // œpœj‚·‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
-	bool m_AlwaysAggro = false; // í‚É“G‘Îó‘Ô‚É‚·‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒOitrue‚Ìê‡AƒvƒŒƒCƒ„[‚ª‹ß‚­‚É‚È‚­‚Ä‚àí‚É’ÇÕó‘Ô‚É‚È‚éj
+	bool m_UsePatrol = true; // å¾˜å¾Šã™ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+	bool m_AlwaysAggro = false; // å¸¸ã«æ•µå¯¾çŠ¶æ…‹ã«ã™ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ï¼ˆtrueã®å ´åˆã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒè¿‘ãã«ãªãã¦ã‚‚å¸¸ã«è¿½è·¡çŠ¶æ…‹ã«ãªã‚‹ï¼‰
 
-	AnimCallback m_AnimCallback;      // ó‘Ô‚É‰‚¶‚½ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶—p
-	AttackCallback m_AttackCallback;  // UŒ‚”­¶‚Ìˆ—iƒ_ƒ[ƒW“K—pj
+	AnimCallback m_AnimCallback;      // çŠ¶æ…‹ã«å¿œã˜ãŸã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿç”¨
+	AttackCallback m_AttackCallback;  // æ”»æ’ƒç™ºç”Ÿæ™‚ã®å‡¦ç†ï¼ˆãƒ€ãƒ¡ãƒ¼ã‚¸é©ç”¨ï¼‰
 };

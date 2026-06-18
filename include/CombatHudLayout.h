@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <vector>
 #include <array>
@@ -10,58 +10,58 @@ namespace HudLayoutUtil
 	inline float ScreenHeightRatio(float t) { return static_cast<float>(SCREEN_HEIGHT) * t; }
 }
 
-// ‰æ–Ê”ä—¦‚ÉŠî‚Ã‚­‹éŒ`î•ñ
+// ç”»é¢æ¯”ç‡ã«åŸºã¥ãçŸ©å½¢æƒ…å ±
 struct HudBox {
-	// 0.0 ~ 1.0 ‚Ì”ä—¦‚Åw’è
+	// 0.0 ~ 1.0 ã®æ¯”ç‡ã§æŒ‡å®š
 	float cx = 0.5f;
 	float cy = 0.5f;
 	float w = 0.1f;
 	float h = 0.1f;
 };
 
-// ”’lUI‚Ì”z’uî•ñ
+// æ•°å€¤UIã®é…ç½®æƒ…å ±
 struct HudNumberLayout {
-	// ”’l‚Ì”z’u
+	// æ•°å€¤ã®é…ç½®
 	float onesDigitX = 0.5f;
 	float onesDigitY = 0.5f;
 	float scale = 0.35f;
 };
 
-// ƒo[•\¦‚Ìİ’èiHP/ŒoŒ±’l‚È‚Ç‚Åg—pj
+// ãƒãƒ¼è¡¨ç¤ºã®è¨­å®šï¼ˆHP/çµŒé¨“å€¤ãªã©ã§ä½¿ç”¨ï¼‰
 struct HudBarLayout {
-	HudBox barBack; // ”wŒi
-	HudBox bar;     // Œ¸­‚·‚éƒo[ (”wŒi‚ÌÀ•W‚ÆƒXƒP[ƒ‹‚Íˆê’v‚³‚¹‚é)
-	std::array<float, 3> colBack = { 0.3f, 0.3f, 0.3f }; // ”wŒi‚ÌF
-	std::array<float, 3> colBar = { 0.2f, 0.9f, 0.3f };  // ƒo[‚ÌF
-	HudNumberLayout number; // •\¦‚·‚é”’l‚ÌƒŒƒCƒAƒEƒg
+	HudBox barBack; // èƒŒæ™¯
+	HudBox bar;     // æ¸›å°‘ã™ã‚‹ãƒãƒ¼ (èƒŒæ™¯ã®åº§æ¨™ã¨ã‚¹ã‚±ãƒ¼ãƒ«ã¯ä¸€è‡´ã•ã›ã‚‹)
+	std::array<float, 3> colBack = { 0.3f, 0.3f, 0.3f }; // èƒŒæ™¯ã®è‰²
+	std::array<float, 3> colBar = { 0.2f, 0.9f, 0.3f };  // ãƒãƒ¼ã®è‰²
+	HudNumberLayout number; // è¡¨ç¤ºã™ã‚‹æ•°å€¤ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 };
 
-// –¡•û1l•ª‚ÌƒŒƒCƒAƒEƒgƒf[ƒ^
+// å‘³æ–¹1äººåˆ†ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ãƒ¼ã‚¿
 struct AllyLayout {
-	std::string hpFrom;         // ‘ÎÛƒIƒuƒWƒFƒNƒg–¼ (—á: "Player")
-	std::wstring panelPath;     // ƒLƒƒƒ‰ƒNƒ^[ƒpƒlƒ‹—pƒeƒNƒXƒ`ƒƒ
-	bool showHpNum = true;      // HP”’l‚Ì•\¦—L–³
-	HudBox panel;				// ƒLƒƒƒ‰ƒNƒ^[‚²‚Æ‚Ì”wŒiƒpƒlƒ‹
-	HudBarLayout hp;			// HPƒo[‚ÌƒŒƒCƒAƒEƒg
-	HudBarLayout exp;			// ŒoŒ±’lƒo[‚ÌƒŒƒCƒAƒEƒg
-	HudNumberLayout levelNumber;// ƒŒƒxƒ‹•\¦‚ÌƒŒƒCƒAƒEƒg
+	std::string hpFrom;         // å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå (ä¾‹: "Player")
+	std::wstring panelPath;     // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãƒ‘ãƒãƒ«ç”¨ãƒ†ã‚¯ã‚¹ãƒãƒ£
+	bool showHpNum = true;      // HPæ•°å€¤ã®è¡¨ç¤ºæœ‰ç„¡
+	HudBox panel;				// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã”ã¨ã®èƒŒæ™¯ãƒ‘ãƒãƒ«
+	HudBarLayout hp;			// HPãƒãƒ¼ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
+	HudBarLayout exp;			// çµŒé¨“å€¤ãƒãƒ¼ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
+	HudNumberLayout levelNumber;// ãƒ¬ãƒ™ãƒ«è¡¨ç¤ºã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 };
 
-// ƒXƒLƒ‹•\¦‚ÌƒŒƒCƒAƒEƒg
+// ã‚¹ã‚­ãƒ«è¡¨ç¤ºã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 struct SkillLayout {
-	int cdSlot = 0; // ƒXƒLƒ‹ƒXƒƒbƒg
+	int cdSlot = 0; // ã‚¹ã‚­ãƒ«ã‚¹ãƒ­ãƒƒãƒˆ
 };
 
-// HUD‘S‘Ì‚Ì‹¤’ÊƒŒƒCƒAƒEƒgİ’è
+// HUDå…¨ä½“ã®å…±é€šãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¨­å®š
 struct CombatHudLayout {
-	// “GHPŠÖ˜A
+	// æ•µHPé–¢é€£
 	HudBox enemyDecor;
 	HudBox enemyBar;
 	std::array<float, 3> colGray = { 0.45f, 0.45f, 0.48f };
 	std::array<float, 3> colHp = { 0.95f, 0.15f, 0.12f };
 	std::array<float, 3> colHpLag = { 0.75f, 0.12f, 0.10f };
 
-	// ƒXƒLƒ‹‘S‘Ìİ’è
+	// ã‚¹ã‚­ãƒ«å…¨ä½“è¨­å®š
 	float skillCenterX = 0.5f;
 	float skillY = 0.86f;
 	float skillH = 0.075f;
@@ -70,8 +70,8 @@ struct CombatHudLayout {
 	std::vector<AllyLayout> allies;
 };
 
-// ’è”
+// å®šæ•°
 constexpr int kMaxAllies = 2;
 constexpr int kMaxSkills = 8;
-constexpr int kHudMaxHpDisplay = 99999; // HP•\¦‚ÌÅ‘å’l
-constexpr int kHudMaxLevelDisplay = 99; // ƒŒƒxƒ‹•\¦‚ÌÅ‘å’l
+constexpr int kHudMaxHpDisplay = 99999; // HPè¡¨ç¤ºã®æœ€å¤§å€¤
+constexpr int kHudMaxLevelDisplay = 99; // ãƒ¬ãƒ™ãƒ«è¡¨ç¤ºã®æœ€å¤§å€¤

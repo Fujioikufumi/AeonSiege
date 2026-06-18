@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 #include "ShopOffer.h"
 #include <vector>
 
 /// <summary>
-/// ƒp[ƒeƒB‘S‘Ì‚ÌƒŒƒxƒ‹AŒoŒ±’lAƒƒ“ƒo[‚ÌƒXƒe[ƒ^ƒXXV‚ğŠÇ—‚·‚éƒNƒ‰ƒXB
+/// ãƒ‘ãƒ¼ãƒ†ã‚£å…¨ä½“ã®ãƒ¬ãƒ™ãƒ«ã€çµŒé¨“å€¤ã€ãƒ¡ãƒ³ãƒãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹æ›´æ–°ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
 /// </summary>
 class PartyManager : public GameObject
 {
@@ -12,13 +12,13 @@ public:
 	bool Init() override;
 	void Update(float deltaTime = 0.0f) override;
 
-	// –¡•û‚ğ’Ç‰Á
+	// å‘³æ–¹ã‚’è¿½åŠ 
 	void AddAlly(AllyId allyId);
 
-	// Id‚Åw’è‚³‚ê‚½–¡•û‚ªŠ‘®‚µ‚Ä‚¢‚é‚©(ˆê‘Ì‚µ‚©À‘•‚µ‚Ä‚¢‚È‚¢)
+	// Idã§æŒ‡å®šã•ã‚ŒãŸå‘³æ–¹ãŒæ‰€å±ã—ã¦ã„ã‚‹ã‹(ä¸€ä½“ã—ã‹å®Ÿè£…ã—ã¦ã„ãªã„)
 	[[nodiscard]] bool HasAlly(AllyId allyId) const;
 
-	/// ƒp[ƒeƒB‚Ì‘Sƒƒ“ƒo[‚ÉŒoŒ±’l‚ğ‰ÁZ
+	/// ãƒ‘ãƒ¼ãƒ†ã‚£ã®å…¨ãƒ¡ãƒ³ãƒãƒ¼ã«çµŒé¨“å€¤ã‚’åŠ ç®—
 	void AddExpToAllies(int exp);
 
 	[[nodiscard]] int   GetPartyLevel() const { return m_PartyLevel; }
@@ -26,15 +26,15 @@ public:
 	[[nodiscard]] int   GetPartyExpNeededForNext() const;
 	[[nodiscard]] float GetPartyExpRatio() const;
 
-	/// Œ»İ‚ÌƒŒƒxƒ‹‚ÉŠî‚Ã‚«A‘Sƒƒ“ƒo[‚ÌƒXƒe[ƒ^ƒX‚ÆHP‚ğÄŒvZE“K—p
+	/// ç¾åœ¨ã®ãƒ¬ãƒ™ãƒ«ã«åŸºã¥ãã€å…¨ãƒ¡ãƒ³ãƒãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã¨HPã‚’å†è¨ˆç®—ãƒ»é©ç”¨
 	void RefreshAllMemberStats(bool healToFull);
 
 private:
-	/// —İÏŒoŒ±’l‚ğƒ`ƒFƒbƒN‚µA•K—v‚É‰‚¶‚ÄƒŒƒxƒ‹ƒAƒbƒvˆ—‚ğs‚¤
+	/// ç´¯ç©çµŒé¨“å€¤ã‚’ãƒã‚§ãƒƒã‚¯ã—ã€å¿…è¦ã«å¿œã˜ã¦ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—å‡¦ç†ã‚’è¡Œã†
 	void ProcessPartyLevelUps();
 
 private:
-	std::vector<AllyId> m_Allies;       // Š‘®ƒƒ“ƒo[IDƒŠƒXƒg
-	int m_PartyLevel = 1;				// ƒp[ƒeƒB‚Ì‹¤’ÊƒŒƒxƒ‹
-	int m_PartyExpTowardNext = 0;      // Ÿ‚ÌƒŒƒxƒ‹‚Ü‚Å‚Ì—İÏŒoŒ±’l
+	std::vector<AllyId> m_Allies;       // æ‰€å±ãƒ¡ãƒ³ãƒãƒ¼IDãƒªã‚¹ãƒˆ
+	int m_PartyLevel = 1;				// ãƒ‘ãƒ¼ãƒ†ã‚£ã®å…±é€šãƒ¬ãƒ™ãƒ«
+	int m_PartyExpTowardNext = 0;      // æ¬¡ã®ãƒ¬ãƒ™ãƒ«ã¾ã§ã®ç´¯ç©çµŒé¨“å€¤
 };

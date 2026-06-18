@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 
 class GameObject;
 class Sprite;
 class NumberUI;
 
-// ‰æ–Ê‰Eã‚ÌuPhase Xv•\¦
+// ç”»é¢å³ä¸Šã®ã€ŒPhase Xã€è¡¨ç¤º
 class PhaseHudPanel
 {
 public:
@@ -15,15 +15,15 @@ public:
 	void ApplyLayout();
 
 private:
-	Sprite* m_Label = nullptr;		// PhaseƒeƒNƒXƒ`ƒƒ
-	NumberUI* m_Number = nullptr;  // ƒtƒF[ƒY”•\¦
+	Sprite* m_Label = nullptr;		// Phaseãƒ†ã‚¯ã‚¹ãƒãƒ£
+	NumberUI* m_Number = nullptr;  // ãƒ•ã‚§ãƒ¼ã‚ºæ•°è¡¨ç¤º
 
 	static constexpr float kLabelCenterX = 0.83f;
 	static constexpr float kLabelCenterY = 0.07f;
 	static constexpr float kLabelWidth = 0.08f;
 	static constexpr float kLabelHeight = 0.05f;
 
-	static constexpr float kNumberOnesX = 0.985f; // ˆê‚ÌˆÊŠî€i‰EŠñ‚¹j
+	static constexpr float kNumberOnesX = 0.985f; // ä¸€ã®ä½åŸºæº–ï¼ˆå³å¯„ã›ï¼‰
 	static constexpr float kNumberY = 0.07f;
 	static constexpr float kNumberScale = 0.4f;
 

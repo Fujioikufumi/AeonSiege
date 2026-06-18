@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 #include "PhaseData.h"
 #include <vector>
@@ -7,20 +7,20 @@ class EnemySpawner;
 class ShopManager;
 
 // <summary>
-// ƒtƒF[ƒY‚Ìó‘Ô
+// ãƒ•ã‚§ãƒ¼ã‚ºã®çŠ¶æ…‹
 // </summary>
 enum class PhaseState
 {
 	Idle,
-	Spawning,	// ƒGƒlƒ~[oŒ»’†
-	Fighting,	// í“¬’†
-	PhaseClear, // ƒtƒF[ƒYƒNƒŠƒA‘Ò‚¿
-	Shopping,	// ƒVƒ‡ƒbƒv
-	GameClear	// ƒQ[ƒ€ƒNƒŠƒA
+	Spawning,	// ã‚¨ãƒãƒŸãƒ¼å‡ºç¾ä¸­
+	Fighting,	// æˆ¦é—˜ä¸­
+	PhaseClear, // ãƒ•ã‚§ãƒ¼ã‚ºã‚¯ãƒªã‚¢å¾…ã¡
+	Shopping,	// ã‚·ãƒ§ãƒƒãƒ—
+	GameClear	// ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢
 };
 
 /// <summary>
-// ƒtƒF[ƒYŠÇ—ƒNƒ‰ƒXB“G‚ÌƒXƒ|[ƒ“‚âƒtƒF[ƒY‚ÌisAƒVƒ‡ƒbƒv‚ÌƒCƒ“ƒ^[ƒoƒ‹‚È‚Ç‚ğŠÇ—‚µ‚Ü‚·B
+// ãƒ•ã‚§ãƒ¼ã‚ºç®¡ç†ã‚¯ãƒ©ã‚¹ã€‚æ•µã®ã‚¹ãƒãƒ¼ãƒ³ã‚„ãƒ•ã‚§ãƒ¼ã‚ºã®é€²è¡Œã€ã‚·ãƒ§ãƒƒãƒ—ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ãªã©ã‚’ç®¡ç†ã—ã¾ã™ã€‚
 /// </summary>
 class PhaseManager : public GameObject
 {
@@ -36,45 +36,45 @@ public:
 	PhaseState GetPhaseState() const { return m_State; }
 	bool IsGameClear() const { return m_State == PhaseState::GameClear; }
 private:
-	// ƒtƒF[ƒY‚Ìî•ñ‚ğJson‚©‚çæ“¾
+	// ãƒ•ã‚§ãƒ¼ã‚ºã®æƒ…å ±ã‚’Jsonã‹ã‚‰å–å¾—
 	void LoadPhaseData();
 
-	//@Œ»İ‚ÌƒtƒF[ƒY‚ğŠJn‚µ‚Ü‚·BƒGƒlƒ~[ƒXƒ|ƒi[‚É“G‚ÌoŒ»‚ğw¦‚µ‚Ü‚·B
+	//ã€€ç¾åœ¨ã®ãƒ•ã‚§ãƒ¼ã‚ºã‚’é–‹å§‹ã—ã¾ã™ã€‚ã‚¨ãƒãƒŸãƒ¼ã‚¹ãƒãƒŠãƒ¼ã«æ•µã®å‡ºç¾ã‚’æŒ‡ç¤ºã—ã¾ã™ã€‚
 	void StartCurrentPhase();
 
-	// Œ»İ‚ÌƒtƒF[ƒY‚ÅoŒ»‚µ‚½“G‚ª‘S‚Ä“|‚³‚ê‚½‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN‚µ‚Ü‚·B
+	// ç¾åœ¨ã®ãƒ•ã‚§ãƒ¼ã‚ºã§å‡ºç¾ã—ãŸæ•µãŒå…¨ã¦å€’ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¾ã™ã€‚
 	bool AreAllEnemiesDefeated() const;
 
-	// Ÿ‚ÌƒtƒF[ƒY‚Öi‚İ‚Ü‚·BƒtƒF[ƒYƒCƒ“ƒfƒbƒNƒX‚ğXV‚µA•K—v‚É‰‚¶‚Äİ’è‚ğØ‚è‘Ö‚¦‚Ü‚·B
+	// æ¬¡ã®ãƒ•ã‚§ãƒ¼ã‚ºã¸é€²ã¿ã¾ã™ã€‚ãƒ•ã‚§ãƒ¼ã‚ºã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æ›´æ–°ã—ã€å¿…è¦ã«å¿œã˜ã¦è¨­å®šã‚’åˆ‡ã‚Šæ›¿ãˆã¾ã™ã€‚
 	void AdvanceToNextPhase();
 
-	// ƒVƒ‡ƒbƒviƒAƒbƒvƒOƒŒ[ƒh‘I‘ğƒtƒF[ƒYj‚ğŠJn‚µ‚Ü‚·B
+	// ã‚·ãƒ§ãƒƒãƒ—ï¼ˆã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰é¸æŠãƒ•ã‚§ãƒ¼ã‚ºï¼‰ã‚’é–‹å§‹ã—ã¾ã™ã€‚
 	void StartShopping();
 
-	// ƒVƒ‡ƒbƒv’†‚ÌXVˆ—B‘Ò‹@ŠÔ‚ğŠÇ—‚µA§ŒÀŠÔ‚ğ’´‰ß‚µ‚½ê‡‚ÍŸ‚ÌƒtƒF[ƒY‚Ö‹­§ˆÚs‚µ‚Ü‚·B
+	// ã‚·ãƒ§ãƒƒãƒ—ä¸­ã®æ›´æ–°å‡¦ç†ã€‚å¾…æ©Ÿæ™‚é–“ã‚’ç®¡ç†ã—ã€åˆ¶é™æ™‚é–“ã‚’è¶…éã—ãŸå ´åˆã¯æ¬¡ã®ãƒ•ã‚§ãƒ¼ã‚ºã¸å¼·åˆ¶ç§»è¡Œã—ã¾ã™ã€‚
 	void UpdateShopping(float deltaTime);
 
-	// Œ»İ‚ÌƒNƒŠƒAƒtƒF[ƒYó‹µ‚ÉŠî‚Ã‚¢‚ÄAƒVƒ‡ƒbƒv‚ğŠJ‚­‚×‚«‚©‚Ç‚¤‚©‚ğ”»’è‚µ‚Ü‚·B
+	// ç¾åœ¨ã®ã‚¯ãƒªã‚¢ãƒ•ã‚§ãƒ¼ã‚ºçŠ¶æ³ã«åŸºã¥ã„ã¦ã€ã‚·ãƒ§ãƒƒãƒ—ã‚’é–‹ãã¹ãã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã¾ã™ã€‚
 	bool ShouldOpenShop() const;
 
-	// oŒ»ƒtƒF[ƒY‚ÌŠJn
+	// å‡ºç¾ãƒ•ã‚§ãƒ¼ã‚ºã®é–‹å§‹
 	void BeginSpawnPhase();
 private:
-	PhaseState m_State = PhaseState::Idle;      // Œ»İ‚ÌƒtƒF[ƒYó‘Ô
-	std::vector<PhaseData> m_Phases;            // “o˜^‚³‚ê‚Ä‚¢‚éƒtƒF[ƒYƒf[ƒ^‚ÌƒŠƒXƒg
+	PhaseState m_State = PhaseState::Idle;      // ç¾åœ¨ã®ãƒ•ã‚§ãƒ¼ã‚ºçŠ¶æ…‹
+	std::vector<PhaseData> m_Phases;            // ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚§ãƒ¼ã‚ºãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
 
-	int m_CurrentPhaseIndex = 0;                // Œ»İis’†‚ÌƒtƒF[ƒY”Ô†iƒCƒ“ƒfƒbƒNƒXj
-	EnemySpawner* m_EnemySpawner = nullptr;     // “G‚ğoŒ»‚³‚¹‚éƒXƒ|ƒi[‚Ìƒ|ƒCƒ“ƒ^
+	int m_CurrentPhaseIndex = 0;                // ç¾åœ¨é€²è¡Œä¸­ã®ãƒ•ã‚§ãƒ¼ã‚ºç•ªå·ï¼ˆã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼‰
+	EnemySpawner* m_EnemySpawner = nullptr;     // æ•µã‚’å‡ºç¾ã•ã›ã‚‹ã‚¹ãƒãƒŠãƒ¼ã®ãƒã‚¤ãƒ³ã‚¿
 
-	float m_PhaseClearTimer = 0.0f;             // “G‘S–Å‚©‚çŸ‚ÌƒtƒF[ƒY‚Éi‚Ş‚Ü‚Å‚Ì‘Ò‹@ƒ^ƒCƒ}[
-	static constexpr float kPhaseClearWaitSec = 2.0f; // “G‘S–ÅŒã‚Ì‘Ò‹@ŠÔi•bj
+	float m_PhaseClearTimer = 0.0f;             // æ•µå…¨æ»…ã‹ã‚‰æ¬¡ã®ãƒ•ã‚§ãƒ¼ã‚ºã«é€²ã‚€ã¾ã§ã®å¾…æ©Ÿã‚¿ã‚¤ãƒãƒ¼
+	static constexpr float kPhaseClearWaitSec = 2.0f; // æ•µå…¨æ»…å¾Œã®å¾…æ©Ÿæ™‚é–“ï¼ˆç§’ï¼‰
 
-	float m_SpawnDelayTimer = 0.0f;             // ƒtƒF[ƒYŠJn‚©‚ç“G‚ªoŒ»‚·‚é‚Ü‚Å‚Ì’x‰„ƒ^ƒCƒ}[
-	static constexpr float kSpawnDelaySec = 1.0f; // ƒtƒF[ƒYŠJn‚©‚ç“G‚ªoŒ»‚·‚é‚Ü‚Å‚Ì’x‰„ŠÔi•bj
+	float m_SpawnDelayTimer = 0.0f;             // ãƒ•ã‚§ãƒ¼ã‚ºé–‹å§‹ã‹ã‚‰æ•µãŒå‡ºç¾ã™ã‚‹ã¾ã§ã®é…å»¶ã‚¿ã‚¤ãƒãƒ¼
+	static constexpr float kSpawnDelaySec = 1.0f; // ãƒ•ã‚§ãƒ¼ã‚ºé–‹å§‹ã‹ã‚‰æ•µãŒå‡ºç¾ã™ã‚‹ã¾ã§ã®é…å»¶æ™‚é–“ï¼ˆç§’ï¼‰
 
 	//-------------------------------------------------------------
-	// ƒVƒ‡ƒbƒvŠÖ˜A
-	ShopManager* m_ShopManager = nullptr;        // ƒVƒ‡ƒbƒv‹@”\‚ÌŠÇ—ƒCƒ“ƒXƒ^ƒ“ƒX
-	bool m_HasOpenedShop = false;                // ‚·‚Å‚ÉƒVƒ‡ƒbƒv‚ğŠJ‚¢‚½‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
-	static constexpr int kShopIntervalPhase = 5; // ‰½ƒtƒF[ƒY‚²‚Æ‚ÉƒVƒ‡ƒbƒv‚ğŠJ‚­‚©‚ÌŠÔŠu
+	// ã‚·ãƒ§ãƒƒãƒ—é–¢é€£
+	ShopManager* m_ShopManager = nullptr;        // ã‚·ãƒ§ãƒƒãƒ—æ©Ÿèƒ½ã®ç®¡ç†ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
+	bool m_HasOpenedShop = false;                // ã™ã§ã«ã‚·ãƒ§ãƒƒãƒ—ã‚’é–‹ã„ãŸã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+	static constexpr int kShopIntervalPhase = 5; // ä½•ãƒ•ã‚§ãƒ¼ã‚ºã”ã¨ã«ã‚·ãƒ§ãƒƒãƒ—ã‚’é–‹ãã‹ã®é–“éš”
 };

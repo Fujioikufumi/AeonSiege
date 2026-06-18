@@ -1,9 +1,9 @@
-#pragma once
+﻿#pragma once
 #include "SkillData.h"
 
 /// <summary>
-/// �X�L���J�^���O�F�X�̃X�L���̃f�[�^���`���Ă���B
-/// ���s�ϒl�̂��߁A�����Ȃǂ�m_StatusComponent����̔{����������
+/// スキルカタログ：個々のスキルのデータを定義している。
+/// ※不変値のため、強化などはm_StatusComponentからの倍率をかける
 /// </summary>
 class SkillCatalog
 {

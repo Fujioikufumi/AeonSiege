@@ -1,4 +1,4 @@
-#include "StatusComponent.h"
+ï»¿#include "StatusComponent.h"
 #include <algorithm>
 
 StatusComponent::StatusComponent(GameObject* pObj)
@@ -24,7 +24,7 @@ void StatusComponent::ClampMin(float& value, float minValue)
 
 void StatusComponent::ClampRate(float& value, float minValue, float delta, bool add)
 {
-	// ’l‚ğ‰ÁZ‚Ü‚½‚ÍŒ¸Z
+	// å€¤ã‚’åŠ ç®—ã¾ãŸã¯æ¸›ç®—
 	value = add ? (value + delta) : (value - delta);
 	ClampMin(value, minValue);
 }

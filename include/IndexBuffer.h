@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 //-----------------------------------------------------------------------------
 // Includes
@@ -8,7 +8,7 @@
 #include <cstdint>
 
 /// <summary>
-/// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğŠÇ—‚·‚éƒNƒ‰ƒXB
+/// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
 /// </summary>
 class IndexBuffer
 {
@@ -17,44 +17,44 @@ public:
 	~IndexBuffer();
 
 	/// <summary>
-	/// ‰Šú‰»ˆ—
+	/// åˆæœŸåŒ–å‡¦ç†
 	/// </summary>
-	/// <param name="device">Direct3D 12 ƒfƒoƒCƒX</param>
-	/// <param name="indexCount">ƒCƒ“ƒfƒbƒNƒX”</param>
-	/// <param name="initData">‰Šú‰»ƒf[ƒ^i”CˆÓj</param>
-	/// <returns>¬Œ÷‚µ‚½‚ç true</returns>
+	/// <param name="device">Direct3D 12 ãƒ‡ãƒã‚¤ã‚¹</param>
+	/// <param name="indexCount">ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•°</param>
+	/// <param name="initData">åˆæœŸåŒ–ãƒ‡ãƒ¼ã‚¿ï¼ˆä»»æ„ï¼‰</param>
+	/// <returns>æˆåŠŸã—ãŸã‚‰ true</returns>
 	bool Init(ID3D12Device* device, size_t indexCount, const uint32_t* initData = nullptr);
 
 	/// <summary>
-	/// I—¹ˆ—
+	/// çµ‚äº†å‡¦ç†
 	/// </summary>
 	void Term();
 
 	/// <summary>
-	/// CPUƒƒ‚ƒŠ‚Ö‚Ìƒ}ƒbƒsƒ“ƒO
+	/// CPUãƒ¡ãƒ¢ãƒªã¸ã®ãƒãƒƒãƒ”ãƒ³ã‚°
 	/// </summary>
-	/// <returns>ƒ}ƒbƒv‚³‚ê‚½ƒ|ƒCƒ“ƒ^</returns>
+	/// <returns>ãƒãƒƒãƒ—ã•ã‚ŒãŸãƒã‚¤ãƒ³ã‚¿</returns>
 	[[nodiscard]] uint32_t* Map();
 
 	/// <summary>
-	/// ƒ}ƒbƒsƒ“ƒO‰ğœ
+	/// ãƒãƒƒãƒ”ãƒ³ã‚°è§£é™¤
 	/// </summary>
 	void Unmap();
 
 	/// <summary>
-	/// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[‚ğæ“¾
+	/// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’å–å¾—
 	/// </summary>
 	[[nodiscard]] D3D12_INDEX_BUFFER_VIEW GetView() const;
 
 	/// <summary>
-	/// ƒCƒ“ƒfƒbƒNƒX”‚ğæ“¾
+	/// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•°ã‚’å–å¾—
 	/// </summary>
 	[[nodiscard]] size_t GetCount() const;
 
 private:
-	ComPtr<ID3D12Resource>  m_IndexBuffer; // ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒŠƒ\[ƒX
-	D3D12_INDEX_BUFFER_VIEW m_View;        // ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[
-	size_t                  m_IndexCount;  // ƒCƒ“ƒfƒbƒNƒX”
+	ComPtr<ID3D12Resource>  m_IndexBuffer; // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒªã‚½ãƒ¼ã‚¹
+	D3D12_INDEX_BUFFER_VIEW m_View;        // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
+	size_t                  m_IndexCount;  // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•°
 
 	IndexBuffer(const IndexBuffer&) = delete;
 	void operator=(const IndexBuffer&) = delete;

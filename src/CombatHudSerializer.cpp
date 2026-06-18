@@ -1,17 +1,17 @@
-#include "CombatHudSerializer.h"
+ï»¿#include "CombatHudSerializer.h"
 #include "EncodingUtils.h"
 #include "Logger.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
 
-// Ql: nlohmann::json‚ÌŠî–{“I‚Èg‚¢•û
+// å‚è€ƒ: nlohmann::jsonã®åŸºæœ¬çš„ãªä½¿ã„æ–¹
 // https://qiita.com/yohm/items/0f389ba5c5de4e2df9cf
 
 using Json = nlohmann::json;
 
 namespace {
 
-	// ‹¤’Ê‚Ì“Ç‚İ‚İ/‘‚«‚İƒwƒ‹ƒp[
+	// å…±é€šã®èª­ã¿è¾¼ã¿/æ›¸ãè¾¼ã¿ãƒ˜ãƒ«ãƒ‘ãƒ¼
     void ReadBox(const Json& j, const char* key, HudBox& b) {
         if (!j.contains(key)) return;
         const auto& obj = j[key];
@@ -25,25 +25,25 @@ namespace {
         j[key] = { {"cx", b.cx}, {"cy", b.cy}, {"w", b.w}, {"h", b.h} };
     }
 
-	// RGB”z—ñ‚Ì“Ç‚İ‚İ
+	// RGBé…åˆ—ã®èª­ã¿è¾¼ã¿
     void ReadRgb(const Json& j, const char* key, std::array<float, 3>& c) {
         if (!j.contains(key) || !j[key].is_array() || j[key].size() < 3) return;
         for (int i = 0; i < 3; ++i) c[i] = j[key][i].get<float>();
     }
 
-	// RGB”z—ñ‚Ì‘‚«‚İ
+	// RGBé…åˆ—ã®æ›¸ãè¾¼ã¿
     void WriteRgb(Json& j, const char* key, const std::array<float, 3>& c) {
         j[key] = { c[0], c[1], c[2] };
     }
 
-	// ”’lƒŒƒCƒAƒEƒg‚Ì“Ç‚İ‚İ
+	// æ•°å€¤ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®èª­ã¿è¾¼ã¿
     void ReadNumber(const Json& j, const char* keyX, const char* keyY, const char* keyScale, HudNumberLayout& n) {
         n.onesDigitX = j.value(keyX, n.onesDigitX);
         n.onesDigitY = j.value(keyY, n.onesDigitY);
         n.scale = j.value(keyScale, n.scale);
     }
 
-    // --- AllyŒÂ•Ê‚Ì•ÏŠ· ---
+    // --- Allyå€‹åˆ¥ã®å¤‰æ› ---
     AllyLayout JsonToAlly(const Json& o) {
         AllyLayout a;
         a.hpFrom = o.value("hpFrom", "");
@@ -53,20 +53,20 @@ namespace {
 
         ReadBox(o, "panel", a.panel);
 
-        // HPƒZƒNƒVƒ‡ƒ“
+        // HPã‚»ã‚¯ã‚·ãƒ§ãƒ³
         ReadBox(o, "hpGray", a.hp.barBack);
         ReadBox(o, "hpCol", a.hp.bar);
         ReadRgb(o, "colGray", a.hp.colBack);
         ReadRgb(o, "colHp", a.hp.colBar);
         ReadNumber(o, "curHpOnesDigitX", "curHpOnesDigitY", "hpNumScale", a.hp.number);
 
-        // EXPƒZƒNƒVƒ‡ƒ“
+        // EXPã‚»ã‚¯ã‚·ãƒ§ãƒ³
         ReadBox(o, "expGray", a.exp.barBack);
         ReadBox(o, "expCol", a.exp.bar);
         ReadRgb(o, "expColBack", a.exp.colBack);
         ReadRgb(o, "expColBar", a.exp.colBar);
 
-        // ƒŒƒxƒ‹
+        // ãƒ¬ãƒ™ãƒ«
         ReadNumber(o, "lvOnesDigitX", "lvOnesDigitY", "lvNumScale", a.levelNumber);
 
         return a;
@@ -75,7 +75,7 @@ namespace {
     Json AllyToJson(const AllyLayout& a) {
         Json o;
         o["hpFrom"] = a.hpFrom;
-        o["panelPath"] = EncodeWideToUtf8(a.panelPath); // •ÏŠ·‚ª•K—v
+        o["panelPath"] = EncodeWideToUtf8(a.panelPath); // å¤‰æ›ãŒå¿…è¦
         o["showHpNum"] = a.showHpNum;
 
         WriteBox(o, "panel", a.panel);
@@ -104,17 +104,17 @@ namespace {
 }
 
 bool CombatHudSerializer::Load(const std::wstring& path, CombatHudLayout& out) {
-    // 1. ‚Ü‚¸ƒfƒtƒHƒ‹ƒg’l‚ğƒZƒbƒgi‚±‚ê‚ğƒx[ƒX‚É‚·‚éj
+    // 1. ã¾ãšãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’ã‚»ãƒƒãƒˆï¼ˆã“ã‚Œã‚’ãƒ™ãƒ¼ã‚¹ã«ã™ã‚‹ï¼‰
     ApplyDefaults(out);
 
     std::ifstream file(path);
-    if (!file.is_open()) return true; // ƒtƒ@ƒCƒ‹‚ª‚È‚¢‚È‚çƒfƒtƒHƒ‹ƒg‚Å¬Œ÷
+    if (!file.is_open()) return true; // ãƒ•ã‚¡ã‚¤ãƒ«ãŒãªã„ãªã‚‰ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§æˆåŠŸ
 
     try {
         Json j;
         file >> j;
 
-        // 2. ‘S‘Ìİ’è‚Ìã‘‚« (‚±‚±‚Å enemyDecor “™‚ğŠmÀ‚Éæ“¾)
+        // 2. å…¨ä½“è¨­å®šã®ä¸Šæ›¸ã (ã“ã“ã§ enemyDecor ç­‰ã‚’ç¢ºå®Ÿã«å–å¾—)
         ReadBox(j, "enemyDecor", out.enemyDecor);
         ReadBox(j, "enemyBar", out.enemyBar);
         ReadRgb(j, "colGray", out.colGray);
@@ -126,7 +126,7 @@ bool CombatHudSerializer::Load(const std::wstring& path, CombatHudLayout& out) {
         out.skillH = j.value("skillH", out.skillH);
         out.skillGap = j.value("skillGap", out.skillGap);
 
-        // 3. –¡•ûî•ñ‚ª‚ ‚ê‚Îã‘‚« (ˆÈ‘O‚ÌƒƒWƒbƒN)
+        // 3. å‘³æ–¹æƒ…å ±ãŒã‚ã‚Œã°ä¸Šæ›¸ã (ä»¥å‰ã®ãƒ­ã‚¸ãƒƒã‚¯)
         if (j.contains("allies") && j["allies"].is_array()) {
             out.allies.clear();
             for (const auto& aJson : j["allies"]) {
@@ -161,7 +161,7 @@ bool CombatHudSerializer::Save(const std::wstring& path, const CombatHudLayout& 
         }
         j["allies"] = alliesJson;
 
-        // ƒtƒ@ƒCƒ‹‘‚«o‚µ
+        // ãƒ•ã‚¡ã‚¤ãƒ«æ›¸ãå‡ºã—
         std::ofstream file(path);
         if (!file.is_open()) {
             ELOG("CombatHudSerializer::Save: Failed to open file for writing.");
@@ -177,7 +177,7 @@ bool CombatHudSerializer::Save(const std::wstring& path, const CombatHudLayout& 
 
 void CombatHudSerializer::ApplyDefaults(CombatHudLayout& out)
 {
-    // 1. ‘S‘Ìİ’è‚¨‚æ‚ÑƒGƒlƒ~[ƒo[
+    // 1. å…¨ä½“è¨­å®šãŠã‚ˆã³ã‚¨ãƒãƒŸãƒ¼ãƒãƒ¼
     out.enemyDecor = { 0.50f, 0.085f, 0.40f, 0.06f };
     out.enemyBar = { 0.50f, 0.085f, 0.30f, 0.016f };
     out.colGray = { 0.45f, 0.45f, 0.48f };
@@ -189,7 +189,7 @@ void CombatHudSerializer::ApplyDefaults(CombatHudLayout& out)
     out.skillH = 0.075f;
     out.skillGap = 0.065f;
 
-    // 2. –¡•û‚Ì‰Šúİ’è (Player ‚Æ Paladin)
+    // 2. å‘³æ–¹ã®åˆæœŸè¨­å®š (Player ã¨ Paladin)
     out.allies.clear();
 
     // Player

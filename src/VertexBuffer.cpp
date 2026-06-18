@@ -1,7 +1,7 @@
-#include "VertexBuffer.h"
+ï»¿#include "VertexBuffer.h"
 
 //-----------------------------------------------------------------------------
-//      ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+//      ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 //-----------------------------------------------------------------------------
 VertexBuffer::VertexBuffer()
 	: m_VertexBuffer(nullptr)
@@ -10,7 +10,7 @@ VertexBuffer::VertexBuffer()
 }
 
 //-----------------------------------------------------------------------------
-//      ƒfƒXƒgƒ‰ƒNƒ^
+//      ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 //-----------------------------------------------------------------------------
 VertexBuffer::~VertexBuffer()
 {
@@ -18,7 +18,7 @@ VertexBuffer::~VertexBuffer()
 }
 
 //-----------------------------------------------------------------------------
-//      ‰Šú‰»
+//      åˆæœŸåŒ–
 //-----------------------------------------------------------------------------
 bool VertexBuffer::Init(
 	ID3D12Device* device,
@@ -31,7 +31,7 @@ bool VertexBuffer::Init(
 		return false;
 	}
 
-	// ƒq[ƒvƒvƒƒpƒeƒB‚Ìİ’è
+	// ãƒ’ãƒ¼ãƒ—ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®è¨­å®š
 	D3D12_HEAP_PROPERTIES prop = {};
 	prop.Type = D3D12_HEAP_TYPE_UPLOAD;
 	prop.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
@@ -39,7 +39,7 @@ bool VertexBuffer::Init(
 	prop.CreationNodeMask = 1;
 	prop.VisibleNodeMask = 1;
 
-	// ƒŠƒ\[ƒXİ’è
+	// ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	D3D12_RESOURCE_DESC resDesc = {};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	resDesc.Alignment = 0;
@@ -53,7 +53,7 @@ bool VertexBuffer::Init(
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
-	// ƒŠƒ\[ƒX¶¬
+	// ãƒªã‚½ãƒ¼ã‚¹ç”Ÿæˆ
 	HRESULT result = device->CreateCommittedResource(
 		&prop,
 		D3D12_HEAP_FLAG_NONE,
@@ -67,12 +67,12 @@ bool VertexBuffer::Init(
 		return false;
 	}
 
-	// ƒrƒ…[‚Ì\¬
+	// ãƒ“ãƒ¥ãƒ¼ã®æ§‹æˆ
 	m_View.BufferLocation = m_VertexBuffer->GetGPUVirtualAddress();
 	m_View.StrideInBytes = static_cast<UINT>(stride);
 	m_View.SizeInBytes = static_cast<UINT>(size);
 
-	// ‰Šúƒf[ƒ^‚ª‚ ‚ê‚ÎƒRƒs[
+	// åˆæœŸãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚Œã°ã‚³ãƒ”ãƒ¼
 	if (initData != nullptr)
 	{
 		void* mappedPtr = Map();
@@ -89,7 +89,7 @@ bool VertexBuffer::Init(
 }
 
 //-----------------------------------------------------------------------------
-//      I—¹ˆ—
+//      çµ‚äº†å‡¦ç†
 //-----------------------------------------------------------------------------
 void VertexBuffer::Term()
 {
@@ -98,7 +98,7 @@ void VertexBuffer::Term()
 }
 
 //-----------------------------------------------------------------------------
-//      ƒ}ƒbƒsƒ“ƒO
+//      ãƒãƒƒãƒ”ãƒ³ã‚°
 //-----------------------------------------------------------------------------
 void* VertexBuffer::Map() const
 {
@@ -117,7 +117,7 @@ void* VertexBuffer::Map() const
 }
 
 //-----------------------------------------------------------------------------
-//      ƒAƒ“ƒ}ƒbƒsƒ“ƒO
+//      ã‚¢ãƒ³ãƒãƒƒãƒ”ãƒ³ã‚°
 //-----------------------------------------------------------------------------
 void VertexBuffer::Unmap()
 {

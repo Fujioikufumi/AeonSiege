@@ -1,4 +1,4 @@
-#include "ComputeUtil.h"
+ï»¿#include "ComputeUtil.h"
 #include "PipelineStateManager.h"
 #include "DescriptorPool.h"
 #include "Logger.h"
@@ -8,7 +8,7 @@ bool BindComputePipeline(ID3D12GraphicsCommandList* pCmdList, const std::wstring
     if (!pCmdList || pipelineName.empty() || !pPool || !pPool->GetHeap())
         return false;
 
-    // ƒpƒCƒvƒ‰ƒCƒ“‚ÌŽæ“¾
+    // ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®å–å¾—
     PipelineStateInfo* pInfo = PipelineStateManager::GetInstance().GetPipelineState(pipelineName);
     if (!pInfo || !pInfo->isValid || !pInfo->pPSO.Get())
     {
@@ -16,7 +16,7 @@ bool BindComputePipeline(ID3D12GraphicsCommandList* pCmdList, const std::wstring
         return false;
     }
 
-	// ƒfƒBƒXƒNƒŠƒvƒ^ƒq[ƒv‚ÌÝ’è
+	// ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®è¨­å®š
     ID3D12DescriptorHeap* const pHeaps[] = { pPool->GetHeap() };
     pCmdList->SetDescriptorHeaps(1, pHeaps);
     pCmdList->SetPipelineState(pInfo->pPSO.Get());

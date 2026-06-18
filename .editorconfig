@@ -1,0 +1,28 @@
+# EditorConfig is awesome: https://editorconfig.org
+# このリポジトリの文字コード・改行・インデントを統一する設定
+
+# 最上位の設定ファイル（これより上位の .editorconfig は探索しない）
+root = true
+
+# C++ ソース・ヘッダ: UTF-8(BOM付き) / CRLF / タブインデント
+[*.{cpp,h,hpp,cc,cxx,inl}]
+charset = utf-8-bom
+end_of_line = crlf
+indent_style = tab
+indent_size = 4
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# HLSL シェーダも同様に統一
+[*.{hlsl,hlsli,fx}]
+charset = utf-8-bom
+end_of_line = crlf
+indent_style = tab
+indent_size = 4
+
+# 設定・データ系ファイル（スペース2）
+[*.{json,yml,yaml,xml}]
+charset = utf-8
+end_of_line = crlf
+indent_style = space
+indent_size = 2

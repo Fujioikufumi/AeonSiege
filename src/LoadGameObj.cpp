@@ -1,4 +1,4 @@
-#include "LoadGameObj.h"
+ï»¿#include "LoadGameObj.h"
 #include "ModelManager.h"
 #include "AnimationManager.h"
 #include <vector>
@@ -23,7 +23,7 @@ void LoadGameObj()
         animMgr.LoadAnimation(L"Assets/Animations/Great_Sword_Casting.banm", "Player_Skill02");
         animMgr.LoadAnimation(L"Assets/Animations/Great_Sword_Idle.banm", "Player_Combat_Idle");
         }));
-    // ƒ^ƒXƒN3: ƒ~ƒ…[ƒ^ƒ“ƒg—pƒAƒjƒ[ƒVƒ‡ƒ“‚Ì“Ç‚İ‚İi•ÊƒXƒŒƒbƒhj
+    // ã‚¿ã‚¹ã‚¯3: ãƒŸãƒ¥ãƒ¼ã‚¿ãƒ³ãƒˆç”¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®èª­ã¿è¾¼ã¿ï¼ˆåˆ¥ã‚¹ãƒ¬ãƒƒãƒ‰ï¼‰
     loadTasks.push_back(std::async(std::launch::async, []() {
         auto& animMgr = AnimationManager::GetInstance();
         animMgr.LoadAnimation(L"Assets/Animations/Mutant_Walking.banm", "Mutant_Normal_Walk");
@@ -34,6 +34,6 @@ void LoadGameObj()
         }));
     for(auto& task : loadTasks)
     {
-        task.get(); // ‚±‚±‚ÅŠeƒXƒŒƒbƒh‚Ìƒ^ƒXƒNŠ®—¹‚ğ‘Ò‚Â
+        task.get(); // ã“ã“ã§å„ã‚¹ãƒ¬ãƒƒãƒ‰ã®ã‚¿ã‚¹ã‚¯å®Œäº†ã‚’å¾…ã¤
     }
 }

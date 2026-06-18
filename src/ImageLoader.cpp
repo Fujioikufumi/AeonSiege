@@ -1,4 +1,4 @@
-#include "ImageLoader.h"
+ï»¿#include "ImageLoader.h"
 #include "Logger.h"
 #include <wincodec.h>
 #include <ComPtr.h>
@@ -15,7 +15,7 @@ bool LoadImageWithWIC(
 	outWidth = 0;
 	outHeight = 0;
 
-	// COM ‚Ì‰Šú‰»iƒ}ƒ‹ƒ`ƒXƒŒƒbƒhjBŠù‚É‰Šú‰»Ï‚İ‚È‚ç S_FALSE ‚ª•Ô‚é
+	// COM ã®åˆæœŸåŒ–ï¼ˆãƒãƒ«ãƒã‚¹ãƒ¬ãƒƒãƒ‰ï¼‰ã€‚æ—¢ã«åˆæœŸåŒ–æ¸ˆã¿ãªã‚‰ S_FALSE ãŒè¿”ã‚‹
 	HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 	(void)hr;
 
@@ -81,7 +81,7 @@ bool LoadImageWithWIC(
 		return false;
 	}
 
-	// ƒtƒH[ƒ}ƒbƒg‚É‰‚¶‚½ƒXƒgƒ‰ƒCƒh‚Æƒoƒbƒtƒ@ƒTƒCƒYiGray=1, RGBA=4j
+	// ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«å¿œã˜ãŸã‚¹ãƒˆãƒ©ã‚¤ãƒ‰ã¨ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºï¼ˆGray=1, RGBA=4ï¼‰
 	UINT bytesPerPixel = 1u;
 	if (targetFormat == GUID_WICPixelFormat32bppRGBA)
 	{
@@ -172,7 +172,7 @@ bool LoadImageWithWIC16(
 
 	hr = pConverter->Initialize(
 		pFrame.Get(),
-		GUID_WICPixelFormat16bppGray, // 16bit Gray‚É•ÏŠ·
+		GUID_WICPixelFormat16bppGray, // 16bit Grayã«å¤‰æ›
 		WICBitmapDitherTypeNone,
 		nullptr,
 		0.0,
@@ -200,7 +200,7 @@ bool LoadImageWithWIC16(
 	outHeight = height;
 	outPixels.resize(static_cast<size_t>(width) * height);
 
-	// little-endian‚Åuint16‚É•œŒ³
+	// little-endianã§uint16ã«å¾©å…ƒ
 	for (size_t i = 0; i < outPixels.size(); ++i)
 	{
 		const uint16_t lo = bytes[i * 2 + 0];

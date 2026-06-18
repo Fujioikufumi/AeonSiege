@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "Component.h"
 #include <DirectXMath.h>
 
@@ -7,29 +7,29 @@ class Player;
 class Camera;
 
 //-----------------------------------------------------------------------------
-// 		–Ў•ыAI‚М‹““®ѓpѓ‰ѓЃЃ[ѓ^Ѓ[
+// 		е‘іж–№AIгЃ®жЊ™е‹•гѓ‘гѓ©гѓЎгѓјг‚їгѓј
 //-----------------------------------------------------------------------------
 struct AllyAIParams
 {
-	float followStartDistance = 60.0f; // ѓvѓЊѓCѓ„Ѓ[‚©‚з‚±‚М‹——Ј€ИЏг—Ј‚к‚Д‚ў‚йЏкЌ‡ЃA’ЗЏ]‚рЉJЋn‚·‚й
-	float followStopDistance = 45.0f;  // ѓvѓЊѓCѓ„Ѓ[‚©‚з‚±‚М‹——Ј€И‰є‚Й‚И‚Б‚ЅЏкЌ‡ЃA’ЗЏ]‚р’вЋ~‚·‚йЃi‘Т‹@Џу‘Ф‚Й€ЪЌs‚·‚йЃj
+	float followStartDistance = 60.0f; // гѓ—гѓ¬г‚¤гѓ¤гѓјгЃ‹г‚‰гЃ“гЃ®и·ќй›ўд»ҐдёЉй›ўг‚ЊгЃ¦гЃ„г‚‹е ґеђ€гЂЃиїЅеѕ“г‚’й–‹е§‹гЃ™г‚‹
+	float followStopDistance = 45.0f;  // гѓ—гѓ¬г‚¤гѓ¤гѓјгЃ‹г‚‰гЃ“гЃ®и·ќй›ўд»Ґдё‹гЃ«гЃЄгЃЈгЃџе ґеђ€гЂЃиїЅеѕ“г‚’еЃњж­ўгЃ™г‚‹пј€еѕ…ж©џзЉ¶ж…‹гЃ«з§»иЎЊгЃ™г‚‹пј‰
 
-	float waitTargetForwardDistance = 35.0f; // ‘Т‹@Џу‘Ф‚М–Ъ•W€К’u‚рѓvѓЊѓCѓ„Ѓ[‚М‘O•ы‚Й‚±‚М‹——Ј‚ѕ‚ЇѓIѓtѓZѓbѓg‚µ‚ДђЭ’и‚·‚й
-	float waitTargetSideOffset = 20.0f;		 // ‘Т‹@Џу‘Ф‚М–Ъ•W€К’u‚рѓvѓЊѓCѓ„Ѓ[‚М‰Ў•ыЊь‚Й‚±‚М‹——Ј‚ѕ‚ЇѓIѓtѓZѓbѓg‚µ‚ДђЭ’и‚·‚йЃiђі‚М’l‚Е‰E‘¤ЃA•‰‚М’l‚ЕЌ¶‘¤Ѓj
-	float waitTargetArriveDistance = 3.0f;	 // ‘Т‹@Џу‘Ф‚М–Ъ•W€К’u‚Й‚±‚М‹——Ј€И“а‚Й‹Я‚Г‚ў‚Ѕ‚з“ћ’…‚Ж”»’и‚·‚й
-	float maxWaitTargetDistanceFromPlayer = 60.0f; // ‘Т‹@Џу‘Ф‚М–Ъ•W€К’u‚ЄѓvѓЊѓCѓ„Ѓ[‚©‚з‚±‚М‹——Ј€ИЏг—Ј‚к‚Д‚ў‚йЏкЌ‡‚НЃA–Ъ•W€К’u‚рЌДЊvЋZ‚·‚й
+	float waitTargetForwardDistance = 35.0f; // еѕ…ж©џзЉ¶ж…‹гЃ®з›®жЁ™дЅЌзЅ®г‚’гѓ—гѓ¬г‚¤гѓ¤гѓјгЃ®е‰Ќж–№гЃ«гЃ“гЃ®и·ќй›ўгЃ гЃ‘г‚Єгѓ•г‚»гѓѓгѓ€гЃ—гЃ¦иЁ­е®љгЃ™г‚‹
+	float waitTargetSideOffset = 20.0f;		 // еѕ…ж©џзЉ¶ж…‹гЃ®з›®жЁ™дЅЌзЅ®г‚’гѓ—гѓ¬г‚¤гѓ¤гѓјгЃ®жЁЄж–№еђ‘гЃ«гЃ“гЃ®и·ќй›ўгЃ гЃ‘г‚Єгѓ•г‚»гѓѓгѓ€гЃ—гЃ¦иЁ­е®љгЃ™г‚‹пј€ж­ЈгЃ®еЂ¤гЃ§еЏіеЃґгЂЃиІ гЃ®еЂ¤гЃ§е·¦еЃґпј‰
+	float waitTargetArriveDistance = 3.0f;	 // еѕ…ж©џзЉ¶ж…‹гЃ®з›®жЁ™дЅЌзЅ®гЃ«гЃ“гЃ®и·ќй›ўд»Ґе†…гЃ«иї‘гЃҐгЃ„гЃџг‚‰е€°зќЂгЃЁе€¤е®љгЃ™г‚‹
+	float maxWaitTargetDistanceFromPlayer = 60.0f; // еѕ…ж©џзЉ¶ж…‹гЃ®з›®жЁ™дЅЌзЅ®гЃЊгѓ—гѓ¬г‚¤гѓ¤гѓјгЃ‹г‚‰гЃ“гЃ®и·ќй›ўд»ҐдёЉй›ўг‚ЊгЃ¦гЃ„г‚‹е ґеђ€гЃЇгЂЃз›®жЁ™дЅЌзЅ®г‚’е†ЌиЁ€з®—гЃ™г‚‹
 
-	float enemyDetectRange = 160.0f; // “G‚рЌх“G‚·‚й”Н€НЃBѓvѓЊѓCѓ„Ѓ[‚р’†ђS‚Й‚±‚М‹——Ј€И“а‚Й‚ў‚й“G‚рЌUЊ‚‘ОЏЫ‚Ж‚µ‚ДЊџЏo‚·‚й
-	float targetKeepRange = 220.0f; // ЌUЊ‚‘ОЏЫ‚р€ЫЋќ‚Е‚«‚йЌЕ‘е‹——ЈЃBЌUЊ‚‘ОЏЫ‚ЄѓvѓЊѓCѓ„Ѓ[‚©‚з‚±‚М‹——Ј€ИЏг—Ј‚к‚ЅЏкЌ‡ЃAЌUЊ‚‘ОЏЫ‚рЊ©Ћё‚Б‚Ѕ‚Ж”»’и‚µ‚ДЌUЊ‚‘ОЏЫ‚рѓNѓЉѓA‚·‚й
+	float enemyDetectRange = 160.0f; // ж•µг‚’зґўж•µгЃ™г‚‹зЇ„е›ІгЂ‚гѓ—гѓ¬г‚¤гѓ¤гѓјг‚’дё­еїѓгЃ«гЃ“гЃ®и·ќй›ўд»Ґе†…гЃ«гЃ„г‚‹ж•µг‚’ж”»ж’ѓеЇѕи±ЎгЃЁгЃ—гЃ¦ж¤ње‡єгЃ™г‚‹
+	float targetKeepRange = 220.0f; // ж”»ж’ѓеЇѕи±Ўг‚’з¶­жЊЃгЃ§гЃЌг‚‹жњЂе¤§и·ќй›ўгЂ‚ж”»ж’ѓеЇѕи±ЎгЃЊгѓ—гѓ¬г‚¤гѓ¤гѓјгЃ‹г‚‰гЃ“гЃ®и·ќй›ўд»ҐдёЉй›ўг‚ЊгЃџе ґеђ€гЂЃж”»ж’ѓеЇѕи±Ўг‚’и¦‹е¤±гЃЈгЃџгЃЁе€¤е®љгЃ—гЃ¦ж”»ж’ѓеЇѕи±Ўг‚’г‚ЇгѓЄг‚ўгЃ™г‚‹
 
-	float moveSpeed = 45.0f; // €Ъ“®‘¬“x
-	float turnSpeed = 10.0f; // ‰с“]‘¬“x
+	float moveSpeed = 45.0f; // з§»е‹•йЂџеє¦
+	float turnSpeed = 10.0f; // е›ћи»ўйЂџеє¦
 
-	float playerMoveThreshold = 0.05f; // ѓvѓЊѓCѓ„Ѓ[‚Є“®‚ў‚Д‚ў‚й‚Ж”»’и‚·‚й€Ъ“®—К‚Ми‡’lЃBѓvѓЊѓCѓ„Ѓ[‚М‘OѓtѓЊЃ[ѓЂ‚©‚з‚М€Ъ“®‹——Ј‚Є‚±‚М’l€ИЏг‚МЏкЌ‡ЃAѓvѓЊѓCѓ„Ѓ[‚Н“®‚ў‚Д‚ў‚й‚Ж”»’и‚·‚й
+	float playerMoveThreshold = 0.05f; // гѓ—гѓ¬г‚¤гѓ¤гѓјгЃЊе‹•гЃ„гЃ¦гЃ„г‚‹гЃЁе€¤е®љгЃ™г‚‹з§»е‹•й‡ЏгЃ®й–ѕеЂ¤гЂ‚гѓ—гѓ¬г‚¤гѓ¤гѓјгЃ®е‰Ќгѓ•гѓ¬гѓјгѓ гЃ‹г‚‰гЃ®з§»е‹•и·ќй›ўгЃЊгЃ“гЃ®еЂ¤д»ҐдёЉгЃ®е ґеђ€гЂЃгѓ—гѓ¬г‚¤гѓ¤гѓјгЃЇе‹•гЃ„гЃ¦гЃ„г‚‹гЃЁе€¤е®љгЃ™г‚‹
 };
 
 //-----------------------------------------------------------------------------
-// 		–Ў•ыAIѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
+// 		е‘іж–№AIг‚ігѓігѓќгѓјгѓЌгѓігѓ€
 //-----------------------------------------------------------------------------
 class AllyAIComponent : public Component
 {
@@ -43,58 +43,58 @@ public:
 	void Setup(const AllyAIParams& params);
 
 	/// <summary>
-	/// ѓvѓЊѓCѓ„Ѓ[‚р’ЗЏ]‚·‚й‚Ѕ‚Я‚МЌXђVЏ€—ќЃBѓvѓЊѓCѓ„Ѓ[‚Ж‚М‹——Ј‚Й‰ћ‚¶‚Д’ЗЏ]ЉJЋnЃE’вЋ~‚рђШ‚и‘Ц‚¦ЃA’ЗЏ]’†‚НѓvѓЊѓCѓ„Ѓ[‚М€К’u‚ЙЊь‚©‚Б‚Д€Ъ“®‚µ‚Ь‚·ЃB
+	/// гѓ—гѓ¬г‚¤гѓ¤гѓјг‚’иїЅеѕ“гЃ™г‚‹гЃџг‚ЃгЃ®ж›ґж–°е‡¦зђ†гЂ‚гѓ—гѓ¬г‚¤гѓ¤гѓјгЃЁгЃ®и·ќй›ўгЃ«еїњгЃгЃ¦иїЅеѕ“й–‹е§‹гѓ»еЃњж­ўг‚’е€‡г‚Љж›їгЃ€гЂЃиїЅеѕ“дё­гЃЇгѓ—гѓ¬г‚¤гѓ¤гѓјгЃ®дЅЌзЅ®гЃ«еђ‘гЃ‹гЃЈгЃ¦з§»е‹•гЃ—гЃѕгЃ™гЂ‚
 	/// </summary>
-	/// <param name="deltaTime">‘OѓtѓЊЃ[ѓЂ‚Ж‚МЋћЉФЌ·</param>
-	/// <param name="pScene">ѓVЃ[ѓ“</param>
-	/// <param name="moveSpeed">€Ъ“®‘¬“x</param>
+	/// <param name="deltaTime">е‰Ќгѓ•гѓ¬гѓјгѓ гЃЁгЃ®ж™‚й–“е·®</param>
+	/// <param name="pScene">г‚·гѓјгѓі</param>
+	/// <param name="moveSpeed">з§»е‹•йЂџеє¦</param>
 	/// <returns></returns>
 	bool UpdateFollowPlayer(float deltaTime, Scene* pScene, float moveSpeed);
 
 	/// <summary>
-	/// Ћw’и‚µ‚Ѕ–Ъ•W€К’u‚ЙЊь‚©‚Б‚Д€Ъ“®‚µ‚Ь‚·ЃB–Ъ•W€К’u‚Й‹Я‚Г‚ў‚Ѕ‚з“ћ’…‚Ж”»’и‚µ‚Д€Ъ“®‚р’вЋ~‚µ‚Ь‚·ЃB
+	/// жЊ‡е®љгЃ—гЃџз›®жЁ™дЅЌзЅ®гЃ«еђ‘гЃ‹гЃЈгЃ¦з§»е‹•гЃ—гЃѕгЃ™гЂ‚з›®жЁ™дЅЌзЅ®гЃ«иї‘гЃҐгЃ„гЃџг‚‰е€°зќЂгЃЁе€¤е®љгЃ—гЃ¦з§»е‹•г‚’еЃњж­ўгЃ—гЃѕгЃ™гЂ‚
 	/// </summary>
-	/// <param name="deltaTime">‘OѓtѓЊЃ[ѓЂ‚Ж‚МЋћЉФЌ·</param>
-	/// <param name="targetPos">€Ъ“®‚М–Ъ•W€К’u</param>
-	/// <param name="arriveDistance">–Ъ•W€К’u‚Й‹Я‚Г‚ў‚Ѕ‚Ж”»’и‚·‚й‹——Ј</param>
-	/// <param name="moveSpeed">€Ъ“®‘¬“x</param>
-	/// <returns>–Ъ•W€К’u‚Й“ћ’…‚µ‚Ѕ‚з trueЃA‚Ь‚ѕ“ћ’…‚µ‚Д‚ў‚И‚ўЏкЌ‡‚Н false</returns>
+	/// <param name="deltaTime">е‰Ќгѓ•гѓ¬гѓјгѓ гЃЁгЃ®ж™‚й–“е·®</param>
+	/// <param name="targetPos">з§»е‹•гЃ®з›®жЁ™дЅЌзЅ®</param>
+	/// <param name="arriveDistance">з›®жЁ™дЅЌзЅ®гЃ«иї‘гЃҐгЃ„гЃџгЃЁе€¤е®љгЃ™г‚‹и·ќй›ў</param>
+	/// <param name="moveSpeed">з§»е‹•йЂџеє¦</param>
+	/// <returns>з›®жЁ™дЅЌзЅ®гЃ«е€°зќЂгЃ—гЃџг‚‰ trueгЂЃгЃѕгЃ е€°зќЂгЃ—гЃ¦гЃ„гЃЄгЃ„е ґеђ€гЃЇ false</returns>
 	bool MoveToTargetPosition(float deltaTime, const DirectX::XMFLOAT3& targetPos, float arriveDistance, float moveSpeed);
 
 	/// <summary>
-	/// Ћw’и‚µ‚Ѕ–Ъ•W€К’u‚М•ыЊь‚рЊь‚­‚ж‚¤‚Й‰с“]‚µ‚Ь‚·ЃB‰с“]‚Нѓ^Ѓ[ѓ“‘¬“x‚Й‰ћ‚¶‚ДѓXѓЂЃ[ѓY‚ЙЌs‚н‚к‚Ь‚·ЃB
+	/// жЊ‡е®љгЃ—гЃџз›®жЁ™дЅЌзЅ®гЃ®ж–№еђ‘г‚’еђ‘гЃЏг‚€гЃ†гЃ«е›ћи»ўгЃ—гЃѕгЃ™гЂ‚е›ћи»ўгЃЇг‚їгѓјгѓійЂџеє¦гЃ«еїњгЃгЃ¦г‚№гѓ гѓјг‚єгЃ«иЎЊг‚Џг‚ЊгЃѕгЃ™гЂ‚
 	/// </summary>
-	/// <param name="deltaTime">‘OѓtѓЊЃ[ѓЂ‚Ж‚МЋћЉФЌ·</param>
-	/// <param name="targetPos">‰с“]‚М–Ъ•W€К’u</param>
+	/// <param name="deltaTime">е‰Ќгѓ•гѓ¬гѓјгѓ гЃЁгЃ®ж™‚й–“е·®</param>
+	/// <param name="targetPos">е›ћи»ўгЃ®з›®жЁ™дЅЌзЅ®</param>
 	void FaceTarget(float deltaTime, const DirectX::XMFLOAT3& targetPos);
 
-	// ѓvѓЊѓCѓ„Ѓ[‚р’†ђS‚ЙЌUЊ‚‘ОЏЫ‚рЌх“G‚µЃAЌUЊ‚‘ОЏЫ‚Є—LЊш‚Е‚ ‚к‚ОЌUЊ‚‘ОЏЫ‚р•Ф‚µ‚Ь‚·ЃBЌUЊ‚‘ОЏЫ‚Є–іЊш‚ИЏкЌ‡‚Н nullptr ‚р•Ф‚µ‚Ь‚·ЃB
+	// гѓ—гѓ¬г‚¤гѓ¤гѓјг‚’дё­еїѓгЃ«ж”»ж’ѓеЇѕи±Ўг‚’зґўж•µгЃ—гЂЃж”»ж’ѓеЇѕи±ЎгЃЊжњ‰еЉ№гЃ§гЃ‚г‚ЊгЃ°ж”»ж’ѓеЇѕи±Ўг‚’иї”гЃ—гЃѕгЃ™гЂ‚ж”»ж’ѓеЇѕи±ЎгЃЊз„ЎеЉ№гЃЄе ґеђ€гЃЇ nullptr г‚’иї”гЃ—гЃѕгЃ™гЂ‚
 	GameObject* GetOrFindAttackTarget(Scene* pScene);
 
-	// Њ»ЌЭ‚МЌUЊ‚‘ОЏЫ‚МѓAѓhѓЊѓX
+	// зЏѕењЁгЃ®ж”»ж’ѓеЇѕи±ЎгЃ®г‚ўгѓ‰гѓ¬г‚№
 	GameObject* GetAttackTarget() const { return m_AttackTarget; }
 
-	// ЌUЊ‚‘ОЏЫ‚р‚МѓNѓЉѓA
+	// ж”»ж’ѓеЇѕи±Ўг‚’гЃ®г‚ЇгѓЄг‚ў
 	void ClearAttackTarget() { m_AttackTarget = nullptr; }
 private:
-	// ѓvѓЊѓCѓ„Ѓ[‚Є€Ъ“®‚µ‚Ѕ‚©‚З‚¤‚©‚М”»’и
+	// гѓ—гѓ¬г‚¤гѓ¤гѓјгЃЊз§»е‹•гЃ—гЃџгЃ‹гЃ©гЃ†гЃ‹гЃ®е€¤е®љ
 	bool IsPlayerMoving(const DirectX::XMFLOAT3& playerPos);
 
-	// ѓvѓЊѓCѓ„Ѓ[‚Є’вЋ~Ћћ‚ЙЋ©ђg‚Є‘Т‹@‚·‚йЌА•W‚рЌмђ¬
+	// гѓ—гѓ¬г‚¤гѓ¤гѓјгЃЊеЃњж­ўж™‚гЃ«и‡Єиє«гЃЊеѕ…ж©џгЃ™г‚‹еє§жЁ™г‚’дЅњж€ђ
 	DirectX::XMFLOAT3 CreateWaitTargetPosition(Scene* pScene, Player* pPlayer, Camera* pCamera);
 	
-	// ‘Т‹@–Ъ•W‚М€К’u‚Є—LЊш‚©‚З‚¤‚©‚М”»’и
+	// еѕ…ж©џз›®жЁ™гЃ®дЅЌзЅ®гЃЊжњ‰еЉ№гЃ‹гЃ©гЃ†гЃ‹гЃ®е€¤е®љ
 	bool IsValidWaitTarget(Camera* pCamera, const DirectX::XMFLOAT3& targetPos, const DirectX::XMFLOAT3& playerPos) const;
 	
-	// ѓvѓЊѓCѓ„Ѓ[‚р’†ђS‚ЙЌUЊ‚‘ОЏЫ‚рЌх“G‚µЃAЌЕ‚а‹Я‚ў“G‚р•Ф‚·
+	// гѓ—гѓ¬г‚¤гѓ¤гѓјг‚’дё­еїѓгЃ«ж”»ж’ѓеЇѕи±Ўг‚’зґўж•µгЃ—гЂЃжњЂг‚‚иї‘гЃ„ж•µг‚’иї”гЃ™
 	GameObject* FindNearestEnemy(Scene* pScene) const;
 	
-	// ЌUЊ‚‘ОЏЫ‚Є—LЊш‚©‚З‚¤‚©‚М”»’и
+	// ж”»ж’ѓеЇѕи±ЎгЃЊжњ‰еЉ№гЃ‹гЃ©гЃ†гЃ‹гЃ®е€¤е®љ
 	bool IsValidAttackTarget(GameObject* target) const;
 private:
-	AllyAIParams m_Params; // –Ў•ыAI‚М‹““®ѓpѓ‰ѓЃЃ[ѓ^Ѓ[
+	AllyAIParams m_Params; // е‘іж–№AIгЃ®жЊ™е‹•гѓ‘гѓ©гѓЎгѓјг‚їгѓј
 
-	GameObject* m_AttackTarget = nullptr; // ЌUЊ‚–Ъ•W
+	GameObject* m_AttackTarget = nullptr; // ж”»ж’ѓз›®жЁ™
 
 	DirectX::XMFLOAT3 m_LastPlayerPos = { 0.0f, 0.0f, 0.0f };
 	DirectX::XMFLOAT3 m_WaitTargetPos = { 0.0f, 0.0f, 0.0f };

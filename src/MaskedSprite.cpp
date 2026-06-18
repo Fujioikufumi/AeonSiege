@@ -1,4 +1,4 @@
-#include "MaskedSprite.h"
+ï»¿#include "MaskedSprite.h"
 #include "ResourceManager.h"
 #include "FileUtil.h"
 #include "Logger.h"
@@ -48,7 +48,7 @@ bool MaskedSprite::Init(const std::wstring& texturePath)
 		return false;
 	}
 
-	// ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿
 	m_Texture = std::make_unique<Texture>();
 	ResourceUploadBatch batch(device.Get());
 	batch.Begin();
@@ -60,10 +60,10 @@ bool MaskedSprite::Init(const std::wstring& texturePath)
 	auto finish = batch.End(queue.Get());
 	finish.wait();
 
-	// ’¸“_ƒoƒbƒtƒ@‚Ìì¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 	CreateVertexBuffer();
 
-	// ’è”ƒoƒbƒtƒ@‚Ìì¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 	if (!m_SpriteCB.Init(device.Get(), pool, sizeof(SpriteBuffer)))
 	{
 		ELOG("MaskedSprite: SpriteCB init failed");
@@ -102,7 +102,7 @@ void MaskedSprite::Draw(const RenderContext& context)
 	if (!m_Texture || !context.pCmdList)
 		return;
 
-	// MaskedUIPipeline‚Ì•`‰æƒpƒCƒvƒ‰ƒCƒ“‚ğæ“¾
+	// MaskedUIPipelineã®æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚’å–å¾—
 	auto* pipelineInfo = PipelineStateManager::GetInstance().GetPipelineState(L"MaskedUIPipeline");
 	if (!pipelineInfo || !pipelineInfo->isValid)
 	{
@@ -110,7 +110,7 @@ void MaskedSprite::Draw(const RenderContext& context)
 		return;
 	}
 
-	// GPUƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹‚Ìæ“¾
+	// GPUãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«ã®å–å¾—
 	D3D12_GPU_DESCRIPTOR_HANDLE texHandle = m_Texture->GetHandleGPU();
 	if (texHandle.ptr == 0)
 	{
@@ -165,10 +165,10 @@ void MaskedSprite::CreateVertexBuffer()
 
 	Vertex vertices[4] =
 	{
-		{ { -1.0f,  1.0f }, { m_UVMin.x, m_UVMax.y } }, // ¶ã
-		{ {  1.0f,  1.0f }, { m_UVMax.x, m_UVMax.y } }, // ‰Eã
-		{ { -1.0f, -1.0f }, { m_UVMin.x, m_UVMin.y } }, // ¶‰º
-		{ {  1.0f, -1.0f }, { m_UVMax.x, m_UVMin.y } }, // ‰E‰º
+		{ { -1.0f,  1.0f }, { m_UVMin.x, m_UVMax.y } }, // å·¦ä¸Š
+		{ {  1.0f,  1.0f }, { m_UVMax.x, m_UVMax.y } }, // å³ä¸Š
+		{ { -1.0f, -1.0f }, { m_UVMin.x, m_UVMin.y } }, // å·¦ä¸‹
+		{ {  1.0f, -1.0f }, { m_UVMax.x, m_UVMin.y } }, // å³ä¸‹
 	};
 
 	auto device = GetDevice();
@@ -193,7 +193,7 @@ void MaskedSprite::UpdateConstantBuffers()
 		return;
 	}
 
-	// ’è”ƒoƒbƒtƒ@‚É’l‚ğƒZƒbƒg
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«å€¤ã‚’ã‚»ãƒƒãƒˆ
 	sb->Position_Padding = XMFLOAT4(m_Position.x, m_Position.y, 0.0f, 0.0f);
 	sb->Size_Padding = XMFLOAT4(m_Size.x, m_Size.y, 0.0f, 0.0f);
 	sb->Scale_Padding = XMFLOAT4(m_Scale.x, m_Scale.y, 0.0f, 0.0f);
@@ -209,13 +209,13 @@ void MaskedSprite::UpdateConstantBuffers()
 		return;
 	}
 
-	// i’»—¦‚Í0.0`1.0‚Ì”ÍˆÍ‚ÉƒNƒ‰ƒ“ƒv
+	// é€²æ—ç‡ã¯0.0ï½1.0ã®ç¯„å›²ã«ã‚¯ãƒ©ãƒ³ãƒ—
 	const float progress = std::clamp(m_Progress, 0.0f, 1.0f);
 
-	// ƒtƒFƒU[‚Í0.0ˆÈã‚Ì’l‚ÉƒNƒ‰ƒ“ƒv
+	// ãƒ•ã‚§ã‚¶ãƒ¼ã¯0.0ä»¥ä¸Šã®å€¤ã«ã‚¯ãƒ©ãƒ³ãƒ—
 	const float feather = max(0.0f, m_Feather);
 
-	// ƒ}ƒXƒNƒ‚[ƒh
+	// ãƒã‚¹ã‚¯ãƒ¢ãƒ¼ãƒ‰
 	const float mode = static_cast<float>(static_cast<int>(m_MaskMode));
 
 	maskBuffer->MaskRectUV = m_MaskRectUV;

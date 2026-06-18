@@ -1,4 +1,4 @@
-#include "BattleArea.h"
+﻿#include "BattleArea.h"
 #include "GameManager.h"
 #include "Scene.h"
 #include "Terrain.h"

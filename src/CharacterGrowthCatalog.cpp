@@ -1,4 +1,4 @@
-#include "CharacterGrowthCatalog.h"
+ï»¿#include "CharacterGrowthCatalog.h"
 #include "GameObject.h"
 #include "StatusComponent.h"
 #include "HealthComponent.h"
@@ -14,7 +14,7 @@
 
 namespace {
 
-	// “G‚Ì¬’·ƒpƒ^[ƒ“BJSON ‚Å‚Í base ‚Æ perLevel ‚Ì‘g‚İ‡‚í‚¹‚Å•\Œ»‚·‚éB
+	// æ•µã®æˆé•·ãƒ‘ã‚¿ãƒ¼ãƒ³ã€‚JSON ã§ã¯ base ã¨ perLevel ã®çµ„ã¿åˆã‚ã›ã§è¡¨ç¾ã™ã‚‹ã€‚
 	struct EnemyGrowthProfile
 	{
 		StatusData base{};
@@ -23,7 +23,7 @@ namespace {
 
 	std::unordered_map<std::string, EnemyGrowthProfile> g_enemyGrowth;
 
-	// JSON ‚Ì base •”•ª‚ğ StatusData ‚É“Ç‚İ‚ŞB‘¶İ‚µ‚È‚¢ƒtƒB[ƒ‹ƒh‚Í•ÏX‚µ‚È‚¢B
+	// JSON ã® base éƒ¨åˆ†ã‚’ StatusData ã«èª­ã¿è¾¼ã‚€ã€‚å­˜åœ¨ã—ãªã„ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã¯å¤‰æ›´ã—ãªã„ã€‚
 	void ReadAbsoluteBaseFields(const nlohmann::json& j, StatusData& s)
 	{
 		if (j.contains("maxHp"))
@@ -62,7 +62,7 @@ namespace {
 			s.damageTakenRate = j["damageTakenRate"].get<float>();
 	}
 
-	// JSON ‚Ì perLevel •”•ª‚ğ StatusData ‚É‰ÁZ‚·‚éB‘¶İ‚µ‚È‚¢ƒtƒB[ƒ‹ƒh‚Í•ÏX‚µ‚È‚¢B
+	// JSON ã® perLevel éƒ¨åˆ†ã‚’ StatusData ã«åŠ ç®—ã™ã‚‹ã€‚å­˜åœ¨ã—ãªã„ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã¯å¤‰æ›´ã—ãªã„ã€‚
 	void AddDeltaFields(const nlohmann::json& j, StatusData& s)
 	{
 		if (j.contains("maxHp"))
@@ -101,7 +101,7 @@ namespace {
 			s.damageTakenRate += j["damageTakenRate"].get<float>();
 	}
 
-	// •û®A: Lv1 = base ‚Ì‚İBLv ‚ª 1 ã‚ª‚é‚½‚Ñ perLevel ‚Ì 1 ’i‚ğ‰ÁZB‘«‚è‚È‚¢•ª‚Í––”ös‚ğŒJ‚è•Ô‚·
+	// æ–¹å¼A: Lv1 = base ã®ã¿ã€‚Lv ãŒ 1 ä¸ŠãŒã‚‹ãŸã³ perLevel ã® 1 æ®µã‚’åŠ ç®—ã€‚è¶³ã‚Šãªã„åˆ†ã¯æœ«å°¾è¡Œã‚’ç¹°ã‚Šè¿”ã™
 	StatusData BuildStatusAtLevel(const EnemyGrowthProfile& p, int level)
 	{
 		StatusData result = p.base;
@@ -116,7 +116,7 @@ namespace {
 		return result;
 	}
 
-	// EnemyType ‚ğ•¶š—ñƒL[‚É•ÏŠ·
+	// EnemyType ã‚’æ–‡å­—åˆ—ã‚­ãƒ¼ã«å¤‰æ›
 	const char* EnemyTypeKey(EnemyType t)
 	{
 		switch (t)
@@ -135,7 +135,7 @@ namespace {
 } // namespace
 
 namespace CharacterGrowth {
-	// “G‚Ì¬’·ƒe[ƒuƒ‹‚ğ JSON ‚©‚ç“Ç‚İ‚Ş
+	// æ•µã®æˆé•·ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ JSON ã‹ã‚‰èª­ã¿è¾¼ã‚€
 	bool TryLoadEnemyGrowthTable(const std::wstring& path)
 	{
 		g_enemyGrowth.clear();
@@ -147,7 +147,7 @@ namespace CharacterGrowth {
 			return false;
 		}
 
-		// JSONƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+		// JSONãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
 		const std::string utf8 = EncodeWideToUtf8(fullPath);
 		std::ifstream ifs(utf8);
 		if (!ifs.is_open())
@@ -202,7 +202,7 @@ namespace CharacterGrowth {
 		return true;
 	}
 
-	// “G‚ÌƒXƒ|[ƒ“‚ÉƒXƒe[ƒ^ƒX‚ğ“K—p‚·‚é
+	// æ•µã®ã‚¹ãƒãƒ¼ãƒ³æ™‚ã«ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’é©ç”¨ã™ã‚‹
 	bool ApplyEnemySpawnStats(GameObject* enemy, EnemyType type, int level)
 	{
 		if (enemy == nullptr)

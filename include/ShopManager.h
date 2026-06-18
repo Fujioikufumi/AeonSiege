@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 #include "ShopOffer.h"
 #include <string>
@@ -25,63 +25,63 @@ public:
 	bool IsOpen() const { return m_IsOpen; }
 	const std::vector<ShopOffer>& GetCurrentOffers() const { return m_CurrentOffers; }
 
-	// ‘I‘ğˆ‚ÌˆÚ“®
+	// é¸æŠè‚¢ã®ç§»å‹•
 	void MoveSelection(int direction);
 	
-	// ‘I‘ğˆ‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ’¼Úİ’è
+	// é¸æŠè‚¢ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ç›´æ¥è¨­å®š
 	void SetSelectedIndex(int index);
 	
-	// Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒIƒtƒ@[‚ğ“K—p‚µ‚ÄƒVƒ‡ƒbƒv‚ğ•Â‚¶‚é
+	// ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ•ã‚¡ãƒ¼ã‚’é©ç”¨ã—ã¦ã‚·ãƒ§ãƒƒãƒ—ã‚’é–‰ã˜ã‚‹
 	void ConfirmSelection();
 	
-	// Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒCƒ“ƒfƒbƒNƒX‚ğæ“¾
+	// ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—
 	int GetSelectedIndex() const { return m_SelectedIndex; }
 
 private:
-	// ƒVƒ‡ƒbƒvƒIƒtƒ@[‚Ì¶¬‚Æ“K—p
+	// ã‚·ãƒ§ãƒƒãƒ—ã‚ªãƒ•ã‚¡ãƒ¼ã®ç”Ÿæˆã¨é©ç”¨
 	void RollOffers(int phaseNo);
 	ShopOffer RollOffer(int phaseNo, bool& skillOfferAlreadyPlacedThisShop);
 
-	// ƒVƒ‡ƒbƒvƒIƒtƒ@[‚ÌğŒ”»’è
+	// ã‚·ãƒ§ãƒƒãƒ—ã‚ªãƒ•ã‚¡ãƒ¼ã®æ¡ä»¶åˆ¤å®š
 	bool ShouldOfferAlly(int phaseNo, AllyId allyId) const;
 
-	// ƒVƒ‡ƒbƒvƒIƒtƒ@[‚Ì“K—p
+	// ã‚·ãƒ§ãƒƒãƒ—ã‚ªãƒ•ã‚¡ãƒ¼ã®é©ç”¨
 	void ApplyOffer(const ShopOffer& offer);
 
-	// ƒAƒbƒvƒOƒŒ[ƒhƒIƒtƒ@[‚Ì“K—p
+	// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã‚ªãƒ•ã‚¡ãƒ¼ã®é©ç”¨
 	void ApplyUpgradeToTeam(const UpgradeData& upgrade);
 
-	// ƒŒƒCƒ„[“à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ÉƒAƒbƒvƒOƒŒ[ƒh‚ğ“K—p
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã‚’é©ç”¨
 	void ApplyUpgradeToLayer(eLayer layer, const UpgradeData& upgrade);
 
-	// ƒp[ƒeƒB‚ÌƒXƒe[ƒ^ƒX‚ÉƒAƒbƒvƒOƒŒ[ƒh‚ğ“K—p
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã«ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã‚’é©ç”¨
 	void ApplyUpgradeToStatus(StatusComponent* status, const UpgradeData& upgrade);
 
-	// ƒIƒtƒ@[‚Ì¶¬
+	// ã‚ªãƒ•ã‚¡ãƒ¼ã®ç”Ÿæˆ
 	ShopOffer CreateStatusOffer(UpgradeKind kind, UpgradeRarity rarity) const;
 	
-	// –¡•û‰Á“üƒIƒtƒ@[‚Ì¶¬
+	// å‘³æ–¹åŠ å…¥ã‚ªãƒ•ã‚¡ãƒ¼ã®ç”Ÿæˆ
 	ShopOffer CreateJoinAllyOffer(AllyId allyId) const;
 	
-	// ƒXƒLƒ‹‰ğœƒIƒtƒ@[‚Ì¶¬
+	// ã‚¹ã‚­ãƒ«è§£é™¤ã‚ªãƒ•ã‚¡ãƒ¼ã®ç”Ÿæˆ
 	ShopOffer CreateUnlockSkillOffer(SkillId skillId) const;
 
-	// ƒAƒbƒvƒOƒŒ[ƒhƒf[ƒ^‚Ì¶¬
+	// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ãƒ‡ãƒ¼ã‚¿ã®ç”Ÿæˆ
 	UpgradeData CreateUpgradeData(UpgradeKind kind, UpgradeRarity rarity) const;
 	
-	// ƒAƒbƒvƒOƒŒ[ƒh‚Ìí—Ş‚ğƒ‰ƒ“ƒ_ƒ€‚ÉŒˆ’è
+	// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®ç¨®é¡ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«æ±ºå®š
 	UpgradeKind RollUpgradeKind() const;
 	
-	// ƒAƒbƒvƒOƒŒ[ƒh‚ÌƒŒƒAƒŠƒeƒB‚ğƒ‰ƒ“ƒ_ƒ€‚ÉŒˆ’è
+	// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«æ±ºå®š
 	UpgradeRarity RollRarity(int phaseNo) const;
 
-	// ƒAƒbƒvƒOƒŒ[ƒh‚ÌŒø‰Ê’l‚ğƒŒƒAƒŠƒeƒB‚É‰‚¶‚ÄŒˆ’è
+	// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®åŠ¹æœå€¤ã‚’ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã«å¿œã˜ã¦æ±ºå®š
 	float GetUpgradeValue(UpgradeKind kind, UpgradeRarity rarity) const;
 	
-	// ƒAƒbƒvƒOƒŒ[ƒh‚ÌŒø‰Ê‚Ì‘ÎÛ‚Æ‚È‚éƒXƒe[ƒ^ƒX‚Ìí—Ş‚ğæ“¾
+	// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®åŠ¹æœã®å¯¾è±¡ã¨ãªã‚‹ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®ç¨®é¡ã‚’å–å¾—
 	UpgradeStatType GetStatType(UpgradeKind kind) const;
 	
-	// ƒAƒbƒvƒOƒŒ[ƒh‚Ì–¼‘O‚ğæ“¾
+	// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®åå‰ã‚’å–å¾—
 	std::string GetUpgradeName(UpgradeKind kind) const;
 
 	std::wstring GetRarityTexturePath(UpgradeRarity rarity) const;
@@ -91,7 +91,7 @@ private:
 	Player* GetPlayer() const;
 	PartyManager* GetPartyManager() const;
 
-	// ƒvƒŒƒCƒ„[‚ÌŠ—L‚µ‚Ä‚¢‚éƒXƒLƒ‹ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ‰€æœ‰ã—ã¦ã„ã‚‹ã‚¹ã‚­ãƒ«ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—
 	SkillComponent* GetPlayerSkills() const;
 
 private:

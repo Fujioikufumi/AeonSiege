@@ -1,17 +1,17 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <wincodec.h>
 
 /// <summary>
-/// WIC �ŉ摜��ǂݍ��݁A�w��t�H�[�}�b�g�̐��s�N�Z���f�[�^���擾����B(8bit)
-/// �����}�b�v�i8bit Gray�j��t�B�[���h�}�b�v�i32bit RGBA�j�Ȃǂŋ��ʗ��p����B
+/// WIC で画像を読み込み、指定フォーマットの生ピクセルデータを取得する。(8bit)
+/// 高さマップ（8bit Gray）やフィールドマップ（32bit RGBA）などで共通利用する。
 /// </summary>
-/// <param name="fullPath">�����ς݂̉摜�t�@�C���p�X�iSearchFilePathW �ς݂�n���j</param>
-/// <param name="targetFormat">WIC �s�N�Z���t�H�[�}�b�g�i��: GUID_WICPixelFormat8bppGray, GUID_WICPixelFormat32bppRGBA�j</param>
-/// <param name="outWidth">�o��: �摜��</param>
-/// <param name="outHeight">�o��: �摜����</param>
-/// <param name="outPixels">�o��: ���s�N�Z���f�[�^�B�T�C�Y�� width*height*bytesPerPixel�iGray=1, RGBA=4�j</param>
-/// <returns>������ true�A���s�� false </returns>
+/// <param name="fullPath">解決済みの画像ファイルパス（SearchFilePathW 済みを渡す）</param>
+/// <param name="targetFormat">WIC ピクセルフォーマット（例: GUID_WICPixelFormat8bppGray, GUID_WICPixelFormat32bppRGBA）</param>
+/// <param name="outWidth">出力: 画像幅</param>
+/// <param name="outHeight">出力: 画像高さ</param>
+/// <param name="outPixels">出力: 生ピクセルデータ。サイズは width*height*bytesPerPixel（Gray=1, RGBA=4）</param>
+/// <returns>成功時 true、失敗時 false </returns>
 bool LoadImageWithWIC(
 	const wchar_t* fullPath,
 	REFGUID targetFormat,
@@ -21,7 +21,7 @@ bool LoadImageWithWIC(
 );
 
 /// <summary>
-/// WIC �ŉ摜��ǂݍ��݁A16bit Gray �t�H�[�}�b�g�̐��s�N�Z���f�[�^���擾����B
+/// WIC で画像を読み込み、16bit Gray フォーマットの生ピクセルデータを取得する。
 /// </summary>
 bool LoadImageWithWIC16(
 	const wchar_t* fullPath,

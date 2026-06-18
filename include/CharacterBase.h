@@ -1,13 +1,13 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 
 class StatusComponent;
 class AnimationController;
 
 /// <summary>
-/// í“¬ƒLƒƒƒ‰ƒNƒ^[‹¤’Ê‚ÌŠî’êƒNƒ‰ƒXB
-/// “GE–¡•û‚ª‹¤’Ê‚Å‚ÂƒXƒe[ƒ^ƒXQÆAƒAƒjƒØ‚è‘Ö‚¦A
-/// ’x‰„‹ßÚƒ_ƒ[ƒWˆ—‚ğ‚Ü‚Æ‚ß‚éB
+/// æˆ¦é—˜ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å…±é€šã®åŸºåº•ã‚¯ãƒ©ã‚¹ã€‚
+/// æ•µãƒ»å‘³æ–¹ãŒå…±é€šã§æŒã¤ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å‚ç…§ã€ã‚¢ãƒ‹ãƒ¡åˆ‡ã‚Šæ›¿ãˆã€
+/// é…å»¶è¿‘æ¥ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†ã‚’ã¾ã¨ã‚ã‚‹ã€‚
 /// </summary>
 class CharacterBase : public GameObject
 {
@@ -17,32 +17,32 @@ public:
 
 protected:
 	//-------------------------------------------------------------
-	// ƒAƒjƒ[ƒVƒ‡ƒ“
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 
-	/// ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚ğØ‚è‘Ö‚¦‚éi–¢‰Šú‰»‚È‚ç‰½‚à‚µ‚È‚¢j
+	/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹ï¼ˆæœªåˆæœŸåŒ–ãªã‚‰ä½•ã‚‚ã—ãªã„ï¼‰
 	void ChangeAnimation(AnimationController* anim, const char* clipName,
 		bool loop, float speed = 1.0f);
 
 	//-------------------------------------------------------------
-	// ’x‰„‹ßÚƒ_ƒ[ƒWiƒAƒjƒ‚Ìƒqƒbƒgƒ^ƒCƒ~ƒ“ƒO‚É‡‚í‚¹‚Ä”­¶‚³‚¹‚éj
+	// é…å»¶è¿‘æ¥ãƒ€ãƒ¡ãƒ¼ã‚¸ï¼ˆã‚¢ãƒ‹ãƒ¡ã®ãƒ’ãƒƒãƒˆã‚¿ã‚¤ãƒŸãƒ³ã‚°ã«åˆã‚ã›ã¦ç™ºç”Ÿã•ã›ã‚‹ï¼‰
 
-	/// ‹ßÚƒ_ƒ[ƒW‚ğ—\–ñ‚·‚éidelaySec Œã‚É judge ‚µ‚Ä“K—pj
+	/// è¿‘æ¥ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’äºˆç´„ã™ã‚‹ï¼ˆdelaySec å¾Œã« judge ã—ã¦é©ç”¨ï¼‰
 	void SchedulePendingMeleeDamage(GameObject* target, int damage, float delaySec);
 
-	/// —\–ñÏ‚İ‚Ì‹ßÚƒ_ƒ[ƒW‚ğisE“K—p‚·‚éi–ˆƒtƒŒ[ƒ€ŒÄ‚Ôj
+	/// äºˆç´„æ¸ˆã¿ã®è¿‘æ¥ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’é€²è¡Œãƒ»é©ç”¨ã™ã‚‹ï¼ˆæ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‘¼ã¶ï¼‰
 	void UpdatePendingMeleeDamage(float deltaTime);
 
-	/// —\–ñÏ‚İ‚Ì‹ßÚƒ_ƒ[ƒW‚ğ”jŠü‚·‚é
+	/// äºˆç´„æ¸ˆã¿ã®è¿‘æ¥ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ç ´æ£„ã™ã‚‹
 	void CancelPendingMeleeDamage();
 
 protected:
-	StatusComponent* m_Status = nullptr; // ƒXƒe[ƒ^ƒXŠÇ—ƒRƒ“ƒ|[ƒlƒ“ƒg
+	StatusComponent* m_Status = nullptr; // ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç®¡ç†ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 
-	// ‹ßÚƒqƒbƒg”»’è‹——£i”h¶ƒNƒ‰ƒX‚ª Init ‚Åİ’è‚·‚éj
+	// è¿‘æ¥ãƒ’ãƒƒãƒˆåˆ¤å®šè·é›¢ï¼ˆæ´¾ç”Ÿã‚¯ãƒ©ã‚¹ãŒ Init ã§è¨­å®šã™ã‚‹ï¼‰
 	float m_MeleeHitRange = 0.0f;
 
 private:
-	// ’x‰„‹ßÚƒ_ƒ[ƒW‚Ì“à•”ó‘Ô
+	// é…å»¶è¿‘æ¥ãƒ€ãƒ¡ãƒ¼ã‚¸ã®å†…éƒ¨çŠ¶æ…‹
 	bool        m_HasPendingMeleeDamage = false;
 	float       m_MeleeDamageDelayTimer = 0.0f;
 	GameObject* m_PendingMeleeTarget = nullptr;

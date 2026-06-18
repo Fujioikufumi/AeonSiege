@@ -1,4 +1,4 @@
-#include "CharacterBase.h"
+ï»¿#include "CharacterBase.h"
 #include "AnimationController.h"
 #include "HealthComponent.h"
 #include "MathUtility.h"
@@ -7,50 +7,50 @@
 void CharacterBase::ChangeAnimation(AnimationController* anim, const char* clipName, bool loop, float speed)
 {
 	if (anim == nullptr || !anim->IsInitialized() || clipName == nullptr) return;
-	anim->SetLoop(loop);	// ƒ‹[ƒvİ’è
-	anim->SetSpeed(speed);	// Ä¶‘¬“xİ’è
-	anim->Play(clipName);	// ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
+	anim->SetLoop(loop);	// ãƒ«ãƒ¼ãƒ—è¨­å®š
+	anim->SetSpeed(speed);	// å†ç”Ÿé€Ÿåº¦è¨­å®š
+	anim->Play(clipName);	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿ
 }
 
 void CharacterBase::SchedulePendingMeleeDamage(GameObject* target, int damage, float delaySec)
 {
-	m_HasPendingMeleeDamage = true;		// ‹ßÚƒ_ƒ[ƒW—\–ñƒtƒ‰ƒO‚ğ—§‚Ä‚é
-	m_PendingMeleeTarget = target;		// ‘ÎÛ‚ğ•Û
-	m_PendingMeleeDamage = damage;		// ƒ_ƒ[ƒW—Ê‚ğ•Û
-	m_MeleeDamageDelayTimer = delaySec; // ’x‰„ŠÔ‚ğİ’è
+	m_HasPendingMeleeDamage = true;		// è¿‘æ¥ãƒ€ãƒ¡ãƒ¼ã‚¸äºˆç´„ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
+	m_PendingMeleeTarget = target;		// å¯¾è±¡ã‚’ä¿æŒ
+	m_PendingMeleeDamage = damage;		// ãƒ€ãƒ¡ãƒ¼ã‚¸é‡ã‚’ä¿æŒ
+	m_MeleeDamageDelayTimer = delaySec; // é…å»¶æ™‚é–“ã‚’è¨­å®š
 }
 
 void CharacterBase::UpdatePendingMeleeDamage(float deltaTime)
 {
-	// ‹ßÚƒ_ƒ[ƒW—\–ñ‚ª‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+	// è¿‘æ¥ãƒ€ãƒ¡ãƒ¼ã‚¸äºˆç´„ãŒãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 	if (!m_HasPendingMeleeDamage) return;
 
-	// ƒJƒEƒ“ƒgƒ_ƒEƒ“
+	// ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³
 	m_MeleeDamageDelayTimer -= deltaTime;
 	if (m_MeleeDamageDelayTimer > 0.0f) return;
 
-	// ƒ_ƒ[ƒW‚Ì“K‰
+	// ãƒ€ãƒ¡ãƒ¼ã‚¸ã®é©å¿œ
 	m_HasPendingMeleeDamage = false;
 
-	// ƒ[ƒJƒ‹•Ï”‚Éî•ñ‚ğƒRƒs[‚·‚é
+	// ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã«æƒ…å ±ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
 	GameObject* target	= m_PendingMeleeTarget;
 	const int   damage	= m_PendingMeleeDamage;
 
-	// —\–ñî•ñ‚ğƒNƒŠƒA‚·‚é
-	m_PendingMeleeTarget = nullptr; // nullptr‚É‚·‚é
+	// äºˆç´„æƒ…å ±ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
+	m_PendingMeleeTarget = nullptr; // nullptrã«ã™ã‚‹
 	m_PendingMeleeDamage = 0;
 
-	// ‘ÎÛ‚ª—LŒø‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
+	// å¯¾è±¡ãŒæœ‰åŠ¹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
 	if (target == nullptr || target->IsDestroyed()) return;
 
-	// ‘ÎÛ‚ÌHealthComponent‚ğæ“¾‚µ‚Ä¶‘¶‚µ‚Ä‚¢‚é‚©Šm”F
+	// å¯¾è±¡ã®HealthComponentã‚’å–å¾—ã—ã¦ç”Ÿå­˜ã—ã¦ã„ã‚‹ã‹ç¢ºèª
 	HealthComponent* hp = target->GetComponent<HealthComponent>();
 	if (hp == nullptr || !hp->IsAlive()) return;
 
-	// ‹ßÚƒqƒbƒg”»’è‹——£“à‚É‚¢‚é‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
+	// è¿‘æ¥ãƒ’ãƒƒãƒˆåˆ¤å®šè·é›¢å†…ã«ã„ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
 	if (!MathUtility::IsInRange(m_Position, target->GetPosition(), m_MeleeHitRange)) return;
 
-	// ƒ_ƒ[ƒW‚ğ“K—p‚·‚é
+	// ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’é©ç”¨ã™ã‚‹
 	DamageContext context{};
 	context.attacker = this;
 	context.damage = damage;

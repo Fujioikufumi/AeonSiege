@@ -1,50 +1,50 @@
-#pragma once
+ï»¿#pragma once
 #pragma once
 #include <stdint.h>
 #include <DirectXMath.h>
 
-// ƒ}ƒWƒbƒNƒiƒ“ƒo[iƒtƒ@ƒCƒ‹‚ª³‚µ‚¢Œ`®‚©”»’è‚·‚é‚½‚ß‚Ì¯•Êqj
+// ãƒã‚¸ãƒƒã‚¯ãƒŠãƒ³ãƒãƒ¼ï¼ˆãƒ•ã‚¡ã‚¤ãƒ«ãŒæ­£ã—ã„å½¢å¼ã‹åˆ¤å®šã™ã‚‹ãŸã‚ã®è­˜åˆ¥å­ï¼‰
 const uint32_t MODEL_MAGIC = 'MDL1'; // Model version 1
 const uint32_t ANIM_MAGIC = 'ANM1'; // Animation version 1
 
 //=============================================================================
-// 1. ƒ‚ƒfƒ‹ƒtƒ@ƒCƒ‹ (.bmdl) —p‚Ìƒwƒbƒ_‚Æ\‘¢‘Ì
+// 1. ãƒ¢ãƒ‡ãƒ«ãƒ•ã‚¡ã‚¤ãƒ« (.bmdl) ç”¨ã®ãƒ˜ãƒƒãƒ€ã¨æ§‹é€ ä½“
 //=============================================================================
 
-// ƒ‚ƒfƒ‹ƒtƒ@ƒCƒ‹‘S‘Ì‚Ìƒwƒbƒ_î•ñiƒtƒ@ƒCƒ‹æ“ª‚É•K‚¸’u‚­j
+// ãƒ¢ãƒ‡ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«å…¨ä½“ã®ãƒ˜ãƒƒãƒ€æƒ…å ±ï¼ˆãƒ•ã‚¡ã‚¤ãƒ«å…ˆé ­ã«å¿…ãšç½®ãï¼‰
 struct ModelFileHeader
 {
     uint32_t magic;          // 'MDL1'
-    uint32_t numMeshes;      // ƒTƒuƒƒbƒVƒ…‚Ì”
-    uint32_t numMaterials;   // ƒ}ƒeƒŠƒAƒ‹‚Ì”
-    uint32_t numBones;       // ƒ{[ƒ“iƒXƒPƒ‹ƒgƒ“j‚Ì”
-    bool     hasAnimation;   // ƒXƒLƒjƒ“ƒOƒƒbƒVƒ…‚©‚Ç‚¤‚©
-    char     reserved[3];    // ƒpƒfƒBƒ“ƒOi4ƒoƒCƒg‹«ŠE‚É‡‚í‚¹‚é‚½‚ßj
+    uint32_t numMeshes;      // ã‚µãƒ–ãƒ¡ãƒƒã‚·ãƒ¥ã®æ•°
+    uint32_t numMaterials;   // ãƒãƒ†ãƒªã‚¢ãƒ«ã®æ•°
+    uint32_t numBones;       // ãƒœãƒ¼ãƒ³ï¼ˆã‚¹ã‚±ãƒ«ãƒˆãƒ³ï¼‰ã®æ•°
+    bool     hasAnimation;   // ã‚¹ã‚­ãƒ‹ãƒ³ã‚°ãƒ¡ãƒƒã‚·ãƒ¥ã‹ã©ã†ã‹
+    char     reserved[3];    // ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ï¼ˆ4ãƒã‚¤ãƒˆå¢ƒç•Œã«åˆã‚ã›ã‚‹ãŸã‚ï¼‰
 };
 
-// ƒ}ƒeƒŠƒAƒ‹î•ñ‚Ì•Û‘¶—piƒtƒ@ƒCƒ‹ƒpƒX‚ÍŒÅ’è’·‚©AƒTƒCƒY{•¶š—ñ‚Å•Û‘¶‚·‚éj
+// ãƒãƒ†ãƒªã‚¢ãƒ«æƒ…å ±ã®ä¿å­˜ç”¨ï¼ˆãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã¯å›ºå®šé•·ã‹ã€ã‚µã‚¤ã‚ºï¼‹æ–‡å­—åˆ—ã§ä¿å­˜ã™ã‚‹ï¼‰
 struct MaterialData
 {
     DirectX::XMFLOAT3 diffuse;
-    char diffuseMapName[256]; // ƒeƒNƒXƒ`ƒƒ‚Ìƒtƒ@ƒCƒ‹–¼iŠÈˆÕ“I‚ÉŒÅ’è’·”z—ñ‚É‚·‚é‚Ì‚ªÅ‚à“Ç‚İ‘‚«‚ªŠyj
+    char diffuseMapName[256]; // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ•ã‚¡ã‚¤ãƒ«åï¼ˆç°¡æ˜“çš„ã«å›ºå®šé•·é…åˆ—ã«ã™ã‚‹ã®ãŒæœ€ã‚‚èª­ã¿æ›¸ããŒæ¥½ï¼‰
     char normalMapName[256];
 };
 
-// ŠeƒTƒuƒƒbƒVƒ…iResMeshj‚Ìƒwƒbƒ_î•ñ
+// å„ã‚µãƒ–ãƒ¡ãƒƒã‚·ãƒ¥ï¼ˆResMeshï¼‰ã®ãƒ˜ãƒƒãƒ€æƒ…å ±
 struct MeshHeader
 {
     uint32_t materialId;
     uint32_t numVertices;
     uint32_t numIndices;
-    bool     isSkinned;      // ’¸“_‚ª SkinnedMeshVertex ‚© MeshVertex ‚©
+    bool     isSkinned;      // é ‚ç‚¹ãŒ SkinnedMeshVertex ã‹ MeshVertex ã‹
     char     reserved[3];
 };
 
-// ƒ{[ƒ“iSkeletonInfo::BoneInfoj‚Ì•Û‘¶—p
+// ãƒœãƒ¼ãƒ³ï¼ˆSkeletonInfo::BoneInfoï¼‰ã®ä¿å­˜ç”¨
 struct BoneData
 {
-    char name[64];              // ƒ{[ƒ“–¼
-    int  parentIndex;           // eƒCƒ“ƒfƒbƒNƒX
+    char name[64];              // ãƒœãƒ¼ãƒ³å
+    int  parentIndex;           // è¦ªã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
     DirectX::XMFLOAT4X4 localTransform;
     DirectX::XMFLOAT4X4 boneBindInv;
     DirectX::XMFLOAT4X4 boneBindGlobal;
@@ -54,27 +54,27 @@ struct BoneData
 
 
 //=============================================================================
-// 2. ƒAƒjƒ[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹ (.banm) —p‚Ìƒwƒbƒ_‚Æ\‘¢‘Ì
+// 2. ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ« (.banm) ç”¨ã®ãƒ˜ãƒƒãƒ€ã¨æ§‹é€ ä½“
 //=============================================================================
 
-// ƒAƒjƒ[ƒVƒ‡ƒ“‘S‘Ì‚Ìƒwƒbƒ_î•ñ
+// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å…¨ä½“ã®ãƒ˜ãƒƒãƒ€æƒ…å ±
 struct AnimFileHeader
 {
     uint32_t magic;          // 'ANM1'
-    uint32_t numChannels;    // “®‚­ƒ{[ƒ“iƒ`ƒƒƒ“ƒlƒ‹j‚Ì”
-    float    duration;       // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì’·‚³
-    float    ticksPerSecond; // ƒtƒŒ[ƒ€ƒŒ[ƒg
-    char     clipName[64];   // ƒAƒjƒ[ƒVƒ‡ƒ“–¼i—á: "Run"j
+    uint32_t numChannels;    // å‹•ããƒœãƒ¼ãƒ³ï¼ˆãƒãƒ£ãƒ³ãƒãƒ«ï¼‰ã®æ•°
+    float    duration;       // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é•·ã•
+    float    ticksPerSecond; // ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆ
+    char     clipName[64];   // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åï¼ˆä¾‹: "Run"ï¼‰
 };
 
-// Šeƒ`ƒƒƒ“ƒlƒ‹iƒ{[ƒ“’PˆÊ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“j‚Ìƒwƒbƒ_
+// å„ãƒãƒ£ãƒ³ãƒãƒ«ï¼ˆãƒœãƒ¼ãƒ³å˜ä½ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ï¼‰ã®ãƒ˜ãƒƒãƒ€
 struct AnimChannelHeader
 {
-    char     boneName[64];   // ‚Ç‚Ìƒ{[ƒ“‚©
-    uint32_t numKeyFrames;   // ƒL[ƒtƒŒ[ƒ€”
+    char     boneName[64];   // ã©ã®ãƒœãƒ¼ãƒ³ã‹
+    uint32_t numKeyFrames;   // ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ æ•°
 };
 
-// MatrixKeyFrame ‚Ì•Û‘¶—piResMesh.h ‚Ì MatrixKeyFrame ‚Æ“¯‚¶\‘¢j
+// MatrixKeyFrame ã®ä¿å­˜ç”¨ï¼ˆResMesh.h ã® MatrixKeyFrame ã¨åŒã˜æ§‹é€ ï¼‰
 struct KeyFrameData
 {
     float time;

@@ -1,4 +1,4 @@
-#include "MathUtility.h"
+ï»¿#include "MathUtility.h"
 #include "Camera.h"
 #include <cmath>
 #include "NameSpace.h"
@@ -50,19 +50,19 @@ namespace MathUtility {
 
 	float SlerpYaw(float currentYaw, float targetYaw, float turnSpeed, float deltaTime)
 	{
-		// Šp“x‚Ì·•ª‚ğŒvZ
+		// è§’åº¦ã®å·®åˆ†ã‚’è¨ˆç®—
 		float diff = targetYaw - currentYaw;
 
-		// ·•ª‚ª -PI ‚©‚ç PI ‚Ì”ÍˆÍ“à‚Éû‚Ü‚é‚æ‚¤‚É³‹K‰» (Å’ZŒo˜H‚Ì‰ñ“])
+		// å·®åˆ†ãŒ -PI ã‹ã‚‰ PI ã®ç¯„å›²å†…ã«åã¾ã‚‹ã‚ˆã†ã«æ­£è¦åŒ– (æœ€çŸ­çµŒè·¯ã®å›è»¢)
 		while (diff > DirectX::XM_PI) diff -= DirectX::XM_2PI;
 		while (diff < -DirectX::XM_PI) diff += DirectX::XM_2PI;
 
-		// ‘¬“x‚ÆŠÔ‚ğŠ|‚¯‚ÄA1ƒtƒŒ[ƒ€‚Å‰ñ“]‚·‚é—Ê‚ğŒˆ’è
-		// (·•ªˆÈã‚Ì‰ñ“]‚Í‚µ‚È‚¢‚æ‚¤‚É min ‚Å§ŒÀ‚·‚é‚©A‚ ‚é‚¢‚Í’P‚É diff‚É‹ß‚Ã‚¯‚é)
+		// é€Ÿåº¦ã¨æ™‚é–“ã‚’æ›ã‘ã¦ã€1ãƒ•ãƒ¬ãƒ¼ãƒ ã§å›è»¢ã™ã‚‹é‡ã‚’æ±ºå®š
+		// (å·®åˆ†ä»¥ä¸Šã®å›è»¢ã¯ã—ãªã„ã‚ˆã†ã« min ã§åˆ¶é™ã™ã‚‹ã‹ã€ã‚ã‚‹ã„ã¯å˜ã« diffã«è¿‘ã¥ã‘ã‚‹)
 		float step = diff * (turnSpeed * deltaTime);
 
-		// ·•ª‚Ìâ‘Î’l‚ªƒXƒeƒbƒvƒTƒCƒY‚æ‚è¬‚³‚¢ê‡‚ÍA’¼Úƒ^[ƒQƒbƒg‚ÌŠp“x‚É‚·‚éiƒI[ƒo[ƒVƒ…[ƒg–h~j
-		if (std::abs(diff) < std::abs(step) * 0.5f) { // ŠÈˆÕ“I‚È”÷’²®
+		// å·®åˆ†ã®çµ¶å¯¾å€¤ãŒã‚¹ãƒ†ãƒƒãƒ—ã‚µã‚¤ã‚ºã‚ˆã‚Šå°ã•ã„å ´åˆã¯ã€ç›´æ¥ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®è§’åº¦ã«ã™ã‚‹ï¼ˆã‚ªãƒ¼ãƒãƒ¼ã‚·ãƒ¥ãƒ¼ãƒˆé˜²æ­¢ï¼‰
+		if (std::abs(diff) < std::abs(step) * 0.5f) { // ç°¡æ˜“çš„ãªå¾®èª¿æ•´
 			return targetYaw;
 		}
 
@@ -74,16 +74,16 @@ namespace MathUtility {
 		XMVECTOR vWorldPos = XMLoadFloat3(&worldPos);
 		XMVECTOR vScreenPos = XMVector3Project(
 			vWorldPos,
-			0.0f, 0.0f,					// ƒrƒ…[ƒ|[ƒg‚Ì¶ãX, Y
-			SCREEN_WIDTH, SCREEN_HEIGHT, // ƒrƒ…[ƒ|[ƒg‚Ì•, ‚‚³
-			0.0f, 1.0f,					// [“x‚ÌÅ¬’l, Å‘å’l
+			0.0f, 0.0f,					// ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã®å·¦ä¸ŠX, Y
+			SCREEN_WIDTH, SCREEN_HEIGHT, // ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã®å¹…, é«˜ã•
+			0.0f, 1.0f,					// æ·±åº¦ã®æœ€å°å€¤, æœ€å¤§å€¤
 			camera->GetProj(),
 			camera->GetView(),
-			XMMatrixIdentity()			// ƒ[ƒ‹ƒhs—ñi‚·‚Å‚Éƒ[ƒ‹ƒhÀ•W‚È‚Ì‚Å’PˆÊs—ñj
+			XMMatrixIdentity()			// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ï¼ˆã™ã§ã«ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ãªã®ã§å˜ä½è¡Œåˆ—ï¼‰
 		);
 		XMFLOAT3 screenPos;
 		XMStoreFloat3(&screenPos, vScreenPos);
-		// Z’l‚ª1.0‚ğ’´‚¦‚Ä‚¢‚éê‡AƒJƒƒ‰‚ÌŒã‚ë‚É‚¢‚é‚½‚ß•`‰æ‚µ‚È‚¢‚È‚Ç‚Ì”»’è‚à‰Â”\
+		// Zå€¤ãŒ1.0ã‚’è¶…ãˆã¦ã„ã‚‹å ´åˆã€ã‚«ãƒ¡ãƒ©ã®å¾Œã‚ã«ã„ã‚‹ãŸã‚æç”»ã—ãªã„ãªã©ã®åˆ¤å®šã‚‚å¯èƒ½
 		return XMFLOAT2(screenPos.x, screenPos.y);
 	}
 }

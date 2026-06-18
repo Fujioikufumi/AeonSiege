@@ -1,4 +1,4 @@
-#include "GameMenu.h"
+ï»¿#include "GameMenu.h"
 #include "Sprite.h"
 #include "NameSpace.h"
 #include "Input.h"
@@ -13,18 +13,18 @@ bool GameMenu::s_MenuOpen = false;
 
 namespace
 {
-	// ƒƒjƒ…[‚Ì€–Ú‚ÌƒeƒNƒXƒ`ƒƒƒpƒX
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‘ã‚¹
 	const wchar_t* kMainItemTexturePaths[4] = {
-		L"Assets/Texture/Menu/QuitMenu.png",   // ƒƒjƒ…[‚ğ•Â‚¶‚é
-		L"Assets/Texture/Menu/ReturnTitle.png",// ƒ^ƒCƒgƒ‹‚É–ß‚é
-		L"Assets/Texture/Menu/ControlsHelp.png",// ‘€ì•û–@
-		L"Assets/Texture/Menu/SkillInfo.png",   // ƒXƒLƒ‹î•ñ
+		L"Assets/Texture/Menu/QuitMenu.png",   // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‰ã˜ã‚‹
+		L"Assets/Texture/Menu/ReturnTitle.png",// ã‚¿ã‚¤ãƒˆãƒ«ã«æˆ»ã‚‹
+		L"Assets/Texture/Menu/ControlsHelp.png",// æ“ä½œæ–¹æ³•
+		L"Assets/Texture/Menu/SkillInfo.png",   // ã‚¹ã‚­ãƒ«æƒ…å ±
 	};
 
-	const wchar_t* kControlsHelpTexturePath = L"Assets/Texture/Menu/HowtoOperate.png";  // ‘€ì•û–@‚Ì‰æ‘œ
-	const wchar_t* kSkillInfoTexturePath = L"Assets/Texture/Menu/SkillData.png";		// ƒXƒLƒ‹î•ñ‚Ì‰æ‘œ
+	const wchar_t* kControlsHelpTexturePath = L"Assets/Texture/Menu/HowtoOperate.png";  // æ“ä½œæ–¹æ³•ã®ç”»åƒ
+	const wchar_t* kSkillInfoTexturePath = L"Assets/Texture/Menu/SkillData.png";		// ã‚¹ã‚­ãƒ«æƒ…å ±ã®ç”»åƒ
 
-	// ƒƒjƒ…[‚ğŠJ‚­/•Â‚¶‚éƒgƒŠƒK[
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ã/é–‰ã˜ã‚‹ãƒˆãƒªã‚¬ãƒ¼
 	bool MenuOpenOrCloseTrigger()
 	{
 		return IsKeyTrigger(VK_ESCAPE)
@@ -32,19 +32,19 @@ namespace
 			|| IsControllerTrigger(PAD_BACK);
 	}
 
-	// ƒƒjƒ…[‚ÅŒˆ’è‚·‚éƒgƒŠƒK[
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã§æ±ºå®šã™ã‚‹ãƒˆãƒªã‚¬ãƒ¼
 	bool MenuConfirmTrigger()
 	{
 		return IsKeyTrigger(VK_SPACE) || IsKeyTrigger(VK_RETURN) || IsControllerTrigger(PAD_A);
 	}
 
-	// ƒƒjƒ…[‚Åã‰º‚ÉˆÚ“®‚·‚éƒgƒŠƒK[
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã§ä¸Šä¸‹ã«ç§»å‹•ã™ã‚‹ãƒˆãƒªã‚¬ãƒ¼
 	bool MenuUpTrigger()
 	{
 		return IsKeyTrigger(VK_UP) || IsKeyTrigger('W') || IsControllerTrigger(PAD_UP);
 	}
 
-	// ƒƒjƒ…[‚Å‰º‚ÉˆÚ“®‚·‚éƒgƒŠƒK[
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã§ä¸‹ã«ç§»å‹•ã™ã‚‹ãƒˆãƒªã‚¬ãƒ¼
 	bool MenuDownTrigger()
 	{
 		return IsKeyTrigger(VK_DOWN) || IsKeyTrigger('S') || IsControllerTrigger(PAD_DOWN);
@@ -58,7 +58,7 @@ bool GameMenu::IsMenuOpen()
 
 bool GameMenu::Init()
 {
-	// ƒƒjƒ…[‘S‘Ì‚Ì”wŒi
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼å…¨ä½“ã®èƒŒæ™¯
 	m_Dim = AddComponent<Sprite>();
 	if (!m_Dim->Init(L"Assets/Texture/Shop/ShopBackGround.png"))
 	{
@@ -70,7 +70,7 @@ bool GameMenu::Init()
 	m_Dim->SetColor(0.0f, 0.0f, 0.0f, 0.55f);
 	SetSpriteVisible(m_Dim, false);
 
-	// ƒƒjƒ…[‚Ì€–ÚƒXƒvƒ‰ƒCƒg
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	for (int i = 0; i < static_cast<int>(MainItem::Count); ++i)
 	{
 		Sprite* spr = AddComponent<Sprite>();
@@ -88,7 +88,7 @@ bool GameMenu::Init()
 		SetSpriteVisible(spr, false);
 	}
 
-	// ‘€ì•û–@
+	// æ“ä½œæ–¹æ³•
 	m_ControlsHelpSprite = AddComponent<Sprite>();
 	if (!m_ControlsHelpSprite->Init(kControlsHelpTexturePath))
 	{
@@ -100,7 +100,7 @@ bool GameMenu::Init()
 	m_ControlsHelpRestPos = m_ControlsHelpSprite->GetPosition();
 	SetSpriteVisible(m_ControlsHelpSprite, false);
 
-	// ƒXƒLƒ‹î•ñ
+	// ã‚¹ã‚­ãƒ«æƒ…å ±
 	m_SkillInfoSprite = AddComponent<Sprite>();
 	if (!m_SkillInfoSprite->Init(kSkillInfoTexturePath))
 	{
@@ -122,7 +122,7 @@ bool GameMenu::Init()
 
 void GameMenu::Update(float deltaTime)
 {
-	// ƒVƒ‡ƒbƒv’†‚ÍƒQ[ƒ€ƒƒjƒ…[‚ğˆµ‚í‚È‚¢i•K—v‚È‚ç Shop ‘¤‚Åƒƒjƒ…[‚ğ•Â‚¶‚éˆ—‚ğ’Ç‰Áj
+	// ã‚·ãƒ§ãƒƒãƒ—ä¸­ã¯ã‚²ãƒ¼ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’æ‰±ã‚ãªã„ï¼ˆå¿…è¦ãªã‚‰ Shop å´ã§ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‰ã˜ã‚‹å‡¦ç†ã‚’è¿½åŠ ï¼‰
 	if (GameFlowUtil::IsShopOpen())
 	{
 		if (m_IsMenuOpen)
@@ -133,7 +133,7 @@ void GameMenu::Update(float deltaTime)
 		return;
 	}
 
-	// --- •Â‚¶‚Ä‚¢‚é‚Æ‚«FƒgƒOƒ‹‚ÅŠJ‚­ ---
+	// --- é–‰ã˜ã¦ã„ã‚‹ã¨ãï¼šãƒˆã‚°ãƒ«ã§é–‹ã ---
 	if (!m_IsMenuOpen)
 	{
 		if (MenuOpenOrCloseTrigger())
@@ -151,7 +151,7 @@ void GameMenu::Update(float deltaTime)
 		return;
 	}
 
-	// --- ŠJ‚¢‚Ä‚¢‚é‚Æ‚« ---
+	// --- é–‹ã„ã¦ã„ã‚‹ã¨ã ---
 	if (m_Panel == Panel::ControlsHelp)
 	{
 		if (MenuOpenOrCloseTrigger() || MenuConfirmTrigger())

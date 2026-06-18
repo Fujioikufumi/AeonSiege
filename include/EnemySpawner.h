@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 #include "PhaseData.h"
 #include <DirectXMath.h>
 #include <string>
 
 /// <summary>
-/// ƒtƒF[ƒYis‚É‡‚í‚¹‚Ä“GƒLƒƒƒ‰ƒNƒ^[‚ğ¶¬iƒXƒ|[ƒ“j‚·‚éƒNƒ‰ƒXB
+/// ãƒ•ã‚§ãƒ¼ã‚ºé€²è¡Œã«åˆã‚ã›ã¦æ•µã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’ç”Ÿæˆï¼ˆã‚¹ãƒãƒ¼ãƒ³ï¼‰ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
 /// </summary>
 class EnemySpawner : public GameObject
 {
@@ -17,11 +17,11 @@ public:
 	void Update(float deltaTime = 0.0f) override;
 
 	
-	/// w’è‚³‚ê‚½ƒtƒF[ƒYƒf[ƒ^iƒEƒF[ƒu“à—ej‚ÉŠî‚Ã‚¢‚ÄA“G‚ğƒXƒ|[ƒ“‚³‚¹‚Ü‚·B
+	/// æŒ‡å®šã•ã‚ŒãŸãƒ•ã‚§ãƒ¼ã‚ºãƒ‡ãƒ¼ã‚¿ï¼ˆã‚¦ã‚§ãƒ¼ãƒ–å†…å®¹ï¼‰ã«åŸºã¥ã„ã¦ã€æ•µã‚’ã‚¹ãƒãƒ¼ãƒ³ã•ã›ã¾ã™ã€‚
 	void SpawnPhase(const PhaseData& phaseData);
 
 private:
-	/// w’è‚³‚ê‚½’†SÀ•W‚Æ”¼Œa‚Ì”ÍˆÍ“à‚ÅAƒ‰ƒ“ƒ_ƒ€‚ÈƒXƒ|[ƒ“À•W‚ğ¶¬‚µ‚Ä•Ô‚µ‚Ü‚·B
+	/// æŒ‡å®šã•ã‚ŒãŸä¸­å¿ƒåº§æ¨™ã¨åŠå¾„ã®ç¯„å›²å†…ã§ã€ãƒ©ãƒ³ãƒ€ãƒ ãªã‚¹ãƒãƒ¼ãƒ³åº§æ¨™ã‚’ç”Ÿæˆã—ã¦è¿”ã—ã¾ã™ã€‚
 	DirectX::XMFLOAT3 CreateRandomSpawnPosition(const DirectX::XMFLOAT3& center, float radius) const;
 	
 	DirectX::XMFLOAT3 CreateSpawnPosition(
@@ -34,5 +34,5 @@ private:
 	GameObject* SpawnEnemy(EnemyType type, const DirectX::XMFLOAT3& position, int index, int level, int expReward);
 
 private:
-	int m_TotalSpawnedCount = 0; // ƒXƒ|ƒi[‚ª‘¶İ‚·‚éŠÔ‚É¶¬‚µ‚½“G‚Ì‘”
+	int m_TotalSpawnedCount = 0; // ã‚¹ãƒãƒŠãƒ¼ãŒå­˜åœ¨ã™ã‚‹é–“ã«ç”Ÿæˆã—ãŸæ•µã®ç·æ•°
 };

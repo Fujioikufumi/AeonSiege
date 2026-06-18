@@ -1,4 +1,4 @@
-#include "SkillComponent.h"
+ï»¿#include "SkillComponent.h"
 #include "GameObject.h"
 #include <algorithm>
 
@@ -15,7 +15,7 @@ void SkillComponent::Update(float deltaTime)
 
 void SkillComponent::AddSkill(const SkillData& data)
 {
-	// ƒXƒLƒ‹ID‚ªNone‚Å‚È‚¢‚±‚Æ‚ÆA‚·‚Å‚É“¯‚¶ƒXƒLƒ‹‚ğ‚Á‚Ä‚¢‚È‚¢‚±‚Æ‚ğŠm”F
+	// ã‚¹ã‚­ãƒ«IDãŒNoneã§ãªã„ã“ã¨ã¨ã€ã™ã§ã«åŒã˜ã‚¹ã‚­ãƒ«ã‚’æŒã£ã¦ã„ãªã„ã“ã¨ã‚’ç¢ºèª
 	if (data.id == SkillId::None || HasSkill(data.id))
 	{
 		return;
@@ -23,7 +23,7 @@ void SkillComponent::AddSkill(const SkillData& data)
 
 	if (static_cast<int>(m_Skills.size()) >= kMaxSkillSlot)
 	{
-		return; // Å‘åƒXƒƒbƒg”‚É’B‚µ‚Ä‚¢‚é
+		return; // æœ€å¤§ã‚¹ãƒ­ãƒƒãƒˆæ•°ã«é”ã—ã¦ã„ã‚‹
 	}
 
 	SkillRuntime skill;
@@ -34,7 +34,7 @@ void SkillComponent::AddSkill(const SkillData& data)
 
 bool SkillComponent::HasSkill(SkillId id) const
 {
-	// ƒXƒLƒ‹ID‚ªˆê’v‚·‚é‚à‚Ì‚ª‚ ‚é‚©‚Ç‚¤‚©‚ğŠm”F
+	// ã‚¹ã‚­ãƒ«IDãŒä¸€è‡´ã™ã‚‹ã‚‚ã®ãŒã‚ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèª
 	return std::any_of(m_Skills.begin(), m_Skills.end(),
 		[id](const SkillRuntime& skill) { return skill.Data.id == id; });
 }

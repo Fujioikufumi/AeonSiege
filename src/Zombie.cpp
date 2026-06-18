@@ -1,4 +1,4 @@
-#include "Zombie.h"
+ï»¿#include "Zombie.h"
 #include "MeshRenderer.h"
 #include "Terrain.h"
 #include "Scene.h"
@@ -12,11 +12,11 @@
 #include <random>
 
 namespace {
-	constexpr float kTargetHeightOffset = 6.0f;  // ƒ^[ƒQƒbƒgHUD‚Ì‚‚³ƒIƒtƒZƒbƒg
-	constexpr float kAutoAttackInterval = 2.0f;  // ’ÊíUŒ‚‚ÌŠÔŠui•bj
-	constexpr float kMoveSpeed = 20.0f;			 // ˆÚ“®‘¬“x
-	constexpr float kChaseMoveSpeed = 35.0f;	 // ’ÇÕ‚ÌˆÚ“®‘¬“x
-	constexpr float kMeleeCooldownSec = 2.0f;	 // ‹ßÚUŒ‚‚ÌƒN[ƒ‹ƒ_ƒEƒ“i•bj
+	constexpr float kTargetHeightOffset = 6.0f;  // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆHUDã®é«˜ã•ã‚ªãƒ•ã‚»ãƒƒãƒˆ
+	constexpr float kAutoAttackInterval = 2.0f;  // é€šå¸¸æ”»æ’ƒã®é–“éš”ï¼ˆç§’ï¼‰
+	constexpr float kMoveSpeed = 20.0f;			 // ç§»å‹•é€Ÿåº¦
+	constexpr float kChaseMoveSpeed = 35.0f;	 // è¿½è·¡æ™‚ã®ç§»å‹•é€Ÿåº¦
+	constexpr float kMeleeCooldownSec = 2.0f;	 // è¿‘æ¥æ”»æ’ƒã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ï¼ˆç§’ï¼‰
 }
 
 Zombie::Zombie()
@@ -66,7 +66,7 @@ bool Zombie::Init()
 	anim->SetLoop(true);
 	anim->Play(kAnimRun);
 
-	m_MeleeHitRange = kMeleeHitRange; // CharacterBase ‚Ì”»’è‹——£‚ğİ’è
+	m_MeleeHitRange = kMeleeHitRange; // CharacterBase ã®åˆ¤å®šè·é›¢ã‚’è¨­å®š
 
 	EnemyAIComponent* enemyAi = AddComponent<EnemyAIComponent>();
 	enemyAi->SetLevel(1);
@@ -76,7 +76,7 @@ bool Zombie::Init()
 	enemyAi->SetChaseMoveSpeed(kChaseMoveSpeed);
 	enemyAi->SetMeleeCooldownSec(kMeleeCooldownSec);
 
-	// ƒR[ƒ‹ƒoƒbƒN
+	// ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 	enemyAi->SetAnimCallback([this](EnemyAIState newState) { OnAIStateChanged(newState); });
 	enemyAi->SetAttackCallback([this](GameObject* targetObj) { OnAIAttack(targetObj); });
 
@@ -113,23 +113,23 @@ void Zombie::Update(float deltaTime)
 	HealthComponent* pHealth = GetComponent<HealthComponent>();
 	AnimationController* pAnim = GetComponent<AnimationController>();
 
-	// €–S”»’è
+	// æ­»äº¡åˆ¤å®š
 	if (pHealth == nullptr || !pHealth->IsAlive())
 	{
 		CancelPendingMeleeDamage();
 
-		// €–SƒAƒjƒ[ƒVƒ‡ƒ“‚ªÅŒã‚Ü‚ÅÄ¶‚³‚ê‚½‚çƒV[ƒ“‚©‚çÁ‹
+		// æ­»äº¡ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒæœ€å¾Œã¾ã§å†ç”Ÿã•ã‚ŒãŸã‚‰ã‚·ãƒ¼ãƒ³ã‹ã‚‰æ¶ˆå»
 		if (pAnim != nullptr && pAnim->GetCurrentAnimationName() == kAnimDying && !pAnim->IsPlaying())
 		{
 			pScene->RemoveGameObject(this);
-			return; // íœ‚³‚ê‚½‚Ì‚ÅUpdate‚ÍŒÄ‚Î‚È‚¢
+			return; // å‰Šé™¤ã•ã‚ŒãŸã®ã§Updateã¯å‘¼ã°ãªã„
 		}
 
 		GameObject::Update(deltaTime);
 		return;
 	}
 
-	// ¶‘¶‚µ‚Ä‚¢‚éê‡‚ÌUŒ‚XV
+	// ç”Ÿå­˜ã—ã¦ã„ã‚‹å ´åˆã®æ”»æ’ƒæ›´æ–°
 	UpdatePendingMeleeDamage(deltaTime);
 
 	GameObject::Update(deltaTime);
@@ -139,14 +139,14 @@ void Zombie::SelectAttackType()
 {
 	m_CurrentAttackType = ZombieAttackType::Punch;
 
-	// ’Êí‚Ìƒ]ƒ“ƒr‚Íƒpƒ“ƒ`‚Ì‚İBƒXƒPƒ‹ƒgƒ“ƒ]ƒ“ƒr‚ÍƒLƒbƒN‚àD‚èŒğ‚º‚é
+	// é€šå¸¸ã®ã‚¾ãƒ³ãƒ“ã¯ãƒ‘ãƒ³ãƒã®ã¿ã€‚ã‚¹ã‚±ãƒ«ãƒˆãƒ³ã‚¾ãƒ³ãƒ“ã¯ã‚­ãƒƒã‚¯ã‚‚ç¹”ã‚Šäº¤ãœã‚‹
 	if (m_Type != ZombieType::SkeletonZombie)
 	{
 		return;
 	}
 
-	// 35%‚ÌŠm—¦‚ÅƒLƒbƒNUŒ‚‚ÉØ‚è‘Ö‚¦‚é
-	static std::mt19937 engine(std::random_device{}()); // C++ ‚Ì—”¶¬‚ğg—p
+	// 35%ã®ç¢ºç‡ã§ã‚­ãƒƒã‚¯æ”»æ’ƒã«åˆ‡ã‚Šæ›¿ãˆã‚‹
+	static std::mt19937 engine(std::random_device{}()); // C++ ã®ä¹±æ•°ç”Ÿæˆã‚’ä½¿ç”¨
 	std::uniform_int_distribution<int> dist(0, 99);
 
 	if (dist(engine) < kKickAttackRate)
@@ -189,12 +189,12 @@ void Zombie::OnAIStateChanged(EnemyAIState newState)
 		clipName = (m_CurrentAttackType == ZombieAttackType::Kick)
 			? kAnimKick
 			: kAnimAttack;
-		loop = false;  // UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“‚Íƒ‹[ƒv‚³‚¹‚È‚¢
+		loop = false;  // æ”»æ’ƒã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¯ãƒ«ãƒ¼ãƒ—ã•ã›ãªã„
 		break;
 
 	case EnemyAIState::Dead:
 		clipName = kAnimDying;
-		loop = false;  // €–SƒAƒjƒ[ƒVƒ‡ƒ“‚Íƒ‹[ƒv‚³‚¹‚È‚¢
+		loop = false;  // æ­»äº¡ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¯ãƒ«ãƒ¼ãƒ—ã•ã›ãªã„
 		break;
 	}
 

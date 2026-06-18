@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include "Component.h"
 #include "StatusData.h"
 
 /// <summary>
-/// í“¬ƒLƒƒƒ‰ƒNƒ^[‚ÌƒXƒe[ƒ^ƒX‚ğŠÇ—‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgB
-/// ‚È‚¨A¶‘¶Šm”F‚È‚Ç‚ÍHealthComponent‚ª’S“–‚·‚éB
+/// æˆ¦é—˜ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ç®¡ç†ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+/// ãªãŠã€ç”Ÿå­˜ç¢ºèªãªã©ã¯HealthComponentãŒæ‹…å½“ã™ã‚‹ã€‚
 /// </summary>
 class StatusComponent : public Component
 {
@@ -18,7 +18,7 @@ public:
 	const StatusData& GetBaseStatus() const { return m_Status; }
 
 	//---------------------------------------------------------
-	// ƒXƒe[ƒ^ƒXã¸ƒƒ\ƒbƒh
+	// ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ä¸Šæ˜‡ãƒ¡ã‚½ãƒƒãƒ‰
 
 	void AddAttackRate(float value);
 	void AddMaxHpRate(float value);
@@ -36,7 +36,7 @@ public:
 	//---------------------------------------------------------
 	//  getters
 
-	// ƒXƒe[ƒ^ƒX”{—¦‚ÌƒQƒbƒ^[
+	// ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å€ç‡ã®ã‚²ãƒƒã‚¿ãƒ¼
 	[[nodiscard]] float GetAttackRate() const { return m_Status.attackRate; }
 	[[nodiscard]] float GetMaxHpRate() const { return m_Status.maxHpRate; }
 	[[nodiscard]] float GetMoveSpeedRate() const { return m_Status.moveSpeedRate; }
@@ -48,18 +48,18 @@ public:
 	[[nodiscard]] float GetSkillChainDamageRate() const { return m_Status.skillChainDamageRate; }
 	[[nodiscard]] float GetSkillRangeRate() const { return m_Status.skillRangeRate; }
 
-	// ƒXƒe[ƒ^ƒX‚ÌÀ”’l‚ÌƒQƒbƒ^[
+	// ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®å®Ÿæ•°å€¤ã®ã‚²ãƒƒã‚¿ãƒ¼
 	[[nodiscard]] float GetMoveSpeed() const { return m_Status.moveSpeed * m_Status.moveSpeedRate; }
 	[[nodiscard]] int GetMaxHp() const;
 	[[nodiscard]] int GetAttackPower() const;
 	[[nodiscard]] float GetAutoAttackInterval() const;
 
-	// ƒ_ƒ[ƒWŒvZ
+	// ãƒ€ãƒ¡ãƒ¼ã‚¸è¨ˆç®—
 	[[nodiscard]] int CalculateTakenDamage(int baseDamage) const;
 	[[nodiscard]] int CalculateSkillDamage(float skillPowerRate) const;
 	[[nodiscard]] float CalculateSkillDuration(float baseDuration) const;
 private:
-	// ƒNƒ‰ƒ“ƒvˆ—
+	// ã‚¯ãƒ©ãƒ³ãƒ—å‡¦ç†
 	static void ClampMin(float& value, float minValue);
 	static void ClampRate(float& value, float minValue, float delta, bool add = true);
 

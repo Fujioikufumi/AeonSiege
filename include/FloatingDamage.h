@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 #include "NumberUI.h"
 #include <DirectXMath.h>
@@ -6,7 +6,7 @@
 class Sprite;
 
 /// <summary>
-/// •\¦‚·‚éƒ_ƒ[ƒWƒ^ƒCƒv
+/// è¡¨ç¤ºã™ã‚‹ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚¿ã‚¤ãƒ—
 /// </summary>
 enum class FloatingDamageType
 {
@@ -26,17 +26,17 @@ public:
 	~FloatingDamage() override = default;
 	bool Init() override;
 	void Update(float deltaTime) override;
-	// ƒ_ƒ[ƒW—Ê‚Æ‰Šú‚ÌƒXƒNƒŠ[ƒ“À•WAF‚ğİ’è‚·‚é
+	// ãƒ€ãƒ¡ãƒ¼ã‚¸é‡ã¨åˆæœŸã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã€è‰²ã‚’è¨­å®šã™ã‚‹
 	void Setup(int damage, float screenX, float screenY, FloatingDamageType type);
 private:
-	Sprite* m_MissSprite = nullptr; // ‰ñ”ğ‚Ì•\¦UI
-	NumberUI* m_NumberUI = nullptr; // ƒ_ƒ[ƒW”’l•\¦—pUI
+	Sprite* m_MissSprite = nullptr; // å›é¿æ™‚ã®è¡¨ç¤ºUI
+	NumberUI* m_NumberUI = nullptr; // ãƒ€ãƒ¡ãƒ¼ã‚¸æ•°å€¤è¡¨ç¤ºç”¨UI
 	float m_PosX = 0.0f;
 	float m_PosY = 0.0f;
 	bool m_IsMiss = false;
 
 	float m_LifeTime = 0.0f;
-	const float kMaxLifeTime = 1.0f; // 1•b‚ÅÁ‚¦‚é
-	const float kMoveSpeed = 50.0f;  // ã‚ÉˆÚ“®‚·‚éƒXƒs[ƒh
+	const float kMaxLifeTime = 1.0f; // 1ç§’ã§æ¶ˆãˆã‚‹
+	const float kMoveSpeed = 50.0f;  // ä¸Šã«ç§»å‹•ã™ã‚‹ã‚¹ãƒ”ãƒ¼ãƒ‰
 	DirectX::XMFLOAT4 m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
 };

@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include "Component.h"
 
 /// <summary>
-///	‘Ì—ÍŠÇ—ƒRƒ“ƒ|[ƒlƒ“ƒg
+///	ä½“åŠ›ç®¡ç†ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 /// </summary>
 class HealthComponent : public Component
 {
@@ -16,39 +16,39 @@ public:
 	using Component::Init;
 	bool Init() override;
 
-	// ƒ_ƒ[ƒW‚ğ—^‚¦‚é
+	// ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹
 	void ApplyDamage(int damage);
 
-	/// ‰ñ•œ‚ğ“K—p
+	/// å›å¾©ã‚’é©ç”¨
 	void Heal(int amount);
 
-	/// Å‘åHP‚ğİ’è
+	/// æœ€å¤§HPã‚’è¨­å®š
 	void SetMaxHP(int maxHp);
 
-	/// Œ»İ‚ÌHP‚ğİ’è
+	/// ç¾åœ¨ã®HPã‚’è¨­å®š
 	void SetHP(int hp);
 
-	/// Œ»İ‚ÌHP‚ğæ“¾	
+	/// ç¾åœ¨ã®HPã‚’å–å¾—	
 	[[nodiscard]] int GetHP() const { return m_HP; }
 
-	/// Å‘åHP‚ğæ“¾
+	/// æœ€å¤§HPã‚’å–å¾—
 	[[nodiscard]] int GetMaxHP() const { return m_MaxHP; }
 	
-	/// HP‚ÌŠ„‡‚ğæ“¾
+	/// HPã®å‰²åˆã‚’å–å¾—
 	[[nodiscard]] float GetHPRatio() const;
 
-	/// ¶‘¶‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	/// ç”Ÿå­˜ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
 	[[nodiscard]] bool IsAlive() const { return !m_IsDead; }
 
-	// ƒ_ƒ[ƒWó‚¯‚½‚©‚Ç‚¤‚©
+	// ãƒ€ãƒ¡ãƒ¼ã‚¸å—ã‘ãŸã‹ã©ã†ã‹
 	[[nodiscard]] bool IsDamaged() const { return m_IsDamaged; }
 
 	void Serialize(nlohmann::json& json) const override;
 	void Deserialize(const nlohmann::json& json) override;
 	void OnDebugWindow() override;
 private:
-	int m_HP = 100;				// Œ»İ‚Ì‘Ì—Í
-	int m_MaxHP = 100;			// Å‘å‘Ì—Í
-	bool m_IsDead = false;		// €–Sƒtƒ‰ƒO
-	bool m_IsDamaged = false;	// ƒ_ƒ[ƒW‚ğó‚¯‚½ƒtƒ‰ƒOiHP ‚ªŒ¸‚Á‚½ƒtƒŒ[ƒ€‚Ì‚İ truej
+	int m_HP = 100;				// ç¾åœ¨ã®ä½“åŠ›
+	int m_MaxHP = 100;			// æœ€å¤§ä½“åŠ›
+	bool m_IsDead = false;		// æ­»äº¡ãƒ•ãƒ©ã‚°
+	bool m_IsDamaged = false;	// ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸãƒ•ãƒ©ã‚°ï¼ˆHP ãŒæ¸›ã£ãŸãƒ•ãƒ¬ãƒ¼ãƒ ã®ã¿ trueï¼‰
 };

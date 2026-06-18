@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Scene.h"
 #include "Terrain.h"
 class TerrainScene : public Scene
@@ -9,6 +9,6 @@ public:
 	void Update(float deltaTime) override;
 	//void Draw(const RenderContext& context) override;
 private:
-	Terrain* m_Terrain = nullptr;				// ’nŒ`ƒIƒuƒWƒFƒNƒg
-	class ResultHud* m_ResultHud = nullptr;		// ƒŠƒUƒ‹ƒgHUD
+	Terrain* m_Terrain = nullptr;				// åœ°å½¢ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	class ResultHud* m_ResultHud = nullptr;		// ãƒªã‚¶ãƒ«ãƒˆHUD
 };

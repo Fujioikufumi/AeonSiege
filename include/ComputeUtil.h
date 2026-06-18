@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include <d3d12.h>
 #include <string>
 
 class DescriptorPool;
 
 /// <summary>
-/// ƒRƒ“ƒsƒ…[ƒgƒpƒCƒvƒ‰ƒCƒ“‚ðƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÉƒoƒCƒ“ƒh‚·‚é
+/// ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚’ã‚³ãƒžãƒ³ãƒ‰ãƒªã‚¹ãƒˆã«ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 /// </summary>
 /// <param name="pCmdList"></param>
 /// <param name="pipelineName"></param>

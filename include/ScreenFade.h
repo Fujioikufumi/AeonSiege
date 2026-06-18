@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 #include <functional>
 #include <memory>
 
 struct RenderContext;
 
-// ‰æ–Ê‘S‘Ì‚ÌƒtƒF[ƒh
+// ç”»é¢å…¨ä½“ã®ãƒ•ã‚§ãƒ¼ãƒ‰
 class ScreenFade
 {
 public:
@@ -16,7 +16,7 @@ public:
 	void Update(float deltaTime);
 	void Draw(const RenderContext& context);
 
-	// frameCount : ƒtƒF[ƒh‚É‚©‚©‚éƒtƒŒ[ƒ€”i0 ˆÈ‰º‚È‚ç 1 ˆµ‚¢j
+	// frameCount : ãƒ•ã‚§ãƒ¼ãƒ‰ã«ã‹ã‹ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ï¼ˆ0 ä»¥ä¸‹ãªã‚‰ 1 æ‰±ã„ï¼‰
 	void FadeIn(int frameCount, std::function<void()> onComplete = nullptr);
 	void FadeOut(int frameCount, std::function<void()> onComplete = nullptr);
 

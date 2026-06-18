@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 //-----------------------------------------------------------------------------
 // Includes
@@ -16,29 +16,29 @@ public:
 
 
 	/// <summary>
-	/// ‰Šú‰»ˆ—‚ğs‚¢‚Ü‚·.
+	/// åˆæœŸåŒ–å‡¦ç†ã‚’è¡Œã„ã¾ã™.
 	/// </summary>
-	/// <param name="pDevice">ƒfƒoƒCƒX‚Å‚·.</param>
-	/// <param name="type">ƒRƒ}ƒ“ƒhƒŠƒXƒgƒ^ƒCƒv‚Å‚·.</param>
-	/// <param name="count">ƒAƒƒP[ƒ^‚Ì”‚Å‚·. ƒ_ƒuƒ‹ƒoƒbƒtƒ@‰»‚·‚éê‡‚Í2‚Éİ’è‚µ‚Ü‚·.</param>
-	/// <returns>true ‰Šú‰»‚É¬Œ÷ : false ‰Šú‰»‚É¸”s</returns>
+	/// <param name="pDevice">ãƒ‡ãƒã‚¤ã‚¹ã§ã™.</param>
+	/// <param name="type">ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚¿ã‚¤ãƒ—ã§ã™.</param>
+	/// <param name="count">ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿ã®æ•°ã§ã™. ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡åŒ–ã™ã‚‹å ´åˆã¯2ã«è¨­å®šã—ã¾ã™.</param>
+	/// <returns>true åˆæœŸåŒ–ã«æˆåŠŸ : false åˆæœŸåŒ–ã«å¤±æ•—</returns>
 	bool Init(ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE type, uint32_t count);
 
 	/// <summary>
-	/// I—¹ˆ—‚Å‚·.
+	/// çµ‚äº†å‡¦ç†ã§ã™.
 	/// </summary>
 	void Term();
 
 	/// <summary>
-	/// ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ğæ“¾‚µ‚Ü‚·.
+	/// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’å–å¾—ã—ã¾ã™.
 	/// </summary>
-	/// <returns>ƒŠƒZƒbƒgˆ—‚ğs‚Á‚½ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ğ•Ô‹p‚µ‚Ü‚·.</returns>
+	/// <returns>ãƒªã‚»ãƒƒãƒˆå‡¦ç†ã‚’è¡Œã£ãŸã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’è¿”å´ã—ã¾ã™.</returns>
 	[[nodiscard]] ID3D12GraphicsCommandList* Reset();
 
 private:
-	ComPtr<ID3D12GraphicsCommandList>			m_CmdList; // ƒRƒ}ƒ“ƒhƒŠƒXƒg
-	std::vector<ComPtr<ID3D12CommandAllocator>> m_Allocators; // ƒRƒ}ƒ“ƒhƒAƒƒP[ƒ^‚Å‚·.
-	uint32_t                                    m_Index; // ƒAƒƒP[ƒ^”Ô†‚Å‚·.
+	ComPtr<ID3D12GraphicsCommandList>			m_CmdList; // ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
+	std::vector<ComPtr<ID3D12CommandAllocator>> m_Allocators; // ã‚³ãƒãƒ³ãƒ‰ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿ã§ã™.
+	uint32_t                                    m_Index; // ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿ç•ªå·ã§ã™.
 
 	CommandList		(const CommandList&) = delete;
 	void operator = (const CommandList&) = delete;

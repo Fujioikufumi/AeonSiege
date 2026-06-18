@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include "PhaseData.h"
 #include <string>
 
 class GameObject;
 
-// JSON ‚Ì base + perLeveli•û®A: ƒe[ƒuƒ‹Ï‚İã‚°j‚Å“GƒXƒe[ƒ^ƒX‚ğŒˆ’èB
-// «—ˆƒvƒŒƒCƒ„[^–¡•û‚É‚à“¯‚¶Œ`®‚ğ—¬—p‰Â”\B
+// JSON ã® base + perLevelï¼ˆæ–¹å¼A: ãƒ†ãƒ¼ãƒ–ãƒ«ç©ã¿ä¸Šã’ï¼‰ã§æ•µã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æ±ºå®šã€‚
+// å°†æ¥ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ï¼å‘³æ–¹ã«ã‚‚åŒã˜å½¢å¼ã‚’æµç”¨å¯èƒ½ã€‚
 namespace CharacterGrowth
 {
 	bool TryLoadEnemyGrowthTable(const std::wstring& path = L"Assets/AppData/EnemyGrowth.json");

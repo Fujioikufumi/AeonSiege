@@ -1,4 +1,4 @@
-#include "ShopUI.h"
+ï»¿#include "ShopUI.h"
 #include "Sprite.h"
 #include "ShopManager.h"
 #include "GameManager.h"
@@ -9,7 +9,7 @@
 
 namespace
 {
-	// ƒVƒ‡ƒbƒvUI‚ÌƒXƒvƒ‰ƒCƒg‚ÌˆÊ’u‚ÆƒTƒCƒY‚ğİ’è‚·‚éƒ†[ƒeƒBƒŠƒeƒBŠÖ”
+	// ã‚·ãƒ§ãƒƒãƒ—UIã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ä½ç½®ã¨ã‚µã‚¤ã‚ºã‚’è¨­å®šã™ã‚‹ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£é–¢æ•°
 	void SetShopSprite(Sprite* sprite, const DirectX::XMFLOAT2& position, const DirectX::XMFLOAT2& size)
 	{
 		if (sprite == nullptr) return;
@@ -39,7 +39,7 @@ void ShopUI::Update(float deltaTime)
 
 	if (shopManager == nullptr || !shopManager->IsOpen())
 	{	
-		// ƒVƒ‡ƒbƒv‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚ÍUI‚ğ”ñ•\¦‚É‚µ‚ÄXVˆ—‚ğƒXƒLƒbƒv
+		// ã‚·ãƒ§ãƒƒãƒ—ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯UIã‚’éè¡¨ç¤ºã«ã—ã¦æ›´æ–°å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—
 		for (std::wstring& p : m_LastOfferContentPaths)
 			p.clear();
 		SetVisible(false);
@@ -47,10 +47,10 @@ void ShopUI::Update(float deltaTime)
 		return;
 	}
 
-	// ƒVƒ‡ƒbƒv‚ªŠJ‚¢‚Ä‚¢‚éê‡‚ÍUI‚ğ•\¦‚µ‚ÄXVˆ—‚ğ‘±s
+	// ã‚·ãƒ§ãƒƒãƒ—ãŒé–‹ã„ã¦ã„ã‚‹å ´åˆã¯UIã‚’è¡¨ç¤ºã—ã¦æ›´æ–°å‡¦ç†ã‚’ç¶šè¡Œ
 	SetVisible(true);
 
-	// ƒGƒtƒFƒNƒg‚ÌƒXƒNƒ[ƒ‹
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«
 	m_EffectScrollX += kEffectScrollSpeed * deltaTime;
 	if (m_EffectScrollX >= HudLayoutUtil::ScreenWidthRatio(1.0f))
 	{
@@ -85,7 +85,7 @@ void ShopUI::SetupSprites()
 
 void ShopUI::SetupRaritySprites()
 {
-	// ƒVƒ‡ƒbƒv‚Å’ñ¦‚³‚ê‚éƒJ[ƒh‚Ì”‚ÆƒŒƒAƒŠƒeƒB‚Ì‘g‚İ‡‚í‚¹‚ÅƒXƒvƒ‰ƒCƒg‚ğ‰Šú‰»
+	// ã‚·ãƒ§ãƒƒãƒ—ã§æç¤ºã•ã‚Œã‚‹ã‚«ãƒ¼ãƒ‰ã®æ•°ã¨ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã®çµ„ã¿åˆã‚ã›ã§ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–
 	for (int cardIndex = 0; cardIndex < kShopOfferCount; ++cardIndex)
 	{
 		for (int rarityIndex = 0; rarityIndex < kUpgradeRarityCount; ++rarityIndex)
@@ -100,7 +100,7 @@ void ShopUI::SetupRaritySprites()
 
 void ShopUI::SetupContentSprites()
 {
-	// ƒVƒ‡ƒbƒv‚Å’ñ¦‚³‚ê‚éƒJ[ƒh‚Ì”‚Æ‹­‰»“à—e‚Ìí—ŞEƒŒƒAƒŠƒeƒB‚Ì‘g‚İ‡‚í‚¹‚ÅƒXƒvƒ‰ƒCƒg‚ğ‰Šú‰»
+	// ã‚·ãƒ§ãƒƒãƒ—ã§æç¤ºã•ã‚Œã‚‹ã‚«ãƒ¼ãƒ‰ã®æ•°ã¨å¼·åŒ–å†…å®¹ã®ç¨®é¡ãƒ»ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã®çµ„ã¿åˆã‚ã›ã§ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–
 	for (int cardIndex = 0; cardIndex < kShopOfferCount; ++cardIndex)
 	{
 		for (int kindIndex = 0; kindIndex < kUpgradeKindCount; ++kindIndex)
@@ -147,16 +147,16 @@ void ShopUI::UpdateLayout()
 	const DirectX::XMFLOAT2 panelSize = { screenW * kPanelSizeRatioW, screenH * kPanelSizeRatioH };
 	SetShopSprite(m_pRedPanel, screenCenter, panelSize);
 
-	// ƒŒƒAƒŠƒeƒBƒJ[ƒh‚ÌƒTƒCƒY
+	// ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã‚«ãƒ¼ãƒ‰ã®ã‚µã‚¤ã‚º
 	const float rarityCardSize = screenH * kCardSizeRatio;
 
-	// ‹­‰»“à—e‚ÌƒJ[ƒh‚ÌƒTƒCƒYiƒŒƒAƒŠƒeƒBƒJ[ƒh‚Æ“¯‚¶ƒTƒCƒY‚Åd‚Ë‚Ä•\¦j
+	// å¼·åŒ–å†…å®¹ã®ã‚«ãƒ¼ãƒ‰ã®ã‚µã‚¤ã‚ºï¼ˆãƒ¬ã‚¢ãƒªãƒ†ã‚£ã‚«ãƒ¼ãƒ‰ã¨åŒã˜ã‚µã‚¤ã‚ºã§é‡ã­ã¦è¡¨ç¤ºï¼‰
 	const float contentCardSize = rarityCardSize;
 
-	// ƒJ[ƒh‚ÌYÀ•Wi‘S‚Ä‚ÌƒJ[ƒh‚Å‹¤’Êj
+	// ã‚«ãƒ¼ãƒ‰ã®Yåº§æ¨™ï¼ˆå…¨ã¦ã®ã‚«ãƒ¼ãƒ‰ã§å…±é€šï¼‰
 	const float cardY = screenH * kCardYRatio;
 
-	// ƒVƒ‡ƒbƒv‚É•\¦‚·‚éƒJ[ƒh‚ÌÀ•W‚ÆƒTƒCƒY‚ğİ’è
+	// ã‚·ãƒ§ãƒƒãƒ—ã«è¡¨ç¤ºã™ã‚‹ã‚«ãƒ¼ãƒ‰ã®åº§æ¨™ã¨ã‚µã‚¤ã‚ºã‚’è¨­å®š
 	for (int cardIndex = 0; cardIndex < kShopOfferCount; ++cardIndex)
 	{
 		const DirectX::XMFLOAT2 cardPos = { 
@@ -188,7 +188,7 @@ void ShopUI::UpdateOptions(const ShopManager* shopManager)
 {
 	if (shopManager == nullptr) return;
 
-	// UI‚ğXV‚·‚é‘O‚ÉA‘S‚Ä‚ÌƒIƒvƒVƒ‡ƒ“ƒXƒvƒ‰ƒCƒg‚ğ”ñ•\¦‚É‚µ‚ÄƒŠƒZƒbƒg
+	// UIã‚’æ›´æ–°ã™ã‚‹å‰ã«ã€å…¨ã¦ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’éè¡¨ç¤ºã«ã—ã¦ãƒªã‚»ãƒƒãƒˆ
 	HideAllOptionSprites();
 
 	const auto& offers = shopManager->GetCurrentOffers();
@@ -220,7 +220,7 @@ void ShopUI::ApplyOfferContentSprite(int cardIndex, const ShopOffer& offer, Spri
 {
 	const size_t ix = static_cast<size_t>(cardIndex);
 
-	// ƒIƒtƒ@[‚Ìí—Ş‚ªƒXƒLƒ‹‰ğ•ú‚â–¡•û‰Á“ü‚Å‚È‚¢ê‡‚ÍAƒRƒ“ƒeƒ“ƒcƒXƒvƒ‰ƒCƒg‚ğ”ñ•\¦‚É‚µ‚ÄƒLƒƒƒbƒVƒ…‚àƒNƒŠƒA
+	// ã‚ªãƒ•ã‚¡ãƒ¼ã®ç¨®é¡ãŒã‚¹ã‚­ãƒ«è§£æ”¾ã‚„å‘³æ–¹åŠ å…¥ã§ãªã„å ´åˆã¯ã€ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’éè¡¨ç¤ºã«ã—ã¦ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚‚ã‚¯ãƒªã‚¢
 	if (offer.type != ShopOfferType::UnlockSkill && offer.type != ShopOfferType::JoinAlly)
 	{
 		m_LastOfferContentPaths[ix].clear();
@@ -292,7 +292,7 @@ void ShopUI::SetSpriteVisible(Sprite* sprite, bool visible)
 {
 	if (sprite == nullptr) return;
 
-	// Color‚Ìİ’è
+	// Colorã®è¨­å®š
 	DirectX::XMFLOAT4 color = sprite->GetColor();
 	sprite->SetColor(color.x, color.y, color.z, visible ? 1.0f : 0.0f);
 }
@@ -301,7 +301,7 @@ Sprite* ShopUI::GetRaritySprite(int cardIndex, UpgradeRarity rarity) const
 {
 	if (cardIndex < 0 || cardIndex >= kShopOfferCount) return nullptr;
 
-	// UpgradeRarity ‚Í 1,2,3 ‚È‚Ì‚ÅAƒCƒ“ƒfƒbƒNƒX‚É•ÏŠ·‚·‚éÛ‚Í -1 ‚·‚é
+	// UpgradeRarity ã¯ 1,2,3 ãªã®ã§ã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¤‰æ›ã™ã‚‹éš›ã¯ -1 ã™ã‚‹
 	const int rarityIndex = ToRarityIndex(rarity);
 	if (rarityIndex < 0 || rarityIndex >= kUpgradeRarityCount) return nullptr;
 
@@ -364,7 +364,7 @@ UpgradeRarity ShopUI::GetOfferRarity(const ShopOffer& offer) const
 
 int ShopUI::ToRarityIndex(UpgradeRarity rarity) const
 {
-	// ®‡«‚Ì‚½‚ßAUpgradeRarity ‚Ì’l‚Í 1,2,3 ‚Æ‚µ‚Ä’è‹`‚³‚ê‚Ä‚¢‚é‘O’ñ‚Å -1 ‚µ‚ÄƒCƒ“ƒfƒbƒNƒX‚É•ÏŠ·‚·‚é
+	// æ•´åˆæ€§ã®ãŸã‚ã€UpgradeRarity ã®å€¤ã¯ 1,2,3 ã¨ã—ã¦å®šç¾©ã•ã‚Œã¦ã„ã‚‹å‰æã§ -1 ã—ã¦ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¤‰æ›ã™ã‚‹
 	return static_cast<int>(rarity) - 1;
 }
 

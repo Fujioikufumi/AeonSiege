@@ -1,4 +1,4 @@
-#ifdef _DEBUG
+ï»¿#ifdef _DEBUG
 #include "DebugMenu.h"
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
@@ -11,7 +11,7 @@
 
 namespace debug {
 
-// staticéŒ¾
+// staticå®£è¨€
 Item*						Item::dummy = nullptr;
 Window						Window::dummy;
 std::vector<Window>			Menu::m_windows;
@@ -19,7 +19,7 @@ std::vector<Menu::SaveData> Menu::m_data;
 
 //=====================================================
 /*
-* @brief €–Ú•\¦
+* @brief é …ç›®è¡¨ç¤º
 */
 class ItemValue : public Item
 {
@@ -31,7 +31,7 @@ public:
 	bool	save;
 };
 /*
-* @brief •\¦ƒAƒCƒeƒ€ì¬
+* @brief è¡¨ç¤ºã‚¢ã‚¤ãƒ†ãƒ ä½œæˆ
 */
 Item* Item::CreateValue(const char* name, Kind kind, bool isSave)
 {
@@ -45,7 +45,7 @@ Item* Item::CreateValue(const char* name, Kind kind, bool isSave)
 
 //=====================================================
 /*
-* @brief •Ï”‚Æ•R‚Ã‚¯‚½€–Ú
+* @brief å¤‰æ•°ã¨ç´ã¥ã‘ãŸé …ç›®
 */
 class ItemBind : public Item
 {
@@ -56,7 +56,7 @@ public:
 	void* ptr;
 };
 /*
-* @brief •R‚Ã‚¯€–Ú‚Ìì¬
+* @brief ç´ã¥ã‘é …ç›®ã®ä½œæˆ
 */
 Item* Item::CreateBind(const char* name, Kind kind, void* ptr)
 {
@@ -69,7 +69,7 @@ Item* Item::CreateBind(const char* name, Kind kind, void* ptr)
 
 //=====================================================
 /*
-* @brief ’l•ÏXŒÄ‚Ño‚µ
+* @brief å€¤å¤‰æ›´å‘¼ã³å‡ºã—
 */
 class ItemCallback : public Item
 {
@@ -81,7 +81,7 @@ public:
 	Callback	func;
 };
 /*
-* @brief ’l•ÏXŒÄ‚Ño‚µì¬
+* @brief å€¤å¤‰æ›´å‘¼ã³å‡ºã—ä½œæˆ
 */
 Item* Item::CreateCallBack(const char* name, Kind kind, Callback func)
 {
@@ -95,7 +95,7 @@ Item* Item::CreateCallBack(const char* name, Kind kind, Callback func)
 
 //=====================================================
 /*
-* @brief ƒOƒ‹[ƒv•\¦
+* @brief ã‚°ãƒ«ãƒ¼ãƒ—è¡¨ç¤º
 */
 class ItemGroup : public Item
 {
@@ -114,7 +114,7 @@ public:
 	Items group;
 };
 /*
-* @brief ƒŠƒXƒg•\¦‚Ìì¬
+* @brief ãƒªã‚¹ãƒˆè¡¨ç¤ºã®ä½œæˆ
 */
 Item* Item::CreateGroup(const char* name)
 {
@@ -126,7 +126,7 @@ Item* Item::CreateGroup(const char* name)
 
 //=====================================================
 /*
-* @brief ƒŠƒXƒg•\¦
+* @brief ãƒªã‚¹ãƒˆè¡¨ç¤º
 */
 class ItemList : public Item
 {
@@ -134,13 +134,13 @@ public:
 	ItemList() : selectNo(-1), save(false) {}
 	~ItemList() {}
 public:
-	std::list<std::string>	list;		// ƒAƒCƒeƒ€ˆê——
-	int						selectNo;	// ‘I‘ğ€–Ú”Ô†
-	ConstCallback			func;		// €–Ú‘I‘ğ‚ÌƒR[ƒ‹ƒoƒbƒN
-	bool					save;		// ‘I‘ğ”Ô†‚Ì•Û‘¶
+	std::list<std::string>	list;		// ã‚¢ã‚¤ãƒ†ãƒ ä¸€è¦§
+	int						selectNo;	// é¸æŠé …ç›®ç•ªå·
+	ConstCallback			func;		// é …ç›®é¸æŠæ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
+	bool					save;		// é¸æŠç•ªå·ã®ä¿å­˜
 };
 /*
-* @brief ƒŠƒXƒgì¬
+* @brief ãƒªã‚¹ãƒˆä½œæˆ
 */
 Item* Item::CreateList(const char* name, ConstCallback func, bool isSave)
 {
@@ -171,7 +171,7 @@ Item::Kind Item::GetKind() const
 	return kind;
 }
 /*
-* @brief Bool€–Ú‚Ìæ“¾
+* @brief Boolé …ç›®ã®å–å¾—
 */
 bool Item::GetBool() const
 {
@@ -180,7 +180,7 @@ bool Item::GetBool() const
 	return false;
 }
 /*
-* @brief ®”€–Ú‚Ìæ“¾
+* @brief æ•´æ•°é …ç›®ã®å–å¾—
 */
 int Item::GetInt() const
 {
@@ -191,7 +191,7 @@ int Item::GetInt() const
 	return 0;
 }
 /*
-* @brief ¬”€–Ú‚Ìæ“¾
+* @brief å°æ•°é …ç›®ã®å–å¾—
 */
 float Item::GetFloat() const
 {
@@ -200,7 +200,7 @@ float Item::GetFloat() const
 	return 0.0f;
 }
 /*
-* @brief ƒxƒNƒgƒ‹€–Ú‚Ìæ“¾
+* @brief ãƒ™ã‚¯ãƒˆãƒ«é …ç›®ã®å–å¾—
 */
 DirectX::XMFLOAT3 Item::GetVector() const
 {
@@ -209,7 +209,7 @@ DirectX::XMFLOAT3 Item::GetVector() const
 	return DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 }
 /*
-* @brief F€–Ú‚Ìæ“¾
+* @brief è‰²é …ç›®ã®å–å¾—
 */
 DirectX::XMFLOAT4 Item::GetColor() const
 {
@@ -218,7 +218,7 @@ DirectX::XMFLOAT4 Item::GetColor() const
 	return DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 }
 /*
-* @brief ƒtƒ@ƒCƒ‹ƒpƒX€–Ú‚Ìæ“¾
+* @brief ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹é …ç›®ã®å–å¾—
 */
 const char* Item::GetStr() const
 {
@@ -228,7 +228,7 @@ const char* Item::GetStr() const
 }
 
 /*
-* @brief ƒŠƒXƒg•\¦€–Ú‚Ì’Ç‰Á
+* @brief ãƒªã‚¹ãƒˆè¡¨ç¤ºé …ç›®ã®è¿½åŠ 
 */
 void Item::AddListItem(const char* name)
 {
@@ -236,7 +236,7 @@ void Item::AddListItem(const char* name)
 	reinterpret_cast<ItemList*>(this)->list.push_back(name);
 }
 /*
-* @brief ƒŠƒXƒg•\¦€–Ú‚Ìíœ
+* @brief ãƒªã‚¹ãƒˆè¡¨ç¤ºé …ç›®ã®å‰Šé™¤
 */
 void Item::RemoveListItem(const char* name)
 {
@@ -245,7 +245,7 @@ void Item::RemoveListItem(const char* name)
 }
 
 /*
-* @brief ƒOƒ‹[ƒv€–Ú‚Ì’Ç‰Á
+* @brief ã‚°ãƒ«ãƒ¼ãƒ—é …ç›®ã®è¿½åŠ 
 */
 void Item::AddGroupItem(Item* item)
 {
@@ -253,32 +253,32 @@ void Item::AddGroupItem(Item* item)
 	static_cast<ItemGroup*>(this)->group.push_back(item);
 }
 /*
-* @brief ƒOƒ‹[ƒv“à‚Ì“Á’è€–Ú‚ğæ“¾
+* @brief ã‚°ãƒ«ãƒ¼ãƒ—å†…ã®ç‰¹å®šé …ç›®ã‚’å–å¾—
 */
 Item& Item::operator[](const char* name)
 {
-	// ƒOƒ‹[ƒvˆÈŠO‚Ìæ“¾‚Íƒ_ƒ~[‚ğ•Ô‹p
+	// ã‚°ãƒ«ãƒ¼ãƒ—ä»¥å¤–ã®å–å¾—ã¯ãƒ€ãƒŸãƒ¼ã‚’è¿”å´
 	if (kind != Group) return *dummy;
 
-	// ƒOƒ‹[ƒv“à‚ÌƒAƒCƒeƒ€ˆê——‚ğæ“¾
+	// ã‚°ãƒ«ãƒ¼ãƒ—å†…ã®ã‚¢ã‚¤ãƒ†ãƒ ä¸€è¦§ã‚’å–å¾—
 	auto items = static_cast<ItemGroup*>(this)->group;
 
-	// ƒAƒCƒeƒ€ˆê——‚©‚çw’èƒAƒCƒeƒ€‚Ì’Tõ
+	// ã‚¢ã‚¤ãƒ†ãƒ ä¸€è¦§ã‹ã‚‰æŒ‡å®šã‚¢ã‚¤ãƒ†ãƒ ã®æ¢ç´¢
 	auto it = std::find_if(items.begin(), items.end(),
 		[&name](const Item* obj) {
 			return strcmp(obj->GetName(), name) == 0;
 		});
 
-	// Œ©‚Â‚©‚Á‚½ƒAƒCƒeƒ€‚Ì•Ô‹p
+	// è¦‹ã¤ã‹ã£ãŸã‚¢ã‚¤ãƒ†ãƒ ã®è¿”å´
 	if (it != items.end())
 		return **it;
 
-	// Œ©‚Â‚©‚ç‚È‚©‚Á‚½‚çƒ_ƒ~[‚ğ•Ô‹p
+	// è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸã‚‰ãƒ€ãƒŸãƒ¼ã‚’è¿”å´
 	return *dummy;
 }
 
 /*
-* @brief •¶š—ñ‚©‚çí•Ê‚É•ÏŠ·
+* @brief æ–‡å­—åˆ—ã‹ã‚‰ç¨®åˆ¥ã«å¤‰æ›
 */
 Item::Kind Item::StrToKind(std::string str)
 {
@@ -295,7 +295,7 @@ Item::Kind Item::StrToKind(std::string str)
 	return Item::Label;
 }
 /*
-* @brief í•Ê‚©‚ç•¶š—ñ‚É•ÏŠ·
+* @brief ç¨®åˆ¥ã‹ã‚‰æ–‡å­—åˆ—ã«å¤‰æ›
 */
 std::string Item::KindToStr(Kind kind)
 {
@@ -321,7 +321,7 @@ Window::Window()
 {
 }
 /*
-* @brief ƒEƒBƒ“ƒhƒE“à‚Ì•\¦€–Ú‚ğæ“¾
+* @brief ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å†…ã®è¡¨ç¤ºé …ç›®ã‚’å–å¾—
 */
 Item& Window::operator[](const char* name)
 {
@@ -331,22 +331,22 @@ Item& Window::operator[](const char* name)
 	return **it;
 }
 /*
-* @brief ƒEƒBƒ“ƒhƒE‚Ö•\¦€–Ú‚ğ’Ç‰Á
+* @brief ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸è¡¨ç¤ºé …ç›®ã‚’è¿½åŠ 
 */
 void Window::AddItem(Item* item)
 {
-	// Šù‘¶‚Ì€–Ú‚Æ“¯–¼‚ÌƒAƒCƒeƒ€‚ª‚È‚¢‚©’Tõ
+	// æ—¢å­˜ã®é …ç›®ã¨åŒåã®ã‚¢ã‚¤ãƒ†ãƒ ãŒãªã„ã‹æ¢ç´¢
 	auto it = FindItem(item->GetName());
 	if (it != items.end()) return;
 
-	// •Û‘¶ƒf[ƒ^‚Ìê‡‚ÍA’Ç‰Á‚É•Û‘¶Ï‚İ‚Ìƒf[ƒ^‚Åã‘‚«
+	// ä¿å­˜ãƒ‡ãƒ¼ã‚¿ã®å ´åˆã¯ã€è¿½åŠ æ™‚ã«ä¿å­˜æ¸ˆã¿ã®ãƒ‡ãƒ¼ã‚¿ã§ä¸Šæ›¸ã
 	Menu::DataRead(name + "/", item);
 
-	// •\¦€–Ú‚Ì’Ç‰Á
+	// è¡¨ç¤ºé …ç›®ã®è¿½åŠ 
 	items.push_back(item);
 }
 /*
-* @brief ˆê——‚Ìíœ
+* @brief ä¸€è¦§ã®å‰Šé™¤
 */
 void Window::Clear()
 {
@@ -359,7 +359,7 @@ void Window::Clear()
 	items.clear();
 }
 /*
-* @brief ƒAƒCƒeƒ€‚Ì’Tõ
+* @brief ã‚¢ã‚¤ãƒ†ãƒ ã®æ¢ç´¢
 */
 Items::iterator Window::FindItem(const char* name)
 {
@@ -378,11 +378,11 @@ Menu::~Menu()
 {
 }
 /*
-* @brief ‰Šú‰»
+* @brief åˆæœŸåŒ–
 */
 void Menu::Init()
 {
-	// ImGui‰Šú‰»
+	// ImGuiåˆæœŸåŒ–
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
@@ -392,15 +392,15 @@ void Menu::Init()
 	ImGui_ImplWin32_Init(GetActiveWindow());
 	ImGui_ImplDX11_Init(GetDevice(), GetContext());
 
-	// Dummyƒf[ƒ^‰Šú‰»
+	// Dummyãƒ‡ãƒ¼ã‚¿åˆæœŸåŒ–
 	Item::dummy = Item::CreateValue("None", Item::Label);
 	
-	// ‰ŠúƒEƒBƒ“ƒhƒE‚Ìì¬
+	// åˆæœŸã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½œæˆ
 	Window window;
 	window.name = "Menu";
 	m_windows.push_back(window);
 
-	// ƒtƒ@ƒCƒ‹“Ç‚İo‚µ
+	// ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿å‡ºã—
 	FILE* fp;
 	fopen_s(&fp, "Assets/DebugMenu.csv", "rt");
 	if (fp) {
@@ -408,7 +408,7 @@ void Menu::Init()
 		char line[size];
 		m_data.clear();
 		while (fgets(line, size, fp) != NULL) {
-			// ƒZƒ‹“à—eæ“¾
+			// ã‚»ãƒ«å†…å®¹å–å¾—
 			std::vector<std::string> cells;
 			*strstr(line, "\n") = ',';
 			char* start = line;
@@ -419,7 +419,7 @@ void Menu::Init()
 				start = end + 1;
 				end = strstr(start, ",");
 			} while (end);
-			// ƒf[ƒ^’Ç‰Á
+			// ãƒ‡ãƒ¼ã‚¿è¿½åŠ 
 			SaveData data;
 			data.kind = Item::StrToKind(cells[0]);
 			data.path = cells[1];
@@ -430,22 +430,22 @@ void Menu::Init()
 	}
 }
 /*
-* @brief I—¹ˆ—
+* @brief çµ‚äº†å‡¦ç†
 */
 void Menu::Uninit()
 {
-	// ƒ_ƒ~[‚Ìíœ
+	// ãƒ€ãƒŸãƒ¼ã®å‰Šé™¤
 	delete Item::dummy;
 
-	// •Û‘¶ƒf[ƒ^‚Ìì¬
+	// ä¿å­˜ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 	std::string data;
 	auto it = m_windows.begin();
 	while (it != m_windows.end())
 	{
-		// ƒEƒBƒ“ƒhƒE‚âƒOƒ‹[ƒv‚ªŠK‘w‚Æ‚È‚é‚æ‚¤‚ÉƒpƒX‚ğì¬
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚„ã‚°ãƒ«ãƒ¼ãƒ—ãŒéšå±¤ã¨ãªã‚‹ã‚ˆã†ã«ãƒ‘ã‚¹ã‚’ä½œæˆ
 		std::string path = it->name + "/";
 
-		// ‘‚«‚İ‚ª•K—v‚Èƒf[ƒ^‚ğ•Û‘¶
+		// æ›¸ãè¾¼ã¿ãŒå¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜
 		auto itemIt = it->items.begin();
 		while (itemIt != it->items.end())
 		{
@@ -453,12 +453,12 @@ void Menu::Uninit()
 			++itemIt;
 		}
 
-		// ƒEƒBƒ“ƒhƒE‚ÌƒNƒŠƒA
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒªã‚¢
 		it->Clear();
 		++it;
 	}
 
-	// •Û‘¶ˆ—
+	// ä¿å­˜å‡¦ç†
 	FILE* fp;
 	fopen_s(&fp, "Assets/DebugMenu.csv", "wt");
 	if (fp) {
@@ -466,25 +466,25 @@ void Menu::Uninit()
 		fclose(fp);
 	}
 
-	// ImGuiI—¹ˆ—
+	// ImGuiçµ‚äº†å‡¦ç†
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 }
 /*
-* @brief XVˆ—
+* @brief æ›´æ–°å‡¦ç†
 */
 void Menu::Update()
 {
-	// ƒfƒoƒbƒOƒƒjƒ…[‚Ì•\¦Ø‚è‘Ö‚¦
+	// ãƒ‡ãƒãƒƒã‚°ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¡¨ç¤ºåˆ‡ã‚Šæ›¿ãˆ
 	auto& mainWindow = m_windows[0];
 	if (IsKeyPress(VK_SHIFT) && IsKeyPress(VK_SPACE)) {
 		if (IsKeyTrigger(VK_RETURN))
 			mainWindow.enable ^= true;
 	}
 
-	// ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚Ìƒ`ƒFƒbƒNó‹µ‚É‰‚¶‚Ä‚Ù‚©‚ÌƒEƒBƒ“ƒhƒE‚ğ•\¦
-	int cnt = 1; // 0‚ÍƒƒCƒ“ƒEƒBƒ“ƒhƒE‚È‚Ì‚Ål—¶‚µ‚È‚¢
+	// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒã‚§ãƒƒã‚¯çŠ¶æ³ã«å¿œã˜ã¦ã»ã‹ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤º
+	int cnt = 1; // 0ã¯ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãªã®ã§è€ƒæ…®ã—ãªã„
 	auto it = mainWindow.items.begin();
 	while (it != mainWindow.items.end())
 	{
@@ -494,29 +494,29 @@ void Menu::Update()
 	}
 }
 /*
-* @brief •\¦
+* @brief è¡¨ç¤º
 */
 void Menu::Draw()
 {
-	// ƒƒCƒ“ƒEƒBƒhƒE‚ª—LŒø‚É‚È‚Á‚Ä‚¢‚È‚¯‚ê‚Î”ñ•\¦
+	// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ‰ã‚¦ãŒæœ‰åŠ¹ã«ãªã£ã¦ã„ãªã‘ã‚Œã°éè¡¨ç¤º
 	if (!m_windows[0].enable)
 		return;
 
-	// Imgui‚Ì•`‰æ€”õ
+	// Imguiã®æç”»æº–å‚™
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	// ƒEƒBƒ“ƒhƒE“à‚Ì•\¦€–Ú‚ğ•`‰æ
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å†…ã®è¡¨ç¤ºé …ç›®ã‚’æç”»
 	auto windowIt = m_windows.begin();
 	while (windowIt != m_windows.end())
 	{
 		if (windowIt->enable)
 		{
-			// ƒEƒBƒ“ƒhƒE“à‚Ì•`‰æŠJn
+			// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å†…ã®æç”»é–‹å§‹
 			ImGui::Begin(windowIt->name.c_str());
 
-			// ƒAƒCƒeƒ€‚²‚Æ‚É•`‰æ
+			// ã‚¢ã‚¤ãƒ†ãƒ ã”ã¨ã«æç”»
 			auto itemIt = windowIt->items.begin();
 			while (itemIt != windowIt->items.end())
 			{
@@ -524,23 +524,23 @@ void Menu::Draw()
 				++itemIt;
 			}
 
-			// ƒEƒBƒ“ƒhƒE“à‚Ì•`‰æI—¹
+			// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å†…ã®æç”»çµ‚äº†
 			ImGui::End();
 		}
 		++windowIt;
 	}
 
-	// ImGui‚Ì•\¦
+	// ImGuiã®è¡¨ç¤º
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
 /*
-* @brief ƒEƒBƒ“ƒhƒE‚Ìì¬
+* @brief ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½œæˆ
 */
 Window& Menu::Create(const char* name)
 {
-	// ƒEƒBƒ“ƒhƒE‚ğ’Tõ‚µ‚Ä‚·‚Å‚É‚ ‚éê‡‚Í’Ç‰Á‚µ‚È‚¢
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’æ¢ç´¢ã—ã¦ã™ã§ã«ã‚ã‚‹å ´åˆã¯è¿½åŠ ã—ãªã„
 	auto winIt = std::find_if(m_windows.begin(), m_windows.end(),
 		[&name](const Window& obj) {
 			return strcmp(obj.name.c_str(), name) == 0;
@@ -549,14 +549,14 @@ Window& Menu::Create(const char* name)
 		return *winIt;
 	}
 
-	// ŒÂ•ÊƒEƒBƒ“ƒhƒEİ’è
+	// å€‹åˆ¥ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦è¨­å®š
 	Window window;
 	window.name = name;
 	window.enable = false;
 	window.items.clear();
 	m_windows.push_back(window);
 
-	// ‰ŠúƒEƒBƒ“ƒhƒE‚É’Ç‰Á
+	// åˆæœŸã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«è¿½åŠ 
 	Item* label = Item::CreateValue(name, Item::Bool, true);
 	DataRead(m_windows[0].name + "/", label);
 	m_windows[0].items.push_back(label);
@@ -564,29 +564,29 @@ Window& Menu::Create(const char* name)
 	return m_windows.back();
 }
 /*
-* @brief Šù‘¶ƒEƒBƒ“ƒhƒE‚Ìæ“¾
+* @brief æ—¢å­˜ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®å–å¾—
 */
 Window& Menu::Get(const char* name)
 {
-	// ƒEƒBƒ“ƒhƒE‚Ì’Tõ
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æ¢ç´¢
 	auto winIt = std::find_if(m_windows.begin(), m_windows.end(),
 		[&name](const Window& obj) {
 			return strcmp(obj.name.c_str(), name) == 0;
 		});
 
-	// Œ©‚Â‚©‚ç‚È‚¯‚ê‚Îƒ_ƒ~[‚ğ•Ô‹p
+	// è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ãƒ€ãƒŸãƒ¼ã‚’è¿”å´
 	if (winIt == m_windows.end())
 		return Window::dummy;
 
-	// Œ©‚Â‚©‚Á‚½ƒEƒBƒ“ƒhƒE‚ğ•Ô‹p
+	// è¦‹ã¤ã‹ã£ãŸã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¿”å´
 	return *winIt;
 }
 /*
-* @brief €–Ú‚É‰‚¶‚½Imgui‚Ì•\¦
+* @brief é …ç›®ã«å¿œã˜ãŸImguiã®è¡¨ç¤º
 */
 void Menu::DrawImgui(Item* item)
 {
-	// Še—v‘f‚Ìæ“¾
+	// å„è¦ç´ ã®å–å¾—
 	bool isValue	= typeid(ItemValue) == typeid(*item);
 	bool isBind		= typeid(ItemBind) == typeid(*item);
 	bool isCallback	= typeid(ItemCallback) == typeid(*item);
@@ -596,7 +596,7 @@ void Menu::DrawImgui(Item* item)
 
 	switch (item->GetKind())
 	{
-	// €–Ú–¼‚Ì‚İ‚Ì•\¦
+	// é …ç›®åã®ã¿ã®è¡¨ç¤º
 	case Item::Label:
 		if (isBind) {
 			char str[256];
@@ -606,7 +606,7 @@ void Menu::DrawImgui(Item* item)
 		else
 			ImGui::Text("%s", item->GetName());
 		break;
-	// ƒ`ƒFƒbƒNƒtƒ‰ƒO‚Ì•\¦
+	// ãƒã‚§ãƒƒã‚¯ãƒ•ãƒ©ã‚°ã®è¡¨ç¤º
 	case Item::Bool:
 		if (isValue)
 			ImGui::Checkbox(item->GetName(), &pValue->value.flg);
@@ -618,7 +618,7 @@ void Menu::DrawImgui(Item* item)
 				pCallback->func(true, &pCallback->value.flg);
 		}
 		break;
-	// ®”€–Ú‚Ì•\¦
+	// æ•´æ•°é …ç›®ã®è¡¨ç¤º
 	case Item::Int:
 		if(isValue)
 			ImGui::InputInt(item->GetName(), &pValue->value.nValue);
@@ -630,7 +630,7 @@ void Menu::DrawImgui(Item* item)
 				pCallback->func(true, &pCallback->value.nValue);
 		}
 		break;
-	// ¬”€–Ú‚Ì•\¦
+	// å°æ•°é …ç›®ã®è¡¨ç¤º
 	case Item::Float:
 		if(isValue)
 			ImGui::InputFloat(item->GetName(), &pValue->value.fValue);
@@ -642,7 +642,7 @@ void Menu::DrawImgui(Item* item)
 				pCallback->func(true, &pCallback->value.fValue);
 		}
 		break;
-	// ƒxƒNƒgƒ‹€–Ú‚Ì•\¦
+	// ãƒ™ã‚¯ãƒˆãƒ«é …ç›®ã®è¡¨ç¤º
 	case Item::Vector:
 		if(isValue)
 			ImGui::InputFloat3(item->GetName(), &pValue->value.vec.x, "%.2f");
@@ -654,7 +654,7 @@ void Menu::DrawImgui(Item* item)
 				pCallback->func(true, &pCallback->value.vec.x);
 		}
 		break;
-	// F€–Ú‚Ì•\¦
+	// è‰²é …ç›®ã®è¡¨ç¤º
 	case Item::Color:
 		if (isValue)
 			ImGui::ColorEdit4(item->GetName(), &pValue->value.color.x);
@@ -666,29 +666,29 @@ void Menu::DrawImgui(Item* item)
 				pCallback->func(true, &pCallback->value.color.x);
 		}
 		break;
-	// ƒpƒX€–Ú‚Ì•\¦
+	// ãƒ‘ã‚¹é …ç›®ã®è¡¨ç¤º
 	case Item::Path:
-		if (typeid(ItemValue) == typeid(*item)) // ’Êí•\¦
+		if (typeid(ItemValue) == typeid(*item)) // é€šå¸¸è¡¨ç¤º
 			ImGui::InputText(item->GetName(), static_cast<ItemValue*>(item)->value.str, MAX_PATH);
-		else // •R‚Ã‚¯€–Ú‚Ì•\¦
+		else // ç´ã¥ã‘é …ç›®ã®è¡¨ç¤º
 			ImGui::InputText(item->GetName(), reinterpret_cast<char*>(static_cast<ItemBind*>(item)->ptr), MAX_PATH);
 		break;
-	// ƒ{ƒ^ƒ“‚Ì•\¦
+	// ãƒœã‚¿ãƒ³ã®è¡¨ç¤º
 	case Item::Kind::Command:
 		if (ImGui::Button(item->GetName()))
 			pCallback->func(false, nullptr);
 		break;
-	// ƒOƒ‹[ƒv€–Ú‚Ì•\¦
+	// ã‚°ãƒ«ãƒ¼ãƒ—é …ç›®ã®è¡¨ç¤º
 	case Item::Group:
 		{
 			ItemGroup* ptr = reinterpret_cast<ItemGroup*>(item);
-			// •\¦€–Ú‚ª‚È‚¯‚ê‚Î•\¦‚µ‚È‚¢
+			// è¡¨ç¤ºé …ç›®ãŒãªã‘ã‚Œã°è¡¨ç¤ºã—ãªã„
 			if (ptr->group.empty()) break;
 
-			// ƒOƒ‹[ƒv‚ª“WŠJ‚³‚ê‚Ä‚È‚¯‚ê‚Î•\¦‚µ‚È‚¢
+			// ã‚°ãƒ«ãƒ¼ãƒ—ãŒå±•é–‹ã•ã‚Œã¦ãªã‘ã‚Œã°è¡¨ç¤ºã—ãªã„
 			if (!ImGui::CollapsingHeader(item->GetName(), ImGuiTreeNodeFlags_DefaultOpen)) break;
 
-			// ƒOƒ‹[ƒv“à‚Ì€–Ú‚ğÄ‹A‚Å•\¦
+			// ã‚°ãƒ«ãƒ¼ãƒ—å†…ã®é …ç›®ã‚’å†å¸°ã§è¡¨ç¤º
 			auto it = ptr->group.begin();
 			while (it != ptr->group.end())
 			{
@@ -697,23 +697,23 @@ void Menu::DrawImgui(Item* item)
 			}
 		}
 		break;
-	// ƒŠƒXƒg€–Ú‚Ì•\¦
+	// ãƒªã‚¹ãƒˆé …ç›®ã®è¡¨ç¤º
 	case Item::List:
 		{
 			ItemList* ptr = reinterpret_cast<ItemList*>(item);
-			// •\¦€–Ú‚ª‚È‚¯‚ê‚Î•\¦‚µ‚È‚¢
+			// è¡¨ç¤ºé …ç›®ãŒãªã‘ã‚Œã°è¡¨ç¤ºã—ãªã„
 			if (ptr->list.empty()) break;
 
-			// •\¦€–Ú‚Ì\’z
+			// è¡¨ç¤ºé …ç›®ã®æ§‹ç¯‰
 			static const char* pList[100];
 			auto it = ptr->list.begin();
 			for (int i = 0; i < ptr->list.size() && i < 100; ++i, ++it)
 				pList[i] = it->c_str();
 
-			// •\¦
+			// è¡¨ç¤º
 			if(ImGui::ListBox(item->GetName(), &ptr->selectNo, pList, static_cast<int>(ptr->list.size())))
 			{
-				// ŠÖ”‚ª‚ ‚ê‚Î‘I‘ğˆ—‚ğÀs
+				// é–¢æ•°ãŒã‚ã‚Œã°é¸æŠæ™‚å‡¦ç†ã‚’å®Ÿè¡Œ
 				if(ptr->func && ptr->selectNo >= 0)
 					ptr->func(pList[ptr->selectNo]);
 			}
@@ -722,19 +722,19 @@ void Menu::DrawImgui(Item* item)
 	}
 }
 /*
-* @brief ƒf[ƒ^‚Ì•Û‘¶
+* @brief ãƒ‡ãƒ¼ã‚¿ã®ä¿å­˜
 */
 void Menu::DataWrite(std::string& data, std::string path, Item* item)
 {
-	// ƒOƒ‹[ƒvƒAƒCƒeƒ€‚Å‚ ‚ê‚ÎAƒpƒX‚ğXV‚µ‚ÄÄ‹AŒÄ‚Ño‚µ
+	// ã‚°ãƒ«ãƒ¼ãƒ—ã‚¢ã‚¤ãƒ†ãƒ ã§ã‚ã‚Œã°ã€ãƒ‘ã‚¹ã‚’æ›´æ–°ã—ã¦å†å¸°å‘¼ã³å‡ºã—
 	if (item->GetKind() == Item::Group)
 	{
 		ItemGroup* groupItem= static_cast<ItemGroup*>(item);
 
-		// ƒpƒX‚ÌXV
+		// ãƒ‘ã‚¹ã®æ›´æ–°
 		path = path + groupItem->GetName() + "/";
 
-		// ƒOƒ‹[ƒv“àƒAƒCƒeƒ€‚Ìƒf[ƒ^‘‚«‚İ
+		// ã‚°ãƒ«ãƒ¼ãƒ—å†…ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ‡ãƒ¼ã‚¿æ›¸ãè¾¼ã¿
 		auto it = groupItem->group.begin();
 		while (it != groupItem->group.end())
 		{
@@ -742,11 +742,11 @@ void Menu::DataWrite(std::string& data, std::string path, Item* item)
 			++it;
 		}
 
-		// ˆÈ~‚Ìˆ—‚Ís‚í‚È‚¢
+		// ä»¥é™ã®å‡¦ç†ã¯è¡Œã‚ãªã„
 		return;
 	}
 
-	// •Û‘¶ƒtƒ‰ƒO‚ªİ’è‚³‚ê‚Ä‚¢‚é‚©Šm”F
+	// ä¿å­˜ãƒ•ãƒ©ã‚°ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª
 	ItemValue* pValue = static_cast<ItemValue*>(item);
 	ItemList* pList = static_cast<ItemList*>(item);
 	if (typeid(*item) == typeid(ItemValue)) {
@@ -759,11 +759,11 @@ void Menu::DataWrite(std::string& data, std::string path, Item* item)
 		return;
 	}
 
-	// €–Ú‚Ì‘‚«‚İ
+	// é …ç›®ã®æ›¸ãè¾¼ã¿
 	data += Item::KindToStr(item->GetKind()) + ",";
-	// •\¦–¼‚Ì‘‚«‚İ
+	// è¡¨ç¤ºåã®æ›¸ãè¾¼ã¿
 	data += path + item->GetName() + ",";
-	// €–Ú•Ê‚Ì‘‚«‚İ
+	// é …ç›®åˆ¥ã®æ›¸ãè¾¼ã¿
 	switch (item->GetKind())
 	{
 	default:
@@ -795,18 +795,18 @@ void Menu::DataWrite(std::string& data, std::string path, Item* item)
 	data += "\n";
 }
 /*
-* @brief ƒf[ƒ^‚Ì“Ç‚İæ‚è
+* @brief ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿å–ã‚Š
 */
 void Menu::DataRead(std::string path, Item* item)
 {
-	// ƒOƒ‹[ƒvƒAƒCƒeƒ€‚Å‚ ‚ê‚ÎAƒpƒX‚ğXV‚µ‚ÄÄ‹AŒÄ‚Ño‚µ
+	// ã‚°ãƒ«ãƒ¼ãƒ—ã‚¢ã‚¤ãƒ†ãƒ ã§ã‚ã‚Œã°ã€ãƒ‘ã‚¹ã‚’æ›´æ–°ã—ã¦å†å¸°å‘¼ã³å‡ºã—
 	if (item->GetKind() == Item::Group)
 	{
 		ItemGroup* groupItem = static_cast<ItemGroup*>(item);
-		// ƒpƒX‚ÌXV
+		// ãƒ‘ã‚¹ã®æ›´æ–°
 		path = path + groupItem->GetName() + "/";
 
-		// ƒOƒ‹[ƒv“àƒAƒCƒeƒ€‚Ìƒf[ƒ^“Ç‚İæ‚è
+		// ã‚°ãƒ«ãƒ¼ãƒ—å†…ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ‡ãƒ¼ã‚¿èª­ã¿å–ã‚Š
 		auto it = groupItem->group.begin();
 		while (it != groupItem->group.end())
 		{
@@ -814,11 +814,11 @@ void Menu::DataRead(std::string path, Item* item)
 			++it;
 		}
 
-		// ˆÈ~‚Ìˆ—‚Ís‚í‚È‚¢
+		// ä»¥é™ã®å‡¦ç†ã¯è¡Œã‚ãªã„
 		return;
 	}
 
-	// •Û‘¶ƒtƒ‰ƒO‚ªİ’è‚³‚ê‚Ä‚¢‚é‚©Šm”F
+	// ä¿å­˜ãƒ•ãƒ©ã‚°ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª
 	ItemValue* pValue = static_cast<ItemValue*>(item);
 	ItemList* pList = static_cast<ItemList*>(item);
 	if (typeid(*item) == typeid(ItemValue)) {
@@ -831,19 +831,19 @@ void Menu::DataRead(std::string path, Item* item)
 		return;
 	}
 
-	// ƒpƒX‚Æ€–Ú–¼‚©‚ç“Ç‚İæ‚éƒf[ƒ^–¼‚ğì¬
+	// ãƒ‘ã‚¹ã¨é …ç›®åã‹ã‚‰èª­ã¿å–ã‚‹ãƒ‡ãƒ¼ã‚¿åã‚’ä½œæˆ
 	path += item->GetName();
 
-	// ƒf[ƒ^–¼‚É‘Î‰‚·‚éƒf[ƒ^‚ğ’Tõ
+	// ãƒ‡ãƒ¼ã‚¿åã«å¯¾å¿œã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’æ¢ç´¢
 	auto dataIt = std::find_if(m_data.begin(), m_data.end(),
 		[&path](const SaveData& data) {
 			return data.path == path;
 		});
 
-	// ‚È‚¯‚ê‚Îƒf[ƒ^‚Ìã‘‚«‚ğs‚í‚È‚¢
+	// ãªã‘ã‚Œã°ãƒ‡ãƒ¼ã‚¿ã®ä¸Šæ›¸ãã‚’è¡Œã‚ãªã„
 	if (dataIt == m_data.end()) return;
 
-	// €–Ú‚É‰‚¶‚Äƒf[ƒ^‚Ì“Ç‚İæ‚è
+	// é …ç›®ã«å¿œã˜ã¦ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿å–ã‚Š
 	switch (item->GetKind())
 	{
 	case Item::Bool:

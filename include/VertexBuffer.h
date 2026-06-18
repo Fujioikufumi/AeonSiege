@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 //-----------------------------------------------------------------------------
 // Includes
@@ -40,45 +40,45 @@ public:
         return *this;
     }
 
-    // ‰Šú‰»ˆ—
+    // åˆæœŸåŒ–å‡¦ç†
     bool Init(
         ID3D12Device* device,
         size_t        size,
         size_t        stride,
         const void* initData = nullptr);
 
-    // Œ^w’è‚ ‚è‚Ì‰Šú‰»
+    // å‹æŒ‡å®šã‚ã‚Šã®åˆæœŸåŒ–
     template<typename T>
     bool Init(ID3D12Device* device, size_t count, const T* initData = nullptr)
     {
         return Init(device, sizeof(T) * count, sizeof(T), initData);
     }
 
-    // I—¹ˆ—
+    // çµ‚äº†å‡¦ç†
     void Term();
 
-    // ƒƒ‚ƒŠ‚Ìƒ}ƒbƒsƒ“ƒO
+    // ãƒ¡ãƒ¢ãƒªã®ãƒãƒƒãƒ”ãƒ³ã‚°
     [[nodiscard]] void* Map() const;
 
-    // ƒƒ‚ƒŠ‚ÌƒAƒ“ƒ}ƒbƒsƒ“ƒO
+    // ãƒ¡ãƒ¢ãƒªã®ã‚¢ãƒ³ãƒãƒƒãƒ”ãƒ³ã‚°
     void Unmap();
 
-    // Œ^w’è‚ ‚è‚Ìƒ}ƒbƒsƒ“ƒO
+    // å‹æŒ‡å®šã‚ã‚Šã®ãƒãƒƒãƒ”ãƒ³ã‚°
     template<typename T>
     [[nodiscard]] T* Map() const
     {
         return static_cast<T*>(Map());
     }
 
-    // ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìæ“¾
+    // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®å–å¾—
     [[nodiscard]] const D3D12_VERTEX_BUFFER_VIEW& GetView() const { return m_View; }
 
-    // ƒŠƒ\[ƒX‚Ìæ“¾
+    // ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
     [[nodiscard]] ID3D12Resource* GetResource() const { return m_VertexBuffer.Get(); }
 
 private:
-    ComPtr<ID3D12Resource>   m_VertexBuffer; // ’¸“_ƒoƒbƒtƒ@ƒŠƒ\[ƒX
-    D3D12_VERTEX_BUFFER_VIEW m_View;         // ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
+    ComPtr<ID3D12Resource>   m_VertexBuffer; // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒªã‚½ãƒ¼ã‚¹
+    D3D12_VERTEX_BUFFER_VIEW m_View;         // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 
     VertexBuffer(const VertexBuffer&) = delete;
     void operator=(const VertexBuffer&) = delete;

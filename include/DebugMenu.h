@@ -1,16 +1,16 @@
-/**
+ï»¿/**
  * 2024.04.08
- *	imgui“±“üAƒeƒLƒXƒgƒtƒ@ƒCƒ‹“Ç‚İ‚İAƒoƒCƒ“ƒh’Ç‰Á
+ *	imguiå°å…¥ã€ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿ã€ãƒã‚¤ãƒ³ãƒ‰è¿½åŠ 
  * 2024.04.09
- *	Bindˆ—‚ğƒR[ƒ‹ƒoƒbƒN‚Å‘Î‰Aƒf[ƒ^‚Ì“Ç‚İ‘‚«‚ğ’Ç‰ÁAƒŠƒXƒg’Ç‰ÁAƒV[ƒ“‚ÌØ‚è‘Ö‚¦
+ *	Bindå‡¦ç†ã‚’ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã§å¯¾å¿œã€ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿æ›¸ãã‚’è¿½åŠ ã€ãƒªã‚¹ãƒˆè¿½åŠ ã€ã‚·ãƒ¼ãƒ³ã®åˆ‡ã‚Šæ›¿ãˆ
  * 2024.04.10
- *	ƒ‚ƒfƒ‹‚ÌØ‚è‘Ö‚¦AƒV[ƒ“‚ÌØ‚è‘Ö‚¦
+ *	ãƒ¢ãƒ‡ãƒ«ã®åˆ‡ã‚Šæ›¿ãˆã€ã‚·ãƒ¼ãƒ³ã®åˆ‡ã‚Šæ›¿ãˆ
  * 2024.07.23
- * @•\¦“à—e‚ğƒf[ƒ^‚©‚ç“Ç‚İæ‚é‚Ì‚Å‚Í‚È‚­AƒvƒƒOƒ‰ƒ€ã‚Åİ’è‚Å‚«‚é‚æ‚¤‚É•ÏX
- * @GameObject‚ğ•ÏX‚µ‚ÄAUnity•—‚ÌƒCƒ“ƒXƒyƒNƒ^[•\¦‚ğs‚¤‚æ‚¤‚É•ÏX
+ * ã€€è¡¨ç¤ºå†…å®¹ã‚’ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰èª­ã¿å–ã‚‹ã®ã§ã¯ãªãã€ãƒ—ãƒ­ã‚°ãƒ©ãƒ ä¸Šã§è¨­å®šã§ãã‚‹ã‚ˆã†ã«å¤‰æ›´
+ * ã€€GameObjectã‚’å¤‰æ›´ã—ã¦ã€Unityé¢¨ã®ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ãƒ¼è¡¨ç¤ºã‚’è¡Œã†ã‚ˆã†ã«å¤‰æ›´
  * 2024.11.20
- * @LabelƒAƒCƒeƒ€‚É€–Ú–¼‚Æ‚Í•Ê‚É•¶š—ñ‚ğİ’è‚Å‚«‚é‚æ‚¤‚É•ÏX
- * @ƒAƒCƒeƒ€‚©‚ç•¶š—ñ‚ğæ“¾‚Å‚«‚é‚æ‚¤‚É•ÏX
+ * ã€€Labelã‚¢ã‚¤ãƒ†ãƒ ã«é …ç›®åã¨ã¯åˆ¥ã«æ–‡å­—åˆ—ã‚’è¨­å®šã§ãã‚‹ã‚ˆã†ã«å¤‰æ›´
+ * ã€€ã‚¢ã‚¤ãƒ†ãƒ ã‹ã‚‰æ–‡å­—åˆ—ã‚’å–å¾—ã§ãã‚‹ã‚ˆã†ã«å¤‰æ›´
  */
 #ifndef __DEBUG_MENU_H__
 #define __DEBUG_MENU_H__
@@ -28,7 +28,7 @@
 namespace debug {
 
 /*
-* @brief •\¦€–Ú
+* @brief è¡¨ç¤ºé …ç›®
 */
 class Item
 {
@@ -44,39 +44,39 @@ public:
 		char				str[MAX_PATH];
 	};
 	enum Kind {
-		Label,		// €–Ú‚Ì‚İ‚Ì•\¦
-		Bool,		// ƒ`ƒFƒbƒNƒ{ƒbƒNƒX
-		Int,		// ®”“ü—Í
-		Float,		// ¬”“ü—Í
-		Vector,		// ƒxƒNƒ^[“ü—Í
-		Color,		// F“ü—Í
-		Path,		// ƒtƒ@ƒCƒ‹ƒpƒX‚Ìw’è
-		Command,	// ƒ{ƒ^ƒ“
-		Group,		// •\¦€–Ú‚ğ‚Ü‚Æ‚ß‚é
-		List,		// ˆê——•\¦
+		Label,		// é …ç›®ã®ã¿ã®è¡¨ç¤º
+		Bool,		// ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
+		Int,		// æ•´æ•°å…¥åŠ›
+		Float,		// å°æ•°å…¥åŠ›
+		Vector,		// ãƒ™ã‚¯ã‚¿ãƒ¼å…¥åŠ›
+		Color,		// è‰²å…¥åŠ›
+		Path,		// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã®æŒ‡å®š
+		Command,	// ãƒœã‚¿ãƒ³
+		Group,		// è¡¨ç¤ºé …ç›®ã‚’ã¾ã¨ã‚ã‚‹
+		List,		// ä¸€è¦§è¡¨ç¤º
 	};
 protected:
 	Item();
 public:
 	virtual ~Item();
-	// €–Ú’Ç‰Á
+	// é …ç›®è¿½åŠ 
 	static Item* CreateValue(const char* name, Kind kind, bool isSave = false);
-	// •Ï”‚ğ•R‚Ã‚¯‚½€–Ú
+	// å¤‰æ•°ã‚’ç´ã¥ã‘ãŸé …ç›®
 	static Item* CreateBind(const char* name, Kind kind, void* ptr);
-	// ƒ{ƒ^ƒ“or’l•ÏX
+	// ãƒœã‚¿ãƒ³orå€¤å¤‰æ›´æ™‚
 	static Item* CreateCallBack(const char* name, Kind kind, Callback func);
-	// ƒOƒ‹[ƒv
+	// ã‚°ãƒ«ãƒ¼ãƒ—
 	static Item* CreateGroup(const char* name);
-	// ˆê——•\¦
+	// ä¸€è¦§è¡¨ç¤º
 	static Item* CreateList(const char* name, ConstCallback func = nullptr, bool isSave = false);
 
 public:
-	// €–Ú–¼‚Ìæ“¾
+	// é …ç›®åã®å–å¾—
 	const char* GetName() const;
-	// €–Úí•Ê‚Ìæ“¾
+	// é …ç›®ç¨®åˆ¥ã®å–å¾—
 	Kind GetKind() const;
 
-	// Šeíİ’è’l‚Ìæ“¾
+	// å„ç¨®è¨­å®šå€¤ã®å–å¾—
 	bool GetBool() const;
 	int GetInt() const;
 	float GetFloat() const;
@@ -84,30 +84,30 @@ public:
 	DirectX::XMFLOAT4 GetColor() const;
 	const char* GetStr() const;
 
-	// ƒOƒ‹[ƒv‚Ìİ’è
+	// ã‚°ãƒ«ãƒ¼ãƒ—ã®è¨­å®š
 	void AddGroupItem(Item* item);
 	Item& operator[](const char* name);
 
-	// ˆê——•\¦‚Ìİ’è
+	// ä¸€è¦§è¡¨ç¤ºã®è¨­å®š
 	void AddListItem(const char* name);
 	void RemoveListItem(const char* name);
 
 public:
-	// •¶š—ñ‚©‚ç€–Ú‚Ìí•Ê‚ğæ“¾
+	// æ–‡å­—åˆ—ã‹ã‚‰é …ç›®ã®ç¨®åˆ¥ã‚’å–å¾—
 	static Kind StrToKind(std::string str);
-	// €–Ú‚Ìí•Ê‚©‚ç•¶š—ñ‚ğæ“¾
+	// é …ç›®ã®ç¨®åˆ¥ã‹ã‚‰æ–‡å­—åˆ—ã‚’å–å¾—
 	static std::string KindToStr(Kind kind);
 
 public:
-	static Item* dummy;	// w’èƒf[ƒ^‚ªæ“¾‚Å‚«‚È‚©‚Á‚½ê‡‚Ìƒ_ƒ~[
+	static Item* dummy;	// æŒ‡å®šãƒ‡ãƒ¼ã‚¿ãŒå–å¾—ã§ããªã‹ã£ãŸå ´åˆã®ãƒ€ãƒŸãƒ¼
 private:
 	std::string name;	// 
-	Kind kind;			// €–Úí•Ê
+	Kind kind;			// é …ç›®ç¨®åˆ¥
 };
 using Items = std::list<Item*>;
 
 /*
-* @brief ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE
+* @brief ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
 */
 class Window
 {
@@ -116,33 +116,33 @@ public:
 	Window();
 	Item& operator[](const char* name);
 
-	// ƒAƒCƒeƒ€’Ç‰Á
+	// ã‚¢ã‚¤ãƒ†ãƒ è¿½åŠ 
 	void AddItem(Item* item);
-	// ƒAƒCƒeƒ€íœ
+	// ã‚¢ã‚¤ãƒ†ãƒ å‰Šé™¤
 	void RemoveItem(const char* name);
-	// ‘SƒAƒCƒeƒ€íœ
+	// å…¨ã‚¢ã‚¤ãƒ†ãƒ å‰Šé™¤
 	void Clear();
 
 private:
-	// ƒAƒCƒeƒ€‚Ì’Tõ
+	// ã‚¢ã‚¤ãƒ†ãƒ ã®æ¢ç´¢
 	Items::iterator FindItem(const char* name);
 
 public:
-	static Window	dummy;	// w’èƒEƒBƒ“ƒhƒE‚ªæ“¾‚Å‚«‚È‚©‚Á‚½‚Æ‚«‚Ìƒ_ƒ~[
+	static Window	dummy;	// æŒ‡å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒå–å¾—ã§ããªã‹ã£ãŸã¨ãã®ãƒ€ãƒŸãƒ¼
 private:
-	bool			enable;	// •\¦ƒtƒ‰ƒO
-	std::string		name;	// ƒEƒBƒ“ƒhƒE–¼
-	Items			items;	// •\¦€–Ú
+	bool			enable;	// è¡¨ç¤ºãƒ•ãƒ©ã‚°
+	std::string		name;	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å
+	Items			items;	// è¡¨ç¤ºé …ç›®
 };
 
 /*
-* @brief ƒfƒoƒbƒO•\¦ˆêŒ³ŠÇ—
+* @brief ãƒ‡ãƒãƒƒã‚°è¡¨ç¤ºä¸€å…ƒç®¡ç†
 */
 class Menu
 {
 	friend class Window;
 public:
-	// •Û‘¶ƒf[ƒ^
+	// ä¿å­˜ãƒ‡ãƒ¼ã‚¿
 	struct SaveData
 	{
 		Item::Kind kind;
@@ -159,9 +159,9 @@ public:
 	static void Update();
 	static void Draw();
 
-	// ƒEƒBƒ“ƒhƒE¶¬
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç”Ÿæˆ
 	static Window& Create(const char* name);
-	// ƒEƒBƒ“ƒhƒEæ“¾
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å–å¾—
 	static Window& Get(const char* name);
 private:
 	static void DrawImgui(Item* item);
@@ -169,8 +169,8 @@ private:
 	static void DataRead(std::string path, Item* item);
 
 private:
-	static std::vector<Window>		m_windows;	// •\¦ƒEƒBƒ“ƒhƒEˆê——
-	static std::vector<SaveData>	m_data;		// •Û‘¶ƒf[ƒ^
+	static std::vector<Window>		m_windows;	// è¡¨ç¤ºã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä¸€è¦§
+	static std::vector<SaveData>	m_data;		// ä¿å­˜ãƒ‡ãƒ¼ã‚¿
 };
 
 } // namespace debug

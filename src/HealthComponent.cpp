@@ -1,4 +1,4 @@
-#include "HealthComponent.h"
+ï»¿#include "HealthComponent.h"
 #include "MathUtility.h"
 #include "Scene.h"
 #include "Camera.h"
@@ -36,12 +36,12 @@ void HealthComponent::ApplyDamage(int damage)
 void HealthComponent::Heal(int amount)
 {
 	if (!m_IsDead)
-		m_HP = std::min(m_HP + amount, m_MaxHP); // HP ‚ğ‰ñ•œiÅ‘å‘Ì—Í‚ğ’´‚¦‚È‚¢‚æ‚¤‚Éj
+		m_HP = std::min(m_HP + amount, m_MaxHP); // HP ã‚’å›å¾©ï¼ˆæœ€å¤§ä½“åŠ›ã‚’è¶…ãˆãªã„ã‚ˆã†ã«ï¼‰
 }
 
 void HealthComponent::SetMaxHP(int maxHp)
 {
-	// Å‘åHP‚Ìİ’è 1 ~ 99999‚Ì”ÍˆÍ‚ÉŒÀ’è
+	// æœ€å¤§HPã®è¨­å®š 1 ~ 99999ã®ç¯„å›²ã«é™å®š
 	m_MaxHP = std::clamp(maxHp, kMinHp, kMaxHp);
 	if (m_HP > m_MaxHP)
 	{
@@ -53,14 +53,14 @@ void HealthComponent::SetMaxHP(int maxHp)
 void HealthComponent::SetHP(int hp)
 {
 	m_HP = std::clamp(hp, 0, m_MaxHP);
-	// HP ‚ª 0 ˆÈ‰º‚É‚È‚Á‚½ê‡A€–Sƒtƒ‰ƒO‚ğ—§‚Ä‚é
+	// HP ãŒ 0 ä»¥ä¸‹ã«ãªã£ãŸå ´åˆã€æ­»äº¡ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 	if (m_HP <= 0)
 	{
 		m_IsDead = true;
 	}
 	else
 	{
-		m_IsDead = false; // HP‚ª0‚æ‚è‘å‚«‚¢ê‡‚Í¶‘¶ó‘Ô‚É‚·‚é
+		m_IsDead = false; // HPãŒ0ã‚ˆã‚Šå¤§ãã„å ´åˆã¯ç”Ÿå­˜çŠ¶æ…‹ã«ã™ã‚‹
 	}
 }
 

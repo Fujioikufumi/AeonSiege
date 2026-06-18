@@ -1,15 +1,15 @@
-#include "FloatingDamage.h"
+ï»¿#include "FloatingDamage.h"
 #include "GameManager.h"
 #include "Scene.h"
 #include "Sprite.h"
 
 namespace {
-	constexpr float kMissSpriteWidth	= 96.0f; // MISS•\Ž¦ƒXƒvƒ‰ƒCƒg‚Ì•
-	constexpr float kMissSpriteHeight	= 36.0f; // MISS•\Ž¦ƒXƒvƒ‰ƒCƒg‚Ì‚‚³
-	constexpr float kScale				= 0.5f; // ”Žš‚ÌƒXƒP[ƒ‹
-	constexpr float kFadeStartTime		= 0.5f; // ƒtƒF[ƒhŠJŽnŽžŠÔi•bj
-	constexpr XMFLOAT4 kDefaultColor	= { 1.0f, 1.0f, 1.0f, 1.0f }; // ƒfƒtƒHƒ‹ƒg‚ÌFi”’j
-	constexpr XMFLOAT4 kFadeColor		= { 1.0f, 1.0f, 1.0f, 0.0f }; // ƒtƒF[ƒhƒAƒEƒgŽž‚ÌFi“§–¾j
+	constexpr float kMissSpriteWidth	= 96.0f; // MISSè¡¨ç¤ºã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®å¹…
+	constexpr float kMissSpriteHeight	= 36.0f; // MISSè¡¨ç¤ºã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®é«˜ã•
+	constexpr float kScale				= 0.5f; // æ•°å­—ã®ã‚¹ã‚±ãƒ¼ãƒ«
+	constexpr float kFadeStartTime		= 0.5f; // ãƒ•ã‚§ãƒ¼ãƒ‰é–‹å§‹æ™‚é–“ï¼ˆç§’ï¼‰
+	constexpr XMFLOAT4 kDefaultColor	= { 1.0f, 1.0f, 1.0f, 1.0f }; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®è‰²ï¼ˆç™½ï¼‰
+	constexpr XMFLOAT4 kFadeColor		= { 1.0f, 1.0f, 1.0f, 0.0f }; // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆæ™‚ã®è‰²ï¼ˆé€æ˜Žï¼‰
 }
 
 static std::wstring GetNumberTexturePath(FloatingDamageType type)
@@ -37,7 +37,7 @@ bool FloatingDamage::Init()
 {
 	if (!GameObject::Init()) return false;
 
-	// Ž©g‚ÌŽqƒIƒuƒWƒFƒNƒg‚Æ‚µ‚Ä NumberUI ‚ð¶¬iUIƒŒƒCƒ„[‚É”z’uj
+	// è‡ªèº«ã®å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã—ã¦ NumberUI ã‚’ç”Ÿæˆï¼ˆUIãƒ¬ã‚¤ãƒ¤ãƒ¼ã«é…ç½®ï¼‰
 	m_NumberUI = GameManager::GetScene()->AddGameObject<NumberUI>(eLayer::UI, "DamageUI");
 
 	return true;
@@ -71,7 +71,7 @@ void FloatingDamage::Setup(int damage, float screenX, float screenY, FloatingDam
 
 void FloatingDamage::Update(float deltaTime)
 {
-	// Žõ–½‚ÌŠÇ—
+	// å¯¿å‘½ã®ç®¡ç†
 	m_LifeTime += deltaTime;
 	if (m_LifeTime >= kMaxLifeTime)
 	{
@@ -84,7 +84,7 @@ void FloatingDamage::Update(float deltaTime)
 	}
 	m_PosY -= kMoveSpeed * deltaTime;
 
-	// Žõ–½‚ª‹ß‚Ã‚­‚Æ™X‚ÉƒtƒF[ƒh‚·‚é
+	// å¯¿å‘½ãŒè¿‘ã¥ãã¨å¾ã€…ã«ãƒ•ã‚§ãƒ¼ãƒ‰ã™ã‚‹
 	float alpha = 1.0f;
 	const float fadeStartTime = kMaxLifeTime * kFadeStartTime;
 	if (m_LifeTime > fadeStartTime)
@@ -94,7 +94,7 @@ void FloatingDamage::Update(float deltaTime)
 
 	if (m_IsMiss)
 	{
-		// ‰ñ”ð
+		// å›žé¿
 		if (m_MissSprite != nullptr)
 		{
 			m_MissSprite->SetPosition(m_PosX, m_PosY);
@@ -103,7 +103,7 @@ void FloatingDamage::Update(float deltaTime)
 	}
 	else
 	{
-		// ƒ_ƒ[ƒW”’l
+		// ãƒ€ãƒ¡ãƒ¼ã‚¸æ•°å€¤
 		if (m_NumberUI != nullptr)
 		{
 			m_NumberUI->SetPosition(m_PosX, m_PosY);

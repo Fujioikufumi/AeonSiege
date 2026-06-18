@@ -1,4 +1,4 @@
-#include "EnemySpawner.h"
+ï»¿#include "EnemySpawner.h"
 #include "GameManager.h"
 #include "Scene.h"
 #include "Terrain.h"
@@ -14,11 +14,11 @@
 using namespace DirectX;
 
 namespace {
-	constexpr int   kAngleDegMax = 360;     // ƒ‰ƒ“ƒ_ƒ€Šp“x‚ÌãŒÀi“xj
-	constexpr int   kDistanceResol = 100;     // ‹——£³‹K‰»‚Ì•ª‰ğ”\
-	constexpr float kCenterEpsilonSq = 0.0001f; // ’†Sˆê’v‚Æ‚İ‚È‚·‹——£‚Ì“ñæè‡’l
-	constexpr float kSpreadStep = 0.45f;   // “G‚ğU‚ç‚·Û‚ÌŠp“xƒXƒeƒbƒviƒ‰ƒWƒAƒ“j
-	constexpr float kDegtoRad = XM_PI / 180.0f; // ƒ‰ƒWƒAƒ“‚ğ“x‚É•ÏŠ·‚·‚é‚½‚ß‚ÌŒW”
+	constexpr int   kAngleDegMax = 360;     // ãƒ©ãƒ³ãƒ€ãƒ è§’åº¦ã®ä¸Šé™ï¼ˆåº¦ï¼‰
+	constexpr int   kDistanceResol = 100;     // è·é›¢æ­£è¦åŒ–ã®åˆ†è§£èƒ½
+	constexpr float kCenterEpsilonSq = 0.0001f; // ä¸­å¿ƒä¸€è‡´ã¨ã¿ãªã™è·é›¢ã®äºŒä¹—é–¾å€¤
+	constexpr float kSpreadStep = 0.45f;   // æ•µã‚’æ•£ã‚‰ã™éš›ã®è§’åº¦ã‚¹ãƒ†ãƒƒãƒ—ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
+	constexpr float kDegtoRad = XM_PI / 180.0f; // ãƒ©ã‚¸ã‚¢ãƒ³ã‚’åº¦ã«å¤‰æ›ã™ã‚‹ãŸã‚ã®ä¿‚æ•°
 }
 
 EnemySpawner::EnemySpawner()
@@ -59,7 +59,7 @@ void EnemySpawner::SpawnPhase(const PhaseData& phaseData)
 	const float		radius		= battleArea->GetRadius();
 	const XMFLOAT3	playerPos	= player->GetPosition();
 	
-	// ƒtƒF[ƒY“à‚Ì‘oŒ»”
+	// ãƒ•ã‚§ãƒ¼ã‚ºå†…ã®ç·å‡ºç¾æ•°
 	int totalCount = 0;
 	for (const PhaseEnemyEntry& entry : phaseData.enemies)
 		totalCount += entry.count;
@@ -68,8 +68,8 @@ void EnemySpawner::SpawnPhase(const PhaseData& phaseData)
 	{
 		for (int i = 0; i < entry.count; ++i)
 		{
-			// ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚ğl—¶‚µ‚ÄƒXƒ|[ƒ“ˆÊ’u‚ğŒˆ’è
-			// ƒoƒgƒ‹ƒGƒŠƒA‚Í‰~‚È‚Ç‚ÅAƒGƒlƒ~[‚ªoŒ»‚³‚¹‚éÀ•W‚ÍƒvƒŒƒCƒ„[‚©‚çˆê”Ô—£‚ê‚Ä‚¢‚é‰~üã‚ÉoŒ»‚³‚¹‚é
+			// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®ã‚’è€ƒæ…®ã—ã¦ã‚¹ãƒãƒ¼ãƒ³ä½ç½®ã‚’æ±ºå®š
+			// ãƒãƒˆãƒ«ã‚¨ãƒªã‚¢ã¯å††ãªã©ã§ã€ã‚¨ãƒãƒŸãƒ¼ãŒå‡ºç¾ã•ã›ã‚‹åº§æ¨™ã¯ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰ä¸€ç•ªé›¢ã‚Œã¦ã„ã‚‹å††å‘¨ä¸Šã«å‡ºç¾ã•ã›ã‚‹
 			const XMFLOAT3 spawnPosition = CreateSpawnPosition(
 				center, radius, playerPos, spawnIndex, totalCount);
 			GameObject* enemy = SpawnEnemy(
@@ -108,17 +108,17 @@ DirectX::XMFLOAT3 EnemySpawner::CreateSpawnPosition(const DirectX::XMFLOAT3& cen
 	const float distSq = dx * dx + dz * dz;
 	float angle = 0.0f;
 
-	// ƒvƒŒƒCƒ„[‚ª’†S‚Æ‚Ù‚Úˆê’v‚·‚éê‡‚Íƒ‰ƒ“ƒ_ƒ€‚È‹«ŠEã
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒä¸­å¿ƒã¨ã»ã¼ä¸€è‡´ã™ã‚‹å ´åˆã¯ãƒ©ãƒ³ãƒ€ãƒ ãªå¢ƒç•Œä¸Š
 	if (distSq < kCenterEpsilonSq)
 	{
 		angle = (rand() % kAngleDegMax) * (XM_PI / 180.0f);
 	}
 	else
 	{
-		// center‚©‚çplayerPos‚Ì‹t•ûŒü‚ÌŠp“x‚ğŒvZ
+		// centerã‹ã‚‰playerPosã®é€†æ–¹å‘ã®è§’åº¦ã‚’è¨ˆç®—
 		const float baseAngle = atan2f(-dz, -dx);
-		// •¡”‘Ì‚Ìd‚È‚è–h~
-		const float spreadStep = kSpreadStep; // ˆê’èŠp“x‚¸‚ç‚·
+		// è¤‡æ•°ä½“ã®é‡ãªã‚Šé˜²æ­¢
+		const float spreadStep = kSpreadStep; // ä¸€å®šè§’åº¦ãšã‚‰ã™
 		const float offset = (spreadCount <= 1)
 			? 0.0f
 			: (static_cast<float>(spreadIndex) - (spreadCount - 1) * 0.5f) * spreadStep;
@@ -129,7 +129,7 @@ DirectX::XMFLOAT3 EnemySpawner::CreateSpawnPosition(const DirectX::XMFLOAT3& cen
 	position.x = center.x + cosf(angle) * radius;
 	position.z = center.z + sinf(angle) * radius;
 
-	// ’nŒ`‚Ì‚‚³‚É‡‚í‚¹‚é
+	// åœ°å½¢ã®é«˜ã•ã«åˆã‚ã›ã‚‹
 	Scene* scene = GameManager::GetScene();
 	Terrain* terrain = scene->GetGameObjectByName<Terrain>("Terrain");
 	position.y = terrain->GetHeightAt(position.x, position.z);
@@ -144,7 +144,7 @@ GameObject* EnemySpawner::SpawnEnemy(EnemyType type, const XMFLOAT3& position, i
 
 	GameObject* enemy = nullptr;
 
-	// Šeí—Ş‚ÌƒGƒlƒ~[‚ÌoŒ»
+	// å„ç¨®é¡ã®ã‚¨ãƒãƒŸãƒ¼ã®å‡ºç¾
 	switch (type)
 	{
 	case EnemyType::Zombie:

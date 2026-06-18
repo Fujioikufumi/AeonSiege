@@ -1,4 +1,4 @@
-#include "EnemyAIComponent.h"
+ï»¿#include "EnemyAIComponent.h"
 #include "GameObject.h"
 #include "GameManager.h"
 #include "Scene.h"
@@ -13,13 +13,13 @@ using namespace DirectX;
 
 namespace {
 	
-	constexpr int   kAngleDegMax = 360;			// ƒ‰ƒ“ƒ_ƒ€Šp“x‚ÌãŒÀi“xj
-	constexpr int   kDistanceResol = 100;		// ‹——£³‹K‰»‚Ì•ª‰ğ”\
-	constexpr int   kIdleWaitRandSec = 3;       // ‘Ò‹@ŠÔ‚Ìƒ‰ƒ“ƒ_ƒ€‰ÁZãŒÀi0?2•bj
-	constexpr float kRotationSpeed = 10.0f;		// ù‰ñ‘¬“x
+	constexpr int   kAngleDegMax = 360;			// ãƒ©ãƒ³ãƒ€ãƒ è§’åº¦ã®ä¸Šé™ï¼ˆåº¦ï¼‰
+	constexpr int   kDistanceResol = 100;		// è·é›¢æ­£è¦åŒ–ã®åˆ†è§£èƒ½
+	constexpr int   kIdleWaitRandSec = 3;       // å¾…æ©Ÿæ™‚é–“ã®ãƒ©ãƒ³ãƒ€ãƒ åŠ ç®—ä¸Šé™ï¼ˆ0?2ç§’ï¼‰
+	constexpr float kRotationSpeed = 10.0f;		// æ—‹å›é€Ÿåº¦
 	constexpr float kSomeBias = -3000.0f;		// 
 	
-	// w’è‚µ‚½’†S“_‚Æ”¼Œa‚Ì”ÍˆÍ“à‚Ìƒ‰ƒ“ƒ_ƒ€‚ÈÀ•W‚ğì¬‚·‚é
+	// æŒ‡å®šã—ãŸä¸­å¿ƒç‚¹ã¨åŠå¾„ã®ç¯„å›²å†…ã®ãƒ©ãƒ³ãƒ€ãƒ ãªåº§æ¨™ã‚’ä½œæˆã™ã‚‹
 	XMFLOAT3 GetRandomPointInRadius(const XMFLOAT3& center, float radius)
 	{
 		float angle = (rand() % kAngleDegMax) * (XM_PI / 180.0f);
@@ -40,7 +40,7 @@ EnemyAIComponent::EnemyAIComponent(GameObject* pObj)
 
 bool EnemyAIComponent::Init()
 {
-	// ‰ŠúƒXƒe[ƒg‚ÍAí‚É“G‘Îó‘Ô‚È‚çChaseA‚»‚¤‚Å‚È‚¯‚ê‚ÎIdle
+	// åˆæœŸã‚¹ãƒ†ãƒ¼ãƒˆã¯ã€å¸¸ã«æ•µå¯¾çŠ¶æ…‹ãªã‚‰Chaseã€ãã†ã§ãªã‘ã‚Œã°Idle
 	m_CurrentState = m_AlwaysAggro ? EnemyAIState::Chase : EnemyAIState::Idle;
 
 	m_StateTimer = kIdleWaitTime;
@@ -64,12 +64,12 @@ void EnemyAIComponent::Update(float deltaTime)
 	if (m_GameObject == nullptr || m_GameObject->IsDestroyed()) return;
 
 	HealthComponent* pHealth = m_GameObject->GetComponent<HealthComponent>();
-	// €–S”»’èi€–S‚µ‚½‚çƒXƒe[ƒg‚ğ Dead ‚É‚µ‚Ä‘¦ƒŠƒ^[ƒ“j
+	// æ­»äº¡åˆ¤å®šï¼ˆæ­»äº¡ã—ãŸã‚‰ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ Dead ã«ã—ã¦å³ãƒªã‚¿ãƒ¼ãƒ³ï¼‰
 	if (pHealth && !pHealth->IsAlive())
 	{
 		if (m_CurrentState != EnemyAIState::Dead)
 		{
-			GameManager::GetStatus().killCount++; // ƒLƒ‹ƒJƒEƒ“ƒg‚ğ‘‰Á
+			GameManager::GetStatus().killCount++; // ã‚­ãƒ«ã‚«ã‚¦ãƒ³ãƒˆã‚’å¢—åŠ 
 			ChangeState(EnemyAIState::Dead);
 		}
 		return;
@@ -78,12 +78,12 @@ void EnemyAIComponent::Update(float deltaTime)
 	if (m_CurrentState == EnemyAIState::Dead) return;
 
 	// -------------------------------------------------
-	// ƒN[ƒ‹ƒ_ƒEƒ“‚ÌXV
+	// ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ã®æ›´æ–°
 	// -------------------------------------------------
 	m_MeleeCooldown = max(0.0f, m_MeleeCooldown - deltaTime);
 
 	// -------------------------------------------------
-	// ƒ^[ƒQƒbƒg‚ÌŒŸõE‹”F”»’è
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®æ¤œç´¢ãƒ»è¦–èªåˆ¤å®š
 	// -------------------------------------------------
 	Scene* pScene = GameManager::GetScene();
 
@@ -102,7 +102,7 @@ void EnemyAIComponent::Update(float deltaTime)
 	}
 
 	// -------------------------------------------------
-	// ó‘Ô‘JˆÚ‚Ì”»’è
+	// çŠ¶æ…‹é·ç§»ã®åˆ¤å®š
 	// -------------------------------------------------
 	if (m_CurrentState != EnemyAIState::Attack)
 	{
@@ -120,7 +120,7 @@ void EnemyAIComponent::Update(float deltaTime)
 	}
 
 	// -------------------------------------------------
-	// Œ»İ‚ÌƒXƒe[ƒg‚²‚Æ‚ÌXVˆ—
+	// ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ãƒˆã”ã¨ã®æ›´æ–°å‡¦ç†
 	// -------------------------------------------------
 	switch (m_CurrentState)
 	{
@@ -134,7 +134,7 @@ void EnemyAIComponent::Update(float deltaTime)
 
 	case EnemyAIState::Chase:
 	case EnemyAIState::Attack:
-		// ƒ^[ƒQƒbƒg‚ğŒ©¸‚Á‚½i€‚ñ‚¾‚©”ÍˆÍŠOj‚È‚ç Idle ‚Ö
+		// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¦‹å¤±ã£ãŸï¼ˆæ­»ã‚“ã ã‹ç¯„å›²å¤–ï¼‰ãªã‚‰ Idle ã¸
 		if (!targetIsAlive && m_CurrentState != EnemyAIState::Attack)
 		{
 			ChangeState(EnemyAIState::Idle);
@@ -158,7 +158,7 @@ void EnemyAIComponent::UpdateChaseAndAttack(float deltaTime, GameObject* target)
 	const float dz = targetPos.z - pos.z;
 	const bool isInMelee = MathUtility::IsInRange(pos, targetPos, m_MeleeRange);
 
-	// ‰ñ“]ˆ— (ƒ^[ƒQƒbƒg‚ğáÉ‚Ş)
+	// å›è»¢å‡¦ç† (ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ç¨ã‚€)
 	const float targetYaw = atan2f(dx, dz);
 	XMFLOAT3 rot = m_GameObject->GetRotation();
 	rot.y = MathUtility::SlerpYaw(rot.y, targetYaw, kRotationSpeed, deltaTime);
@@ -168,16 +168,16 @@ void EnemyAIComponent::UpdateChaseAndAttack(float deltaTime, GameObject* target)
 	{
 		m_StateTimer -= deltaTime;
 
-		// UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‘±ŠÔ‚ªŠ®‘S‚ÉI—¹‚µ‚½‚©H
+		// æ”»æ’ƒã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æŒç¶šæ™‚é–“ãŒå®Œå…¨ã«çµ‚äº†ã—ãŸã‹ï¼Ÿ
 		if (m_StateTimer <= 0.0f)
 		{
-			// ‚Ü‚¾Ë’ö“à‚É‚¢‚ÄA‚©‚Âƒ^[ƒQƒbƒg‚ª¶‚«‚Ä‚¢‚é‚ÈA‚»‚Ì‚Ü‚ÜUŒ‚ó‘Ô‚ğƒL[ƒv‚³‚¹‚é
-			// ƒN[ƒ‹ƒ_ƒEƒ“‚ªc‚Á‚Ä‚¢‚Ä‚àAUŒ‚Ë’ö“à‚Å‚ ‚ê‚Î Chase ‚É‘JˆÚ‚¹‚¸ƒN[ƒ‹ƒ_ƒEƒ“‚ğ‘Ò‚Â
+			// ã¾ã å°„ç¨‹å†…ã«ã„ã¦ã€ã‹ã¤ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒç”Ÿãã¦ã„ã‚‹ãªã€ãã®ã¾ã¾æ”»æ’ƒçŠ¶æ…‹ã‚’ã‚­ãƒ¼ãƒ—ã•ã›ã‚‹
+			// ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ãŒæ®‹ã£ã¦ã„ã¦ã‚‚ã€æ”»æ’ƒå°„ç¨‹å†…ã§ã‚ã‚Œã° Chase ã«é·ç§»ã›ãšã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ã‚’å¾…ã¤
 			if (isInMelee)
 			{
 				if (m_MeleeCooldown <= 0.0f)
 				{
-					// Ä‚ÑUŒ‚‚ğÀs
+					// å†ã³æ”»æ’ƒã‚’å®Ÿè¡Œ
 					ChangeState(EnemyAIState::Attack);
 					m_MeleeCooldown = m_MeleeCooldownSec;
 
@@ -190,25 +190,25 @@ void EnemyAIComponent::UpdateChaseAndAttack(float deltaTime, GameObject* target)
 				}
 				else
 				{
-					// ƒN[ƒ‹ƒ_ƒEƒ“’†‚Í Chase ‚É‘JˆÚ‚¹‚¸AUŒ‚Ë’ö“à‚Å‚ ‚ê‚Î‚»‚Ì‚Ü‚Ü‘Ò‹@
+					// ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ä¸­ã¯ Chase ã«é·ç§»ã›ãšã€æ”»æ’ƒå°„ç¨‹å†…ã§ã‚ã‚Œã°ãã®ã¾ã¾å¾…æ©Ÿ
 				}
 			}
 			else
 			{
-				// ƒ^[ƒQƒbƒg‚ªË’öŠO‚É“¦‚°‚½‚Ì‚ÅA’Ç‚¢‚©‚¯‚é
+				// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒå°„ç¨‹å¤–ã«é€ƒã’ãŸã®ã§ã€è¿½ã„ã‹ã‘ã‚‹
 				ChangeState(EnemyAIState::Chase);
 			}
 		}
 	}
 	else if (m_CurrentState == EnemyAIState::Chase)
 	{
-		// ’ÇÕ’†
+		// è¿½è·¡ä¸­
 		if (isInMelee && m_MeleeCooldown <= 0.0f)
 		{
 			ChangeState(EnemyAIState::Attack);
 			m_MeleeCooldown = m_MeleeCooldownSec;
 
-			// UŒ‚‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ŠÔ‚ğƒZƒbƒgi‚±‚ê‚ªI‚í‚é‚Ü‚ÅƒƒbƒN‚³‚ê‚éj
+			// æ”»æ’ƒã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ™‚é–“ã‚’ã‚»ãƒƒãƒˆï¼ˆã“ã‚ŒãŒçµ‚ã‚ã‚‹ã¾ã§ãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹ï¼‰
 			m_StateTimer = kIdleWaitTime;
 
 			if (m_AttackCallback)
@@ -218,7 +218,7 @@ void EnemyAIComponent::UpdateChaseAndAttack(float deltaTime, GameObject* target)
 		}
 		else if (!isInMelee)
 		{
-			// Ë’öŠO‚È‚ç‹ß‚Ã‚­
+			// å°„ç¨‹å¤–ãªã‚‰è¿‘ã¥ã
 			const float dist = MathUtility::CalculateDistanceXZ(pos, targetPos);
 			if (dist > 0.1f)
 			{
@@ -255,10 +255,10 @@ void EnemyAIComponent::UpdatePatrol(float deltaTime)
 
 	float dist = MathUtility::CalculateDistanceXZ(m_GameObject->GetPosition(), m_TargetPatrolPos);
 	
-	// –Ú“I’n‚É\•ª‹ß‚Ã‚¢‚½‚çÄ‚Ñ‘Ò‹@
+	// ç›®çš„åœ°ã«ååˆ†è¿‘ã¥ã„ãŸã‚‰å†ã³å¾…æ©Ÿ
 	if (dist < 1.0f)
 	{
-		m_StateTimer = kIdleWaitTime + (rand() % kIdleWaitRandSec); // 2`4•b‘Ò‹@
+		m_StateTimer = kIdleWaitTime + (rand() % kIdleWaitRandSec); // 2ï½4ç§’å¾…æ©Ÿ
 		ChangeState(EnemyAIState::Idle);
 		return;
 	}
@@ -266,14 +266,14 @@ void EnemyAIComponent::UpdatePatrol(float deltaTime)
 	float dx = m_TargetPatrolPos.x - pos.x;
 	float dz = m_TargetPatrolPos.z - pos.z;
 
-	// –Ú“I’n‚ğŒü‚­
+	// ç›®çš„åœ°ã‚’å‘ã
 
 	float targetYaw = atan2f(dx, dz);
 	XMFLOAT3 rot = m_GameObject->GetRotation();
 	rot.y = MathUtility::SlerpYaw(rot.y, targetYaw, kRotationSpeed, deltaTime);
 	m_GameObject->SetRotation(rot);
 
-	// ˆÚ“®
+	// ç§»å‹•
 	float dirX = dx / dist;
 	float dirZ = dz / dist;
 	pos.x += dirX * m_MoveSpeed * deltaTime;
@@ -287,10 +287,10 @@ GameObject* EnemyAIComponent::FindAttackTarget(Scene* pScene) const
 	
 	GameObject* bestTarget = nullptr;
 	
-	// ƒ^[ƒQƒbƒgØ‚è‘Ö‚¦‚ÌƒXƒRƒA
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆåˆ‡ã‚Šæ›¿ãˆã®ã‚¹ã‚³ã‚¢
 	float bestScore = FLT_MAX;
 
-	// ƒ^[ƒQƒbƒg‚ÌŒó•â
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®å€™è£œ
 	auto checkTarget = [&](GameObject* target, float scoreBias)
 		{
 			if (target == nullptr || target->IsDestroyed())
@@ -302,7 +302,7 @@ GameObject* EnemyAIComponent::FindAttackTarget(Scene* pScene) const
 			{
 				return;
 			}
-			// ‹——£‚ª‹ß‚¢‚Ù‚ÇƒXƒRƒA‚ª’á‚¢‚æ‚¤‚É‚·‚é(—Dæ“I‚É‘_‚¤)
+			// è·é›¢ãŒè¿‘ã„ã»ã©ã‚¹ã‚³ã‚¢ãŒä½ã„ã‚ˆã†ã«ã™ã‚‹(å„ªå…ˆçš„ã«ç‹™ã†)
 			const XMFLOAT3 selfPos = m_GameObject->GetPosition();
 			const XMFLOAT3 targetPos = target->GetPosition();
 			const float dx = targetPos.x - selfPos.x;
@@ -319,12 +319,12 @@ GameObject* EnemyAIComponent::FindAttackTarget(Scene* pScene) const
 	checkTarget(pScene->GetGameObjectByName<Player>("Player"), 0.0f);
 	const auto& allyList = pScene->GetGameObjectsByLayer(eLayer::ALLY);
 
-	// –¡•û‚ªƒK[ƒh’†‚È‚ç—Dæ“I‚É‘_‚¤
+	// å‘³æ–¹ãŒã‚¬ãƒ¼ãƒ‰ä¸­ãªã‚‰å„ªå…ˆçš„ã«ç‹™ã†
 	for (const auto& allyPtr : allyList)
 	{
 		GameObject* ally = allyPtr.get();
 
-		// ƒK[ƒh’†‚Ì–¡•û‚ÍƒwƒCƒg‚ÉƒoƒCƒAƒX‚ğ‚©‚¯‚éi‹ïÛƒNƒ‰ƒX‚ÉˆË‘¶‚µ‚È‚¢j
+		// ã‚¬ãƒ¼ãƒ‰ä¸­ã®å‘³æ–¹ã¯ãƒ˜ã‚¤ãƒˆã«ãƒã‚¤ã‚¢ã‚¹ã‚’ã‹ã‘ã‚‹ï¼ˆå…·è±¡ã‚¯ãƒ©ã‚¹ã«ä¾å­˜ã—ãªã„ï¼‰
 		float bias = 0.0f;
 		if (ally->IsGuarding())
 		{
@@ -339,7 +339,7 @@ void EnemyAIComponent::ChangeState(EnemyAIState newState)
 {
 	m_CurrentState = newState;
 
-	// ‚à‚µƒR[ƒ‹ƒoƒbƒN‚ª“o˜^‚³‚ê‚Ä‚¢‚ê‚ÎAó‘Ô‚ªØ‚è‘Ö‚í‚Á‚½‚±‚Æ‚ğe(Mutant)‚É’m‚ç‚¹‚é
+	// ã‚‚ã—ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚Œã°ã€çŠ¶æ…‹ãŒåˆ‡ã‚Šæ›¿ã‚ã£ãŸã“ã¨ã‚’è¦ª(Mutant)ã«çŸ¥ã‚‰ã›ã‚‹
 	if (m_AnimCallback)
 	{
 		m_AnimCallback(m_CurrentState);

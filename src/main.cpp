@@ -1,4 +1,4 @@
-#if defined(DEBUG) || defined(_debug)
+ï»¿#if defined(DEBUG) || defined(_debug)
 	#define _CRTDBG_MAP_ALLOC
 	#include <crtdbg.h>
 #endif//defined(DEBUG) || defined(_DEBUG)
@@ -9,14 +9,14 @@
 #include "GameApp.h"
 #include "NameSpace.h"
 //--------------------------------------------------------------
-// ƒƒCƒ“ƒGƒ“ƒgƒŠ[ƒ|ƒCƒ“ƒg
+// ãƒ¡ã‚¤ãƒ³ã‚¨ãƒ³ãƒˆãƒªãƒ¼ãƒã‚¤ãƒ³ãƒˆ
 //--------------------------------------------------------------
 int wmain(int argc, wchar_t** argv, wchar_t** evnp)
 {
 #if defined(DEBUG) || defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif// defined(DEBUG) || defined(_DEBUG)
-	// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ğÀs
+	// ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å®Ÿè¡Œ
 	GameApp(SCREEN_WIDTH, SCREEN_HEIGHT).Run();
 	return 0;
 }

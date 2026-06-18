@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 //-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
@@ -51,19 +51,19 @@ public:
 	}
 
 private:
-	// ’PˆêCB—p
-	ComPtr<ID3D12Resource> m_CB;			// ’è”ƒoƒbƒtƒ@
-	DescriptorHandle* m_Handle;				// ƒfƒBƒXƒNƒŠƒvƒ^ƒnƒ“ƒhƒ‹
-	D3D12_CONSTANT_BUFFER_VIEW_DESC m_Desc;	// ’è”ƒoƒbƒtƒ@ƒrƒ…[‚Ì\¬İ’è
-	void* m_MappedPtr;						// ƒ}ƒbƒvÏ‚İ‚Ìƒ|ƒCƒ“ƒ^
+	// å˜ä¸€CBç”¨
+	ComPtr<ID3D12Resource> m_CB;			// å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	DescriptorHandle* m_Handle;				// ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒãƒ³ãƒ‰ãƒ«
+	D3D12_CONSTANT_BUFFER_VIEW_DESC m_Desc;	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®æ§‹æˆè¨­å®š
+	void* m_MappedPtr;						// ãƒãƒƒãƒ—æ¸ˆã¿ã®ãƒã‚¤ãƒ³ã‚¿
 
-	// ƒ}ƒ‹ƒ`ƒtƒŒ[ƒ€CB—p
+	// ãƒãƒ«ãƒãƒ•ãƒ¬ãƒ¼ãƒ CBç”¨
 	std::vector<ComPtr<ID3D12Resource>>           m_CBs;
 	std::vector<DescriptorHandle*>                m_Handles;
 	std::vector<void*>                            m_MappedPtrs;
 	std::vector<D3D12_CONSTANT_BUFFER_VIEW_DESC> m_Descs;
 
-	DescriptorPool* m_Pool;		// ƒfƒBƒXƒNƒŠƒvƒ^ƒv[ƒ‹
+	DescriptorPool* m_Pool;		// ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ—ãƒ¼ãƒ«
 
 	ConstantBuffer(const ConstantBuffer&) = delete;
 	void operator = (const ConstantBuffer&) = delete;

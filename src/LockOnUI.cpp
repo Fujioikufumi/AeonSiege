@@ -1,4 +1,4 @@
-#include "LockOnUI.h"
+ï»¿#include "LockOnUI.h"
 #include "Sprite.h"
 #include "GameManager.h"
 #include "Scene.h"
@@ -9,17 +9,17 @@
 #include "Logger.h"
 #include <DirectXMath.h>
 
-// ƒRƒ“ƒ|[ƒlƒ“ƒg
+// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 #include "HealthComponent.h"
 #include "TargetComponent.h"
 
 using namespace DirectX;
 namespace {
-	constexpr XMFLOAT2 kMarkerSize = {36.0f, 36.0f}; // ƒƒbƒNƒIƒ“ƒ}[ƒJ[‚Ìˆê•ÓƒTƒCƒY
-	constexpr XMFLOAT4 kMarkerColor = { 1.0f, 1.0f, 1.0f, 1.0f }; // ƒƒbƒNƒIƒ“ƒ}[ƒJ[‚ÌFiRGBAj
-	constexpr XMFLOAT4 kMarkerColorTransparent = { 1.0f, 1.0f, 1.0f, 0.0f }; // ƒƒbƒNƒIƒ“ƒ}[ƒJ[‚Ì“§–¾F
+	constexpr XMFLOAT2 kMarkerSize = {36.0f, 36.0f}; // ãƒ­ãƒƒã‚¯ã‚ªãƒ³ãƒãƒ¼ã‚«ãƒ¼ã®ä¸€è¾ºã‚µã‚¤ã‚º
+	constexpr XMFLOAT4 kMarkerColor = { 1.0f, 1.0f, 1.0f, 1.0f }; // ãƒ­ãƒƒã‚¯ã‚ªãƒ³ãƒãƒ¼ã‚«ãƒ¼ã®è‰²ï¼ˆRGBAï¼‰
+	constexpr XMFLOAT4 kMarkerColorTransparent = { 1.0f, 1.0f, 1.0f, 0.0f }; // ãƒ­ãƒƒã‚¯ã‚ªãƒ³ãƒãƒ¼ã‚«ãƒ¼ã®é€æ˜è‰²
 
-	// ƒrƒ…[EË‰e‚Æ TextureVS.hlsl ‚Ì NDC¨ƒXƒNƒŠ[ƒ“•ÏŠ·‚É‡‚í‚¹‚ÄƒsƒNƒZƒ‹À•W‚ğ‹‚ß‚é
+	// ãƒ“ãƒ¥ãƒ¼ãƒ»å°„å½±ã¨ TextureVS.hlsl ã® NDCâ†’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³å¤‰æ›ã«åˆã‚ã›ã¦ãƒ”ã‚¯ã‚»ãƒ«åº§æ¨™ã‚’æ±‚ã‚ã‚‹
 	bool WorldToScreenPixel(const XMFLOAT3& world, FXMMATRIX view, CXMMATRIX proj, float* outPx, float* outPy)
 	{
 		const XMMATRIX vp = XMMatrixMultiply(view, proj);
@@ -28,7 +28,7 @@ namespace {
 		const float ndcX = XMVectorGetX(clipV);
 		const float ndcY = XMVectorGetY(clipV);
 		const float ndcZ = XMVectorGetZ(clipV);
-		// ƒNƒŠƒbƒvŠOEƒJƒƒ‰Œã•û‚Ío‚³‚È‚¢
+		// ã‚¯ãƒªãƒƒãƒ—å¤–ãƒ»ã‚«ãƒ¡ãƒ©å¾Œæ–¹ã¯å‡ºã•ãªã„
 		if (ndcZ < 0.0f || ndcZ > 1.0f)
 			return false;
 		const float sw = static_cast<float>(SCREEN_WIDTH);

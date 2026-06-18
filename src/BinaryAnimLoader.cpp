@@ -1,4 +1,4 @@
-#include "BinaryAnimLoader.h"
+ï»¿#include "BinaryAnimLoader.h"
 #include <fstream>
 #include <iostream>
 
@@ -15,26 +15,26 @@ bool BinaryAnimLoader::Load(
     std::vector<AnimationClip>* pAnimations)
 {
     if (!pAnimations)
-        return false; // ƒAƒjƒ[ƒVƒ‡ƒ“‚ğŠi”[‚·‚éƒ|ƒCƒ“ƒ^‚ª‚È‚¢ê‡‚Í¸”s
+        return false; // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æ ¼ç´ã™ã‚‹ãƒã‚¤ãƒ³ã‚¿ãŒãªã„å ´åˆã¯å¤±æ•—
 
     std::ifstream inFile(filename, std::ios::binary);
     if (!inFile.is_open())
         return false;
 
-    // ƒwƒbƒ_“Ç‚İ‚İ
+    // ãƒ˜ãƒƒãƒ€èª­ã¿è¾¼ã¿
     AnimFileHeader header = {};
     inFile.read(reinterpret_cast<char*>(&header), sizeof(AnimFileHeader));
 
     if (header.magic != ANIM_MAGIC)
-        return false; // ƒ}ƒWƒbƒNƒiƒ“ƒo[‚ªˆê’v‚µ‚È‚¢
+        return false; // ãƒã‚¸ãƒƒã‚¯ãƒŠãƒ³ãƒãƒ¼ãŒä¸€è‡´ã—ãªã„
 
     AnimationClip clip;
     clip.duration = header.duration;
     clip.ticksPerSecond = header.ticksPerSecond;
     clip.name = header.clipName;
 
-    // ƒ`ƒƒƒ“ƒlƒ‹iƒ{[ƒ“‚²‚Æ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“j‚Ì“Ç‚İ‚İ
-    // ƒ`ƒƒƒ“ƒlƒ‹iƒ{[ƒ“‚²‚Æ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“j‚Ì“Ç‚İ‚İ
+    // ãƒãƒ£ãƒ³ãƒãƒ«ï¼ˆãƒœãƒ¼ãƒ³ã”ã¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ï¼‰ã®èª­ã¿è¾¼ã¿
+    // ãƒãƒ£ãƒ³ãƒãƒ«ï¼ˆãƒœãƒ¼ãƒ³ã”ã¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ï¼‰ã®èª­ã¿è¾¼ã¿
     clip.channels.resize(header.numChannels);
     for (uint32_t i = 0; i < header.numChannels; ++i)
     {
@@ -43,9 +43,9 @@ bool BinaryAnimLoader::Load(
         AnimationChannel channel;
         channel.boneName = channelHeader.boneName;
 
-        // C³ƒ|ƒCƒ“ƒg1: •Ï”–¼umatrixKeysv‚ğg—p‚·‚é
+        // ä¿®æ­£ãƒã‚¤ãƒ³ãƒˆ1: å¤‰æ•°åã€ŒmatrixKeysã€ã‚’ä½¿ç”¨ã™ã‚‹
         channel.matrixKeys.resize(channelHeader.numKeyFrames);
-        // C³ƒ|ƒCƒ“ƒg2: ”z—ñ‚É’¼Úˆê‹C‚É“Ç‚İ‚Şi’´‚‘¬j
+        // ä¿®æ­£ãƒã‚¤ãƒ³ãƒˆ2: é…åˆ—ã«ç›´æ¥ä¸€æ°—ã«èª­ã¿è¾¼ã‚€ï¼ˆè¶…é«˜é€Ÿï¼‰
         if (channelHeader.numKeyFrames > 0)
         {
             inFile.read(

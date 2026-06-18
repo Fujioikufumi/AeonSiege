@@ -1,4 +1,4 @@
-#include "Paladin.h"
+ï»¿#include "Paladin.h"
 #include "MeshRenderer.h"
 #include "Terrain.h"
 #include "Scene.h"
@@ -12,10 +12,10 @@
 #include "StatusComponent.h"
 
 namespace {
-	constexpr float kTargetHeightOffset = 10.0f;        // Ú’n‚Ì‚‚³ƒIƒtƒZƒbƒg
-	constexpr float kSkillPowerRate		= 2.0f;         // ƒXƒLƒ‹ˆĞ—Í”{—¦
-	constexpr float kMoveSpeed			= 45.0f;        // ˆÚ“®‘¬“x
-	constexpr float kFixedTimeStep		= 1.0f / 60.0f; // ‘z’èƒtƒŒ[ƒ€ŠÔi60fpsj
+	constexpr float kTargetHeightOffset = 10.0f;        // æ¥åœ°æ™‚ã®é«˜ã•ã‚ªãƒ•ã‚»ãƒƒãƒˆ
+	constexpr float kSkillPowerRate		= 2.0f;         // ã‚¹ã‚­ãƒ«å¨åŠ›å€ç‡
+	constexpr float kMoveSpeed			= 45.0f;        // ç§»å‹•é€Ÿåº¦
+	constexpr float kFixedTimeStep		= 1.0f / 60.0f; // æƒ³å®šãƒ•ãƒ¬ãƒ¼ãƒ æ™‚é–“ï¼ˆ60fpsï¼‰
 }
 
 Paladin::Paladin()
@@ -33,37 +33,37 @@ bool Paladin::Init()
 {
 	GameObject::Init();
 
-	// ƒ‚ƒfƒ‹•`‰æ
+	// ãƒ¢ãƒ‡ãƒ«æç”»
 	AddComponent<MeshRenderer>()->Load(m_ModelPath, m_PipelineName);
 
-	// ƒXƒe[ƒ^ƒXƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’Ç‰Á
+	// ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¿½åŠ 
 	m_Status = AddComponent<StatusComponent>();
 	m_Status->Setup(CreateStatusData());
 
-	// ‘Ì—ÍƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’Ç‰Á
+	// ä½“åŠ›ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¿½åŠ 
 	HealthComponent* health = AddComponent<HealthComponent>();
 	health->SetMaxHP(m_Status->GetMaxHp());
 	health->SetHP(m_Status->GetMaxHp());
 
-	// –¡•ûAIƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’Ç‰Á
+	// å‘³æ–¹AIã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¿½åŠ 
 	m_AllyAI = AddComponent<AllyAIComponent>();
 	m_AllyAI->Setup(CreateAIParams());
 
-	// ƒ^[ƒQƒbƒgƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’Ç‰Á
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¿½åŠ 
 	TargetComponent* target = AddComponent<TargetComponent>();
 	target->SetHeightOffset(kTargetHeightOffset);
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“ƒRƒ“ƒgƒ[ƒ‰[‚Ì’Ç‰Á
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®è¿½åŠ 
 	m_Animation = AddComponent<AnimationController>();
 	m_Animation->SetLoop(true);
 	m_Animation->Play(kAnimIdle);
 
-	// ƒK[ƒhƒXƒLƒ‹
+	// ã‚¬ãƒ¼ãƒ‰ã‚¹ã‚­ãƒ«
 	m_GuardSkill = CreateGuardSkillData();
-	// UŒ‚ƒXƒLƒ‹
+	// æ”»æ’ƒã‚¹ã‚­ãƒ«
 	m_SkillAttack = CreateSkillAttackData();
 
-	// ‰ŠúˆÊ’u‚ğ’nŒ`‚Ì‚‚³‚É‡‚í‚¹‚é
+	// åˆæœŸä½ç½®ã‚’åœ°å½¢ã®é«˜ã•ã«åˆã‚ã›ã‚‹
 	Scene* pScene = GameManager::GetScene();
 	if (pScene)
 	{
@@ -100,14 +100,14 @@ void Paladin::Update(float deltaTime)
 	if (pHealth == nullptr || !pHealth->IsAlive())
 	{
 		//---------------------------------------------------------------------
-		// €–Sˆ—
+		// æ­»äº¡å‡¦ç†
 		if (m_State != PaladinState::Dead)
 		{
 			ChangeState(PaladinState::Dead);
 		}
 		if (m_Animation != nullptr && m_Animation->GetCurrentAnimationName() == kAnimDeath && !m_Animation->IsPlaying())
 		{
-			// €–S‚µ‚Ä‚àíœ‚µ‚È‚¢
+			// æ­»äº¡ã—ã¦ã‚‚å‰Šé™¤ã—ãªã„
 			return;
 		}
 		GameObject::Update(deltaTime);
@@ -121,7 +121,7 @@ void Paladin::Update(float deltaTime)
 	}
 
 	//---------------------------------------------------------------------
-	// ¶‘¶’†‚Ìˆ—
+	// ç”Ÿå­˜ä¸­ã®å‡¦ç†
 
 	if (!UpdateGuard(deltaTime, pScene))
 	{
@@ -142,7 +142,7 @@ void Paladin::Update(float deltaTime)
 }
 
 //-----------------------------------------------------------------------------
-//	–¡•ûAI‚Ìƒpƒ‰ƒ[ƒ^‚ğ¶¬‚µ‚Ü‚·B
+//	å‘³æ–¹AIã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 //-----------------------------------------------------------------------------
 AllyAIParams Paladin::CreateAIParams() const
 {
@@ -162,7 +162,7 @@ AllyAIParams Paladin::CreateAIParams() const
 }
 
 //-----------------------------------------------------------------------------
-// 	ƒK[ƒhƒXƒLƒ‹‚Ìƒf[ƒ^‚ğ¶¬‚µ‚Ü‚·B
+// 	ã‚¬ãƒ¼ãƒ‰ã‚¹ã‚­ãƒ«ã®ãƒ‡ãƒ¼ã‚¿ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 //-----------------------------------------------------------------------------
 SkillData Paladin::CreateGuardSkillData() const
 {
@@ -177,7 +177,7 @@ SkillData Paladin::CreateGuardSkillData() const
 }
 
 //-----------------------------------------------------------------------------
-// 	UŒ‚ƒXƒLƒ‹‚Ìƒf[ƒ^‚ğ¶¬‚µ‚Ü‚·B
+// 	æ”»æ’ƒã‚¹ã‚­ãƒ«ã®ãƒ‡ãƒ¼ã‚¿ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 //-----------------------------------------------------------------------------
 SkillData Paladin::CreateSkillAttackData() const
 {
@@ -207,13 +207,13 @@ bool Paladin::UpdateCombat(float deltaTime, Scene* pScene)
 {
 	if (pScene == nullptr) return false;
 
-	// ©“®UŒ‚‚ÌƒN[ƒ‹ƒ_ƒEƒ“‚ğXV
+	// è‡ªå‹•æ”»æ’ƒã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ã‚’æ›´æ–°
 	if (m_AutoAttackCooldown > 0.0f)
 	{
 		m_AutoAttackCooldown -= deltaTime;
 	}
 
-	// ƒ_ƒ[ƒW”­¶‚Ì’x‰„‚ğŠÇ—
+	// ãƒ€ãƒ¡ãƒ¼ã‚¸ç™ºç”Ÿã®é…å»¶ã‚’ç®¡ç†
 	if (m_HasPendingDamage)
 	{
 		ResolvePendingDamage(m_HasPendingDamage, m_DamageDelayTimer, deltaTime, kAutoAttackRange, m_Status->GetAttackPower());
@@ -378,10 +378,10 @@ bool Paladin::TryStartSkillAttack(Scene* pScene)
 {
 	if (pScene == nullptr) return false;
 
-	// ƒN[ƒ‹ƒ_ƒEƒ“‚ªc‚Á‚Ä‚¢‚éê‡‚Í”­“®‚Å‚«‚È‚¢
+	// ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ãŒæ®‹ã£ã¦ã„ã‚‹å ´åˆã¯ç™ºå‹•ã§ããªã„
 	if (m_SkillAttackCooldown > 0.0f) return false;
 
-	// UŒ‚’†‚âƒK[ƒh’†‚ÍƒXƒLƒ‹UŒ‚‚Åã‘‚«‚µ‚È‚¢B‘Ò‹@’†EˆÚ“®’†‚Ì‚İ”­“®‚³‚¹‚éB
+	// æ”»æ’ƒä¸­ã‚„ã‚¬ãƒ¼ãƒ‰ä¸­ã¯ã‚¹ã‚­ãƒ«æ”»æ’ƒã§ä¸Šæ›¸ãã—ãªã„ã€‚å¾…æ©Ÿä¸­ãƒ»ç§»å‹•ä¸­ã®ã¿ç™ºå‹•ã•ã›ã‚‹ã€‚
 	if (IsGuarding() ||
 		m_State == PaladinState::AutoAttack ||
 		m_State == PaladinState::Dead)
@@ -389,30 +389,30 @@ bool Paladin::TryStartSkillAttack(Scene* pScene)
 		return false;
 	}
 
-	// AllyAIComponent‚ªŠÇ—‚µ‚Ä‚¢‚éUŒ‚‘ÎÛ‚ğæ“¾B
+	// AllyAIComponentãŒç®¡ç†ã—ã¦ã„ã‚‹æ”»æ’ƒå¯¾è±¡ã‚’å–å¾—ã€‚
 	GameObject* enemy = m_AllyAI->GetOrFindAttackTarget(pScene);
 	if (enemy == nullptr) return false;
 
 	HealthComponent* hp = enemy->GetComponent<HealthComponent>();
 	if (hp == nullptr || !hp->IsAlive()) return false;
 
-	// UŒ‚‘ÎÛ‚ªƒXƒLƒ‹UŒ‚‚ÌË’ö“à‚É‚¢‚È‚¢ê‡‚Í”­“®‚µ‚È‚¢
+	// æ”»æ’ƒå¯¾è±¡ãŒã‚¹ã‚­ãƒ«æ”»æ’ƒã®å°„ç¨‹å†…ã«ã„ãªã„å ´åˆã¯ç™ºå‹•ã—ãªã„
 	if (!MathUtility::IsInRange(m_Position, enemy->GetPosition(), m_SkillAttack.range))
 	{
 		return false;
 	}
 
 	//----------------------------------------------------
-	// ƒXƒLƒ‹UŒ‚ŠJn
+	// ã‚¹ã‚­ãƒ«æ”»æ’ƒé–‹å§‹
 
 	m_AttackTarget = enemy;
 
-	// ƒXƒLƒ‹”­“®‚Íƒ^[ƒQƒbƒg‚Ì•ûŒü‚ğŒü‚­
+	// ã‚¹ã‚­ãƒ«ç™ºå‹•æ™‚ã¯ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®æ–¹å‘ã‚’å‘ã
 	m_AllyAI->FaceTarget(kFixedTimeStep, enemy->GetPosition());
 
 	m_HasPendingSkillDamage = true;
 
-	// ƒN[ƒ‹ƒ_ƒEƒ“‚ÌƒŠƒZƒbƒg
+	// ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ã®ãƒªã‚»ãƒƒãƒˆ
 	m_SkillDamageDelayTimer = m_SkillAttack.effectDelaySec;
 	const float cooldownRate = (m_Status != nullptr)
 		? m_Status->GetSkillCooldownRate()
@@ -428,7 +428,7 @@ bool Paladin::TryStartGuard(Scene* pScene)
 	if (pScene == nullptr) return false;
 	if (m_GuardCooldown > 0.0f) return false;
 
-	// UŒ‚’†‚ÍƒK[ƒh‚Åã‘‚«‚µ‚È‚¢BˆÚ“®’†E‘Ò‹@’†‚Ì‚İ”­“®‚³‚¹‚éB
+	// æ”»æ’ƒä¸­ã¯ã‚¬ãƒ¼ãƒ‰ã§ä¸Šæ›¸ãã—ãªã„ã€‚ç§»å‹•ä¸­ãƒ»å¾…æ©Ÿä¸­ã®ã¿ç™ºå‹•ã•ã›ã‚‹ã€‚
 	if (m_State == PaladinState::AutoAttack ||
 		m_State == PaladinState::SkillAttack ||
 		m_State == PaladinState::Dead)
@@ -445,11 +445,11 @@ bool Paladin::TryStartGuard(Scene* pScene)
 		return false;
 	}
 
-	// ƒK[ƒhŠJn
+	// ã‚¬ãƒ¼ãƒ‰é–‹å§‹
 	m_GuardTimer = (m_Status != nullptr)
 		? m_Status->CalculateSkillDuration(m_GuardSkill.durationSec)
 		: m_GuardSkill.durationSec;
-	// ƒK[ƒhƒN[ƒ‹ƒ_ƒEƒ“‚ÌƒŠƒZƒbƒg
+	// ã‚¬ãƒ¼ãƒ‰ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ã®ãƒªã‚»ãƒƒãƒˆ
 	const float cooldownRate = (m_Status != nullptr)
 		? m_Status->GetSkillCooldownRate()
 		: 1.0f;
@@ -465,7 +465,7 @@ DamageResult Paladin::ApplyDamage(const DamageContext& context)
 {
 	DamageContext guardedContext = context;
 
-	// ƒK[ƒh’†‚Íƒ_ƒ[ƒW‚ğŒyŒ¸
+	// ã‚¬ãƒ¼ãƒ‰ä¸­ã¯ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’è»½æ¸›
 	if (IsGuarding())
 	{
 		guardedContext.damage = static_cast<int>(
@@ -476,11 +476,11 @@ DamageResult Paladin::ApplyDamage(const DamageContext& context)
 			guardedContext.damage = 1;
 		}
 	}
-	// Šî–{“I‚Èƒ_ƒ[ƒWˆ—‚ÍeƒNƒ‰ƒX‚Åˆ—
+	// åŸºæœ¬çš„ãªãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†ã¯è¦ªã‚¯ãƒ©ã‚¹ã§å‡¦ç†
 	DamageResult result = GameObject::ApplyDamage(guardedContext);
 	if (result.hit && IsGuarding())
 	{
-		// ƒK[ƒh’†‚ÉUŒ‚‚ğó‚¯‚½ê‡‚ÍƒK[ƒhƒCƒ“ƒpƒNƒgó‘Ô‚ÉˆÚs‚µ‚Äê—p‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğÄ¶
+		// ã‚¬ãƒ¼ãƒ‰ä¸­ã«æ”»æ’ƒã‚’å—ã‘ãŸå ´åˆã¯ã‚¬ãƒ¼ãƒ‰ã‚¤ãƒ³ãƒ‘ã‚¯ãƒˆçŠ¶æ…‹ã«ç§»è¡Œã—ã¦å°‚ç”¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿ
 		ChangeState(PaladinState::GuardImpact);
 	}
 	return result;
@@ -550,7 +550,7 @@ void Paladin::ResolvePendingDamage(bool& hasPending, float& timer,
 
 	hasPending = false;
 
-	// ”­¶‚Ì m_AttackTarget ‚ğQÆiŒ³‚Ì‹““®‚ğˆÛj
+	// ç™ºç”Ÿæ™‚ã® m_AttackTarget ã‚’å‚ç…§ï¼ˆå…ƒã®æŒ™å‹•ã‚’ç¶­æŒï¼‰
 	if (m_AttackTarget == nullptr || m_AttackTarget->IsDestroyed()) return;
 
 	HealthComponent* targetHp = m_AttackTarget->GetComponent<HealthComponent>();

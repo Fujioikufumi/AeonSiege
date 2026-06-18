@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
-// GameApp�Ŏg�p����Q�[���I�u�W�F�N�g�̃��[�h
+// GameAppで使用するゲームオブジェクトのロード
 void LoadGameObj();

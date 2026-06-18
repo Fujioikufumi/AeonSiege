@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include "Component.h"
 #include <DirectXMath.h>
 #include "GameObject.h"
 /// <summary>
-/// ƒƒbƒNƒIƒ“‚Ì–Ú•W‚ğ¦‚·ƒRƒ“ƒ|[ƒlƒ“ƒg (í“¬‘ÎÛ‚Ì“o˜^)
+/// ãƒ­ãƒƒã‚¯ã‚ªãƒ³ã®ç›®æ¨™ã‚’ç¤ºã™ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ (æˆ¦é—˜å¯¾è±¡ã®ç™»éŒ²)
 /// </summary>
 class TargetComponent : public Component
 {
@@ -13,7 +13,7 @@ public:
 
 	bool Init() override { return true; }
 
-	// ƒƒbƒNƒIƒ“‚Ì–Ú•WÀ•W(ƒJƒƒ‰‚Ì’‹“_)‚ğ•Ô‚·
+	// ãƒ­ãƒƒã‚¯ã‚ªãƒ³æ™‚ã®ç›®æ¨™åº§æ¨™(ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹)ã‚’è¿”ã™
 	DirectX::XMFLOAT3 GetLockPosition() const
 	{
 		DirectX::XMFLOAT3 pos = m_GameObject->GetPosition();

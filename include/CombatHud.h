@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "GameObject.h"
 #include "CombatHudLayout.h"
 #include "AllyHudPanel.h"
@@ -17,15 +17,15 @@ public:
 	bool Init() override;
 	void Update(float deltaTime) override;
 
-	// DebugUI—pƒAƒNƒZƒX
+	// DebugUIç”¨ã‚¢ã‚¯ã‚»ã‚¹
 	CombatHudLayout& GetLayout() { return m_LayoutData; }
 	void RefreshLayout();
 private:
 
-	CombatHudLayout m_LayoutData; // HUD‘S‘Ì‚ÌƒŒƒCƒAƒEƒgƒf[ƒ^
+	CombatHudLayout m_LayoutData; // HUDå…¨ä½“ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ãƒ¼ã‚¿
 
-	std::unique_ptr<EnemyHudPanel> m_EnemyPanel; // “G‚ÌHUDƒpƒlƒ‹
-	std::vector<std::unique_ptr<AllyHudPanel>> m_AllyPanels;    // –¡•û‚ÌHUDƒpƒlƒ‹
-	std::vector<std::unique_ptr<SkillHudPanel>> m_SkillPanels;  // ƒXƒLƒ‹‚ÌHUDƒpƒlƒ‹
-	std::unique_ptr<PhaseHudPanel> m_PhasePanel; // ƒtƒF[ƒY•\¦ƒpƒlƒ‹
+	std::unique_ptr<EnemyHudPanel> m_EnemyPanel; // æ•µã®HUDãƒ‘ãƒãƒ«
+	std::vector<std::unique_ptr<AllyHudPanel>> m_AllyPanels;    // å‘³æ–¹ã®HUDãƒ‘ãƒãƒ«
+	std::vector<std::unique_ptr<SkillHudPanel>> m_SkillPanels;  // ã‚¹ã‚­ãƒ«ã®HUDãƒ‘ãƒãƒ«
+	std::unique_ptr<PhaseHudPanel> m_PhasePanel; // ãƒ•ã‚§ãƒ¼ã‚ºè¡¨ç¤ºãƒ‘ãƒãƒ«
 };

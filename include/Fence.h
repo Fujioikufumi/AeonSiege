@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 //-----------------------------------------------------------------------------
 // Includes
 //-----------------------------------------------------------------------------
@@ -14,23 +14,23 @@ public:
 	void Term();
 
 	/// <summary>
-	/// ƒVƒOƒiƒ‹ó‘Ô‚É‚È‚é‚Ü‚Åw’è‚³‚ê‚½ŠÔ‘Ò‹@‚µ‚Ü‚·.
+	/// ã‚·ã‚°ãƒŠãƒ«çŠ¶æ…‹ã«ãªã‚‹ã¾ã§æŒ‡å®šã•ã‚ŒãŸæ™‚é–“å¾…æ©Ÿã—ã¾ã™.
 	/// </summary>
-	/// <param name="pQueue"><ƒRƒ}ƒ“ƒhƒLƒ…[‚Å‚·./param>
-	/// <param name="timeout"><ƒ^ƒCƒ€ƒAƒEƒgŠÔ(ƒ~ƒŠ•b)./param>
+	/// <param name="pQueue"><ã‚³ãƒãƒ³ãƒ‰ã‚­ãƒ¥ãƒ¼ã§ã™./param>
+	/// <param name="timeout"><ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆæ™‚é–“(ãƒŸãƒªç§’)./param>
 	void Wait(ID3D12CommandQueue* pQueue, UINT timeout);
 
 	/// <summary>
-	/// ƒVƒOƒiƒ‹ó‘Ô‚É‚È‚é‚Ü‚Å‚¸‚Á‚Æ‘Ò‹@‚µ‚Ü‚·.
+	/// ã‚·ã‚°ãƒŠãƒ«çŠ¶æ…‹ã«ãªã‚‹ã¾ã§ãšã£ã¨å¾…æ©Ÿã—ã¾ã™.
 	/// </summary>
-	/// <param name="pQueue"><ƒRƒ}ƒ“ƒhƒLƒ…[‚Å‚·./param>
+	/// <param name="pQueue"><ã‚³ãƒãƒ³ãƒ‰ã‚­ãƒ¥ãƒ¼ã§ã™./param>
 	void Sync(ID3D12CommandQueue* pQueue);
 
 private:
-	ComPtr<ID3D12Fence> m_Fence;           // ƒtƒFƒ“ƒX‚Å‚·.
-	HANDLE              m_Event;            // ƒCƒxƒ“ƒg‚Å‚·.
-	UINT                m_Counter;          // Œ»İ‚ÌƒJƒEƒ“ƒ^[‚Å‚·.
+	ComPtr<ID3D12Fence> m_Fence;           // ãƒ•ã‚§ãƒ³ã‚¹ã§ã™.
+	HANDLE              m_Event;            // ã‚¤ãƒ™ãƒ³ãƒˆã§ã™.
+	UINT                m_Counter;          // ç¾åœ¨ã®ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ã§ã™.
 
-	Fence			(const Fence&) = delete;    // ƒAƒNƒZƒX‹Ö~.
-	void operator = (const Fence&) = delete;    // ƒAƒNƒZƒX‹Ö~.
+	Fence			(const Fence&) = delete;    // ã‚¢ã‚¯ã‚»ã‚¹ç¦æ­¢.
+	void operator = (const Fence&) = delete;    // ã‚¢ã‚¯ã‚»ã‚¹ç¦æ­¢.
 };

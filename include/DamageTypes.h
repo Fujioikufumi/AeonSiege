@@ -1,25 +1,25 @@
-#pragma once
+ï»¿#pragma once
 
 class GameObject;
 
 /// <summary>
-/// ƒ_ƒ[ƒWˆ—‚É•K—v‚Èî•ñ‚ğ‚Ü‚Æ‚ß‚½\‘¢‘Ì
+/// ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†ã«å¿…è¦ãªæƒ…å ±ã‚’ã¾ã¨ã‚ãŸæ§‹é€ ä½“
 /// </summary>
 struct DamageContext
 {
-	int damage = 0;					// UŒ‚‘¤‚ÌÅIƒ_ƒ[ƒW
-	GameObject* attacker = nullptr; // UŒ‚‘¤‚ÌƒIƒuƒWƒFƒNƒg
-	bool isCritical = false;		// ƒNƒŠƒeƒBƒJƒ‹‚©‚Ç‚¤‚©
-	bool isCombo = false;			// ƒRƒ“ƒ{‚©‚Ç‚¤‚©
+	int damage = 0;					// æ”»æ’ƒå´ã®æœ€çµ‚ãƒ€ãƒ¡ãƒ¼ã‚¸
+	GameObject* attacker = nullptr; // æ”»æ’ƒå´ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	bool isCritical = false;		// ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‹ã©ã†ã‹
+	bool isCombo = false;			// ã‚³ãƒ³ãƒœã‹ã©ã†ã‹
 };
 
 /// <summary>
-/// ƒ_ƒ[ƒWˆ—‚ÌŒ‹‰Ê‚ğ‚Ü‚Æ‚ß‚½\‘¢‘Ì
+/// ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†ã®çµæœã‚’ã¾ã¨ã‚ãŸæ§‹é€ ä½“
 /// </summary>
 struct DamageResult
 {
-	bool hit = false;		// –½’†‚µ‚½‚©‚Ç‚¤‚©
-	bool evaded = false;	// ‰ñ”ğ‚³‚ê‚½‚©‚Ç‚¤‚©
-	bool critical = false;	// ƒNƒŠƒeƒBƒJƒ‹‚©‚Ç‚¤‚©
-	int finalDamage = 0;	// ÅIƒ_ƒ[ƒW—Ê
+	bool hit = false;		// å‘½ä¸­ã—ãŸã‹ã©ã†ã‹
+	bool evaded = false;	// å›é¿ã•ã‚ŒãŸã‹ã©ã†ã‹
+	bool critical = false;	// ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‹ã©ã†ã‹
+	int finalDamage = 0;	// æœ€çµ‚ãƒ€ãƒ¡ãƒ¼ã‚¸é‡
 };

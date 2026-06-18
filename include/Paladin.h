@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "CharacterBase.h"
 #include "StatusComponent.h"
 #include "SkillData.h"
@@ -30,127 +30,127 @@ public:
 	void Update(float deltaTime = 0.0f) override;
 
 	/// <summary>
-	/// Њ»ЌЭѓKЃ[ѓhЏу‘ФЃi”нѓ_ѓЃЃ[ѓWЊyЊё’†Ѓj‚©‚З‚¤‚©‚р”»’и‚µ‚Ь‚·ЃB
+	/// зЏѕењЁг‚¬гѓјгѓ‰зЉ¶ж…‹пј€иў«гѓЂгѓЎгѓјг‚ёи»Ѕжё›дё­пј‰гЃ‹гЃ©гЃ†гЃ‹г‚’е€¤е®љгЃ—гЃѕгЃ™гЂ‚
 	/// </summary>
-	/// <returns>ѓKЃ[ѓh’†‚Е‚ ‚к‚О trueЃA‚»‚к€ИЉO‚Н false</returns>
+	/// <returns>г‚¬гѓјгѓ‰дё­гЃ§гЃ‚г‚ЊгЃ° trueгЂЃгЃќг‚Њд»Ґе¤–гЃЇ false</returns>
 	bool IsGuarding() const override;
 
-	// Paladin‚ЄЋу‚Ї‚йѓ_ѓЃЃ[ѓWЏ€—ќЃBѓKЃ[ѓhЏу‘Ф‚вѓXѓLѓ‹ЌUЊ‚‚МЏу‘Ф‚Й‰ћ‚¶‚Дѓ_ѓЃЃ[ѓW‚рЊyЊё‚И‚З
+	// PaladinгЃЊеЏ—гЃ‘г‚‹гѓЂгѓЎгѓјг‚ёе‡¦зђ†гЂ‚г‚¬гѓјгѓ‰зЉ¶ж…‹г‚„г‚№г‚­гѓ«ж”»ж’ѓгЃ®зЉ¶ж…‹гЃ«еїњгЃгЃ¦гѓЂгѓЎгѓјг‚ёг‚’и»Ѕжё›гЃЄгЃ©
 	DamageResult ApplyDamage(const DamageContext& context) override;
 private:
 	AllyAIParams CreateAIParams() const;
 
 	/// <summary>
-	/// ѓpѓ‰ѓfѓBѓ“‚МЏу‘Ф‚рЌXђV‚µ‚Ь‚·ЃBЏу‘Ф‚Є•П‰»‚µ‚ЅЏкЌ‡‚НЃA‘О‰ћ‚·‚йѓAѓjѓЃЃ[ѓVѓ‡ѓ“‚ЙђШ‚и‘Ц‚¦‚Ь‚·ЃB
+	/// гѓ‘гѓ©гѓ‡г‚ЈгѓігЃ®зЉ¶ж…‹г‚’ж›ґж–°гЃ—гЃѕгЃ™гЂ‚зЉ¶ж…‹гЃЊе¤‰еЊ–гЃ—гЃџе ґеђ€гЃЇгЂЃеЇѕеїњгЃ™г‚‹г‚ўгѓ‹гѓЎгѓјг‚·гѓ§гѓігЃ«е€‡г‚Љж›їгЃ€гЃѕгЃ™гЂ‚
 	/// </summary>
-	/// <param name="newState">ђV‚µ‚ўЏу‘ФЃiPaladinStateЃj</param>
+	/// <param name="newState">ж–°гЃ—гЃ„зЉ¶ж…‹пј€PaladinStateпј‰</param>
 	void ChangeState(PaladinState newState);
 
 
 	/// <summary>
-	/// ѓvѓЊѓCѓ„Ѓ[‚р’ЗЏ]‚·‚й‚Ѕ‚Я‚МЌXђVЏ€—ќЃBѓvѓЊѓCѓ„Ѓ[‚©‚з€к’и€ИЏг—Ј‚к‚Д‚ў‚йЏкЌ‡‚Н’ЗЏ]‚рЉJЋn‚µЃA‹Я‚Г‚ў‚Ѕ‚з’вЋ~‚µ‚Ь‚·ЃB‚Ь‚ЅЃAѓvѓЊѓCѓ„Ѓ[‚Є’вЋ~‚µ‚Д‚ў‚йЏкЌ‡‚Н‘Т‹@€К’u‚рЊvЋZ‚µ‚Д€Ъ“®‚µ‚Ь‚·ЃB
+	/// гѓ—гѓ¬г‚¤гѓ¤гѓјг‚’иїЅеѕ“гЃ™г‚‹гЃџг‚ЃгЃ®ж›ґж–°е‡¦зђ†гЂ‚гѓ—гѓ¬г‚¤гѓ¤гѓјгЃ‹г‚‰дёЂе®љд»ҐдёЉй›ўг‚ЊгЃ¦гЃ„г‚‹е ґеђ€гЃЇиїЅеѕ“г‚’й–‹е§‹гЃ—гЂЃиї‘гЃҐгЃ„гЃџг‚‰еЃњж­ўгЃ—гЃѕгЃ™гЂ‚гЃѕгЃџгЂЃгѓ—гѓ¬г‚¤гѓ¤гѓјгЃЊеЃњж­ўгЃ—гЃ¦гЃ„г‚‹е ґеђ€гЃЇеѕ…ж©џдЅЌзЅ®г‚’иЁ€з®—гЃ—гЃ¦з§»е‹•гЃ—гЃѕгЃ™гЂ‚
 	/// </summary>
-	/// <param name="deltaTime">‘OѓtѓЊЃ[ѓЂ‚©‚з‚МЊo‰ЯЋћЉФЃi•bЃj</param>
-	/// <param name="pScene">ѓVЃ[ѓ“‚Ц‚Мѓ|ѓCѓ“ѓ^</param>
+	/// <param name="deltaTime">е‰Ќгѓ•гѓ¬гѓјгѓ гЃ‹г‚‰гЃ®зµЊйЃЋж™‚й–“пј€з§’пј‰</param>
+	/// <param name="pScene">г‚·гѓјгѓігЃёгЃ®гѓќг‚¤гѓіг‚ї</param>
 	void UpdateFollowPlayer(float deltaTime, class Scene* pScene);
 
 	/// <summary>
-	/// Љо–{“I‚Иђн“¬ЃEЌх“GѓЌѓWѓbѓN‚МЌXђVЏ€—ќЃB
+	/// еџєжњ¬зљ„гЃЄж€¦й—гѓ»зґўж•µгѓ­г‚ёгѓѓг‚ЇгЃ®ж›ґж–°е‡¦зђ†гЂ‚
 	/// </summary>
 	bool UpdateCombat(float deltaTime, class Scene* pScene);
 	
 	/// <summary>
-	/// ѓKЃ[ѓhЏ€—ќ‚МЌXђVЃBѓKЃ[ѓhЋћЉФ‚МЉЗ—ќ‚И‚З‚рЌs‚ў‚Ь‚·ЃB
+	/// г‚¬гѓјгѓ‰е‡¦зђ†гЃ®ж›ґж–°гЂ‚г‚¬гѓјгѓ‰ж™‚й–“гЃ®з®Ўзђ†гЃЄгЃ©г‚’иЎЊгЃ„гЃѕгЃ™гЂ‚
 	/// </summary>
 	bool UpdateGuard(float deltaTime, class Scene* pScene);
 
 	/// <summary>
-	/// Џу‹µ‚Й‰ћ‚¶‚ДѓKЃ[ѓh‚МЉJЋn‚рЋЋ‚Э‚Ь‚·ЃB
+	/// зЉ¶жіЃгЃ«еїњгЃгЃ¦г‚¬гѓјгѓ‰гЃ®й–‹е§‹г‚’и©¦гЃїгЃѕгЃ™гЂ‚
 	/// </summary>
 	bool TryStartGuard(class Scene* pScene);
 
 	/// <summary>
-	/// Њ»ЌЭ‚МѓXѓeЃ[ѓg‚ЄѓKЃ[ѓhЉЦЊW‚МѓXѓeЃ[ѓg‚©‚З‚¤‚©‚р”»’и‚µ‚Ь‚·ЃB
+	/// зЏѕењЁгЃ®г‚№гѓ†гѓјгѓ€гЃЊг‚¬гѓјгѓ‰й–ўдї‚гЃ®г‚№гѓ†гѓјгѓ€гЃ‹гЃ©гЃ†гЃ‹г‚’е€¤е®љгЃ—гЃѕгЃ™гЂ‚
 	/// </summary>
 	bool IsGuardState() const;
 
 	/// <summary>
-	/// ѓXѓLѓ‹ЌUЊ‚Ѓi“БЋкЌUЊ‚Ѓj’†‚МЌXђVЏ€—ќЃBѓ_ѓЃЃ[ѓW”­ђ¶’x‰„‚И‚З‚рЉЗ—ќ‚µ‚Ь‚·ЃB
+	/// г‚№г‚­гѓ«ж”»ж’ѓпј€з‰№ж®Љж”»ж’ѓпј‰дё­гЃ®ж›ґж–°е‡¦зђ†гЂ‚гѓЂгѓЎгѓјг‚ёз™єз”џйЃ…е»¶гЃЄгЃ©г‚’з®Ўзђ†гЃ—гЃѕгЃ™гЂ‚
 	/// </summary>
 	bool UpdateSkillAttack(float deltaTime, class Scene* pScene);
 
 	/// <summary>
-	/// ѓXѓLѓ‹ЌUЊ‚‚МЉJЋn‚рЋЋ‚Э‚Ь‚·ЃiѓNЃ[ѓ‹ѓ_ѓEѓ“‚Є–ѕ‚Ї‚Д‚ў‚йЏкЌ‡‚И‚ЗЃjЃB
+	/// г‚№г‚­гѓ«ж”»ж’ѓгЃ®й–‹е§‹г‚’и©¦гЃїгЃѕгЃ™пј€г‚Їгѓјгѓ«гѓЂг‚¦гѓігЃЊжЋгЃ‘гЃ¦гЃ„г‚‹е ґеђ€гЃЄгЃ©пј‰гЂ‚
 	/// </summary>
 	bool TryStartSkillAttack(class Scene* pScene);
 
 
-	/// ’x‰„ѓ_ѓЃЃ[ѓW‚М‰рЊ€Џ€—ќЃi’КЏнЌUЊ‚ЃEѓXѓLѓ‹ЌUЊ‚‚Е‹¤—pЃj
+	/// йЃ…е»¶гѓЂгѓЎгѓјг‚ёгЃ®и§Јж±єе‡¦зђ†пј€йЂљеёёж”»ж’ѓгѓ»г‚№г‚­гѓ«ж”»ж’ѓгЃ§е…±з”Ёпј‰
 	void ResolvePendingDamage(bool& hasPending, float& timer,
 		float deltaTime, float range, int damage);
 
 private:
 	StatusData CreateStatusData() const;
 
-	class AnimationController* m_Animation = nullptr; // ѓAѓjѓЃЃ[ѓVѓ‡ѓ“ЉЗ—ќѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
-	class AllyAIComponent* m_AllyAI = nullptr; // –Ў•ыAIЉЗ—ќѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
+	class AnimationController* m_Animation = nullptr; // г‚ўгѓ‹гѓЎгѓјг‚·гѓ§гѓіз®Ўзђ†г‚ігѓігѓќгѓјгѓЌгѓігѓ€
+	class AllyAIComponent* m_AllyAI = nullptr; // е‘іж–№AIз®Ўзђ†г‚ігѓігѓќгѓјгѓЌгѓігѓ€
 
 	float GetMoveSpeed() const;
-	PaladinState m_State = PaladinState::Idle; // Њ»ЌЭ‚МѓXѓeЃ[ѓg
+	PaladinState m_State = PaladinState::Idle; // зЏѕењЁгЃ®г‚№гѓ†гѓјгѓ€
 
 	//-------------------------------------------------------------------
-	// ѓXѓLѓ‹ЉЦA
+	// г‚№г‚­гѓ«й–ўйЂЈ
 	SkillData CreateGuardSkillData() const;
 	SkillData CreateSkillAttackData() const;
 	SkillData m_GuardSkill;
 	SkillData m_SkillAttack;
 
-	// ѓXѓLѓ‹ЌUЊ‚—p•Пђ”
-	float m_SkillAttackCooldown = 0.0f;        // ѓXѓLѓ‹ЌUЊ‚‚МѓNЃ[ѓ‹ѓ_ѓEѓ“ѓ^ѓCѓ}Ѓ[
-	float m_SkillDamageDelayTimer = 0.0f;      // ѓXѓLѓ‹ѓ_ѓЃЃ[ѓW”­ђ¶‚Ь‚Е‚М’x‰„ѓ^ѓCѓ}Ѓ[
-	bool m_HasPendingSkillDamage = false;      // ѓXѓLѓ‹ѓ_ѓЃЃ[ѓW‚М”­ђ¶‘Т‚їѓtѓ‰ѓO
+	// г‚№г‚­гѓ«ж”»ж’ѓз”Ёе¤‰ж•°
+	float m_SkillAttackCooldown = 0.0f;        // г‚№г‚­гѓ«ж”»ж’ѓгЃ®г‚Їгѓјгѓ«гѓЂг‚¦гѓіг‚їг‚¤гѓћгѓј
+	float m_SkillDamageDelayTimer = 0.0f;      // г‚№г‚­гѓ«гѓЂгѓЎгѓјг‚ёз™єз”џгЃѕгЃ§гЃ®йЃ…е»¶г‚їг‚¤гѓћгѓј
+	bool m_HasPendingSkillDamage = false;      // г‚№г‚­гѓ«гѓЂгѓЎгѓјг‚ёгЃ®з™єз”џеѕ…гЃЎгѓ•гѓ©г‚°
 
-	// ѓXѓLѓ‹ЌUЊ‚ЉЦA’иђ”
-	static constexpr float kSkillAttackRange = 40.0f;       // ѓXѓLѓ‹ЌUЊ‚‚МЋЛ’ц
-	static constexpr float kSkillAttackCooldownSec = 6.0f;  // ѓXѓLѓ‹ЌUЊ‚‚МѓNЃ[ѓ‹ѓ_ѓEѓ“ЋћЉФЃi•bЃj
-	static constexpr float kSkillAttackDamageDelay = 0.45f; // ѓXѓLѓ‹ЌUЊ‚‚Мѓ_ѓЃЃ[ѓW”­ђ¶‚Ь‚Е‚М’x‰„ЋћЉФЃi•bЃj
+	// г‚№г‚­гѓ«ж”»ж’ѓй–ўйЂЈе®љж•°
+	static constexpr float kSkillAttackRange = 40.0f;       // г‚№г‚­гѓ«ж”»ж’ѓгЃ®е°„зЁ‹
+	static constexpr float kSkillAttackCooldownSec = 6.0f;  // г‚№г‚­гѓ«ж”»ж’ѓгЃ®г‚Їгѓјгѓ«гѓЂг‚¦гѓіж™‚й–“пј€з§’пј‰
+	static constexpr float kSkillAttackDamageDelay = 0.45f; // г‚№г‚­гѓ«ж”»ж’ѓгЃ®гѓЂгѓЎгѓјг‚ёз™єз”џгЃѕгЃ§гЃ®йЃ…е»¶ж™‚й–“пј€з§’пј‰
 
-	// ’КЏнЌUЊ‚—p•Пђ”
-	GameObject* m_AttackTarget = nullptr;   // Њ»ЌЭЌUЊ‚‚µ‚Д‚ў‚йѓ^Ѓ[ѓQѓbѓg
-	float m_AutoAttackCooldown = 0.0f;      // ’КЏнЌUЊ‚‚МѓIЃ[ѓgѓAѓ^ѓbѓNЉФЉuѓ^ѓCѓ}Ѓ[
-	float m_DamageDelayTimer = 0.0f;        // ’КЏнЌUЊ‚‚Мѓ_ѓЃЃ[ѓW”­ђ¶‚Ь‚Е‚М’x‰„ѓ^ѓCѓ}Ѓ[
-	bool m_HasPendingDamage = false;        // ’КЏнЌUЊ‚‚Мѓ_ѓЃЃ[ѓW”­ђ¶‘Т‚їѓtѓ‰ѓO
+	// йЂљеёёж”»ж’ѓз”Ёе¤‰ж•°
+	GameObject* m_AttackTarget = nullptr;   // зЏѕењЁж”»ж’ѓгЃ—гЃ¦гЃ„г‚‹г‚їгѓјг‚Ігѓѓгѓ€
+	float m_AutoAttackCooldown = 0.0f;      // йЂљеёёж”»ж’ѓгЃ®г‚Єгѓјгѓ€г‚ўг‚їгѓѓг‚Їй–“йљ”г‚їг‚¤гѓћгѓј
+	float m_DamageDelayTimer = 0.0f;        // йЂљеёёж”»ж’ѓгЃ®гѓЂгѓЎгѓјг‚ёз™єз”џгЃѕгЃ§гЃ®йЃ…е»¶г‚їг‚¤гѓћгѓј
+	bool m_HasPendingDamage = false;        // йЂљеёёж”»ж’ѓгЃ®гѓЂгѓЎгѓјг‚ёз™єз”џеѕ…гЃЎгѓ•гѓ©г‚°
 
-	// ѓKЃ[ѓhЉЦЊW•Пђ”ЃE’иђ”
-	float m_GuardTimer = 0.0f;              // ѓKЃ[ѓh’†‚МЊo‰ЯЋћЉФѓ^ѓCѓ}Ѓ[
-	float m_GuardCooldown = 0.0f;           // Ћџ‚ЙѓKЃ[ѓh‰В”\‚Й‚И‚й‚Ь‚Е‚МѓNЃ[ѓ‹ѓ_ѓEѓ“ѓ^ѓCѓ}Ѓ[
-	static constexpr float kGuardDamageRate = 0.5f; // ѓKЃ[ѓhЋћ‚МЋу‚Ї‚йѓ_ѓЃЃ[ѓW‚М”{—¦Ѓi50%ѓJѓbѓgЃj
+	// г‚¬гѓјгѓ‰й–ўдї‚е¤‰ж•°гѓ»е®љж•°
+	float m_GuardTimer = 0.0f;              // г‚¬гѓјгѓ‰дё­гЃ®зµЊйЃЋж™‚й–“г‚їг‚¤гѓћгѓј
+	float m_GuardCooldown = 0.0f;           // ж¬ЎгЃ«г‚¬гѓјгѓ‰еЏЇиѓЅгЃ«гЃЄг‚‹гЃѕгЃ§гЃ®г‚Їгѓјгѓ«гѓЂг‚¦гѓіг‚їг‚¤гѓћгѓј
+	static constexpr float kGuardDamageRate = 0.5f; // г‚¬гѓјгѓ‰ж™‚гЃ®еЏ—гЃ‘г‚‹гѓЂгѓЎгѓјг‚ёгЃ®еЂЌзЋ‡пј€50%г‚«гѓѓгѓ€пј‰
 
-	static constexpr float kTargetKeepRange = 220.0f; // ѓ^Ѓ[ѓQѓbѓg‚р€ЫЋќ‚Е‚«‚йЌЕ‘е‹——Ј
+	static constexpr float kTargetKeepRange = 220.0f; // г‚їгѓјг‚Ігѓѓгѓ€г‚’з¶­жЊЃгЃ§гЃЌг‚‹жњЂе¤§и·ќй›ў
 
-	static constexpr float kGuardDuration = 3.0f;      // ѓKЃ[ѓh‚МЋќ‘±ЋћЉФЃi•bЃj
-	static constexpr float kGuardCooldownSec = 8.0f;   // ѓKЃ[ѓh‚МѓNЃ[ѓ‹ѓ_ѓEѓ“ЋћЉФЃi•bЃj
-	static constexpr float kGuardTriggerRange = 100.0f;// ѓKЃ[ѓh‚рѓgѓЉѓKЃ[‚·‚й“G‚Ж‚М‹——Ј
+	static constexpr float kGuardDuration = 3.0f;      // г‚¬гѓјгѓ‰гЃ®жЊЃз¶љж™‚й–“пј€з§’пј‰
+	static constexpr float kGuardCooldownSec = 8.0f;   // г‚¬гѓјгѓ‰гЃ®г‚Їгѓјгѓ«гѓЂг‚¦гѓіж™‚й–“пј€з§’пј‰
+	static constexpr float kGuardTriggerRange = 100.0f;// г‚¬гѓјгѓ‰г‚’гѓ€гѓЄг‚¬гѓјгЃ™г‚‹ж•µгЃЁгЃ®и·ќй›ў
 
-	// ‚»‚М‘ј‚М’иђ”ЃiЌх“GЃEЌUЊ‚ЃE’ЗЏ]‚И‚ЗЃj
-	static constexpr float kEnemyDetectRange = 160.0f;       // “G‚МЌх“G”Н€Н
-	static constexpr float kAutoAttackRange = 35.0f;         // ’КЏнЌUЊ‚‚МЋЛ’ц
-	static constexpr float kAutoAttackInterval = 1.8f;       // ’КЏнЌUЊ‚‚рЌs‚¤ЉФЉuЃi•bЃj
-	static constexpr float kAutoAttackDamageDelay = 0.35f;   // ’КЏнЌUЊ‚‚Мѓ_ѓЃЃ[ѓW”­ђ¶‚Ь‚Е‚М’x‰„ЋћЉФЃi•bЃj
-	static constexpr int kAutoAttackDamage = 12;             // ’КЏнЌUЊ‚‚МЉо–{ѓ_ѓЃЃ[ѓW
+	// гЃќгЃ®д»–гЃ®е®љж•°пј€зґўж•µгѓ»ж”»ж’ѓгѓ»иїЅеѕ“гЃЄгЃ©пј‰
+	static constexpr float kEnemyDetectRange = 160.0f;       // ж•µгЃ®зґўж•µзЇ„е›І
+	static constexpr float kAutoAttackRange = 35.0f;         // йЂљеёёж”»ж’ѓгЃ®е°„зЁ‹
+	static constexpr float kAutoAttackInterval = 1.8f;       // йЂљеёёж”»ж’ѓг‚’иЎЊгЃ†й–“йљ”пј€з§’пј‰
+	static constexpr float kAutoAttackDamageDelay = 0.35f;   // йЂљеёёж”»ж’ѓгЃ®гѓЂгѓЎгѓјг‚ёз™єз”џгЃѕгЃ§гЃ®йЃ…е»¶ж™‚й–“пј€з§’пј‰
+	static constexpr int kAutoAttackDamage = 12;             // йЂљеёёж”»ж’ѓгЃ®еџєжњ¬гѓЂгѓЎгѓјг‚ё
 
-	static constexpr float kPlayerMoveThreshold = 0.05f;           // ѓvѓЊѓCѓ„Ѓ[‚Є“®‚ў‚Д‚ў‚й‚Ж”»’и‚·‚й€Ъ“®—К‚Ми‡’l
-	static constexpr float kWaitTargetForwardDistance = 35.0f;     // ‘Т‹@Ћћ‚МѓvѓЊѓCѓ„Ѓ[‘O•ы‚Ц‚МѓIѓtѓZѓbѓg‹——Ј
-	static constexpr float kWaitTargetSideOffset = 20.0f;          // ‘Т‹@Ћћ‚МѓvѓЊѓCѓ„Ѓ[‰Ў•ыЊь‚Ц‚МѓIѓtѓZѓbѓg‹——Ј
-	static constexpr float kWaitTargetArriveDistance = 3.0f;       // ‘Т‹@–Ъ•W‚Й“ћ’B‚µ‚Ѕ‚Ж”»’и‚·‚й‹——Ј
-	static constexpr float kMaxWaitTargetDistanceFromPlayer = 60.0f; // ѓvѓЊѓCѓ„Ѓ[‚©‚з‘Т‹@–Ъ•W‚Ь‚Е‚М‹–—eЌЕ‘е‹——Ј
+	static constexpr float kPlayerMoveThreshold = 0.05f;           // гѓ—гѓ¬г‚¤гѓ¤гѓјгЃЊе‹•гЃ„гЃ¦гЃ„г‚‹гЃЁе€¤е®љгЃ™г‚‹з§»е‹•й‡ЏгЃ®й–ѕеЂ¤
+	static constexpr float kWaitTargetForwardDistance = 35.0f;     // еѕ…ж©џж™‚гЃ®гѓ—гѓ¬г‚¤гѓ¤гѓје‰Ќж–№гЃёгЃ®г‚Єгѓ•г‚»гѓѓгѓ€и·ќй›ў
+	static constexpr float kWaitTargetSideOffset = 20.0f;          // еѕ…ж©џж™‚гЃ®гѓ—гѓ¬г‚¤гѓ¤гѓјжЁЄж–№еђ‘гЃёгЃ®г‚Єгѓ•г‚»гѓѓгѓ€и·ќй›ў
+	static constexpr float kWaitTargetArriveDistance = 3.0f;       // еѕ…ж©џз›®жЁ™гЃ«е€°йЃ”гЃ—гЃџгЃЁе€¤е®љгЃ™г‚‹и·ќй›ў
+	static constexpr float kMaxWaitTargetDistanceFromPlayer = 60.0f; // гѓ—гѓ¬г‚¤гѓ¤гѓјгЃ‹г‚‰еѕ…ж©џз›®жЁ™гЃѕгЃ§гЃ®иЁ±е®№жњЂе¤§и·ќй›ў
 
-	static constexpr float kFollowStartDistance = 60.0f; // ’ЗЏ]‚рЉJЋn‚·‚йѓvѓЊѓCѓ„Ѓ[‚Ж‚М‹——Ј
-	static constexpr float kFollowStopDistance = 45.0f;  // ’ЗЏ]‚р’вЋ~‚·‚йѓvѓЊѓCѓ„Ѓ[‚Ж‚М‹——Ј
-	static constexpr float kFollowMoveSpeed = 45.0f;     // ’ЗЏ]Ћћ‚М€Ъ“®‘¬“x
-	static constexpr float kTurnSpeed = 10.0f;           // ђU‚иЊь‚«‚М‘¬“x
+	static constexpr float kFollowStartDistance = 60.0f; // иїЅеѕ“г‚’й–‹е§‹гЃ™г‚‹гѓ—гѓ¬г‚¤гѓ¤гѓјгЃЁгЃ®и·ќй›ў
+	static constexpr float kFollowStopDistance = 45.0f;  // иїЅеѕ“г‚’еЃњж­ўгЃ™г‚‹гѓ—гѓ¬г‚¤гѓ¤гѓјгЃЁгЃ®и·ќй›ў
+	static constexpr float kFollowMoveSpeed = 45.0f;     // иїЅеѕ“ж™‚гЃ®з§»е‹•йЂџеє¦
+	static constexpr float kTurnSpeed = 10.0f;           // жЊЇг‚Љеђ‘гЃЌгЃ®йЂџеє¦
 
-	// ѓAѓjѓЃЃ[ѓVѓ‡ѓ“ѓNѓЉѓbѓv–ј
+	// г‚ўгѓ‹гѓЎгѓјг‚·гѓ§гѓіг‚ЇгѓЄгѓѓгѓ—еђЌ
 	static constexpr const char* kAnimIdle = "Paladin_Idle";
 	static constexpr const char* kAnimRun = "Paladin_Run";
 	static constexpr const char* kAnimSlash = "Paladin_Slash";

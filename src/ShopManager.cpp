@@ -1,4 +1,4 @@
-#include "ShopManager.h"
+ï»¿#include "ShopManager.h"
 #include "GameManager.h"
 #include "Scene.h"
 #include "StatusComponent.h"
@@ -11,25 +11,25 @@
 #include <cstdlib>
 
 namespace {
-		// ƒŒƒAƒŠƒeƒBŠm—¦ƒe[ƒuƒ‹‚ğØ‚è‘Ö‚¦‚éƒtƒF[ƒY‚µ‚«‚¢’l
-		constexpr int kRarityPhaseTier1 = 10; // ‚±‚êˆÈã‚Å kRarityRates[1]
-		constexpr int kRarityPhaseTier2 = 30; // ‚±‚êˆÈã‚Å kRarityRates[2]
-		constexpr int kRarityPhaseTier3 = 50; // ‚±‚êˆÈã‚Å kRarityRates[3]
+		// ãƒ¬ã‚¢ãƒªãƒ†ã‚£ç¢ºç‡ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹ãƒ•ã‚§ãƒ¼ã‚ºã—ãã„å€¤
+		constexpr int kRarityPhaseTier1 = 10; // ã“ã‚Œä»¥ä¸Šã§ kRarityRates[1]
+		constexpr int kRarityPhaseTier2 = 30; // ã“ã‚Œä»¥ä¸Šã§ kRarityRates[2]
+		constexpr int kRarityPhaseTier3 = 50; // ã“ã‚Œä»¥ä¸Šã§ kRarityRates[3]
 
-		constexpr int kRollMax = 100; // ’Š‘I‚Ì•ê”irand() % kRollMaxj
-		constexpr int kSkillOfferMinPhase = 2;  // ƒXƒLƒ‹ƒIƒtƒ@[‚ªon‚ß‚éƒtƒF[ƒY
-		constexpr int kSkillOfferChance = 30; // ƒXƒLƒ‹ƒIƒtƒ@[oŒ»Šm—¦i%j
+		constexpr int kRollMax = 100; // æŠ½é¸ã®æ¯æ•°ï¼ˆrand() % kRollMaxï¼‰
+		constexpr int kSkillOfferMinPhase = 2;  // ã‚¹ã‚­ãƒ«ã‚ªãƒ•ã‚¡ãƒ¼ãŒå‡ºå§‹ã‚ã‚‹ãƒ•ã‚§ãƒ¼ã‚º
+		constexpr int kSkillOfferChance = 30; // ã‚¹ã‚­ãƒ«ã‚ªãƒ•ã‚¡ãƒ¼å‡ºç¾ç¢ºç‡ï¼ˆ%ï¼‰
 
-	// ‹­‰»“à—e‚Ìƒƒ^î•ñ
+	// å¼·åŒ–å†…å®¹ã®ãƒ¡ã‚¿æƒ…å ±
 	struct UpgradeKindMeta
 	{
-		UpgradeStatType statType;	// ‹­‰»‚·‚éƒXƒe[ƒ^ƒX‚Ìí—Ş
-		const char* name;			// ‹­‰»“à—e‚Ì–¼‘O
-		const wchar_t* textureFile; // ‹­‰»“à—e‚ÌƒAƒCƒRƒ“ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼
-		float valuePerRarity;		// ƒŒƒAƒŠƒeƒB1‚ ‚½‚è‚Ì‹­‰»’l‚Ì”{—¦ (—á: 0.05f = ƒŒƒAƒŠƒeƒB1‚Å5%‹­‰»)
+		UpgradeStatType statType;	// å¼·åŒ–ã™ã‚‹ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®ç¨®é¡
+		const char* name;			// å¼·åŒ–å†…å®¹ã®åå‰
+		const wchar_t* textureFile; // å¼·åŒ–å†…å®¹ã®ã‚¢ã‚¤ã‚³ãƒ³ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å
+		float valuePerRarity;		// ãƒ¬ã‚¢ãƒªãƒ†ã‚£1ã‚ãŸã‚Šã®å¼·åŒ–å€¤ã®å€ç‡ (ä¾‹: 0.05f = ãƒ¬ã‚¢ãƒªãƒ†ã‚£1ã§5%å¼·åŒ–)
 	};
 
-	// ‹­‰»“à—e‚Ìí—Ş‚²‚Æ‚Ìƒƒ^î•ñ‚ğ’è‹`
+	// å¼·åŒ–å†…å®¹ã®ç¨®é¡ã”ã¨ã®ãƒ¡ã‚¿æƒ…å ±ã‚’å®šç¾©
 	constexpr std::array<UpgradeKindMeta, kUpgradeKindCount> kUpgradeKindMeta = { {
 		{ UpgradeStatType::AttackRate,            "AttackUp",           L"Atk.png",       0.15f },
 		{ UpgradeStatType::MoveSpeedRate,         "MoveSpeedUp",        L"Spd.png",       0.05f },
@@ -44,14 +44,14 @@ namespace {
 		{ UpgradeStatType::SkillRangeRate,        "SkillRangeUp",       L"SkillRange.png",0.08f },
 	} };
 
-	// ‹­‰»‚ÌƒŒƒAƒŠƒeƒB‚É‘Î‰‚·‚éƒeƒNƒXƒ`ƒƒƒpƒX
+	// å¼·åŒ–ã®ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã«å¯¾å¿œã™ã‚‹ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‘ã‚¹
 	constexpr std::array<const wchar_t*, kUpgradeRarityCount> kRarityTexturePaths = { {
 		L"Assets/Texture/Shop/Rarity1.png",
 		L"Assets/Texture/Shop/Rarity2.png",
 		L"Assets/Texture/Shop/Rarity3.png",
 	} };
 
-	// ƒXƒLƒ‹‚ÌƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼ (SkillId::PlayerSlash1 ‚©‚ç‡‚É‘Î‰‚³‚¹‚é)
+	// ã‚¹ã‚­ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å (SkillId::PlayerSlash1 ã‹ã‚‰é †ã«å¯¾å¿œã•ã›ã‚‹)
 	constexpr std::array<const wchar_t*, 6> kSkillTextureFiles = { {
 		L"Skill1.png",
 		L"Skill2.png",
@@ -61,13 +61,13 @@ namespace {
 		L"Skill6.png",
 	} };
 
-	// ‹­‰»“à—e‚Ìƒƒ^î•ñ‚ğæ“¾‚·‚éŠÖ”
+	// å¼·åŒ–å†…å®¹ã®ãƒ¡ã‚¿æƒ…å ±ã‚’å–å¾—ã™ã‚‹é–¢æ•°
 	const UpgradeKindMeta& GetUpgradeMeta(UpgradeKind kind)
 	{
 		return kUpgradeKindMeta[static_cast<int>(kind)];
 	}
 
-	// ƒXƒLƒ‹‚ÌƒeƒNƒXƒ`ƒƒƒpƒX‚ğƒXƒLƒ‹ID‚ÉŠî‚Ã‚¢‚Äæ“¾‚·‚éŠÖ”
+	// ã‚¹ã‚­ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‘ã‚¹ã‚’ã‚¹ã‚­ãƒ«IDã«åŸºã¥ã„ã¦å–å¾—ã™ã‚‹é–¢æ•°
 	std::wstring GetSkillTexturePath(SkillId skillId)
 	{
 		const int index = static_cast<int>(skillId) - static_cast<int>(SkillId::PlayerSlash1);
@@ -80,7 +80,7 @@ namespace {
 		return basePath + kSkillTextureFiles[index];
 	}
 
-	// ƒXƒLƒ‹‚ÌƒŒƒAƒŠƒeƒB‚ğƒXƒLƒ‹ID‚ÉŠî‚Ã‚¢‚ÄŒˆ’è‚·‚éŠÖ”
+	// ã‚¹ã‚­ãƒ«ã®ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã‚’ã‚¹ã‚­ãƒ«IDã«åŸºã¥ã„ã¦æ±ºå®šã™ã‚‹é–¢æ•°
 	UpgradeRarity GetSkillOfferRarity(SkillId skillId)
 	{
 		switch (skillId)
@@ -102,7 +102,7 @@ namespace {
 		}
 	}
 
-	// ƒXƒLƒ‹‚ÌID‡‚ÉAƒvƒŒƒCƒ„[‚ª‚Ü‚¾‚Á‚Ä‚¢‚È‚¢Å‰‚ÌƒXƒLƒ‹‚ğ•Ô‚·ŠÖ”
+	// ã‚¹ã‚­ãƒ«ã®IDé †ã«ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã¾ã æŒã£ã¦ã„ãªã„æœ€åˆã®ã‚¹ã‚­ãƒ«ã‚’è¿”ã™é–¢æ•°
 	static SkillId GetNextUnownedSkill(const SkillComponent* skills)
 	{
 		if (skills == nullptr)
@@ -125,7 +125,7 @@ namespace {
 		return SkillId::None;
 	}
 
-	// ƒtƒF[ƒY‚²‚Æ‚ÌƒŒƒAƒŠƒeƒBoŒ»—¦‚ğ•\‚·\‘¢‘Ì
+	// ãƒ•ã‚§ãƒ¼ã‚ºã”ã¨ã®ãƒ¬ã‚¢ãƒªãƒ†ã‚£å‡ºç¾ç‡ã‚’è¡¨ã™æ§‹é€ ä½“
 	struct RarityRate
 	{
 		int rarity1;
@@ -134,14 +134,14 @@ namespace {
 	};
 
 	constexpr std::array<RarityRate, 4> kRarityRates = { {
-		// ƒŒƒAƒŠƒeƒB1,ƒŒƒAƒŠƒeƒB2,ƒŒƒAƒŠƒeƒB3‚ÌoŒ»—¦
+		// ãƒ¬ã‚¢ãƒªãƒ†ã‚£1,ãƒ¬ã‚¢ãƒªãƒ†ã‚£2,ãƒ¬ã‚¢ãƒªãƒ†ã‚£3ã®å‡ºç¾ç‡
 		{ 80, 18,  2 },  
 		{ 65, 28,  7 },  
 		{ 50, 35, 15 }, 
 		{ 35, 40, 25 }, 
 	} };
 
-	// ƒtƒF[ƒY”Ô†‚É‰‚¶‚½ƒŒƒAƒŠƒeƒBoŒ»—¦‚ğæ“¾‚·‚éŠÖ”
+	// ãƒ•ã‚§ãƒ¼ã‚ºç•ªå·ã«å¿œã˜ãŸãƒ¬ã‚¢ãƒªãƒ†ã‚£å‡ºç¾ç‡ã‚’å–å¾—ã™ã‚‹é–¢æ•°
 	const RarityRate& GetRarityRate(int phaseNo)
 	{
 		if (phaseNo >= kRarityPhaseTier3)
@@ -212,13 +212,13 @@ void ShopManager::RollOffers(int phaseNo)
 	m_CurrentOffers.clear();
 	bool skillOfferPlacedThisShop = false;
 
-	// –¡•û‰Á“üƒIƒtƒ@[‚ÌğŒ‚ğ–‚½‚µ‚Ä‚¢‚ê‚Î•K‚¸1‚Âo‚·
+	// å‘³æ–¹åŠ å…¥ã‚ªãƒ•ã‚¡ãƒ¼ã®æ¡ä»¶ã‚’æº€ãŸã—ã¦ã„ã‚Œã°å¿…ãš1ã¤å‡ºã™
 	if (ShouldOfferAlly(phaseNo, AllyId::Oscar))
 	{
 		m_CurrentOffers.push_back(CreateJoinAllyOffer(AllyId::Oscar));
 	}
 
-	// c‚è‚Ì˜g‚ğƒ‰ƒ“ƒ_ƒ€‚ÈƒIƒtƒ@[‚Å–„‚ß‚é
+	// æ®‹ã‚Šã®æ ã‚’ãƒ©ãƒ³ãƒ€ãƒ ãªã‚ªãƒ•ã‚¡ãƒ¼ã§åŸ‹ã‚ã‚‹
 	while (static_cast<int>(m_CurrentOffers.size()) < kOptionCount)
 	{
 		m_CurrentOffers.push_back(RollOffer(phaseNo, skillOfferPlacedThisShop));
@@ -231,10 +231,10 @@ ShopOffer ShopManager::RollOffer(int phaseNo, bool& skillOfferAlreadyPlacedThisS
 
 	const int roll = rand() % kRollMax;
 
-	// ƒtƒF[ƒY2ˆÈ~‚Å30%‚ÌŠm—¦‚ÅƒXƒLƒ‹‰ğœƒIƒtƒ@[‚ğo‚·
+	// ãƒ•ã‚§ãƒ¼ã‚º2ä»¥é™ã§30%ã®ç¢ºç‡ã§ã‚¹ã‚­ãƒ«è§£é™¤ã‚ªãƒ•ã‚¡ãƒ¼ã‚’å‡ºã™
 	const bool skillGateOk = phaseNo >= kSkillOfferMinPhase && roll < kSkillOfferChance;
 
-	// ƒXƒLƒ‹‰ğœƒIƒtƒ@[‚Í1ƒVƒ‡ƒbƒv‚É‚Â‚«1‚Â‚Ü‚ÅA‚©‚ÂƒvƒŒƒCƒ„[‚ª‚Ü‚¾‚Á‚Ä‚¢‚È‚¢ƒXƒLƒ‹‚ª‚ ‚éê‡‚É‚Ì‚İo‚·
+	// ã‚¹ã‚­ãƒ«è§£é™¤ã‚ªãƒ•ã‚¡ãƒ¼ã¯1ã‚·ãƒ§ãƒƒãƒ—ã«ã¤ã1ã¤ã¾ã§ã€ã‹ã¤ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã¾ã æŒã£ã¦ã„ãªã„ã‚¹ã‚­ãƒ«ãŒã‚ã‚‹å ´åˆã«ã®ã¿å‡ºã™
 	if (skillGateOk && !skillOfferAlreadyPlacedThisShop && skills != nullptr)
 	{
 		const SkillId nextId = GetNextUnownedSkill(skills);
@@ -245,10 +245,10 @@ ShopOffer ShopManager::RollOffer(int phaseNo, bool& skillOfferAlreadyPlacedThisS
 		}
 	}
 
-	// ƒAƒbƒvƒOƒŒ[ƒh‚Ìí—Ş‚ğƒ‰ƒ“ƒ_ƒ€‚ÉŒˆ’è
+	// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®ç¨®é¡ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«æ±ºå®š
 	const UpgradeKind kind = RollUpgradeKind();
 
-	// ƒAƒbƒvƒOƒŒ[ƒh‚ÌƒŒƒAƒŠƒeƒB‚ğƒ‰ƒ“ƒ_ƒ€‚ÉŒˆ’è
+	// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«æ±ºå®š
 	const UpgradeRarity rarity = RollRarity(phaseNo);
 
 	return CreateStatusOffer(kind, rarity);
@@ -268,7 +268,7 @@ void ShopManager::ApplyOffer(const ShopOffer& offer)
 		if (party != nullptr)
 		{
 			party->AddAlly(offer.allyId);
-			m_IsAllyOfferShop = true; // –¡•û‰Á“üÏ‚İ
+			m_IsAllyOfferShop = true; // å‘³æ–¹åŠ å…¥æ¸ˆã¿
 		}
 		break;
 	}
@@ -290,17 +290,17 @@ void ShopManager::ApplyOffer(const ShopOffer& offer)
 
 bool ShopManager::ShouldOfferAlly(int phaseNo, AllyId allyId) const
 {
-	// Šù‚É‰Á“ü‚µ‚Ä‚¢‚éê‡‚Ío‚³‚È‚¢
+	// æ—¢ã«åŠ å…¥ã—ã¦ã„ã‚‹å ´åˆã¯å‡ºã•ãªã„
 	PartyManager* party = GetPartyManager();
 	if (party != nullptr && party->HasAlly(allyId))
 	{
 		return false;
 	}
 
-	// Oscar ‚ÌoŒ»ğŒ
+	// Oscar ã®å‡ºç¾æ¡ä»¶
 	if (allyId == AllyId::Oscar)
 	{
-		// ‰‰ñ‚ÍƒtƒF[ƒY 1
+		// åˆå›ã¯ãƒ•ã‚§ãƒ¼ã‚º 1
 		if (phaseNo == 1)
 		{
 			return true;
@@ -400,10 +400,10 @@ void ShopManager::ApplyUpgradeToStatus(StatusComponent* status, const UpgradeDat
 
 ShopOffer ShopManager::CreateStatusOffer(UpgradeKind kind, UpgradeRarity rarity) const
 {
-	// ƒAƒbƒvƒOƒŒ[ƒhƒf[ƒ^‚ğì¬
+	// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆ
 	UpgradeData upgrade = CreateUpgradeData(kind, rarity);
 
-	// ƒVƒ‡ƒbƒv‚É•\¦‚·‚éî•ñ‚ğƒZƒbƒg
+	// ã‚·ãƒ§ãƒƒãƒ—ã«è¡¨ç¤ºã™ã‚‹æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
 	ShopOffer offer;
 	offer.type = ShopOfferType::StatusUpgrade;
 	offer.upgrade = upgrade;
@@ -425,7 +425,7 @@ ShopOffer ShopManager::CreateJoinAllyOffer(AllyId allyId) const
 		offer.rarityTexturePath = GetRarityTexturePath(UpgradeRarity::Rarity3);
 		break;
 
-		// ŠÔ‚ª‚ ‚ê‚Î‘¼‚Ì–¡•û‚à’Ç‰Á‚µ‚½‚¢c
+		// æ™‚é–“ãŒã‚ã‚Œã°ä»–ã®å‘³æ–¹ã‚‚è¿½åŠ ã—ãŸã„â€¦
 	default:
 		break;
 	}
@@ -482,7 +482,7 @@ void ShopManager::ConfirmSelection()
 
 UpgradeData ShopManager::CreateUpgradeData(UpgradeKind kind, UpgradeRarity rarity) const
 {
-	// UpgradeData‚Éˆø”‚Ì’l‚ğ‚à‚Æ‚É•K—v‚Èî•ñ‚ğƒZƒbƒg‚µ‚Ä•Ô‚·
+	// UpgradeDataã«å¼•æ•°ã®å€¤ã‚’ã‚‚ã¨ã«å¿…è¦ãªæƒ…å ±ã‚’ã‚»ãƒƒãƒˆã—ã¦è¿”ã™
 	UpgradeData data;
 	data.kind = kind;
 	data.rarity = rarity;
@@ -504,7 +504,7 @@ UpgradeKind ShopManager::RollUpgradeKind() const
 
 UpgradeRarity ShopManager::RollRarity(int phaseNo) const
 {
-	// ƒŒƒAƒŠƒeƒB‚²‚Æ‚ÌoŒ»—¦‚ğƒtƒF[ƒY”Ô†‚É‰‚¶‚Äæ“¾
+	// ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã”ã¨ã®å‡ºç¾ç‡ã‚’ãƒ•ã‚§ãƒ¼ã‚ºç•ªå·ã«å¿œã˜ã¦å–å¾—
 	const RarityRate& rate = GetRarityRate(phaseNo);
 	const int roll = rand() % kRollMax;
 
@@ -523,9 +523,9 @@ UpgradeRarity ShopManager::RollRarity(int phaseNo) const
 
 float ShopManager::GetUpgradeValue(UpgradeKind kind, UpgradeRarity rarity) const
 {
-	// ƒAƒbƒvƒOƒŒ[ƒh‚Ìí—Ş‚ÆƒŒƒAƒŠƒeƒB‚É‰‚¶‚Ä‹­‰»’l‚ğŒvZ‚µ‚Ä•Ô‚·
+	// ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰ã®ç¨®é¡ã¨ãƒ¬ã‚¢ãƒªãƒ†ã‚£ã«å¿œã˜ã¦å¼·åŒ–å€¤ã‚’è¨ˆç®—ã—ã¦è¿”ã™
 	const UpgradeKindMeta& meta = GetUpgradeMeta(kind);
-	return meta.valuePerRarity * static_cast<float>(static_cast<int>(rarity)); // —áF0.05 x ƒŒƒAƒŠƒeƒB
+	return meta.valuePerRarity * static_cast<float>(static_cast<int>(rarity)); // ä¾‹ï¼š0.05 x ãƒ¬ã‚¢ãƒªãƒ†ã‚£
 }
 
 UpgradeStatType ShopManager::GetStatType(UpgradeKind kind) const
@@ -535,7 +535,7 @@ UpgradeStatType ShopManager::GetStatType(UpgradeKind kind) const
 
 std::wstring ShopManager::GetRarityTexturePath(UpgradeRarity rarity) const
 {
-	const int index = static_cast<int>(rarity) - 1; // UpgradeRarity::Rarity1 ‚ª 0 ‚É‚È‚é‚æ‚¤‚É’²®
+	const int index = static_cast<int>(rarity) - 1; // UpgradeRarity::Rarity1 ãŒ 0 ã«ãªã‚‹ã‚ˆã†ã«èª¿æ•´
 	if (index < 0 || index >= static_cast<int>(kRarityTexturePaths.size()))
 	{
 		return kRarityTexturePaths[0];

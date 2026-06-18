@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 
 #include <DirectXMath.h>
 #include <vector>
 
 /// <summary>
-/// oŒ»‚·‚éƒGƒlƒ~[‚Ìí—Ş
+/// å‡ºç¾ã™ã‚‹ã‚¨ãƒãƒŸãƒ¼ã®ç¨®é¡
 /// </summary>
 enum class EnemyType
 {
@@ -16,18 +16,18 @@ enum class EnemyType
 
 
 /// <summary>
-/// ƒtƒF[ƒY‚²‚Æ‚ÌƒGƒlƒ~[oŒ»î•ñ
+/// ãƒ•ã‚§ãƒ¼ã‚ºã”ã¨ã®ã‚¨ãƒãƒŸãƒ¼å‡ºç¾æƒ…å ±
 /// </summary>
 struct PhaseEnemyEntry
 {
 	EnemyType type = EnemyType::Zombie;
 	int count = 0;
-	int level = 1;       // ƒXƒ|[ƒ“‚ÌƒŒƒxƒ‹i•û®Aƒe[ƒuƒ‹‚Å Status ‚ğZoj
-	int expReward = 0;   // Œ‚”j‚É•t—^‚·‚éŒoŒ±’l
+	int level = 1;       // ã‚¹ãƒãƒ¼ãƒ³æ™‚ã®ãƒ¬ãƒ™ãƒ«ï¼ˆæ–¹å¼Aãƒ†ãƒ¼ãƒ–ãƒ«ã§ Status ã‚’ç®—å‡ºï¼‰
+	int expReward = 0;   // æ’ƒç ´æ™‚ã«ä»˜ä¸ã™ã‚‹çµŒé¨“å€¤
 };
 
 /// <summary>
-/// ƒtƒF[ƒY‚Ìî•ñ(ƒtƒF[ƒY”Ô†AoŒ»‚·‚éƒGƒlƒ~[‚Ìî•ñ)
+/// ãƒ•ã‚§ãƒ¼ã‚ºã®æƒ…å ±(ãƒ•ã‚§ãƒ¼ã‚ºç•ªå·ã€å‡ºç¾ã™ã‚‹ã‚¨ãƒãƒŸãƒ¼ã®æƒ…å ±)
 /// </summary>
 struct PhaseData
 {

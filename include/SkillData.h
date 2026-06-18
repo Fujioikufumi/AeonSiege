@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 
 /// <summary>
-/// ƒXƒLƒ‹ID
+/// ã‚¹ã‚­ãƒ«ID
 /// </summary>
 enum class SkillId
 {
@@ -15,7 +15,7 @@ enum class SkillId
 };
 
 /// <summary>
-/// ƒXƒLƒ‹‚Ìí—Ş
+/// ã‚¹ã‚­ãƒ«ã®ç¨®é¡
 /// </summary>
 enum class SkillType
 {
@@ -26,34 +26,34 @@ enum class SkillType
 };
 
 /// <summary>
-/// ƒXƒLƒ‹‚Ì‘ÎÛ”ÍˆÍ‚Ìí—Ş
+/// ã‚¹ã‚­ãƒ«ã®å¯¾è±¡ç¯„å›²ã®ç¨®é¡
 /// </summary>
 enum class SkillTargetType
 {
-	SingleTarget, // ’P‘Ì
-	AroundSelf,  // ©g‚ÌüˆÍ
-	AroundTarget, // ƒ^[ƒQƒbƒg‚ÌüˆÍ
-	ForwardCone  // ‘O•ûîŒ`
+	SingleTarget, // å˜ä½“
+	AroundSelf,  // è‡ªèº«ã®å‘¨å›²
+	AroundTarget, // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®å‘¨å›²
+	ForwardCone  // å‰æ–¹æ‰‡å½¢
 };
 
 /// <summary>
-/// ƒXƒLƒ‹‚Ìƒf[ƒ^\‘¢‘Ì
+/// ã‚¹ã‚­ãƒ«ã®ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 /// </summary>
 struct SkillData
 {
-	SkillId id = SkillId::None; // ƒXƒLƒ‹ID
-	SkillType type = SkillType::Attack; // ƒXƒLƒ‹‚Ìí—Ş
-	SkillTargetType targetType = SkillTargetType::SingleTarget; // ƒXƒLƒ‹‚Ì‘ÎÛ”ÍˆÍ‚Ìí—Ş
+	SkillId id = SkillId::None; // ã‚¹ã‚­ãƒ«ID
+	SkillType type = SkillType::Attack; // ã‚¹ã‚­ãƒ«ã®ç¨®é¡
+	SkillTargetType targetType = SkillTargetType::SingleTarget; // ã‚¹ã‚­ãƒ«ã®å¯¾è±¡ç¯„å›²ã®ç¨®é¡
 
-	const char* animationName = nullptr; // ƒXƒLƒ‹”­“®‚ÌƒAƒjƒ[ƒVƒ‡ƒ“–¼
+	const char* animationName = nullptr; // ã‚¹ã‚­ãƒ«ç™ºå‹•æ™‚ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å
 
-	float skillPowerRate = 0.0f;	// ƒXƒLƒ‹‚ÌUŒ‚”{—¦(StatusComponent‚Ìm_Status.attackPower‚ÉŠ|‚¯‚é)
-	float cooldownSec = 3.0f;		// ƒXƒLƒ‹‚ÌƒN[ƒ‹ƒ_ƒEƒ“ŠÔi•bj
-	float range = 0.0f;				// ƒXƒLƒ‹‚ÌË’ö‹——£
-	int hitCount = 1;				// ƒXƒLƒ‹‚Ìƒqƒbƒg‰ñ”i•¡”‰ñUŒ‚‚·‚éƒXƒLƒ‹‚Ìê‡j
-	float hitIntervalSec = 0.0f;	// •¡”ƒqƒbƒg‚·‚éê‡‚ÌƒqƒbƒgŠ´Šo(•b) ¦ˆê’èŠÔŠu‘O’ñ
-	float effectDelaySec = 0.0f;	// ƒXƒLƒ‹”­“®Œã‚ÌŒø‰Ê”­¶‚Ü‚Å‚Ì’x‰„ŠÔi•bj
-	float areaRadius = 0.0f;		// ƒXƒLƒ‹‚Ì”ÍˆÍ”¼Œai‰~Œ`”ÍˆÍ‚Ìê‡j
-	float coneAngleDeg = 0.0f;		// ƒXƒLƒ‹‚ÌîŒ`Šp“xi‘O•ûîŒ`‚Ìê‡j
-	float durationSec = 0.0f;		// ƒXƒLƒ‹‚Ì‘±ŠÔi•bj
+	float skillPowerRate = 0.0f;	// ã‚¹ã‚­ãƒ«ã®æ”»æ’ƒå€ç‡(StatusComponentã®m_Status.attackPowerã«æ›ã‘ã‚‹)
+	float cooldownSec = 3.0f;		// ã‚¹ã‚­ãƒ«ã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³æ™‚é–“ï¼ˆç§’ï¼‰
+	float range = 0.0f;				// ã‚¹ã‚­ãƒ«ã®å°„ç¨‹è·é›¢
+	int hitCount = 1;				// ã‚¹ã‚­ãƒ«ã®ãƒ’ãƒƒãƒˆå›æ•°ï¼ˆè¤‡æ•°å›æ”»æ’ƒã™ã‚‹ã‚¹ã‚­ãƒ«ã®å ´åˆï¼‰
+	float hitIntervalSec = 0.0f;	// è¤‡æ•°ãƒ’ãƒƒãƒˆã™ã‚‹å ´åˆã®ãƒ’ãƒƒãƒˆæ„Ÿè¦š(ç§’) â€»ä¸€å®šé–“éš”å‰æ
+	float effectDelaySec = 0.0f;	// ã‚¹ã‚­ãƒ«ç™ºå‹•å¾Œã®åŠ¹æœç™ºç”Ÿã¾ã§ã®é…å»¶æ™‚é–“ï¼ˆç§’ï¼‰
+	float areaRadius = 0.0f;		// ã‚¹ã‚­ãƒ«ã®ç¯„å›²åŠå¾„ï¼ˆå††å½¢ç¯„å›²ã®å ´åˆï¼‰
+	float coneAngleDeg = 0.0f;		// ã‚¹ã‚­ãƒ«ã®æ‰‡å½¢è§’åº¦ï¼ˆå‰æ–¹æ‰‡å½¢ã®å ´åˆï¼‰
+	float durationSec = 0.0f;		// ã‚¹ã‚­ãƒ«ã®æŒç¶šæ™‚é–“ï¼ˆç§’ï¼‰
 };

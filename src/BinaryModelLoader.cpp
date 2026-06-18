@@ -1,10 +1,10 @@
-#include "BinaryModelLoader.h"
+ï»¿#include "BinaryModelLoader.h"
 #include <fstream>
 #include <iostream>
 
 bool BinaryModelLoader::SupportsExtension(const std::wstring& extension) const
 {
-    // ‘å•¶š¬•¶š‚Ì—h‚ê‚ğl—¶‚·‚éê‡‚Í—v•ÏŠ·
+    // å¤§æ–‡å­—å°æ–‡å­—ã®æºã‚Œã‚’è€ƒæ…®ã™ã‚‹å ´åˆã¯è¦å¤‰æ›
     return (extension == L".bmdl" || extension == L".BMDL");
 }
 
@@ -15,24 +15,24 @@ bool BinaryModelLoader::Load(
     SkeletonInfo* pSkeleton,
     std::vector<AnimationClip>* pAnimations)
 {
-    // ƒoƒCƒiƒŠƒ‚[ƒh‚Åƒtƒ@ƒCƒ‹‚ğŠJ‚­
+    // ãƒã‚¤ãƒŠãƒªãƒ¢ãƒ¼ãƒ‰ã§ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
     std::ifstream inFile(filename, std::ios::binary);
     if (!inFile.is_open())
     {
         return false;
     }
 
-    // 1. ƒwƒbƒ_‚Ì“Ç‚İ‚İ
+    // 1. ãƒ˜ãƒƒãƒ€ã®èª­ã¿è¾¼ã¿
     ModelFileHeader header = {};
     inFile.read(reinterpret_cast<char*>(&header), sizeof(ModelFileHeader));
 
-    // ƒ}ƒWƒbƒNƒiƒ“ƒo[‚ª³‚µ‚¢‚©ƒ`ƒFƒbƒN
+    // ãƒã‚¸ãƒƒã‚¯ãƒŠãƒ³ãƒãƒ¼ãŒæ­£ã—ã„ã‹ãƒã‚§ãƒƒã‚¯
     if (header.magic != MODEL_MAGIC)
     {
-        return false; // •s³‚Èƒtƒ@ƒCƒ‹ƒtƒH[ƒ}ƒbƒg
+        return false; // ä¸æ­£ãªãƒ•ã‚¡ã‚¤ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
     }
 
-    // 2. ƒ}ƒeƒŠƒAƒ‹î•ñ‚Ì“Ç‚İ‚İ
+    // 2. ãƒãƒ†ãƒªã‚¢ãƒ«æƒ…å ±ã®èª­ã¿è¾¼ã¿
     materials.resize(header.numMaterials);
     for (uint32_t i = 0; i < header.numMaterials; ++i)
     {
@@ -41,14 +41,14 @@ bool BinaryModelLoader::Load(
 
         ResMaterial resMat = {};
         resMat.Diffuse = matData.diffuse;
-        // char”z—ñ‚©‚çstd::wstring‚Ö‚Ì•ÏŠ·iUTF-8“™ŠÂ‹«‚É‰‚¶‚Ä“K‹X’²®‚ª•K—v‚Èê‡‚ª‚ ‚è‚Ü‚·j
+        // charé…åˆ—ã‹ã‚‰std::wstringã¸ã®å¤‰æ›ï¼ˆUTF-8ç­‰ç’°å¢ƒã«å¿œã˜ã¦é©å®œèª¿æ•´ãŒå¿…è¦ãªå ´åˆãŒã‚ã‚Šã¾ã™ï¼‰
         resMat.DiffuseMap = std::wstring(matData.diffuseMapName, matData.diffuseMapName + strlen(matData.diffuseMapName));
         resMat.NormalMap = std::wstring(matData.normalMapName, matData.normalMapName + strlen(matData.normalMapName));
 
         materials[i] = resMat;
     }
 
-    // 3. ƒ{[ƒ“iƒXƒPƒ‹ƒgƒ“jî•ñ‚Ì“Ç‚İ‚İ
+    // 3. ãƒœãƒ¼ãƒ³ï¼ˆã‚¹ã‚±ãƒ«ãƒˆãƒ³ï¼‰æƒ…å ±ã®èª­ã¿è¾¼ã¿
     if (pSkeleton && header.numBones > 0)
     {
         pSkeleton->bones.resize(header.numBones);
@@ -66,16 +66,16 @@ bool BinaryModelLoader::Load(
             info.boneBindGlobal = DirectX::XMLoadFloat4x4(&boneData.boneBindGlobal);
 
             pSkeleton->bones[i] = info;
-            pSkeleton->boneNameToIndex[info.name] = i; // ŒŸõ—pƒ}ƒbƒv‚Ì\’z
+            pSkeleton->boneNameToIndex[info.name] = i; // æ¤œç´¢ç”¨ãƒãƒƒãƒ—ã®æ§‹ç¯‰
         }
     }
     else if (header.numBones > 0)
     {
-        // ŒÄ‚Ño‚µŒ³‚ªƒXƒPƒ‹ƒgƒ“‚ğ—v‹‚µ‚Ä‚¢‚È‚¢ê‡‚ÍAƒtƒ@ƒCƒ‹ƒ|ƒCƒ“ƒ^‚ği‚ß‚ÄƒXƒLƒbƒv‚·‚é
+        // å‘¼ã³å‡ºã—å…ƒãŒã‚¹ã‚±ãƒ«ãƒˆãƒ³ã‚’è¦æ±‚ã—ã¦ã„ãªã„å ´åˆã¯ã€ãƒ•ã‚¡ã‚¤ãƒ«ãƒã‚¤ãƒ³ã‚¿ã‚’é€²ã‚ã¦ã‚¹ã‚­ãƒƒãƒ—ã™ã‚‹
         inFile.seekg(header.numBones * sizeof(BoneData), std::ios::cur);
     }
 
-    // 4. ƒƒbƒVƒ…i’¸“_‚ÆƒCƒ“ƒfƒbƒNƒXjî•ñ‚Ì“Ç‚İ‚İ
+    // 4. ãƒ¡ãƒƒã‚·ãƒ¥ï¼ˆé ‚ç‚¹ã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼‰æƒ…å ±ã®èª­ã¿è¾¼ã¿
     meshes.resize(header.numMeshes);
     for (uint32_t i = 0; i < header.numMeshes; ++i)
     {
@@ -86,7 +86,7 @@ bool BinaryModelLoader::Load(
         resMesh.MaterialId = meshHeader.materialId;
         resMesh.HasAnimation = meshHeader.isSkinned;
 
-        // ’¸“_ƒf[ƒ^‚Ì“Ç‚İ‚İivector‚Ìresize‚Åƒƒ‚ƒŠ—Ìˆæ‚ğŠm•Û‚µ‚Ä‚©‚çA‚»‚±‚É’¼ÚˆêŠ‡ƒRƒs[Ij
+        // é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿ï¼ˆvectorã®resizeã§ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’ç¢ºä¿ã—ã¦ã‹ã‚‰ã€ãã“ã«ç›´æ¥ä¸€æ‹¬ã‚³ãƒ”ãƒ¼ï¼ï¼‰
         if (meshHeader.isSkinned)
         {
             resMesh.SkinnedVertices.resize(meshHeader.numVertices);
@@ -106,7 +106,7 @@ bool BinaryModelLoader::Load(
             }
         }
 
-        // ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Ì“Ç‚İ‚İi“¯—l‚ÉˆêŠ‡ƒRƒs[j
+        // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿ï¼ˆåŒæ§˜ã«ä¸€æ‹¬ã‚³ãƒ”ãƒ¼ï¼‰
         resMesh.Indices.resize(meshHeader.numIndices);
         if (meshHeader.numIndices > 0)
         {
