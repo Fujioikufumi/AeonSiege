@@ -13,9 +13,9 @@ indent_size = 4
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-# HLSL シェーダも同様に統一
+# HLSL シェーダ: FXC は BOM を受け付けないため BOM無し UTF-8 にする
 [*.{hlsl,hlsli,fx}]
-charset = utf-8-bom
+charset = utf-8
 end_of_line = crlf
 indent_style = tab
 indent_size = 4
