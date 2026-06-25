@@ -74,13 +74,13 @@ void Camera::Update(float deltaTime)
 {
 	UpdateHitShake(deltaTime);
 	m_FrameCount++;
-	MouseState mouseState = GetMouseState();
+	MouseState mouseState = Input::GetInstance().GetMouseState();
 
 	// Ctrlキーでデバッグモード切り替え
-	if (IsKeyPress(VK_CONTROL) && m_FrameCount > m_WaitFrame)
+	if (Input::GetInstance().IsKeyPress(VK_CONTROL) && m_FrameCount > m_WaitFrame)
 	{
 		g_isDebugMode = !g_isDebugMode;
-		LockMouse(!g_isDebugMode); // デバックモード時はロック解除する
+		Input::GetInstance().LockMouse(!g_isDebugMode); // デバックモード時はロック解除する
 		m_FrameCount = 0;
 	}
 
@@ -89,9 +89,9 @@ void Camera::Update(float deltaTime)
 		if (!g_isDebugMode)
 		{
 			m_Rotation.y += mouseState.deltaX * m_RotationSpeed;
-			m_Rotation.y += GetRightStickX() * kYawStickSpeed * deltaTime;
+			m_Rotation.y += Input::GetInstance().GetRightStickX() * kYawStickSpeed * deltaTime;
 		}
-		else if (IsMouseButtonPress(1))
+		else if (Input::GetInstance().IsMouseButtonPress(1))
 		{
 			m_Rotation.y += mouseState.deltaX * m_RotationSpeed;
 		}
@@ -140,7 +140,7 @@ void Camera::UpdateGameView(float deltaTime, MouseState mouseState)
 	const float pitchMaxRad = XMConvertToRadians(m_PitchMax);
 
 	m_Rotation.x += mouseState.deltaY * m_RotationSpeed; // マウス
-	m_Rotation.x -= GetRightStickY() * 1.5f * deltaTime; // スティック
+	m_Rotation.x -= Input::GetInstance().GetRightStickY() * 1.5f * deltaTime; // スティック
 	m_Rotation.x = std::clamp(m_Rotation.x, pitchMinRad, pitchMaxRad);
 
 	const float yaw = m_Rotation.y;
@@ -344,7 +344,7 @@ int Camera::CollisionViewFrus(const DirectX::XMFLOAT3& vCenter, float fRadius) c
 
 void Camera::UpdateDebugView(float deltaTime, MouseState mouseState)
 {
-	if (IsMouseButtonPress(1)) // 右クリック（1 = 右ボタン）
+	if (Input::GetInstance().IsMouseButtonPress(1)) // 右クリック（1 = 右ボタン）
 	{
 		m_Rotation.y += mouseState.deltaX * m_RotationSpeed; // 左右回転（Y軸回転）
 		m_Rotation.x += mouseState.deltaY * m_RotationSpeed; // 上下回転（X軸回転、上下を反転）
@@ -378,25 +378,25 @@ void Camera::UpdateDebugView(float deltaTime, MouseState mouseState)
 	XMVECTOR posVec = XMLoadFloat3(&m_Position);
 
 	// WASD移動（視点回転はしない）
-	if (IsKeyPress('W') || IsKeyPress(VK_UP))
+	if (Input::GetInstance().IsKeyPress('W') || Input::GetInstance().IsKeyPress(VK_UP))
 	{
 		XMVECTOR moveVec = XMVectorScale(forward, moveSpeed);
 		posVec = XMVectorAdd(posVec, moveVec);
 		XMStoreFloat3(&m_Position, posVec);
 	}
-	if (IsKeyPress('S') || IsKeyPress(VK_DOWN))
+	if (Input::GetInstance().IsKeyPress('S') || Input::GetInstance().IsKeyPress(VK_DOWN))
 	{
 		XMVECTOR moveVec = XMVectorScale(forward, moveSpeed);
 		posVec = XMVectorSubtract(posVec, moveVec);
 		XMStoreFloat3(&m_Position, posVec);
 	}
-	if (IsKeyPress('A') /*|| IsKeyPress(VK_LEFT)*/)
+	if (Input::GetInstance().IsKeyPress('A') /*|| Input::GetInstance().IsKeyPress(VK_LEFT)*/)
 	{
 		XMVECTOR moveVec = XMVectorScale(right, moveSpeed);
 		posVec = XMVectorSubtract(posVec, moveVec);
 		XMStoreFloat3(&m_Position, posVec);
 	}
-	if (IsKeyPress('D') /*|| IsKeyPress(VK_RIGHT)*/)
+	if (Input::GetInstance().IsKeyPress('D') /*|| Input::GetInstance().IsKeyPress(VK_RIGHT)*/)
 	{
 		XMVECTOR moveVec = XMVectorScale(right, moveSpeed);
 		posVec = XMVectorAdd(posVec, moveVec);
@@ -404,13 +404,13 @@ void Camera::UpdateDebugView(float deltaTime, MouseState mouseState)
 	}
 
 	// Q/Eキーで上下移動
-	if (IsKeyPress('Q'))
+	if (Input::GetInstance().IsKeyPress('Q'))
 	{
 		XMVECTOR moveVec = XMVectorScale(upVec, moveSpeed);
 		posVec = XMVectorAdd(posVec, moveVec);
 		XMStoreFloat3(&m_Position, posVec);
 	}
-	if (IsKeyPress('E'))
+	if (Input::GetInstance().IsKeyPress('E'))
 	{
 		XMVECTOR moveVec = XMVectorScale(upVec, moveSpeed);
 		posVec = XMVectorSubtract(posVec, moveVec);

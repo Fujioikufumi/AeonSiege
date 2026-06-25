@@ -425,32 +425,32 @@ void ShopUI::UpdateInput(ShopManager* shopManager)
 	{
 		return;
 	}
-	if (IsKeyTrigger('1'))
+	if (Input::GetInstance().IsKeyTrigger('1'))
 	{
 		shopManager->SetSelectedIndex(0);
 		return;
 	}
-	if (IsKeyTrigger('2'))
+	if (Input::GetInstance().IsKeyTrigger('2'))
 	{
 		shopManager->SetSelectedIndex(1);
 		return;
 	}
-	if (IsKeyTrigger('3'))
+	if (Input::GetInstance().IsKeyTrigger('3'))
 	{
 		shopManager->SetSelectedIndex(2);
 		return;
 	}
-	if (IsKeyTrigger(VK_LEFT) || IsKeyTrigger('A') || IsControllerTrigger(PAD_LEFT))
+	if (Input::GetInstance().IsKeyTrigger(VK_LEFT) || Input::GetInstance().IsKeyTrigger('A') || Input::GetInstance().IsControllerTrigger(Input::PAD_LEFT))
 	{
 		shopManager->MoveSelection(-1);
 		return;
 	}
-	if (IsKeyTrigger(VK_RIGHT) || IsKeyTrigger('D') || IsControllerTrigger(PAD_RIGHT))
+	if (Input::GetInstance().IsKeyTrigger(VK_RIGHT) || Input::GetInstance().IsKeyTrigger('D') || Input::GetInstance().IsControllerTrigger(Input::PAD_RIGHT))
 	{
 		shopManager->MoveSelection(1);
 		return;
 	}
-	if (IsKeyTrigger(VK_SPACE) || IsKeyTrigger(VK_RETURN) || IsControllerTrigger(PAD_A))
+	if (Input::GetInstance().IsKeyTrigger(VK_SPACE) || Input::GetInstance().IsKeyTrigger(VK_RETURN) || Input::GetInstance().IsControllerTrigger(Input::PAD_A))
 	{
 		shopManager->ConfirmSelection();
 		return;

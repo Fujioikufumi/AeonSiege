@@ -134,7 +134,7 @@ void ResultHud::Update(float deltaTime)
 
 	case State::Wait:
 		m_pImgReturn->SetAlpha(1.0f);
-		if (IsKeyTrigger(VK_SPACE))
+		if (Input::GetInstance().IsKeyTrigger(VK_SPACE))
 		{
 			GameManager::ChangeScene(new TitleScene());
 			ScreenFade::Instance().FadeIn(kFadeInFrames, nullptr);

@@ -224,9 +224,9 @@ bool GameApp::OnInit()
 
 	//　入力処理の初期化
 	{
-		InitInput();
-		SetInputWindow(m_hWnd); // ウィンドウハンドルを設定
-		LockMouse(true);        // マウスをウィンドウ中央に固定
+		Input::GetInstance().Init();
+		Input::GetInstance().SetWindow(m_hWnd); // ウィンドウハンドルを設定
+		Input::GetInstance().LockMouse(true);        // マウスをウィンドウ中央に固定
 	}
 
 	// 8. シーンマネージャーの初期化
@@ -263,8 +263,8 @@ void GameApp::OnTerm()
 	GameManager::Term();
 
 
-	LockMouse(false);   // マウス固定解除
-	UninitInput();
+	Input::GetInstance().LockMouse(false);   // マウス固定解除
+	Input::GetInstance().Term();
 
 	AnimationManager::GetInstance().Term();
 

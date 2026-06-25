@@ -1,5 +1,4 @@
 ﻿#include "Input/Input.h"
-#include <Windows.h>
 #include <Xinput.h>
 #include <cstring>
 #include <cmath>
@@ -12,28 +11,29 @@ namespace {
 	// デッドゾーン外のスティック値だけ 0〜1 風に縮める（方向は呼び出し側で符号を見る）
 	float NormalizeStickAxis(float value, float deadzone)
 	{
-		float a = fabsf(value);
-		if (a <= deadzone)
-			return 0.0f;
-		float t = (a - deadzone) / (STICK_FORCE_MAX - deadzone);
+		float a = fabsf(value); // 絶対値
+		if (a <= deadzone) 
+			return 0.0f; // デッドゾーン内は 0
+
+		float t = (a - deadzone) / (Input::STICK_FORCE_MAX - deadzone);
 		if (t > 1.0f) t = 1.0f;
 		return (value >= 0.0f) ? t : -t;
 	}
 
 	void ApplyThumbDeadzones(XINPUT_STATE& st)
 	{
-		if ((st.Gamepad.sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
-			st.Gamepad.sThumbLX < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) &&
-			(st.Gamepad.sThumbLY > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
-				st.Gamepad.sThumbLY < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE))
+		if ((st.Gamepad.sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE  &&
+			 st.Gamepad.sThumbLX <  XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) &&
+			(st.Gamepad.sThumbLY > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE  &&
+			 st.Gamepad.sThumbLY <  XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE))
 		{
 			st.Gamepad.sThumbLX = 0;
 			st.Gamepad.sThumbLY = 0;
 		}
-		if ((st.Gamepad.sThumbRX > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-			st.Gamepad.sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) &&
-			(st.Gamepad.sThumbRY > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-				st.Gamepad.sThumbRY < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE))
+		if ((st.Gamepad.sThumbRX > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE  &&
+			 st.Gamepad.sThumbRX <  XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) &&
+			(st.Gamepad.sThumbRY > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE  &&
+			 st.Gamepad.sThumbRY <  XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE))
 		{
 			st.Gamepad.sThumbRX = 0;
 			st.Gamepad.sThumbRY = 0;
@@ -42,398 +42,428 @@ namespace {
 
 } // namespace
 
-BYTE g_keyTable[256];
-BYTE g_oldTable[256];
-
-static MouseState g_mouseState = {};
-static MouseState g_oldMouseState = {};
-static bool g_mouseInitialized = false;
-static HWND g_hWnd = nullptr;
-static bool g_mouseLocked = false;
-
-static XINPUT_STATE g_padState = {};
-static XINPUT_STATE g_padOldState = {};
-static bool g_padConnected = false;
-static XINPUT_VIBRATION g_vibration = {};
-static bool g_keyBind = false;
-
-HRESULT InitInput()
+//-----------------------------------------------------------------------------
+//      初期化
+//-----------------------------------------------------------------------------
+HRESULT Input::Init()
 {
-	ZeroMemory(g_keyTable, sizeof(g_keyTable));
-	ZeroMemory(g_oldTable, sizeof(g_oldTable));
-	GetKeyboardState(g_keyTable);
+	// キーボード
+	ZeroMemory(m_KeyTable, sizeof(m_KeyTable));
+	ZeroMemory(m_KeyTablePrev, sizeof(m_KeyTablePrev));
+	GetKeyboardState(m_KeyTable);
 
-	ZeroMemory(&g_padState, sizeof(g_padState));
-	ZeroMemory(&g_padOldState, sizeof(g_padOldState));
-	g_padConnected = (XInputGetState(kXInputUserIndex, &g_padState) == ERROR_SUCCESS);
-	g_padOldState = g_padState;
-	ApplyThumbDeadzones(g_padState);
+	// コントローラ
+	ZeroMemory(&m_PadState, sizeof(m_PadState));
+	ZeroMemory(&m_PadStatePrev, sizeof(m_PadStatePrev));
+	m_PadConnected = (XInputGetState(kXInputUserIndex, &m_PadState) == ERROR_SUCCESS);
+	m_PadStatePrev = m_PadState;
+	ApplyThumbDeadzones(m_PadState);
 
-	ZeroMemory(&g_vibration, sizeof(g_vibration));
+	ZeroMemory(&m_Vibration, sizeof(m_Vibration));
 
-	g_mouseInitialized = true;
+	// マウス
+	m_MouseInitialized = true;
 	POINT cursorPos{};
 	GetCursorPos(&cursorPos);
-	g_mouseState.x = cursorPos.x;
-	g_mouseState.y = cursorPos.y;
-	g_oldMouseState = g_mouseState;
+	m_MouseState.x = cursorPos.x;
+	m_MouseState.y = cursorPos.y;
+	m_MouseStatePrev = m_MouseState;
 
 	return S_OK;
 }
 
-void UninitInput()
+//-----------------------------------------------------------------------------
+//      終了処理
+//-----------------------------------------------------------------------------
+void Input::Term()
 {
 	StopVibration(static_cast<int>(kXInputUserIndex));
 
-	if (g_mouseLocked)
+	if (m_MouseLocked)
 	{
 		ReleaseCapture();
 		ShowCursor(TRUE);
-		g_mouseLocked = false;
+		m_MouseLocked = false;
 	}
 }
 
-void SetInputWindow(HWND hWnd)
+void Input::SetWindow(HWND hWnd)
 {
-	g_hWnd = hWnd;
+	m_hWnd = hWnd;
 }
 
-void LockMouse(bool lock)
+void Input::LockMouse(bool lock)
 {
-	if (g_hWnd == nullptr) return;
+	if (m_hWnd == nullptr) return;
 
-	if (lock && !g_mouseLocked)
+	if (lock && !m_MouseLocked)
 	{
-		SetCapture(g_hWnd);
-		ShowCursor(FALSE);
-		g_mouseLocked = true;
+		// マウスキャプチャを開始
+		SetCapture(m_hWnd);
 
+		// カーソルを非表示
+		ShowCursor(FALSE);
+
+		// マウスロック状態に設定
+		m_MouseLocked = true;
+
+		// マウスをウィンドウ中央に移動
 		RECT rect{};
-		GetClientRect(g_hWnd, &rect);
+		GetClientRect(m_hWnd, &rect);
 		POINT center{};
 		center.x = rect.left + (rect.right - rect.left) / 2;
 		center.y = rect.top + (rect.bottom - rect.top) / 2;
-		ClientToScreen(g_hWnd, &center);
+
+		// クライアント座標をスクリーン座標に変換してカーソル位置を設定
+		ClientToScreen(m_hWnd, &center);
 		SetCursorPos(center.x, center.y);
 
 		GetCursorPos(&center);
-		g_mouseState.x = center.x;
-		g_mouseState.y = center.y;
-		g_oldMouseState = g_mouseState;
+		m_MouseState.x = center.x;
+		m_MouseState.y = center.y;
+		m_MouseStatePrev = m_MouseState;
 	}
-	else if (!lock && g_mouseLocked)
+	else if (!lock && m_MouseLocked)
 	{
 		ReleaseCapture();
 		ShowCursor(TRUE);
-		g_mouseLocked = false;
+		m_MouseLocked = false;
 	}
 }
 
-void UpdateInput()
+//-----------------------------------------------------------------------------
+//      更新（毎フレーム呼ぶ）
+//-----------------------------------------------------------------------------
+void Input::Update()
 {
-	memcpy_s(g_oldTable, sizeof(g_oldTable), g_keyTable, sizeof(g_keyTable));
-	GetKeyboardState(g_keyTable);
+	memcpy_s(m_KeyTablePrev, sizeof(m_KeyTablePrev), m_KeyTable, sizeof(m_KeyTable));
+	GetKeyboardState(m_KeyTable);
 
-	// コントローラ: 前フレーム保存 → 取得（未接続時はボタンを押していない状態にする）
-	g_padOldState = g_padState;
-	DWORD xret = XInputGetState(kXInputUserIndex, &g_padState);
-	g_padConnected = (xret == ERROR_SUCCESS);
-	if (!g_padConnected)
+	// 前フレームのコントローラ状態を保存
+	m_PadStatePrev = m_PadState;
+
+	DWORD xret = XInputGetState(kXInputUserIndex, &m_PadState);
+	m_PadConnected = (xret == ERROR_SUCCESS);
+	if (!m_PadConnected)
 	{
-		ZeroMemory(&g_padState, sizeof(g_padState));
+		ZeroMemory(&m_PadState, sizeof(m_PadState));
 	}
-	ApplyThumbDeadzones(g_padState);
+	// デッドゾーン処理
+	ApplyThumbDeadzones(m_PadState);
 
-	if (g_mouseInitialized && g_mouseLocked && g_hWnd != nullptr)
+	// マウス
+	if (m_MouseInitialized && m_MouseLocked && m_hWnd != nullptr)
 	{
-		g_oldMouseState = g_mouseState;
+		// 前フレームのマウス状態を保存
+		m_MouseStatePrev = m_MouseState;
 
 		POINT cursorPos{};
 		GetCursorPos(&cursorPos);
-		g_mouseState.x = cursorPos.x;
-		g_mouseState.y = cursorPos.y;
+		m_MouseState.x = cursorPos.x;
+		m_MouseState.y = cursorPos.y;
 
-		g_mouseState.deltaX = g_mouseState.x - g_oldMouseState.x;
-		g_mouseState.deltaY = g_mouseState.y - g_oldMouseState.y;
+		// マウスの移動量を計算
+		m_MouseState.deltaX = m_MouseState.x - m_MouseStatePrev.x;
+		m_MouseState.deltaY = m_MouseState.y - m_MouseStatePrev.y;
 
+		// マウスをウィンドウ中央に戻す
 		RECT rect{};
-		GetClientRect(g_hWnd, &rect);
+		GetClientRect(m_hWnd, &rect);
 		POINT center{};
 		center.x = rect.left + (rect.right - rect.left) / 2;
 		center.y = rect.top + (rect.bottom - rect.top) / 2;
-		ClientToScreen(g_hWnd, &center);
+		ClientToScreen(m_hWnd, &center);
 		SetCursorPos(center.x, center.y);
 
-		g_mouseState.x = center.x;
-		g_mouseState.y = center.y;
+		m_MouseState.x = center.x;
+		m_MouseState.y = center.y;
 	}
-	else if (g_mouseInitialized)
+	else if (m_MouseInitialized)
 	{
-		g_oldMouseState = g_mouseState;
+		m_MouseStatePrev = m_MouseState;
 
 		POINT cursorPos{};
 		GetCursorPos(&cursorPos);
-		g_mouseState.x = cursorPos.x;
-		g_mouseState.y = cursorPos.y;
+		m_MouseState.x = cursorPos.x;
+		m_MouseState.y = cursorPos.y;
 
-		g_mouseState.deltaX = g_mouseState.x - g_oldMouseState.x;
-		g_mouseState.deltaY = g_mouseState.y - g_oldMouseState.y;
+		m_MouseState.deltaX = m_MouseState.x - m_MouseStatePrev.x;
+		m_MouseState.deltaY = m_MouseState.y - m_MouseStatePrev.y;
 	}
 
-	g_mouseState.leftButton = (GetAsyncKeyState(VK_LBUTTON) & 0x8000) != 0;
-	g_mouseState.rightButton = (GetAsyncKeyState(VK_RBUTTON) & 0x8000) != 0;
-	g_mouseState.middleButton = (GetAsyncKeyState(VK_MBUTTON) & 0x8000) != 0;
+	m_MouseState.leftButton = (GetAsyncKeyState(VK_LBUTTON) & 0x8000) != 0;
+	m_MouseState.rightButton = (GetAsyncKeyState(VK_RBUTTON) & 0x8000) != 0;
+	m_MouseState.middleButton = (GetAsyncKeyState(VK_MBUTTON) & 0x8000) != 0;
 }
 
-static bool InputBlockedByBind()
+//-----------------------------------------------------------------------------
+//      キーボード
+//-----------------------------------------------------------------------------
+bool Input::IsKeyPress(BYTE key) const
 {
-	return g_keyBind;
+	if (m_KeyBind) return false;
+	return (m_KeyTable[key] & 0x80) != 0;
 }
 
-bool IsKeyPress(BYTE key)
+bool Input::IsKeyTrigger(BYTE key) const
 {
-	if (InputBlockedByBind()) return false;
-	return (g_keyTable[key] & 0x80) != 0;
+	if (m_KeyBind) return false;
+	return ((m_KeyTable[key] ^ m_KeyTablePrev[key]) & m_KeyTable[key] & 0x80) != 0;
 }
 
-bool IsKeyTrigger(BYTE key)
+bool Input::IsKeyRelease(BYTE key) const
 {
-	if (InputBlockedByBind()) return false;
-	return ((g_keyTable[key] ^ g_oldTable[key]) & g_keyTable[key] & 0x80) != 0;
+	if (m_KeyBind) return false;
+	return ((m_KeyTable[key] ^ m_KeyTablePrev[key]) & m_KeyTablePrev[key] & 0x80) != 0;
 }
 
-bool IsKeyRelease(BYTE key)
+bool Input::IsKeyRepeat(BYTE key) const
 {
-	if (InputBlockedByBind()) return false;
-	return ((g_keyTable[key] ^ g_oldTable[key]) & g_oldTable[key] & 0x80) != 0;
-}
-
-bool IsKeyRepeat(BYTE key)
-{
-	if (InputBlockedByBind()) return false;
+	if (m_KeyBind) return false;
 	// OS のキーリピートではなく「連続押下中」検出
-	return (g_keyTable[key] & g_oldTable[key] & 0x80) != 0;
+	return (m_KeyTable[key] & m_KeyTablePrev[key] & 0x80) != 0;
 }
 
-MouseState GetMouseState()
+//-----------------------------------------------------------------------------
+//      マウス
+//-----------------------------------------------------------------------------
+MouseState Input::GetMouseState() const
 {
-	return g_mouseState;
+	return m_MouseState;
 }
 
-bool IsMouseButtonPress(int button)
+bool Input::IsMouseButtonPress(int button) const
 {
 	switch (button)
 	{
-	case 0: return g_mouseState.leftButton;
-	case 1: return g_mouseState.rightButton;
-	case 2: return g_mouseState.middleButton;
+	case 0: return m_MouseState.leftButton;
+	case 1: return m_MouseState.rightButton;
+	case 2: return m_MouseState.middleButton;
 	default: return false;
 	}
 }
 
-bool IsMouseButtonTrigger(int button)
+bool Input::IsMouseButtonTrigger(int button) const
 {
 	switch (button)
 	{
-	case 0: return g_mouseState.leftButton && !g_oldMouseState.leftButton;
-	case 1: return g_mouseState.rightButton && !g_oldMouseState.rightButton;
-	case 2: return g_mouseState.middleButton && !g_oldMouseState.middleButton;
+	case 0: return m_MouseState.leftButton && !m_MouseStatePrev.leftButton;
+	case 1: return m_MouseState.rightButton && !m_MouseStatePrev.rightButton;
+	case 2: return m_MouseState.middleButton && !m_MouseStatePrev.middleButton;
 	default: return false;
 	}
 }
 
-bool IsMouseButtonRelease(int button)
+bool Input::IsMouseButtonRelease(int button) const
 {
 	switch (button)
 	{
-	case 0: return !g_mouseState.leftButton && g_oldMouseState.leftButton;
-	case 1: return !g_mouseState.rightButton && g_oldMouseState.rightButton;
-	case 2: return !g_mouseState.middleButton && g_oldMouseState.middleButton;
+	case 0: return !m_MouseState.leftButton && m_MouseStatePrev.leftButton;
+	case 1: return !m_MouseState.rightButton && m_MouseStatePrev.rightButton;
+	case 2: return !m_MouseState.middleButton && m_MouseStatePrev.middleButton;
 	default: return false;
 	}
 }
 
-bool IsControllerPress(WORD button)
+//-----------------------------------------------------------------------------
+//      コントローラ（ボタン）
+//-----------------------------------------------------------------------------
+bool Input::IsControllerPress(WORD button) const
 {
-	if (InputBlockedByBind()) return false;
-	return (g_padState.Gamepad.wButtons & button) != 0;
+	if (m_KeyBind) return false;
+	return (m_PadState.Gamepad.wButtons & button) != 0;
 }
 
-bool IsControllerTrigger(WORD button)
+bool Input::IsControllerTrigger(WORD button) const
 {
-	if (InputBlockedByBind()) return false;
-	WORD cur = g_padState.Gamepad.wButtons;
-	WORD old = g_padOldState.Gamepad.wButtons;
+	if (m_KeyBind) return false;
+	WORD cur = m_PadState.Gamepad.wButtons;
+	WORD old = m_PadStatePrev.Gamepad.wButtons;
 	return ((cur ^ old) & cur & button) != 0;
 }
 
-bool IsControllerRelease(WORD button)
+bool Input::IsControllerRelease(WORD button) const
 {
-	if (InputBlockedByBind()) return false;
-	WORD cur = g_padState.Gamepad.wButtons;
-	WORD old = g_padOldState.Gamepad.wButtons;
+	if (m_KeyBind) return false;
+	WORD cur = m_PadState.Gamepad.wButtons;
+	WORD old = m_PadStatePrev.Gamepad.wButtons;
 	return ((cur ^ old) & old & button) != 0;
 }
 
-bool IsControllerRepeat(WORD button)
+bool Input::IsControllerRepeat(WORD button) const
 {
-	if (InputBlockedByBind()) return false;
-	return ((g_padState.Gamepad.wButtons & g_padOldState.Gamepad.wButtons) & button) != 0;
+	if (m_KeyBind) return false;
+	return ((m_PadState.Gamepad.wButtons & m_PadStatePrev.Gamepad.wButtons) & button) != 0;
 }
 
-bool IsLTPress(BYTE strength)
+//-----------------------------------------------------------------------------
+//      コントローラ（トリガー）
+//-----------------------------------------------------------------------------
+bool Input::IsLTPress(BYTE strength) const
 {
-	if (InputBlockedByBind()) return false;
-	return g_padState.Gamepad.bLeftTrigger > strength;
+	if (m_KeyBind) return false;
+	return m_PadState.Gamepad.bLeftTrigger > strength;
 }
 
-bool IsRTPress(BYTE strength)
+bool Input::IsRTPress(BYTE strength) const
 {
-	if (InputBlockedByBind()) return false;
-	return g_padState.Gamepad.bRightTrigger > strength;
+	if (m_KeyBind) return false;
+	return m_PadState.Gamepad.bRightTrigger > strength;
 }
 
-bool IsLTTrigger()
+bool Input::IsLTTrigger() const
 {
-	if (InputBlockedByBind()) return false;
-	BYTE cur = g_padState.Gamepad.bLeftTrigger;
-	BYTE old = g_padOldState.Gamepad.bLeftTrigger;
+	if (m_KeyBind) return false;
+	BYTE cur = m_PadState.Gamepad.bLeftTrigger;
+	BYTE old = m_PadStatePrev.Gamepad.bLeftTrigger;
 	return (cur > 0 && old == 0);
 }
 
-bool IsRTTrigger()
+bool Input::IsRTTrigger() const
 {
-	if (InputBlockedByBind()) return false;
-	BYTE cur = g_padState.Gamepad.bRightTrigger;
-	BYTE old = g_padOldState.Gamepad.bRightTrigger;
+	if (m_KeyBind) return false;
+	BYTE cur = m_PadState.Gamepad.bRightTrigger;
+	BYTE old = m_PadStatePrev.Gamepad.bRightTrigger;
 	return (cur > 0 && old == 0);
 }
 
-bool IsLTRelease()
+bool Input::IsLTRelease() const
 {
-	if (InputBlockedByBind()) return false;
-	BYTE cur = g_padState.Gamepad.bLeftTrigger;
-	BYTE old = g_padOldState.Gamepad.bLeftTrigger;
+	if (m_KeyBind) return false;
+	BYTE cur = m_PadState.Gamepad.bLeftTrigger;
+	BYTE old = m_PadStatePrev.Gamepad.bLeftTrigger;
 	return (cur == 0 && old > 0);
 }
 
-bool IsRTRelease()
+bool Input::IsRTRelease() const
 {
-	if (InputBlockedByBind()) return false;
-	BYTE cur = g_padState.Gamepad.bRightTrigger;
-	BYTE old = g_padOldState.Gamepad.bRightTrigger;
+	if (m_KeyBind) return false;
+	BYTE cur = m_PadState.Gamepad.bRightTrigger;
+	BYTE old = m_PadStatePrev.Gamepad.bRightTrigger;
 	return (cur == 0 && old > 0);
 }
 
-bool IsLLeftStickPress()
+//-----------------------------------------------------------------------------
+//      コントローラ（スティック）
+//-----------------------------------------------------------------------------
+bool Input::IsLLeftStickPress() const
 {
-	if (InputBlockedByBind()) return false;
-	return g_padState.Gamepad.sThumbLX <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+	if (m_KeyBind) return false;
+	return m_PadState.Gamepad.sThumbLX <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
 }
 
-bool IsLRightStickPress()
+bool Input::IsLRightStickPress() const
 {
-	if (InputBlockedByBind()) return false;
-	return g_padState.Gamepad.sThumbLX >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+	if (m_KeyBind) return false;
+	return m_PadState.Gamepad.sThumbLX >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
 }
 
-float IsLLeftStickForce()
+float Input::IsLLeftStickForce() const
 {
-	if (InputBlockedByBind()) return 0.0f;
-	float lx = static_cast<float>(g_padState.Gamepad.sThumbLX);
+	if (m_KeyBind) return 0.0f;
+	float lx = static_cast<float>(m_PadState.Gamepad.sThumbLX);
 	return NormalizeStickAxis(lx, static_cast<float>(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE));
 }
 
-float IsLRightStickForce()
+float Input::IsLRightStickForce() const
 {
-	if (InputBlockedByBind()) return 0.0f;
-	float lx = static_cast<float>(g_padState.Gamepad.sThumbLX);
+	if (m_KeyBind) return 0.0f;
+	float lx = static_cast<float>(m_PadState.Gamepad.sThumbLX);
 	return NormalizeStickAxis(lx, static_cast<float>(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE));
 }
 
-bool IsRLeftStickPress()
+bool Input::IsRLeftStickPress() const
 {
-	if (InputBlockedByBind()) return false;
-	return g_padState.Gamepad.sThumbRX <= -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
+	if (m_KeyBind) return false;
+	return m_PadState.Gamepad.sThumbRX <= -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
 }
 
-bool IsRRightStickPress()
+bool Input::IsRRightStickPress() const
 {
-	if (InputBlockedByBind()) return false;
-	return g_padState.Gamepad.sThumbRX >= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
+	if (m_KeyBind) return false;
+	return m_PadState.Gamepad.sThumbRX >= XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
 }
 
-float IsRLeftStickForce()
+float Input::IsRLeftStickForce() const
 {
-	if (InputBlockedByBind()) return 0.0f;
-	float rx = static_cast<float>(g_padState.Gamepad.sThumbRX);
+	if (m_KeyBind) return 0.0f;
+	float rx = static_cast<float>(m_PadState.Gamepad.sThumbRX);
 	return NormalizeStickAxis(rx, static_cast<float>(XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE));
 }
 
-float IsRRightStickForce()
+float Input::IsRRightStickForce() const
 {
-	if (InputBlockedByBind()) return 0.0f;
-	float rx = static_cast<float>(g_padState.Gamepad.sThumbRX);
+	if (m_KeyBind) return 0.0f;
+	float rx = static_cast<float>(m_PadState.Gamepad.sThumbRX);
 	return NormalizeStickAxis(rx, static_cast<float>(XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE));
 }
 
-float GetLeftStickX()
+float Input::GetLeftStickX() const
 {
-	if (InputBlockedByBind()) return 0.0f;
-	float lx = static_cast<float>(g_padState.Gamepad.sThumbLX);
+	if (m_KeyBind) return 0.0f;
+	float lx = static_cast<float>(m_PadState.Gamepad.sThumbLX);
 	return NormalizeStickAxis(lx, static_cast<float>(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE));
 }
-float GetLeftStickY()
+
+float Input::GetLeftStickY() const
 {
-	if (InputBlockedByBind()) return 0.0f;
-	float ly = static_cast<float>(g_padState.Gamepad.sThumbLY);
+	if (m_KeyBind) return 0.0f;
+	float ly = static_cast<float>(m_PadState.Gamepad.sThumbLY);
 	return NormalizeStickAxis(ly, static_cast<float>(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE));
 }
-float GetRightStickX()
+
+float Input::GetRightStickX() const
 {
-	if (InputBlockedByBind()) return 0.0f;
-	float rx = static_cast<float>(g_padState.Gamepad.sThumbRX);
+	if (m_KeyBind) return 0.0f;
+	float rx = static_cast<float>(m_PadState.Gamepad.sThumbRX);
 	return NormalizeStickAxis(rx, static_cast<float>(XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE));
 }
-float GetRightStickY()
+
+float Input::GetRightStickY() const
 {
-	if (InputBlockedByBind()) return 0.0f;
-	float ry = static_cast<float>(g_padState.Gamepad.sThumbRY);
+	if (m_KeyBind) return 0.0f;
+	float ry = static_cast<float>(m_PadState.Gamepad.sThumbRY);
 	return NormalizeStickAxis(ry, static_cast<float>(XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE));
 }
 
-bool IsLUpStickPress()
+bool Input::IsLUpStickPress() const
 {
-	if (InputBlockedByBind()) return false;
-	return g_padState.Gamepad.sThumbLY >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+	if (m_KeyBind) return false;
+	return m_PadState.Gamepad.sThumbLY >= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
 }
 
-bool IsLDownStickPress()
+bool Input::IsLDownStickPress() const
 {
-	if (InputBlockedByBind()) return false;
-	return g_padState.Gamepad.sThumbLY <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+	if (m_KeyBind) return false;
+	return m_PadState.Gamepad.sThumbLY <= -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
 }
 
-void Vibration(int controllerNum, int leftMotorSpeed, int rightMotorSpeed)
+//-----------------------------------------------------------------------------
+//      振動
+//-----------------------------------------------------------------------------
+void Input::Vibration(int controllerNum, int leftMotorSpeed, int rightMotorSpeed)
 {
-	g_vibration.wLeftMotorSpeed = static_cast<WORD>(leftMotorSpeed);
-	g_vibration.wRightMotorSpeed = static_cast<WORD>(rightMotorSpeed);
-	XInputSetState(static_cast<DWORD>(controllerNum), &g_vibration);
+	m_Vibration.wLeftMotorSpeed = static_cast<WORD>(leftMotorSpeed);
+	m_Vibration.wRightMotorSpeed = static_cast<WORD>(rightMotorSpeed);
+	XInputSetState(static_cast<DWORD>(controllerNum), &m_Vibration);
 }
 
-void StopVibration(int controllerNum)
+void Input::StopVibration(int controllerNum)
 {
-	g_vibration.wLeftMotorSpeed = 0;
-	g_vibration.wRightMotorSpeed = 0;
-	XInputSetState(static_cast<DWORD>(controllerNum), &g_vibration);
+	m_Vibration.wLeftMotorSpeed = 0;
+	m_Vibration.wRightMotorSpeed = 0;
+	XInputSetState(static_cast<DWORD>(controllerNum), &m_Vibration);
 }
 
-void KeyBind(bool inBind)
+//-----------------------------------------------------------------------------
+//      キーバインド（入力ロック）
+//-----------------------------------------------------------------------------
+void Input::KeyBind(bool inBind)
 {
-	g_keyBind = inBind;
+	m_KeyBind = inBind;
 }
 
-bool GetKeyBind()
+bool Input::GetKeyBind() const
 {
-	return g_keyBind;
+	return m_KeyBind;
 }

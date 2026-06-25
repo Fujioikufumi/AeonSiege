@@ -36,10 +36,10 @@ namespace {
 
 	constexpr XMFLOAT3 kStartPos = { -497.0f, 0.0f, -650.0f };
 
-	static constexpr WORD BTN_LOCK_ON = PAD_X;   // ロックオン（仕様に合わせて後で変更可）
-	static constexpr WORD BTN_ACTION  = PAD_B;   // 戦闘入り短押し等（T / PAD_B）
-	static constexpr WORD BTN_SKILL_1 = PAD_Y;   // スキル1
-	static constexpr WORD BTN_SKILL_2 = PAD_X;   // スキル2
+	static constexpr WORD BTN_LOCK_ON = Input::PAD_X;   // ロックオン（仕様に合わせて後で変更可）
+	static constexpr WORD BTN_ACTION  = Input::PAD_B;   // 戦闘入り短押し等（T / Input::PAD_B）
+	static constexpr WORD BTN_SKILL_1 = Input::PAD_Y;   // スキル1
+	static constexpr WORD BTN_SKILL_2 = Input::PAD_X;   // スキル2
 }
 
 
@@ -449,7 +449,7 @@ void Player::CheckLockTarget(Scene* scene)
 void Player::HandleLockOnInput(float deltaTime, Scene* scene, Camera* camera)
 {
 	// Yボタン短押しの場合、ロックオン対象の切り替え・長押しの場合、ロックオン解除
-	const bool yHeld = IsControllerPress(BTN_LOCK_ON) || IsKeyPress('Y');
+	const bool yHeld = Input::GetInstance().IsControllerPress(BTN_LOCK_ON) || Input::GetInstance().IsKeyPress('Y');
 	if (yHeld)
 	{
 		m_YHoldTime += deltaTime;
@@ -480,7 +480,7 @@ void Player::HandleLockOnInput(float deltaTime, Scene* scene, Camera* camera)
 void Player::HandleCombatInput(float deltaTime, Scene* scene, Camera* camera)
 {
 	// Aボタン又はTキーの入力判定
-	const bool aHeld = IsControllerPress(BTN_ACTION) || IsKeyPress('T');
+	const bool aHeld = Input::GetInstance().IsControllerPress(BTN_ACTION) || Input::GetInstance().IsKeyPress('T');
 	
 	if (aHeld)
 	{
@@ -646,12 +646,12 @@ void Player::UpdateSkills(float deltaTime)
 		return;
 	}
 
-	if (IsKeyTrigger('1')) TryStartSkillSlot(0);
-	if (IsKeyTrigger('2')) TryStartSkillSlot(1);
-	if (IsKeyTrigger('3')) TryStartSkillSlot(2);
-	if (IsKeyTrigger('4')) TryStartSkillSlot(3);
-	if (IsKeyTrigger('5')) TryStartSkillSlot(4);
-	if (IsKeyTrigger('6')) TryStartSkillSlot(5);
+	if (Input::GetInstance().IsKeyTrigger('1')) TryStartSkillSlot(0);
+	if (Input::GetInstance().IsKeyTrigger('2')) TryStartSkillSlot(1);
+	if (Input::GetInstance().IsKeyTrigger('3')) TryStartSkillSlot(2);
+	if (Input::GetInstance().IsKeyTrigger('4')) TryStartSkillSlot(3);
+	if (Input::GetInstance().IsKeyTrigger('5')) TryStartSkillSlot(4);
+	if (Input::GetInstance().IsKeyTrigger('6')) TryStartSkillSlot(5);
 }
 
 void Player::UpdateSkillState(float deltaTime)
@@ -973,12 +973,12 @@ void Player::UpdateCombatMode(float deltaTime, Scene* scene, Camera* camera, Ter
 		return;
 
 	// 十字キー・左方向キーで前の敵
-	if (IsControllerTrigger(PAD_LEFT) || IsKeyTrigger(VK_LEFT))
+	if (Input::GetInstance().IsControllerTrigger(Input::PAD_LEFT) || Input::GetInstance().IsKeyTrigger(VK_LEFT))
 	{
 		SwitchTarget(scene, camera, -1);
 	}
 	// 十字キー・右方向キーで次の敵
-	else if (IsControllerTrigger(PAD_RIGHT) || IsKeyTrigger(VK_RIGHT))
+	else if (Input::GetInstance().IsControllerTrigger(Input::PAD_RIGHT) || Input::GetInstance().IsKeyTrigger(VK_RIGHT))
 	{
 		SwitchTarget(scene, camera, 1);
 	}
@@ -999,8 +999,8 @@ void Player::UpdateMovement(float deltaTime, Camera* camera, Terrain* terrain)
 		isPlayingSkill = std::string_view(clipName).starts_with("Player_Skill");
 
 		// オートアタック中は移動入力でキャンセル可能にする
-		const float stickMagSq = GetLeftStickX() * GetLeftStickX() + GetLeftStickY() * GetLeftStickY();
-		const bool hasMoveInput = IsKeyPress('W') || IsKeyPress('S') || IsKeyPress('A') || IsKeyPress('D') || (stickMagSq > 0.01f);
+		const float stickMagSq = Input::GetInstance().GetLeftStickX() * Input::GetInstance().GetLeftStickX() + Input::GetInstance().GetLeftStickY() * Input::GetInstance().GetLeftStickY();
+		const bool hasMoveInput = Input::GetInstance().IsKeyPress('W') || Input::GetInstance().IsKeyPress('S') || Input::GetInstance().IsKeyPress('A') || Input::GetInstance().IsKeyPress('D') || (stickMagSq > 0.01f);
 
 		if (hasMoveInput && clipName == kAnimAttackAuto)
 		{
@@ -1026,24 +1026,24 @@ void Player::UpdateMovement(float deltaTime, Camera* camera, Terrain* terrain)
 	// スキルアニメション中は移動不可
 	if (!isPlayingSkill)
 	{
-		if (IsKeyPress('W')) { mx += fwd.x; mz += fwd.z; }
-		if (IsKeyPress('S')) { mx -= fwd.x; mz -= fwd.z; }
-		if (IsKeyPress('D')) { mx += right.x; mz += right.z; }
-		if (IsKeyPress('A')) { mx -= right.x; mz -= right.z; }
+		if (Input::GetInstance().IsKeyPress('W')) { mx += fwd.x; mz += fwd.z; }
+		if (Input::GetInstance().IsKeyPress('S')) { mx -= fwd.x; mz -= fwd.z; }
+		if (Input::GetInstance().IsKeyPress('D')) { mx += right.x; mz += right.z; }
+		if (Input::GetInstance().IsKeyPress('A')) { mx -= right.x; mz -= right.z; }
 
-		mx += GetLeftStickX() * right.x + GetLeftStickY() * fwd.x;
-		mz += GetLeftStickX() * right.z + GetLeftStickY() * fwd.z;
+		mx += Input::GetInstance().GetLeftStickX() * right.x + Input::GetInstance().GetLeftStickY() * fwd.x;
+		mz += Input::GetInstance().GetLeftStickX() * right.z + Input::GetInstance().GetLeftStickY() * fwd.z;
 	}
 
 	// 入力があるかどうかの判定
 	const float rawLenSq = mx * mx + mz * mz;
 	const bool bMove = (rawLenSq > kMoveEpsilon);
 
-	const float stickMagSq = GetLeftStickX() * GetLeftStickX() + GetLeftStickY() * GetLeftStickY();
+	const float stickMagSq = Input::GetInstance().GetLeftStickX() * Input::GetInstance().GetLeftStickX() + Input::GetInstance().GetLeftStickY() * Input::GetInstance().GetLeftStickY();
 
 	// ダッシュの判定:Shiftキー、スティックが一定以上倒している場合
-	const bool bRun = IsKeyPress(VK_SHIFT)
-		|| IsControllerPress(PAD_RIGHT_SHOULDER)
+	const bool bRun = Input::GetInstance().IsKeyPress(VK_SHIFT)
+		|| Input::GetInstance().IsControllerPress(Input::PAD_RIGHT_SHOULDER)
 		|| (stickMagSq >= kStickRunThreshold * kStickRunThreshold);
 
 	// --------------------------------------------------------
@@ -1092,7 +1092,7 @@ void Player::UpdateMovement(float deltaTime, Camera* camera, Terrain* terrain)
 	}
 
 	// 戦闘中はジャンプを無効化
-	const bool bJump = !m_IsCombat && (IsKeyTrigger(VK_SPACE) || IsControllerTrigger(PAD_A));
+	const bool bJump = !m_IsCombat && (Input::GetInstance().IsKeyTrigger(VK_SPACE) || Input::GetInstance().IsControllerTrigger(Input::PAD_A));
 	
 	// ジャンプの開始
 	if (m_IsGrounded && bJump)

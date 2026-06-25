@@ -27,27 +27,27 @@ namespace
 	// メニューを開く/閉じるトリガー
 	bool MenuOpenOrCloseTrigger()
 	{
-		return IsKeyTrigger(VK_ESCAPE)
-			|| IsKeyTrigger('M')
-			|| IsControllerTrigger(PAD_BACK);
+		return Input::GetInstance().IsKeyTrigger(VK_ESCAPE)
+			|| Input::GetInstance().IsKeyTrigger('M')
+			|| Input::GetInstance().IsControllerTrigger(Input::PAD_BACK);
 	}
 
 	// メニューで決定するトリガー
 	bool MenuConfirmTrigger()
 	{
-		return IsKeyTrigger(VK_SPACE) || IsKeyTrigger(VK_RETURN) || IsControllerTrigger(PAD_A);
+		return Input::GetInstance().IsKeyTrigger(VK_SPACE) || Input::GetInstance().IsKeyTrigger(VK_RETURN) || Input::GetInstance().IsControllerTrigger(Input::PAD_A);
 	}
 
 	// メニューで上下に移動するトリガー
 	bool MenuUpTrigger()
 	{
-		return IsKeyTrigger(VK_UP) || IsKeyTrigger('W') || IsControllerTrigger(PAD_UP);
+		return Input::GetInstance().IsKeyTrigger(VK_UP) || Input::GetInstance().IsKeyTrigger('W') || Input::GetInstance().IsControllerTrigger(Input::PAD_UP);
 	}
 
 	// メニューで下に移動するトリガー
 	bool MenuDownTrigger()
 	{
-		return IsKeyTrigger(VK_DOWN) || IsKeyTrigger('S') || IsControllerTrigger(PAD_DOWN);
+		return Input::GetInstance().IsKeyTrigger(VK_DOWN) || Input::GetInstance().IsKeyTrigger('S') || Input::GetInstance().IsControllerTrigger(Input::PAD_DOWN);
 	}
 }
 

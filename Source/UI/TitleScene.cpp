@@ -96,19 +96,19 @@ void TitleScene::Update(float deltaTime)
     m_CurrentTime = std::max(0.0f, m_CurrentTime - deltaTime);
 
 
-    if (IsKeyPress(VK_UP) || IsKeyPress('W'))
+    if (Input::GetInstance().IsKeyPress(VK_UP) || Input::GetInstance().IsKeyPress('W'))
     {
         m_CurrentSelectIndex = 0;
     }
 
-    if (IsKeyPress(VK_DOWN) || IsKeyPress('S'))
+    if (Input::GetInstance().IsKeyPress(VK_DOWN) || Input::GetInstance().IsKeyPress('S'))
     {
         m_CurrentSelectIndex = 1;
     }
 
     m_TitleObject->SetSelectIndex(m_CurrentSelectIndex);
 
-    if (IsKeyPress(VK_SPACE) && m_CurrentTime == 0.0f && !g_isDebugMode)
+    if (Input::GetInstance().IsKeyPress(VK_SPACE) && m_CurrentTime == 0.0f && !g_isDebugMode)
     {
         if (m_CurrentSelectIndex == 0) // スタートが選択されている場合
         {

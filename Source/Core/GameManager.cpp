@@ -55,7 +55,7 @@ void GameManager::Update(float deltaTime)
 		}
 	}
 
-	UpdateInput();
+	Input::GetInstance().Update();
 
 	if (m_ActiveScene != nullptr)
 	{
