@@ -7,7 +7,7 @@
 class LockOnUI : public GameObject
 {
 public:
-	LockOnUI() = default;
+	LockOnUI()           = default;
 	~LockOnUI() override = default;
 
 	bool Init() override;

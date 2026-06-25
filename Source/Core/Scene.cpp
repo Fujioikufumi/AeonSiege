@@ -34,7 +34,8 @@ void Scene::Update(float deltaTime)
 	// 2. 破棄フラグ(IsDestroyed)が立っているオブジェクトのクリーンアップ
 	for (auto& list : m_GameObjectList)
 	{
-		list.remove_if([this](const std::unique_ptr<GameObject>& obj) {
+		list.remove_if([this](const std::unique_ptr<GameObject>& obj)
+		               {
 			if (obj->IsDestroyed())
 			{
 				// リストから消える前に、キャッシュ（生ポインタ）からも削除する
@@ -57,8 +58,7 @@ void Scene::Update(float deltaTime)
 
 				return true; // remove_if によってリストから削除される
 			}
-			return false;
-			});
+			return false; });
 	}
 }
 

@@ -3,16 +3,15 @@
 #include <wincodec.h>
 #include "EncodingUtils/ComPtr.h"
 
-
 bool LoadImageWithWIC(
-	const wchar_t* fullPath,
-	REFGUID targetFormat,
-	UINT& outWidth,
-	UINT& outHeight,
-	std::vector<uint8_t>& outPixels)
+    const wchar_t* fullPath,
+    REFGUID targetFormat,
+    UINT& outWidth,
+    UINT& outHeight,
+    std::vector<uint8_t>& outPixels)
 {
 	outPixels.clear();
-	outWidth = 0;
+	outWidth  = 0;
 	outHeight = 0;
 
 	// COM の初期化（マルチスレッド）。既に初期化済みなら S_FALSE が返る
@@ -21,10 +20,10 @@ bool LoadImageWithWIC(
 
 	ComPtr<IWICImagingFactory> pWICFactory;
 	hr = CoCreateInstance(
-		CLSID_WICImagingFactory,
-		nullptr,
-		CLSCTX_INPROC_SERVER,
-		IID_PPV_ARGS(&pWICFactory));
+	    CLSID_WICImagingFactory,
+	    nullptr,
+	    CLSCTX_INPROC_SERVER,
+	    IID_PPV_ARGS(&pWICFactory));
 	if (FAILED(hr))
 	{
 		ELOG("Error : CoCreateInstance IWICImagingFactory failed.");
@@ -33,11 +32,11 @@ bool LoadImageWithWIC(
 
 	ComPtr<IWICBitmapDecoder> pDecoder;
 	hr = pWICFactory->CreateDecoderFromFilename(
-		fullPath,
-		nullptr,
-		GENERIC_READ,
-		WICDecodeMetadataCacheOnLoad,
-		&pDecoder);
+	    fullPath,
+	    nullptr,
+	    GENERIC_READ,
+	    WICDecodeMetadataCacheOnLoad,
+	    &pDecoder);
 	if (FAILED(hr))
 	{
 		ELOG("Error : CreateDecoderFromFilename failed. path = %ls", fullPath);
@@ -69,12 +68,12 @@ bool LoadImageWithWIC(
 	}
 
 	hr = pConverter->Initialize(
-		pFrame.Get(),
-		targetFormat,
-		WICBitmapDitherTypeNone,
-		nullptr,
-		0.0,
-		WICBitmapPaletteTypeCustom);
+	    pFrame.Get(),
+	    targetFormat,
+	    WICBitmapDitherTypeNone,
+	    nullptr,
+	    0.0,
+	    WICBitmapPaletteTypeCustom);
 	if (FAILED(hr))
 	{
 		ELOG("Error : FormatConverter Initialize failed.");
@@ -91,7 +90,7 @@ bool LoadImageWithWIC(
 	{
 		bytesPerPixel = 2u;
 	}
-	UINT stride = width * bytesPerPixel;
+	UINT stride       = width * bytesPerPixel;
 	size_t pixelCount = static_cast<size_t>(width) * height * bytesPerPixel;
 
 	std::vector<uint8_t> pixels(pixelCount);
@@ -102,20 +101,20 @@ bool LoadImageWithWIC(
 		return false;
 	}
 
-	outWidth = width;
+	outWidth  = width;
 	outHeight = height;
 	outPixels = std::move(pixels);
 	return true;
 }
 
 bool LoadImageWithWIC16(
-	const wchar_t* fullPath,
-	UINT& outWidth,
-	UINT& outHeight,
-	std::vector<uint16_t>& outPixels)
+    const wchar_t* fullPath,
+    UINT& outWidth,
+    UINT& outHeight,
+    std::vector<uint16_t>& outPixels)
 {
 	outPixels.clear();
-	outWidth = 0;
+	outWidth  = 0;
 	outHeight = 0;
 
 	HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
@@ -123,10 +122,10 @@ bool LoadImageWithWIC16(
 
 	ComPtr<IWICImagingFactory> pWICFactory;
 	hr = CoCreateInstance(
-		CLSID_WICImagingFactory,
-		nullptr,
-		CLSCTX_INPROC_SERVER,
-		IID_PPV_ARGS(&pWICFactory));
+	    CLSID_WICImagingFactory,
+	    nullptr,
+	    CLSCTX_INPROC_SERVER,
+	    IID_PPV_ARGS(&pWICFactory));
 	if (FAILED(hr))
 	{
 		ELOG("Error : CoCreateInstance IWICImagingFactory failed.");
@@ -135,11 +134,11 @@ bool LoadImageWithWIC16(
 
 	ComPtr<IWICBitmapDecoder> pDecoder;
 	hr = pWICFactory->CreateDecoderFromFilename(
-		fullPath,
-		nullptr,
-		GENERIC_READ,
-		WICDecodeMetadataCacheOnLoad,
-		&pDecoder);
+	    fullPath,
+	    nullptr,
+	    GENERIC_READ,
+	    WICDecodeMetadataCacheOnLoad,
+	    &pDecoder);
 	if (FAILED(hr))
 	{
 		ELOG("Error : CreateDecoderFromFilename failed. path = %ls", fullPath);
@@ -171,12 +170,12 @@ bool LoadImageWithWIC16(
 	}
 
 	hr = pConverter->Initialize(
-		pFrame.Get(),
-		GUID_WICPixelFormat16bppGray, // 16bit Grayに変換
-		WICBitmapDitherTypeNone,
-		nullptr,
-		0.0,
-		WICBitmapPaletteTypeCustom);
+	    pFrame.Get(),
+	    GUID_WICPixelFormat16bppGray, // 16bit Grayに変換
+	    WICBitmapDitherTypeNone,
+	    nullptr,
+	    0.0,
+	    WICBitmapPaletteTypeCustom);
 	if (FAILED(hr))
 	{
 		ELOG("Error : FormatConverter Initialize failed.");
@@ -185,8 +184,8 @@ bool LoadImageWithWIC16(
 
 	// 16bpp Gray: 2 bytes / pixel
 	const UINT bytesPerPixel = 2u;
-	const UINT stride = width * bytesPerPixel;
-	const size_t byteCount = static_cast<size_t>(width) * height * bytesPerPixel;
+	const UINT stride        = width * bytesPerPixel;
+	const size_t byteCount   = static_cast<size_t>(width) * height * bytesPerPixel;
 
 	std::vector<uint8_t> bytes(byteCount);
 	hr = pConverter->CopyPixels(nullptr, stride, static_cast<UINT>(bytes.size()), bytes.data());
@@ -196,7 +195,7 @@ bool LoadImageWithWIC16(
 		return false;
 	}
 
-	outWidth = width;
+	outWidth  = width;
 	outHeight = height;
 	outPixels.resize(static_cast<size_t>(width) * height);
 
@@ -205,7 +204,7 @@ bool LoadImageWithWIC16(
 	{
 		const uint16_t lo = bytes[i * 2 + 0];
 		const uint16_t hi = bytes[i * 2 + 1];
-		outPixels[i] = static_cast<uint16_t>(lo | (hi << 8));
+		outPixels[i]      = static_cast<uint16_t>(lo | (hi << 8));
 	}
 
 	return true;

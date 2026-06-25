@@ -28,7 +28,7 @@ bool ModelManager::Init()
 	{
 		m_Pool[i] = resourceManager.GetPool(static_cast<POOL_TYPE>(i));
 	}
-	
+
 	if (!m_Device || !m_Queue)
 	{
 		ELOG("Error: ResourceManager not initialized");
@@ -73,8 +73,8 @@ bool ModelManager::LoadModel(const std::wstring& modelPath)
 	}
 
 	// unique_ptrを使用
-	auto modelInfo = std::make_unique<ModelInfo>();
-	modelInfo->modelPath = modelPath;
+	auto modelInfo            = std::make_unique<ModelInfo>();
+	modelInfo->modelPath      = modelPath;
 	modelInfo->referenceCount = 1;
 
 	// モデルの内部ロード処理を呼び出す
@@ -100,20 +100,21 @@ void ModelManager::LoadModelAsync(const std::wstring& modelPath)
 		return;
 	}
 
-	auto modelInfo = std::make_unique<ModelInfo>();
-	modelInfo->modelPath = modelPath;
+	auto modelInfo            = std::make_unique<ModelInfo>();
+	modelInfo->modelPath      = modelPath;
 	modelInfo->referenceCount = 1;
-	modelInfo->isLoaded = false;
+	modelInfo->isLoaded       = false;
 	m_LoadedModels[modelPath] = std::move(modelInfo);
 
 	// 別スレッドで解析処理を開始
-	std::thread([this, modelPath]() {
+	std::thread([this, modelPath]()
+	            {
 		ModelLoadData data = ParseModelData(modelPath);
 
 		// 解析が終わったらキューに追加
 		std::lock_guard<std::mutex> lock(m_QueueMutex);
-		m_LoadedDataQueue.push(std::move(data));
-		}).detach();
+		m_LoadedDataQueue.push(std::move(data)); })
+	    .detach();
 }
 
 //-----------------------------------------------------------------------------
@@ -129,13 +130,16 @@ void ModelManager::ProcessLoadedModels()
 		ModelLoadData data = std::move(m_LoadedDataQueue.front());
 		m_LoadedDataQueue.pop();
 		auto it = m_LoadedModels.find(data.modelPath);
-		if (it == m_LoadedModels.end()) continue;
-		if (!data.loadSuccess) {
+		if (it == m_LoadedModels.end())
+			continue;
+		if (!data.loadSuccess)
+		{
 			ELOG("Async load failed for: %ls", data.modelPath.c_str());
 			continue;
 		}
 		// GPUリソースの生成
-		if (FinalizeModel(data, *it->second)) {
+		if (FinalizeModel(data, *it->second))
+		{
 			it->second->isLoaded = true;
 		}
 	}
@@ -147,7 +151,7 @@ void ModelManager::ProcessLoadedModels()
 ModelLoadData ModelManager::ParseModelData(const std::wstring& modelPath)
 {
 	ModelLoadData data;
-	data.modelPath = modelPath;
+	data.modelPath   = modelPath;
 	data.loadSuccess = false;
 
 	std::wstring fullPath;
@@ -157,9 +161,10 @@ ModelLoadData ModelManager::ParseModelData(const std::wstring& modelPath)
 		ELOG("Model file not found: %ls", modelPath.c_str());
 		return data;
 	}
-	data.modelDirectory = GetDirectoryPath(fullPath.c_str());
+	data.modelDirectory                  = GetDirectoryPath(fullPath.c_str());
 	std::unique_ptr<IModelLoader> loader = CreateModelLoader(fullPath);
-	if (!loader) return data;
+	if (!loader)
+		return data;
 
 	data.loadSuccess = loader->Load(fullPath.c_str(), data.resMeshes, data.resMaterials, &data.skeleton, nullptr);
 	return data;
@@ -167,27 +172,37 @@ ModelLoadData ModelManager::ParseModelData(const std::wstring& modelPath)
 
 bool ModelManager::FinalizeModel(ModelLoadData& loadData, ModelInfo& modelInfo)
 {
-	if (!loadData.skeleton.bones.empty()) {
-		modelInfo.skeleton = loadData.skeleton;
+	if (!loadData.skeleton.bones.empty())
+	{
+		modelInfo.skeleton     = loadData.skeleton;
 		modelInfo.hasAnimation = true;
 		AnimationManager::GetInstance().RegisterSkeleton(loadData.modelPath, loadData.skeleton);
 	}
-	else {
+	else
+	{
 		modelInfo.hasAnimation = false;
 	}
 	modelInfo.modelType = DetermineModelType(loadData.resMeshes, modelInfo.hasAnimation, modelInfo.skeleton);
 	bool hasSkinnedMesh = false;
-	for (const auto& mesh : loadData.resMeshes) {
-		if (mesh.HasAnimation) { hasSkinnedMesh = true; break; }
+	for (const auto& mesh : loadData.resMeshes)
+	{
+		if (mesh.HasAnimation)
+		{
+			hasSkinnedMesh = true;
+			break;
+		}
 	}
-	if (hasSkinnedMesh && !InitializeDefaultBoneMatrixCB(modelInfo, hasSkinnedMesh)) return false;
+	if (hasSkinnedMesh && !InitializeDefaultBoneMatrixCB(modelInfo, hasSkinnedMesh))
+		return false;
 
 	// DX12リソース生成
-	if (!CreateMeshes(loadData.resMeshes, modelInfo.meshes)) return false;
+	if (!CreateMeshes(loadData.resMeshes, modelInfo.meshes))
+		return false;
 
 	if (!MaterialResolver::Build(
-		m_Device.Get(), m_Pool[POOL_TYPE_RES], m_Queue.Get(),
-		loadData.modelDirectory, loadData.modelPath, loadData.resMaterials, modelInfo.material)) {
+	        m_Device.Get(), m_Pool[POOL_TYPE_RES], m_Queue.Get(),
+	        loadData.modelDirectory, loadData.modelPath, loadData.resMaterials, modelInfo.material))
+	{
 		return false;
 	}
 	return true;
@@ -206,7 +221,7 @@ bool ModelManager::LoadModelInternal(const std::wstring& modelPath, ModelInfo& m
 		return false;
 	}
 
-	modelInfo.modelPath = fullPath;
+	modelInfo.modelPath      = fullPath;
 	modelInfo.modelDirectory = GetDirectoryPath(fullPath.c_str());
 
 	// 2. FBXならFBXLoaderを使用し、それ以外ならAssimpLoaderを使用
@@ -231,9 +246,9 @@ bool ModelManager::LoadModelInternal(const std::wstring& modelPath, ModelInfo& m
 	// 4. スケルトン情報の処理（FBXの場合のみ）
 	if (!skeleton.bones.empty())
 	{
-		modelInfo.skeleton = skeleton;
-		modelInfo.hasAnimation = true;        // スケルトンがある = アニメーション可能
-		modelInfo.animations = std::nullopt;  // モデルファイルにはアニメーションを含まない
+		modelInfo.skeleton     = skeleton;
+		modelInfo.hasAnimation = true;         // スケルトンがある = アニメーション可能
+		modelInfo.animations   = std::nullopt; // モデルファイルにはアニメーションを含まない
 
 		// AnimationManagerにスケルトンのみ登録
 		AnimationManager::GetInstance().RegisterSkeleton(modelPath, skeleton);
@@ -274,13 +289,13 @@ bool ModelManager::LoadModelInternal(const std::wstring& modelPath, ModelInfo& m
 
 	// 9. マテリアルの生成 + テクスチャのロード(MaterialResolver)
 	if (!MaterialResolver::Build(
-		m_Device.Get(),
-		m_Pool[POOL_TYPE_RES],
-		m_Queue.Get(),
-		modelInfo.modelDirectory,
-		modelInfo.modelPath,
-		resMaterial,
-		modelInfo.material))
+	        m_Device.Get(),
+	        m_Pool[POOL_TYPE_RES],
+	        m_Queue.Get(),
+	        modelInfo.modelDirectory,
+	        modelInfo.modelPath,
+	        resMaterial,
+	        modelInfo.material))
 	{
 		ELOG("Failed to build material via MaterialResolver");
 		return false;
@@ -289,7 +304,6 @@ bool ModelManager::LoadModelInternal(const std::wstring& modelPath, ModelInfo& m
 	modelInfo.isLoaded = true;
 	return true;
 }
-
 
 //-----------------------------------------------------------------------------
 //      モデルのアンロード
@@ -380,7 +394,7 @@ ModelInfo* ModelManager::GetModel(const std::wstring& modelPath)
 		// モデル情報を返す
 		return it->second.get();
 	}
-	
+
 	// 見つからない場合はnullptrを返す
 	return nullptr;
 }
@@ -463,7 +477,7 @@ size_t ModelManager::GetTotalMemoryUsage() const
 			if (mesh != nullptr)
 			{
 				// メッシュのメモリ使用量を取得（実装に依存）
-				//totalMemory += mesh->GetMemoryUsage();
+				// totalMemory += mesh->GetMemoryUsage();
 			}
 		}
 	}
@@ -532,7 +546,7 @@ bool ModelManager::InitializeDefaultBoneMatrixCB(ModelInfo& modelInfo, bool hasS
 	{
 		return true; // スキニングメッシュがない場合は不要
 	}
-	
+
 	// ボーンマトリックス定数バッファを初期化
 	const size_t maxBones = 128; // 最大ボーン数
 	struct alignas(maxBones) BoneMatrixBuffer
@@ -545,10 +559,9 @@ bool ModelManager::InitializeDefaultBoneMatrixCB(ModelInfo& modelInfo, bool hasS
 		// std::optionalに定数バッファを作成
 		modelInfo.m_DefaultBoneMatrixCB.emplace();
 		if (!modelInfo.m_DefaultBoneMatrixCB.value().Init(
-			m_Device.Get(),
-			m_Pool[POOL_TYPE_RES],
-			sizeof(BoneMatrixBuffer)
-		))
+		        m_Device.Get(),
+		        m_Pool[POOL_TYPE_RES],
+		        sizeof(BoneMatrixBuffer)))
 		{
 			ELOG("Failed to initialize default bone matrix constant buffer");
 			return false;

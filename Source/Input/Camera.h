@@ -12,10 +12,18 @@ public:
 	void Update(float deltaTime = 0.0f) override;
 
 	/// 追従ターゲットの設定（プレイヤーの座標など）
-	void SetTrackingTarget(const DirectX::XMFLOAT3& target) { m_TrackingTarget = target; m_HasTrackingTarget = true; }
+	void SetTrackingTarget(const DirectX::XMFLOAT3& target)
+	{
+		m_TrackingTarget    = target;
+		m_HasTrackingTarget = true;
+	}
 
 	/// ロックオンターゲットの設定（敵の座標など）
-	void SetLookOnTarget(const DirectX::XMFLOAT3& target) { m_LookOnTarget = target; m_HasLookOnTarget = true; }
+	void SetLookOnTarget(const DirectX::XMFLOAT3& target)
+	{
+		m_LookOnTarget    = target;
+		m_HasLookOnTarget = true;
+	}
 
 	/// ロックオンターゲットの解除
 	void ClearLookOnTarget() { m_HasLookOnTarget = false; }
@@ -55,48 +63,50 @@ private:
 	void UpdateHitShake(float deltaTime);
 	void CreateViewFrustum();
 	void UpdateViewFrustum();
+
 private:
 	// --- メンバ変数 ---
-	DirectX::XMMATRIX m_View = DirectX::XMMatrixIdentity();
-	DirectX::XMMATRIX m_Proj = DirectX::XMMatrixIdentity();
-	DirectX::XMFLOAT3 m_Target  = { 0.0f, 0.0f, 0.0f };
+	DirectX::XMMATRIX m_View    = DirectX::XMMatrixIdentity();
+	DirectX::XMMATRIX m_Proj    = DirectX::XMMatrixIdentity();
+	DirectX::XMFLOAT3 m_Target  = {0.0f, 0.0f, 0.0f};
 	DirectX::XMFLOAT4 m_Frus[6] = {};
 
 	// 追従・ロックオン
-	DirectX::XMFLOAT3 m_TrackingTarget = { 0.0f, 0.0f, 0.0f };
-	DirectX::XMFLOAT3 m_LookOnTarget = { 0.0f, 0.0f, 0.0f };
-	bool m_HasTrackingTarget = false;
-	bool m_HasLookOnTarget = false;
+	DirectX::XMFLOAT3 m_TrackingTarget = {0.0f, 0.0f, 0.0f};
+	DirectX::XMFLOAT3 m_LookOnTarget   = {0.0f, 0.0f, 0.0f};
+	bool m_HasTrackingTarget           = false;
+	bool m_HasLookOnTarget             = false;
 
 	// カメラパラメータ
-	float m_FovY	= DirectX::XM_PIDIV4;
-	float m_Aspect	= 16.0f / 9.0f;
-	float m_Near	= 0.1f;
-	float m_Far		= 10000.0f;
+	float m_FovY    = DirectX::XM_PIDIV4;
+	float m_Aspect  = 16.0f / 9.0f;
+	float m_Near    = 0.1f;
+	float m_Far     = 10000.0f;
 	float m_RotateY = 0.0f;
 	float m_RotateX = 0.0f;
 
-	float m_CameraDistance		= 45.0f; // 注視点からの距離
-	float m_TargetHeightOffset = 10.0f; // 注視点の高さ (キャラクターの上半身ぐらい)
-	float m_FollowSpeed			= 10.0f; // カメラの追従速度（大きいほど速く追従）
-	float m_LookOnTurnSpeed		= 4.0f;	 // ロックオン時のカメラの振り向き速度
-	float m_PitchMax			= 35.0f; // カメラの最大見上げ角度
-	float m_PitchMin			= -35.0f; // カメラの最大見下げ角度
+	float m_CameraDistance     = 45.0f;  // 注視点からの距離
+	float m_TargetHeightOffset = 10.0f;  // 注視点の高さ (キャラクターの上半身ぐらい)
+	float m_FollowSpeed        = 10.0f;  // カメラの追従速度（大きいほど速く追従）
+	float m_LookOnTurnSpeed    = 4.0f;   // ロックオン時のカメラの振り向き速度
+	float m_PitchMax           = 35.0f;  // カメラの最大見上げ角度
+	float m_PitchMin           = -35.0f; // カメラの最大見下げ角度
 
 	// シェイク機能
-	struct ShakeState {
-		DirectX::XMFLOAT3 offset = { 0.0f, 0.0f, 0.0f };
-		float time		= 0.0f;
-		float duration	= 0.0f;
-		float maxMag	= 0.0f;
+	struct ShakeState
+	{
+		DirectX::XMFLOAT3 offset = {0.0f, 0.0f, 0.0f};
+		float time               = 0.0f;
+		float duration           = 0.0f;
+		float maxMag             = 0.0f;
 	} m_Shake;
 
 	// 視点移動など
 	float m_RotationSpeed  = 0.01f;
 	float m_DebugMoveSpeed = 90.0f;
-	int m_FrameCount = 0;
-	int m_WaitFrame = 60;
-	bool m_FixedViewMode = false;
+	int m_FrameCount       = 0;
+	int m_WaitFrame        = 60;
+	bool m_FixedViewMode   = false;
 
 	static constexpr float kMinHeightOffset = 1.0f; // カメラの高さの最小値（地面すれすれになるのを防ぐ）
 };

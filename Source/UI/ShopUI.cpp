@@ -9,15 +9,16 @@
 
 namespace
 {
-	// ショップUIのスプライトの位置とサイズを設定するユーティリティ関数
-	void SetShopSprite(Sprite* sprite, const DirectX::XMFLOAT2& position, const DirectX::XMFLOAT2& size)
-	{
-		if (sprite == nullptr) return;
+// ショップUIのスプライトの位置とサイズを設定するユーティリティ関数
+void SetShopSprite(Sprite* sprite, const DirectX::XMFLOAT2& position, const DirectX::XMFLOAT2& size)
+{
+	if (sprite == nullptr)
+		return;
 
-		sprite->SetPosition(position);
-		sprite->SetSize(size);
-	}
+	sprite->SetPosition(position);
+	sprite->SetSize(size);
 }
+} // namespace
 
 bool ShopUI::Init()
 {
@@ -32,13 +33,13 @@ bool ShopUI::Init()
 
 void ShopUI::Update(float deltaTime)
 {
-	Scene* scene = GameManager::GetScene();
+	Scene* scene             = GameManager::GetScene();
 	ShopManager* shopManager = (scene != nullptr)
-		? scene->GetGameObjectByName<ShopManager>("ShopManager")
-		: nullptr;
+	                               ? scene->GetGameObjectByName<ShopManager>("ShopManager")
+	                               : nullptr;
 
 	if (shopManager == nullptr || !shopManager->IsOpen())
-	{	
+	{
 		// ショップが開いていない場合はUIを非表示にして更新処理をスキップ
 		for (std::wstring& p : m_LastOfferContentPaths)
 			p.clear();
@@ -107,7 +108,7 @@ void ShopUI::SetupContentSprites()
 		{
 			for (int rarityIndex = 0; rarityIndex < kUpgradeRarityCount; ++rarityIndex)
 			{
-				const UpgradeKind kind = static_cast<UpgradeKind>(kindIndex);
+				const UpgradeKind kind     = static_cast<UpgradeKind>(kindIndex);
 				const UpgradeRarity rarity = static_cast<UpgradeRarity>(rarityIndex + 1);
 
 				m_ContentSprites[cardIndex][kindIndex][rarityIndex] = AddComponent<Sprite>();
@@ -134,17 +135,16 @@ void ShopUI::UpdateLayout()
 	const float screenW = HudLayoutUtil::ScreenWidthRatio(1.0f);
 	const float screenH = HudLayoutUtil::ScreenHeightRatio(1.0f);
 
-	const DirectX::XMFLOAT2 screenCenter = { screenW * 0.5f, screenH * 0.5f };
-	const DirectX::XMFLOAT2 screenSize = { screenW, screenH };
-	const DirectX::XMFLOAT2 effectSize = { screenW, screenH };
+	const DirectX::XMFLOAT2 screenCenter = {screenW * 0.5f, screenH * 0.5f};
+	const DirectX::XMFLOAT2 screenSize   = {screenW, screenH};
+	const DirectX::XMFLOAT2 effectSize   = {screenW, screenH};
 
-
-	SetShopSprite(m_pEffectA, { screenW * 0.5f - m_EffectScrollX, screenH * 0.5f }, screenSize);
-	SetShopSprite(m_pEffectB, { screenW * 1.5f - m_EffectScrollX, screenH * 0.5f }, screenSize);
+	SetShopSprite(m_pEffectA, {screenW * 0.5f - m_EffectScrollX, screenH * 0.5f}, screenSize);
+	SetShopSprite(m_pEffectB, {screenW * 1.5f - m_EffectScrollX, screenH * 0.5f}, screenSize);
 
 	SetShopSprite(m_pBackground, screenCenter, screenSize);
 
-	const DirectX::XMFLOAT2 panelSize = { screenW * kPanelSizeRatioW, screenH * kPanelSizeRatioH };
+	const DirectX::XMFLOAT2 panelSize = {screenW * kPanelSizeRatioW, screenH * kPanelSizeRatioH};
 	SetShopSprite(m_pRedPanel, screenCenter, panelSize);
 
 	// レアリティカードのサイズ
@@ -159,12 +159,11 @@ void ShopUI::UpdateLayout()
 	// ショップに表示するカードの座標とサイズを設定
 	for (int cardIndex = 0; cardIndex < kShopOfferCount; ++cardIndex)
 	{
-		const DirectX::XMFLOAT2 cardPos = { 
-			HudLayoutUtil::ScreenWidthRatio(kCardXRatios[cardIndex]), 
-			cardY 
-		};
-		const DirectX::XMFLOAT2 raritySize = { rarityCardSize, rarityCardSize };
-		const DirectX::XMFLOAT2 contentSize = { contentCardSize, contentCardSize };
+		const DirectX::XMFLOAT2 cardPos = {
+		    HudLayoutUtil::ScreenWidthRatio(kCardXRatios[cardIndex]),
+		    cardY};
+		const DirectX::XMFLOAT2 raritySize  = {rarityCardSize, rarityCardSize};
+		const DirectX::XMFLOAT2 contentSize = {contentCardSize, contentCardSize};
 
 		for (int rarityIndex = 0; rarityIndex < kUpgradeRarityCount; ++rarityIndex)
 		{
@@ -186,12 +185,13 @@ void ShopUI::UpdateLayout()
 
 void ShopUI::UpdateOptions(const ShopManager* shopManager)
 {
-	if (shopManager == nullptr) return;
+	if (shopManager == nullptr)
+		return;
 
 	// UIを更新する前に、全てのオプションスプライトを非表示にしてリセット
 	HideAllOptionSprites();
 
-	const auto& offers = shopManager->GetCurrentOffers();
+	const auto& offers      = shopManager->GetCurrentOffers();
 	const int selectedIndex = shopManager->GetSelectedIndex();
 
 	for (int cardIndex = 0; cardIndex < kShopOfferCount; ++cardIndex)
@@ -202,9 +202,9 @@ void ShopUI::UpdateOptions(const ShopManager* shopManager)
 		}
 
 		const ShopOffer& offer = offers[cardIndex];
-		const bool selected = (cardIndex == selectedIndex);
+		const bool selected    = (cardIndex == selectedIndex);
 
-		Sprite* raritySprite = GetRaritySprite(cardIndex, GetOfferRarity(offer));
+		Sprite* raritySprite  = GetRaritySprite(cardIndex, GetOfferRarity(offer));
 		Sprite* contentSprite = GetOfferContentSprite(cardIndex, offer);
 
 		ApplyOfferContentSprite(cardIndex, offer, contentSprite);
@@ -248,13 +248,13 @@ void ShopUI::SetVisible(bool visible)
 	const float alpha = visible ? 1.0f : 0.0f;
 
 	auto setAlpha = [alpha](Sprite* sprite)
+	{
+		if (sprite != nullptr)
 		{
-			if (sprite != nullptr)
-			{
-				DirectX::XMFLOAT4 color = sprite->GetColor();
-				sprite->SetColor(color.x, color.y, color.z, alpha);
-			}
-		};
+			DirectX::XMFLOAT4 color = sprite->GetColor();
+			sprite->SetColor(color.x, color.y, color.z, alpha);
+		}
+	};
 
 	setAlpha(m_pBackground);
 	setAlpha(m_pEffectA);
@@ -290,7 +290,8 @@ void ShopUI::HideAllOptionSprites()
 }
 void ShopUI::SetSpriteVisible(Sprite* sprite, bool visible)
 {
-	if (sprite == nullptr) return;
+	if (sprite == nullptr)
+		return;
 
 	// Colorの設定
 	DirectX::XMFLOAT4 color = sprite->GetColor();
@@ -299,24 +300,29 @@ void ShopUI::SetSpriteVisible(Sprite* sprite, bool visible)
 
 Sprite* ShopUI::GetRaritySprite(int cardIndex, UpgradeRarity rarity) const
 {
-	if (cardIndex < 0 || cardIndex >= kShopOfferCount) return nullptr;
+	if (cardIndex < 0 || cardIndex >= kShopOfferCount)
+		return nullptr;
 
 	// UpgradeRarity は 1,2,3 なので、インデックスに変換する際は -1 する
 	const int rarityIndex = ToRarityIndex(rarity);
-	if (rarityIndex < 0 || rarityIndex >= kUpgradeRarityCount) return nullptr;
+	if (rarityIndex < 0 || rarityIndex >= kUpgradeRarityCount)
+		return nullptr;
 
 	return m_RaritySprites[cardIndex][rarityIndex];
 }
 
 Sprite* ShopUI::GetContentSprite(int cardIndex, UpgradeKind kind, UpgradeRarity rarity) const
 {
-	if (cardIndex < 0 || cardIndex >= kShopOfferCount) return nullptr;
+	if (cardIndex < 0 || cardIndex >= kShopOfferCount)
+		return nullptr;
 
-	const int kindIndex = ToKindIndex(kind);
+	const int kindIndex   = ToKindIndex(kind);
 	const int rarityIndex = ToRarityIndex(rarity);
 
-	if (kindIndex < 0 || kindIndex >= kUpgradeKindCount) return nullptr;
-	if (rarityIndex < 0 || rarityIndex >= kUpgradeRarityCount) return nullptr;
+	if (kindIndex < 0 || kindIndex >= kUpgradeKindCount)
+		return nullptr;
+	if (rarityIndex < 0 || rarityIndex >= kUpgradeRarityCount)
+		return nullptr;
 
 	return m_ContentSprites[cardIndex][kindIndex][rarityIndex];
 }

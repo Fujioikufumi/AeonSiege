@@ -90,13 +90,13 @@ bool AnimationManager::LoadAnimation(const std::wstring& animationFilePath, cons
 		if (m_NamedAnimations.find(animationName) == m_NamedAnimations.end())
 		{
 			// 名前で登録
-			m_NamedAnimations[animationName] = clip;
+			m_NamedAnimations[animationName]    = clip;
 			m_AnimationBoneNames[animationName] = boneNames;
 		}
-	} 
+	}
 
 	DLOG("AnimationManager::LoadAnimation: Registered animation '%s' with %zu bones",
-		animationName.c_str(), boneNames.size());
+	     animationName.c_str(), boneNames.size());
 
 	return true;
 }
@@ -107,7 +107,7 @@ bool AnimationManager::LoadAnimation(const std::wstring& animationFilePath, cons
 const AnimationClip* AnimationManager::GetAnimationByName(const std::string& animationName) const
 {
 	auto it = m_NamedAnimations.find(animationName);
-	if(it != m_NamedAnimations.end())
+	if (it != m_NamedAnimations.end())
 	{
 		return &(it->second);
 	}
@@ -170,7 +170,7 @@ const std::vector<AnimationClip>* AnimationManager::GetAnimations(const std::wst
 }
 
 //-----------------------------------------------------------------------------
-//　		アニメーションクリップ取得
+// 　		アニメーションクリップ取得
 //-----------------------------------------------------------------------------
 const AnimationClip* AnimationManager::GetAnimationClip(const std::wstring& modelPath, const std::string& clipName) const
 {
@@ -183,7 +183,6 @@ const AnimationClip* AnimationManager::GetAnimationClip(const std::wstring& mode
 				return &clip;
 		}
 	}
-
 
 	const AnimationClip* byName = GetAnimationByName(clipName);
 	if (byName != nullptr)

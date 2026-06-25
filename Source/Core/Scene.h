@@ -9,7 +9,6 @@
 #include "Core/GameObject.h"
 #include "d3d12.h"
 
-
 class Camera;
 
 class Scene
@@ -24,8 +23,9 @@ protected:
 
 	// カメラはシーンにも直接持たせる (GetGameObjectでも取得可能)
 	Camera* m_Camera = nullptr;
+
 public:
-	Scene() = default;
+	Scene()          = default;
 	virtual ~Scene() = default;
 
 	virtual void Init();
@@ -50,7 +50,7 @@ public:
 	T* AddGameObject(eLayer layer = eLayer::DEFAULT, const std::string& name = "")
 	{
 		auto gameObj = std::make_unique<T>();
-		T* rawPtr = gameObj.get(); // 生ポインタをキャッシュ用に保持
+		T* rawPtr    = gameObj.get(); // 生ポインタをキャッシュ用に保持
 		rawPtr->SetLayer(layer);
 
 		// キャッシュに登録
@@ -61,7 +61,7 @@ public:
 		m_PointerCache.insert(rawPtr);
 
 		m_GameObjectList[(int)layer].push_back(std::move(gameObj));
-		
+
 		rawPtr->Init();
 		rawPtr->SetObjName(name);
 
@@ -111,7 +111,8 @@ public:
 		{
 			for (const auto& obj : list)
 			{
-				if (obj) allObjects.push_back(obj.get());
+				if (obj)
+					allObjects.push_back(obj.get());
 			}
 		}
 		return allObjects;

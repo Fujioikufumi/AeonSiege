@@ -1,0 +1,35 @@
+---
+# このリポジトリの C++ 整形ルール。
+# 既存スタイル（タブインデント / Allman ブレース / Type* 左寄せ）に合わせつつ、
+# 連続宣言・代入・末尾コメントの「列揃え」を有効化する。
+Language:        Cpp
+Standard:        c++17
+
+# --- インデント・ブレース（既存スタイル維持）---
+UseTab:          ForIndentation
+TabWidth:        4
+IndentWidth:     4
+BreakBeforeBraces: Allman
+PointerAlignment: Left
+NamespaceIndentation: None
+AccessModifierOffset: -4
+
+# --- 行の折り返しはしない（差分を整列中心に抑える）---
+ColumnLimit:     0
+
+# --- 既存の1行ゲッター/セッターを維持 ---
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+# --- 今回の主目的：列揃え ---
+# 型→変数名の列揃えは無効（型幅が違うと短い型が右に伸びて逆に読みにくいため）。
+# 同型ブロックは = 揃え（下記）で揃うので、これを切っても見た目は維持される。
+AlignConsecutiveDeclarations: false  # 型・変数名の列揃え（型幅違いの伸び防止のため無効）
+AlignConsecutiveAssignments:  true   # = の列揃え
+AlignTrailingComments:        true   # 末尾 // コメントの列揃え
+
+# --- 事故防止 ---
+SortIncludes:    false               # include 順は手動維持
+FixNamespaceComments: true
+...

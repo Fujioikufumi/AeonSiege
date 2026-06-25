@@ -13,17 +13,15 @@ enum class EnemyType
 	Mutant
 };
 
-
-
 /// <summary>
 /// フェーズごとのエネミー出現情報
 /// </summary>
 struct PhaseEnemyEntry
 {
 	EnemyType type = EnemyType::Zombie;
-	int count = 0;
-	int level = 1;       // スポーン時のレベル（方式Aテーブルで Status を算出）
-	int expReward = 0;   // 撃破時に付与する経験値
+	int count      = 0;
+	int level      = 1; // スポーン時のレベル（方式Aテーブルで Status を算出）
+	int expReward  = 0; // 撃破時に付与する経験値
 };
 
 /// <summary>

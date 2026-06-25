@@ -6,11 +6,10 @@
 #include <string>
 #include <Shlwapi.h>
 
-
 //-----------------------------------------------------------------------------
 // Linker
 //-----------------------------------------------------------------------------
-#pragma comment( lib, "shlwapi.lib ")
+#pragma comment(lib, "shlwapi.lib ")
 
 /// <summary>
 /// ファイル拡張子を取得
@@ -87,23 +86,34 @@ std::string GetDirectoryPathA(const char* path);
 //-----------------------------------------------------------------------------
 std::wstring GetDirectoryPathW(const wchar_t* path);
 
-
 #if defined(UNICODE) || defined(_UNICODE)
-    inline bool SearchFilePath(const wchar_t* filename, std::wstring& result)
-    { return SearchFilePathW(filename, result); }
+inline bool SearchFilePath(const wchar_t* filename, std::wstring& result)
+{
+	return SearchFilePathW(filename, result);
+}
 
-    inline std::wstring RemoveDirectoryPath(const std::wstring& path)
-    { return RemoveDirectoryPathW(path); }
+inline std::wstring RemoveDirectoryPath(const std::wstring& path)
+{
+	return RemoveDirectoryPathW(path);
+}
 
-    inline std::wstring GetDirectoryPath(const wchar_t* path)
-    { return GetDirectoryPathW(path); }
+inline std::wstring GetDirectoryPath(const wchar_t* path)
+{
+	return GetDirectoryPathW(path);
+}
 #else
-    inline bool SearchFilePath(const char* filename, std::string& result)
-    { return SearchFilePathA(filename, result); }
+inline bool SearchFilePath(const char* filename, std::string& result)
+{
+	return SearchFilePathA(filename, result);
+}
 
-    inline std::string RemoveDirectoryPath(const std::string& path)
-    { return RemoveDirectoryPathA(path); }
+inline std::string RemoveDirectoryPath(const std::string& path)
+{
+	return RemoveDirectoryPathA(path);
+}
 
-    inline std::string GetDirectoryPath(const char* path)
-    { return GetDirectoryPathA(path); }
-#endif//defined(UNICODE) || defined(_UNICODE)
+inline std::string GetDirectoryPath(const char* path)
+{
+	return GetDirectoryPathA(path);
+}
+#endif // defined(UNICODE) || defined(_UNICODE)

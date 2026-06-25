@@ -23,12 +23,12 @@ public:
 	/// <param name="pAnimations">アニメーションクリップ情報を格納するポインタ（FBXの場合のみ使用）</param>
 	/// <returns>ロード成功ならtrue、失敗ならfalse</returns>
 	virtual bool Load(
-		const wchar_t* filename,
-		std::vector<ResMesh>& meshes,
-		std::vector<ResMaterial>& materials,
-		SkeletonInfo* pSkeleton = nullptr,
-		std::vector<AnimationClip>* pAnimations = nullptr) = 0;
-	
+	    const wchar_t* filename,
+	    std::vector<ResMesh>& meshes,
+	    std::vector<ResMaterial>& materials,
+	    SkeletonInfo* pSkeleton                 = nullptr,
+	    std::vector<AnimationClip>* pAnimations = nullptr) = 0;
+
 	/// <summary>
 	/// このローダーが指定されたファイル拡張子をサポートしているかどうかを確認
 	/// </summary>

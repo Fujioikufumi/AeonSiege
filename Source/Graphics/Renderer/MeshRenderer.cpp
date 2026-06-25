@@ -8,7 +8,7 @@
 // 	       コンストラクタ
 //-----------------------------------------------------------------------------
 MeshRenderer::MeshRenderer(GameObject* obj)
-	: Component(obj)
+    : Component(obj)
 {
 	m_ComponentName = "MeshRenderer";
 }
@@ -18,7 +18,7 @@ MeshRenderer::MeshRenderer(GameObject* obj)
 //-----------------------------------------------------------------------------
 bool MeshRenderer::Load(const std::wstring& filePath, const std::wstring& pipelineName)
 {
-	m_ModelPath = filePath;
+	m_ModelPath                    = filePath;
 	std::wstring finalPipelineName = pipelineName;
 
 	// レンダーシステムへの参照を保存
@@ -31,7 +31,7 @@ bool MeshRenderer::Load(const std::wstring& filePath, const std::wstring& pipeli
 
 	// MeshCBの初期化
 	auto device = GetDevice();
-	auto pool = GetPool(POOL_TYPE_RES);
+	auto pool   = GetPool(POOL_TYPE_RES);
 	if (!m_MeshCB.Init(device.Get(), pool, sizeof(CbMesh)))
 	{
 		ELOG("Error : MeshCB::Init() Failed");
@@ -53,12 +53,13 @@ bool MeshRenderer::Load(const std::wstring& filePath, const std::wstring& pipeli
 		if (modelInfo->IsSkinned())
 		{
 			finalPipelineName = L"SkinnedFBXPipeline";
-			m_HasAnimation = true;
+			m_HasAnimation    = true;
 		}
 		else
 		{
 			// 指定がない場合はデフォルトのパイプライン
-			if (finalPipelineName.empty()) finalPipelineName = L"ModelPipeline";
+			if (finalPipelineName.empty())
+				finalPipelineName = L"ModelPipeline";
 			m_HasAnimation = false;
 		}
 	}
@@ -87,63 +88,63 @@ void MeshRenderer::Term()
 //-----------------------------------------------------------------------------
 void MeshRenderer::Update(float deltaTime)
 {
-	if (m_GameObject == nullptr) return;
+	if (m_GameObject == nullptr)
+		return;
 
 	// GameObjectからWorldMatrixを取得してMeshCBを更新
 	DirectX::XMMATRIX worldMatrix = m_GameObject->GetWorldMatrix();
-	auto meshCB = m_MeshCB.GetPtr<CbMesh>();
+	auto meshCB                   = m_MeshCB.GetPtr<CbMesh>();
 	if (meshCB != nullptr)
 	{
 		DirectX::XMStoreFloat4x4(&meshCB->World, DirectX::XMMatrixTranspose(worldMatrix));
 	}
 }
 
-
 //-----------------------------------------------------------------------------
 // 	       描画処理
 //-----------------------------------------------------------------------------
 void MeshRenderer::Draw(const RenderContext& context)
 {
-    if (m_RenderSystem == nullptr || m_ModelPath.empty()) return;
+	if (m_RenderSystem == nullptr || m_ModelPath.empty())
+		return;
 
-    // モデル情報を取得
-    ModelInfo* modelInfo = ModelManager::GetInstance().GetModel(m_ModelPath);
+	// モデル情報を取得
+	ModelInfo* modelInfo = ModelManager::GetInstance().GetModel(m_ModelPath);
 
-    if(modelInfo == nullptr)
-    {
-        ELOG("Error : ModelInfo is null. path = %ls", m_ModelPath.c_str());
-        return;
+	if (modelInfo == nullptr)
+	{
+		ELOG("Error : ModelInfo is null. path = %ls", m_ModelPath.c_str());
+		return;
 	}
 
-    // MeshCBのハンドルを取得
-    D3D12_GPU_DESCRIPTOR_HANDLE meshCBHandle = m_MeshCB.GetHandleGPU();
+	// MeshCBのハンドルを取得
+	D3D12_GPU_DESCRIPTOR_HANDLE meshCBHandle = m_MeshCB.GetHandleGPU();
 
 	// GameObjectのワールド行列を取得
-    XMMATRIX worldMatrix = XMMatrixIdentity();
-    if (m_GameObject != nullptr)
-    {
+	XMMATRIX worldMatrix = XMMatrixIdentity();
+	if (m_GameObject != nullptr)
+	{
 		worldMatrix = m_GameObject->GetWorldMatrix();
-    }
-    // アニメーションがある場合はボーンマトリックスを設定
-    D3D12_GPU_DESCRIPTOR_HANDLE boneMatrixCBHandle = {};
-    if (m_HasAnimation && m_GameObject != nullptr)
-    {
+	}
+	// アニメーションがある場合はボーンマトリックスを設定
+	D3D12_GPU_DESCRIPTOR_HANDLE boneMatrixCBHandle = {};
+	if (m_HasAnimation && m_GameObject != nullptr)
+	{
 		AnimationController* animationController = m_GameObject->GetComponent<AnimationController>();
-        if (animationController != nullptr && animationController->IsInitialized())
-        {
-            
-            boneMatrixCBHandle = animationController->GetBoneMatrixCBHandle();
-        }
-    }
+		if (animationController != nullptr && animationController->IsInitialized())
+		{
 
-    // RenderSystem経由で描画（MeshCBを使用）
+			boneMatrixCBHandle = animationController->GetBoneMatrixCBHandle();
+		}
+	}
+
+	// RenderSystem経由で描画（MeshCBを使用）
 	if (!m_RenderSystem->DrawModelAllMeshes(
-		context,
-		m_ModelPath,
-		worldMatrix,
-		meshCBHandle,
-		boneMatrixCBHandle
-	))
+	        context,
+	        m_ModelPath,
+	        worldMatrix,
+	        meshCBHandle,
+	        boneMatrixCBHandle))
 	{
 		ELOG("Error : Failed to draw model. path = %ls", m_ModelPath.c_str());
 	}

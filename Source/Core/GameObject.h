@@ -87,20 +87,20 @@ public:
 
 protected:
 	// 座標・回転・スケール
-	XMFLOAT3 m_Position = { 0.0f, 0.0f, 0.0f };
-	XMFLOAT3 m_Rotation = { 0.0f, 0.0f, 0.0f };
-	XMFLOAT3 m_Scale = { 1.0f, 1.0f, 1.0f };
+	XMFLOAT3 m_Position    = {0.0f, 0.0f, 0.0f};
+	XMFLOAT3 m_Rotation    = {0.0f, 0.0f, 0.0f};
+	XMFLOAT3 m_Scale       = {1.0f, 1.0f, 1.0f};
 	XMMATRIX m_WorldMatrix = {};
 
 	// オブジェクト設定
-	std::string  m_Name = "";
-	std::wstring m_ModelPath = L"";
+	std::string m_Name          = "";
+	std::wstring m_ModelPath    = L"";
 	std::wstring m_PipelineName = L"";
-	eLayer       m_Layer = eLayer::DEFAULT;
+	eLayer m_Layer              = eLayer::DEFAULT;
 
 	// 状態フラグ
 	bool m_IsDestroyed = false;
-	bool m_IsCulled = false;
+	bool m_IsCulled    = false;
 
 	// カリング・当たり判定用
 	float m_BoundingRadius = 1.0f;
@@ -110,6 +110,7 @@ protected:
 
 	// 描画に必要なワールド行列の更新
 	void UpdateWorldMatrix();
+
 public:
 	/// <summary>
 	/// 新しいコンポーネントを追加します。
@@ -120,7 +121,7 @@ public:
 	T* AddComponent()
 	{
 		auto component = std::make_unique<T>(this);
-		T* rawPtr = component.get();
+		T* rawPtr      = component.get();
 		m_Components.push_back(std::move(component));
 		rawPtr->Init();
 		return rawPtr;

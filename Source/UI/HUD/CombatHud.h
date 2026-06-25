@@ -8,10 +8,10 @@
 #include <vector>
 #include <memory>
 
-class CombatHud : public GameObject 
+class CombatHud : public GameObject
 {
 public:
-	CombatHud() = default;
+	CombatHud()           = default;
 	~CombatHud() override = default;
 
 	bool Init() override;
@@ -20,12 +20,12 @@ public:
 	// DebugUI用アクセス
 	CombatHudLayout& GetLayout() { return m_LayoutData; }
 	void RefreshLayout();
-private:
 
+private:
 	CombatHudLayout m_LayoutData; // HUD全体のレイアウトデータ
 
-	std::unique_ptr<EnemyHudPanel> m_EnemyPanel; // 敵のHUDパネル
-	std::vector<std::unique_ptr<AllyHudPanel>> m_AllyPanels;    // 味方のHUDパネル
-	std::vector<std::unique_ptr<SkillHudPanel>> m_SkillPanels;  // スキルのHUDパネル
-	std::unique_ptr<PhaseHudPanel> m_PhasePanel; // フェーズ表示パネル
+	std::unique_ptr<EnemyHudPanel> m_EnemyPanel;               // 敵のHUDパネル
+	std::vector<std::unique_ptr<AllyHudPanel>> m_AllyPanels;   // 味方のHUDパネル
+	std::vector<std::unique_ptr<SkillHudPanel>> m_SkillPanels; // スキルのHUDパネル
+	std::unique_ptr<PhaseHudPanel> m_PhasePanel;               // フェーズ表示パネル
 };

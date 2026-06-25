@@ -17,26 +17,26 @@
 #include "Graphics/Model/LoadGameObj.h"
 #include "Flow/ScreenFade.h"
 
-namespace {
-	// シーンライト設定
-	constexpr float kLightOrbitRadius = 300.0f; // ライトの周回半径
-	constexpr float kLightHeight = 100.0f; // ライトの高さ
-	constexpr float kLightIntensity = 6.0f;   // ライトの強度
-	constexpr float kAmbientIntensity = 0.6f;   // 環境光の強度
-	constexpr float kLightRotateDeg = -60.0f; // ライト初期回転角（度）
+namespace
+{
+// シーンライト設定
+constexpr float kLightOrbitRadius = 300.0f; // ライトの周回半径
+constexpr float kLightHeight      = 100.0f; // ライトの高さ
+constexpr float kLightIntensity   = 6.0f;   // ライトの強度
+constexpr float kAmbientIntensity = 0.6f;   // 環境光の強度
+constexpr float kLightRotateDeg   = -60.0f; // ライト初期回転角（度）
 
-	// プレビューカメラ設定
-	constexpr float kPreviewFovDeg = 37.5f;   // プレビューカメラのFOV（度）
-	constexpr float kPreviewNearZ = 1.0f;    // ニアクリップ
-	constexpr float kPreviewFarZ = 1000.0f; // ファークリップ
-}
+// プレビューカメラ設定
+constexpr float kPreviewFovDeg = 37.5f;   // プレビューカメラのFOV（度）
+constexpr float kPreviewNearZ  = 1.0f;    // ニアクリップ
+constexpr float kPreviewFarZ   = 1000.0f; // ファークリップ
+} // namespace
 
 //-----------------------------------------------------------------------------
 //      コンストラクタ
 //-----------------------------------------------------------------------------
 GameApp::GameApp(uint32_t width, uint32_t height)
-	: App(width, height, DXGI_FORMAT_R10G10B10A2_UNORM)
-	, m_RotateAngle(0.0f)
+    : App(width, height, DXGI_FORMAT_R10G10B10A2_UNORM), m_RotateAngle(0.0f)
 {
 }
 
@@ -92,15 +92,15 @@ bool GameApp::OnInit()
 	//-------------------------------------------------------------
 	// シーン用カラ―ターゲット
 	{
-		float clearColor[4] = { 0.2f, 0.2f, 0.2f, 1.0f };
+		float clearColor[4] = {0.2f, 0.2f, 0.2f, 1.0f};
 		if (!m_SceneColorTarget.Init(
-			m_pDevice.Get(),
-			m_pPool[POOL_TYPE_RTV],
-			m_pPool[POOL_TYPE_RES],
-			m_Width,
-			m_Height,
-			DXGI_FORMAT_R10G10B10A2_UNORM,
-			clearColor))
+		        m_pDevice.Get(),
+		        m_pPool[POOL_TYPE_RTV],
+		        m_pPool[POOL_TYPE_RES],
+		        m_Width,
+		        m_Height,
+		        DXGI_FORMAT_R10G10B10A2_UNORM,
+		        clearColor))
 		{
 			ELOG("Error : ColorTarget::Init() Failed");
 			return false;
@@ -110,14 +110,14 @@ bool GameApp::OnInit()
 	// シーン用深度ターゲット
 	{
 		if (!m_SceneDepthTarget.Init(
-			m_pDevice.Get(),
-			m_pPool[POOL_TYPE_DSV],
-			nullptr,
-			m_Width,
-			m_Height,
-			DXGI_FORMAT_D32_FLOAT,
-			1.0f,
-			0))
+		        m_pDevice.Get(),
+		        m_pPool[POOL_TYPE_DSV],
+		        nullptr,
+		        m_Width,
+		        m_Height,
+		        DXGI_FORMAT_D32_FLOAT,
+		        1.0f,
+		        0))
 		{
 			ELOG("Error : DepthTarget::Init() Failed");
 			return false;
@@ -141,30 +141,30 @@ bool GameApp::OnInit()
 			}
 
 			if (!m_MeshCB[i].Init(m_pDevice.Get(),
-				m_pPool[POOL_TYPE_RES],
-				sizeof(CbMesh),
-				FrameCount))
+			                      m_pPool[POOL_TYPE_RES],
+			                      sizeof(CbMesh),
+			                      FrameCount))
 			{
 				ELOG("Error : ConstantBuffer::Init() Failed");
 				return false;
 			}
 
 			// 初期値を設定
-			XMVECTOR eyePos = XMVectorSet(0.0f, 1.0f, 2.0f, 0.0f);
-			XMVECTOR targetPos = XMVectorZero();
-			XMVECTOR upward = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-			float fovY = DirectX::XMConvertToRadians(kPreviewFovDeg);
-			float aspect = static_cast<float>(m_Width) / static_cast<float>(m_Height);
+			XMVECTOR eyePos     = XMVectorSet(0.0f, 1.0f, 2.0f, 0.0f);
+			XMVECTOR targetPos  = XMVectorZero();
+			XMVECTOR upward     = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			float fovY          = DirectX::XMConvertToRadians(kPreviewFovDeg);
+			float aspect        = static_cast<float>(m_Width) / static_cast<float>(m_Height);
 			XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, targetPos, upward);
 			XMMATRIX projMatrix = XMMatrixPerspectiveFovLH(fovY, aspect, kPreviewNearZ, kPreviewFarZ);
 
-			auto ptr = m_TransformCB[i].GetPtr<CbTransform>();
+			auto ptr    = m_TransformCB[i].GetPtr<CbTransform>();
 			XMMATRIX tv = XMMatrixTranspose(viewMatrix);
 			XMMATRIX tp = XMMatrixTranspose(projMatrix);
 			XMStoreFloat4x4(&ptr->View, tv);
 			XMStoreFloat4x4(&ptr->Proj, tp);
 
-			auto meshPtr = m_MeshCB[i].GetPtr<CbMesh>(i);
+			auto meshPtr      = m_MeshCB[i].GetPtr<CbMesh>(i);
 			XMMATRIX identity = XMMatrixIdentity();
 			XMStoreFloat4x4(&meshPtr->World, identity);
 		}
@@ -222,11 +222,11 @@ bool GameApp::OnInit()
 		AnimationManager::GetInstance().LoadAnimation(L"Assets/Animations/Paladin_Death.banm", "Paladin_Death");
 	}
 
-	//　入力処理の初期化
+	// 　入力処理の初期化
 	{
 		Input::GetInstance().Init();
 		Input::GetInstance().SetWindow(m_hWnd); // ウィンドウハンドルを設定
-		Input::GetInstance().LockMouse(true);        // マウスをウィンドウ中央に固定
+		Input::GetInstance().LockMouse(true);   // マウスをウィンドウ中央に固定
 	}
 
 	// 8. シーンマネージャーの初期化
@@ -236,7 +236,7 @@ bool GameApp::OnInit()
 	}
 
 	// 9. ImGuiの初期化
-	if(!m_ImGuiUtil.Init(m_hWnd, m_pDevice.Get(), FrameCount, m_BackBufferFormat))
+	if (!m_ImGuiUtil.Init(m_hWnd, m_pDevice.Get(), FrameCount, m_BackBufferFormat))
 	{
 		ELOG("Error : ImGuiUtil::Init() Failed");
 		return false;
@@ -262,8 +262,7 @@ void GameApp::OnTerm()
 	ScreenFade::Instance().Term();
 	GameManager::Term();
 
-
-	Input::GetInstance().LockMouse(false);   // マウス固定解除
+	Input::GetInstance().LockMouse(false); // マウス固定解除
 	Input::GetInstance().Term();
 
 	AnimationManager::GetInstance().Term();
@@ -311,7 +310,7 @@ void GameApp::OnRender()
 
 	// 2. ディスクリプタヒープの設定
 	ID3D12DescriptorHeap* const pHeaps[] = {
-		m_pPool[POOL_TYPE_RES]->GetHeap(),
+	    m_pPool[POOL_TYPE_RES]->GetHeap(),
 	};
 	pCmd->SetDescriptorHeaps(1, pHeaps);
 
@@ -319,9 +318,9 @@ void GameApp::OnRender()
 	{
 		// 3-1. カラーバッファをPRESENT状態からRENDER_TARGET状態に遷移
 		DirectX::TransitionResource(pCmd,
-			m_ColorTarget[m_FrameIndex].GetResource(),
-			D3D12_RESOURCE_STATE_PRESENT,
-			D3D12_RESOURCE_STATE_RENDER_TARGET);
+		                            m_ColorTarget[m_FrameIndex].GetResource(),
+		                            D3D12_RESOURCE_STATE_PRESENT,
+		                            D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 		// 3-2. レンダーターゲットと深度バッファのハンドルを取得
 		auto handleRTV = m_ColorTarget[m_FrameIndex].GetHandleRTV();
@@ -331,7 +330,7 @@ void GameApp::OnRender()
 		pCmd->OMSetRenderTargets(1, &handleRTV->HandleCPU, FALSE, &handleDSV->HandleCPU);
 
 		// 3-4. レンダーターゲットと深度バッファをクリア
-		float clearColor[4] = { 0.2f, 0.2f, 0.4f, 1.0f };
+		float clearColor[4] = {0.2f, 0.2f, 0.4f, 1.0f};
 		pCmd->ClearRenderTargetView(handleRTV->HandleCPU, clearColor, 0, nullptr);
 		pCmd->ClearDepthStencilView(handleDSV->HandleCPU, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
@@ -347,16 +346,16 @@ void GameApp::OnRender()
 
 		// 3-7. カラーバッファをRENDER_TARGET状態からPRESENT状態に遷移
 		DirectX::TransitionResource(pCmd,
-			m_ColorTarget[m_FrameIndex].GetResource(),
-			D3D12_RESOURCE_STATE_RENDER_TARGET,
-			D3D12_RESOURCE_STATE_PRESENT);
+		                            m_ColorTarget[m_FrameIndex].GetResource(),
+		                            D3D12_RESOURCE_STATE_RENDER_TARGET,
+		                            D3D12_RESOURCE_STATE_PRESENT);
 	}
 
 	// 4. コマンドリストをクローズ
 	pCmd->Close();
 
 	// 5. コマンドリストを実行キューに登録して実行
-	ID3D12CommandList* pLists[] = { pCmd };
+	ID3D12CommandList* pLists[] = {pCmd};
 	m_pQueue->ExecuteCommandLists(1, pLists);
 
 	// 6. 画面に表示（スワップチェーンをフリップ）
@@ -372,7 +371,7 @@ void GameApp::DrawScene(ID3D12GraphicsCommandList* pCmdList)
 	UpdateLightManager();
 
 	// 2. シャドウマップ生成
-	//RenderShadowMap(pCmdList);
+	// RenderShadowMap(pCmdList);
 
 	// 3. 定数バッファの更新
 	UpdateConstantBuffers();
@@ -391,8 +390,6 @@ void GameApp::DrawScene(ID3D12GraphicsCommandList* pCmdList)
 	GameManager::Draw(context, pCmdList, handleRTV->HandleCPU);
 }
 
-
-
 //-----------------------------------------------------------------------------
 //	  RenderContextの作成
 //-----------------------------------------------------------------------------
@@ -400,18 +397,18 @@ RenderContext GameApp::CreateRenderContext(ID3D12GraphicsCommandList* pCmdList)
 {
 	// 定数バッファのGPUハンドル取得
 	RenderContext context;
-	context.pCmdList = pCmdList;
+	context.pCmdList    = pCmdList;
 	context.transformCB = m_TransformCB[m_FrameIndex].GetHandleGPU();
-	context.lightCB = LightManager::GetInstance().GetHandleGPU(m_FrameIndex);
-	context.cameraCB = m_CameraCB[m_FrameIndex].GetHandleGPU();
-	context.meshCB = m_MeshCB[m_FrameIndex].GetHandleGPU(m_FrameIndex);
+	context.lightCB     = LightManager::GetInstance().GetHandleGPU(m_FrameIndex);
+	context.cameraCB    = m_CameraCB[m_FrameIndex].GetHandleGPU();
+	context.meshCB      = m_MeshCB[m_FrameIndex].GetHandleGPU(m_FrameIndex);
 
-	auto& shadowManager = ShadowManager::GetInstance();
-	context.shadowCB = shadowManager.GetHandleGPU(m_FrameIndex);
+	auto& shadowManager  = ShadowManager::GetInstance();
+	context.shadowCB     = shadowManager.GetHandleGPU(m_FrameIndex);
 	context.shadowMapSRV = shadowManager.GetShadowMapSRV();
 
 	// Sceneのカメラを取得
-	Scene* pScene = GameManager::GetScene();
+	Scene* pScene         = GameManager::GetScene();
 	Camera* pActiveCamera = nullptr;
 
 	if (pScene && pScene->GetCamera())
@@ -422,13 +419,13 @@ RenderContext GameApp::CreateRenderContext(ID3D12GraphicsCommandList* pCmdList)
 	// RenderContextに渡すカメラ情報の設定
 	if (pActiveCamera)
 	{
-		context.viewMatrix = pActiveCamera->GetView();
-		context.projMatrix = pActiveCamera->GetProj();
+		context.viewMatrix     = pActiveCamera->GetView();
+		context.projMatrix     = pActiveCamera->GetProj();
 		context.viewProjMatrix = context.viewMatrix * context.projMatrix;
-		context.cameraPos = pActiveCamera->GetPosition();
+		context.cameraPos      = pActiveCamera->GetPosition();
 	}
 
-	context.viewport = m_Viewport;
+	context.viewport    = m_Viewport;
 	context.scissorRect = m_Scissor;
 
 	return context;
@@ -440,7 +437,8 @@ RenderContext GameApp::CreateRenderContext(ID3D12GraphicsCommandList* pCmdList)
 std::list<GameObject*> GameApp::CollectShadowCasters(Scene* pScene)
 {
 	std::list<GameObject*> shadowCasters;
-	if (pScene == nullptr) return shadowCasters;
+	if (pScene == nullptr)
+		return shadowCasters;
 
 	const auto& playerList = pScene->GetGameObjectsByLayer(eLayer::PLAYER);
 	for (const auto& up : playerList)
@@ -460,16 +458,16 @@ void GameApp::UpdateLightManager()
 	auto& lightManager = LightManager::GetInstance();
 
 	// ライトの設定
-	const float radius = kLightOrbitRadius;
+	const float radius      = kLightOrbitRadius;
 	const float lightHeight = kLightHeight;
-	float lightX = radius * cosf(m_RotateAngle);
-	float lightZ = radius * sinf(m_RotateAngle);
-	float lightY = lightHeight;
+	float lightX            = radius * cosf(m_RotateAngle);
+	float lightZ            = radius * sinf(m_RotateAngle);
+	float lightY            = lightHeight;
 
 	// ライト方向の計算
 	XMVECTOR lightPosition = XMVectorSet(lightX, lightY, lightZ, 0.0f);
-	XMVECTOR center = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	XMVECTOR lightDirVec = XMVector3Normalize(XMVectorSubtract(center, lightPosition));
+	XMVECTOR center        = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	XMVECTOR lightDirVec   = XMVector3Normalize(XMVectorSubtract(center, lightPosition));
 
 	// ライト情報の設定
 	XMFLOAT3 lightColor(1.0f, 1.0f, 1.0f);
@@ -491,8 +489,8 @@ void GameApp::UpdateLightManager()
 void GameApp::RenderShadowMap(ID3D12GraphicsCommandList* pCmdList)
 {
 	RenderContext context = CreateRenderContext(pCmdList);
-	auto& shadowManager = ShadowManager::GetInstance();
-	auto& lightManager = LightManager::GetInstance();
+	auto& shadowManager   = ShadowManager::GetInstance();
+	auto& lightManager    = LightManager::GetInstance();
 
 	XMVECTOR lightDirVec = lightManager.GetLightDirection();
 	XMFLOAT3 lightDir;
@@ -509,7 +507,7 @@ void GameApp::RenderShadowMap(ID3D12GraphicsCommandList* pCmdList)
 void GameApp::UpdateConstantBuffers()
 {
 	Scene* pScene = GameManager::GetScene();
-	if(pScene == nullptr || pScene->GetCamera() == nullptr)
+	if (pScene == nullptr || pScene->GetCamera() == nullptr)
 	{
 		return;
 	}
@@ -518,14 +516,14 @@ void GameApp::UpdateConstantBuffers()
 
 	// カメラ位置の更新
 	{
-		auto ptr = m_CameraCB[m_FrameIndex].GetPtr<CbCamera>();
+		auto ptr      = m_CameraCB[m_FrameIndex].GetPtr<CbCamera>();
 		ptr->cbCamPos = pCamera->GetPosition();
 	}
 
 	// ビュー・プロジェクション行列の更新
 	{
-		float fovY = pCamera->GetFovY();
-		float aspect = static_cast<float>(m_Width) / static_cast<float>(m_Height);
+		float fovY          = pCamera->GetFovY();
+		float aspect        = static_cast<float>(m_Width) / static_cast<float>(m_Height);
 		XMMATRIX viewMatrix = pCamera->GetView();
 		XMMATRIX projMatrix = pCamera->GetProj();
 
@@ -545,7 +543,7 @@ void GameApp::OnMsgProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 	// ImGuiのウィンドウメッセージ処理
 	extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
-	if(ImGui_ImplWin32_WndProcHandler(hWnd, msg, wp, lp))
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wp, lp))
 	{
 		return;
 	}

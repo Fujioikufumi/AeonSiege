@@ -38,8 +38,8 @@ private:
 	std::unique_ptr<GameObject> m_pRoot;
 	class Sprite* m_pSprite = nullptr;
 
-	Mode m_Mode = Mode::None;
+	Mode m_Mode        = Mode::None;
 	int m_CurrentFrame = 0;
-	int m_EndFrame = 1;
+	int m_EndFrame     = 1;
 	std::function<void()> m_OnComplete;
 };

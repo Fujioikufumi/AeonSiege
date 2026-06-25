@@ -17,10 +17,10 @@ public:
 	// マスクの反映方法
 	enum class MaskMode : int
 	{
-		None = 0,
-		RectUV = 1,       // 指定したUV矩形内のみ描画
-		Horizontal = 2,   // 水平方向（UV.x <= Progress）で描画
-		Vertical = 3,     // 垂直方向（UV.y <= Progress）で描画
+		None       = 0,
+		RectUV     = 1, // 指定したUV矩形内のみ描画
+		Horizontal = 2, // 水平方向（UV.x <= Progress）で描画
+		Vertical   = 3, // 垂直方向（UV.y <= Progress）で描画
 	};
 
 private:
@@ -38,15 +38,15 @@ private:
 	// ピクセルシェーダー用マスク定数バッファ (b1)
 	struct alignas(16) MaskBuffer
 	{
-		DirectX::XMFLOAT4 MaskRectUV;  // (u0,v0,u1,v1)
-		DirectX::XMFLOAT4 Params;      // (progress, feather, mode, unused)
+		DirectX::XMFLOAT4 MaskRectUV; // (u0,v0,u1,v1)
+		DirectX::XMFLOAT4 Params;     // (progress, feather, mode, unused)
 	};
 
 public:
 	explicit MaskedSprite(GameObject* obj);
 	~MaskedSprite() override;
 	bool Init() override;
- 	bool Init(const std::wstring& texturePath);
+	bool Init(const std::wstring& texturePath);
 	void Term() override;
 
 protected:
@@ -54,19 +54,19 @@ protected:
 	void Draw(const RenderContext& context) override;
 
 public:
-	void SetPosition(float x, float y) { m_Position = { x, y }; }
+	void SetPosition(float x, float y) { m_Position = {x, y}; }
 	[[nodiscard]] DirectX::XMFLOAT2 GetPosition() const { return m_Position; }
 
-	void SetSize(float w, float h) { m_Size = { w, h }; }
+	void SetSize(float w, float h) { m_Size = {w, h}; }
 	[[nodiscard]] DirectX::XMFLOAT2 GetSize() const { return m_Size; }
 
-	void SetScale(float sx, float sy) { m_Scale = { sx, sy }; }
+	void SetScale(float sx, float sy) { m_Scale = {sx, sy}; }
 	[[nodiscard]] DirectX::XMFLOAT2 GetScale() const { return m_Scale; }
 
 	void SetRotation(float rot) { m_Rotation = rot; }
 	[[nodiscard]] float GetRotation() const { return m_Rotation; }
 
-	void SetColor(float r, float g, float b, float a = 1.0f) { m_Color = { r, g, b, a }; }
+	void SetColor(float r, float g, float b, float a = 1.0f) { m_Color = {r, g, b, a}; }
 	void SetAlpha(float a) { m_Color.w = a; }
 	[[nodiscard]] DirectX::XMFLOAT4 GetColor() const { return m_Color; }
 
@@ -93,22 +93,22 @@ private:
 	void UpdateConstantBuffers();
 
 private:
-	std::unique_ptr<Texture> m_Texture;         // テクスチャリソース
-	std::wstring m_TexturePath;                 // テクスチャパス
-	VertexBuffer m_VertexBuffer;                // 頂点バッファ
-	ConstantBuffer m_SpriteCB;                  // トランスフォーム用定数バッファ
-	ConstantBuffer m_MaskCB;                    // マスクパラメータ用定数バッファ
+	std::unique_ptr<Texture> m_Texture; // テクスチャリソース
+	std::wstring m_TexturePath;         // テクスチャパス
+	VertexBuffer m_VertexBuffer;        // 頂点バッファ
+	ConstantBuffer m_SpriteCB;          // トランスフォーム用定数バッファ
+	ConstantBuffer m_MaskCB;            // マスクパラメータ用定数バッファ
 
-	DirectX::XMFLOAT2 m_Position = { 0.0f, 0.0f };
-	DirectX::XMFLOAT2 m_Size = { 100.0f, 100.0f };
-	DirectX::XMFLOAT2 m_Scale = { 1.0f, 1.0f };
-	float             m_Rotation = 0.0f;
-	DirectX::XMFLOAT4 m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
-	DirectX::XMFLOAT2 m_UVMin = { 0.0f, 0.0f };
-	DirectX::XMFLOAT2 m_UVMax = { 1.0f, 1.0f };
+	DirectX::XMFLOAT2 m_Position = {0.0f, 0.0f};
+	DirectX::XMFLOAT2 m_Size     = {100.0f, 100.0f};
+	DirectX::XMFLOAT2 m_Scale    = {1.0f, 1.0f};
+	float m_Rotation             = 0.0f;
+	DirectX::XMFLOAT4 m_Color    = {1.0f, 1.0f, 1.0f, 1.0f};
+	DirectX::XMFLOAT2 m_UVMin    = {0.0f, 0.0f};
+	DirectX::XMFLOAT2 m_UVMax    = {1.0f, 1.0f};
 
-	MaskMode m_MaskMode = MaskMode::None;
-	float    m_Progress = 1.0f;
-	float    m_Feather = 0.0f;
-	DirectX::XMFLOAT4 m_MaskRectUV = { 0.0f, 0.0f, 1.0f, 1.0f };
+	MaskMode m_MaskMode            = MaskMode::None;
+	float m_Progress               = 1.0f;
+	float m_Feather                = 0.0f;
+	DirectX::XMFLOAT4 m_MaskRectUV = {0.0f, 0.0f, 1.0f, 1.0f};
 };

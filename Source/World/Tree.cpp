@@ -8,7 +8,7 @@
 // 		コンストラクタ
 //-----------------------------------------------------------------------------
 Tree::Tree()
-	: GameObject()
+    : GameObject()
 {
 }
 
@@ -26,7 +26,7 @@ bool Tree::Init()
 {
 	GameObject::Init();
 	AddComponent<MeshRenderer>()->Load(L"Assets/Model/FieldObject/Tree/Tree01.bmdl", L"ModelPipeline");
-	m_Scale = { 1.0f, 1.0f, 1.0f };
+	m_Scale       = {1.0f, 1.0f, 1.0f};
 	Scene* pScene = GameManager::GetScene();
 	if (pScene)
 	{

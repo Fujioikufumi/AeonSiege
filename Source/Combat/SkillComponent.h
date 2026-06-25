@@ -8,7 +8,7 @@
 /// </summary>
 struct SkillRuntime
 {
-	SkillData Data;				  // スキルの基本データ
+	SkillData Data;               // スキルの基本データ
 	float CurrentCooldown = 0.0f; // 現在のクールダウン時間
 };
 
@@ -46,6 +46,6 @@ private:
 	// クールダウンの更新
 	void UpdateCooldowns(float deltaTime);
 
-	std::vector<SkillRuntime> m_Skills;		// スキルデータのリスト
+	std::vector<SkillRuntime> m_Skills; // スキルデータのリスト
 	static constexpr int kMaxSkillSlot = 6;
 };

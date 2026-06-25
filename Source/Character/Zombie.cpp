@@ -11,24 +11,25 @@
 #include "Utility/MathUtility.h"
 #include <random>
 
-namespace {
-	constexpr float kTargetHeightOffset = 6.0f;  // ターゲットHUDの高さオフセット
-	constexpr float kAutoAttackInterval = 2.0f;  // 通常攻撃の間隔（秒）
-	constexpr float kMoveSpeed = 20.0f;			 // 移動速度
-	constexpr float kChaseMoveSpeed = 35.0f;	 // 追跡時の移動速度
-	constexpr float kMeleeCooldownSec = 2.0f;	 // 近接攻撃のクールダウン（秒）
-}
+namespace
+{
+constexpr float kTargetHeightOffset = 6.0f;  // ターゲットHUDの高さオフセット
+constexpr float kAutoAttackInterval = 2.0f;  // 通常攻撃の間隔（秒）
+constexpr float kMoveSpeed          = 20.0f; // 移動速度
+constexpr float kChaseMoveSpeed     = 35.0f; // 追跡時の移動速度
+constexpr float kMeleeCooldownSec   = 2.0f;  // 近接攻撃のクールダウン（秒）
+} // namespace
 
 Zombie::Zombie()
-	: Zombie(ZombieType::Normal)
+    : Zombie(ZombieType::Normal)
 {
 }
 
 Zombie::Zombie(ZombieType type)
-	: m_Type(type)
+    : m_Type(type)
 {
 	m_ModelPath = L"../Assets/Characters/Zombie.bmdl";
-	m_Scale = { 0.05f, 0.05f, 0.05f };
+	m_Scale     = {0.05f, 0.05f, 0.05f};
 }
 
 Zombie::~Zombie()
@@ -38,7 +39,8 @@ Zombie::~Zombie()
 
 bool Zombie::Init()
 {
-	if (!GameObject::Init()) return false;
+	if (!GameObject::Init())
+		return false;
 
 	AddComponent<MeshRenderer>()->Load(m_ModelPath, m_PipelineName);
 
@@ -47,15 +49,15 @@ bool Zombie::Init()
 
 	m_Status = AddComponent<StatusComponent>();
 	StatusData data;
-	data.maxHp = 100;
-	data.attackPower = 10;
+	data.maxHp              = 100;
+	data.attackPower        = 10;
 	data.autoAttackInterval = kAutoAttackInterval;
 	data.criticalDamageRate = 1.5f;
-	data.criticalRate = 0.3f;
-	data.damageTakenRate = 1.0f;
-	data.defensePower = 5;
-	data.evasionRate = 0.1f;
-	data.moveSpeed = kMoveSpeed;
+	data.criticalRate       = 0.3f;
+	data.damageTakenRate    = 1.0f;
+	data.defensePower       = 5;
+	data.evasionRate        = 0.1f;
+	data.moveSpeed          = kMoveSpeed;
 	m_Status->Setup(data);
 
 	HealthComponent* health = AddComponent<HealthComponent>();
@@ -77,8 +79,10 @@ bool Zombie::Init()
 	enemyAi->SetMeleeCooldownSec(kMeleeCooldownSec);
 
 	// コールバック
-	enemyAi->SetAnimCallback([this](EnemyAIState newState) { OnAIStateChanged(newState); });
-	enemyAi->SetAttackCallback([this](GameObject* targetObj) { OnAIAttack(targetObj); });
+	enemyAi->SetAnimCallback([this](EnemyAIState newState)
+	                         { OnAIStateChanged(newState); });
+	enemyAi->SetAttackCallback([this](GameObject* targetObj)
+	                           { OnAIAttack(targetObj); });
 
 	Scene* pScene = GameManager::GetScene();
 	if (pScene)
@@ -102,7 +106,8 @@ void Zombie::Term()
 void Zombie::Update(float deltaTime)
 {
 	Scene* pScene = GameManager::GetScene();
-	if (pScene == nullptr) return;
+	if (pScene == nullptr)
+		return;
 
 	Terrain* pTerrain = pScene->GetGameObject<Terrain>();
 	if (pTerrain != nullptr)
@@ -110,7 +115,7 @@ void Zombie::Update(float deltaTime)
 		m_Position.y = pTerrain->GetHeightAt(m_Position.x, m_Position.z);
 	}
 
-	HealthComponent* pHealth = GetComponent<HealthComponent>();
+	HealthComponent* pHealth   = GetComponent<HealthComponent>();
 	AnimationController* pAnim = GetComponent<AnimationController>();
 
 	// 死亡判定
@@ -172,8 +177,8 @@ void Zombie::OnAIStateChanged(EnemyAIState newState)
 	AnimationController* anim = GetComponent<AnimationController>();
 
 	const char* clipName = kAnimRun;
-	bool loop = true;
-	float speed = 1.0f;
+	bool loop            = true;
+	float speed          = 1.0f;
 
 	switch (newState)
 	{
@@ -181,20 +186,20 @@ void Zombie::OnAIStateChanged(EnemyAIState newState)
 	case EnemyAIState::Patrol:
 	case EnemyAIState::Chase:
 		clipName = kAnimRun;
-		loop = true;
+		loop     = true;
 		break;
 
 	case EnemyAIState::Attack:
 		SelectAttackType();
 		clipName = (m_CurrentAttackType == ZombieAttackType::Kick)
-			? kAnimKick
-			: kAnimAttack;
-		loop = false;  // 攻撃アニメーションはループさせない
+		               ? kAnimKick
+		               : kAnimAttack;
+		loop     = false; // 攻撃アニメーションはループさせない
 		break;
 
 	case EnemyAIState::Dead:
 		clipName = kAnimDying;
-		loop = false;  // 死亡アニメーションはループさせない
+		loop     = false; // 死亡アニメーションはループさせない
 		break;
 	}
 

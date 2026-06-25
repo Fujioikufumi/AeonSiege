@@ -12,10 +12,10 @@ ScreenFade& ScreenFade::Instance()
 
 void ScreenFade::ResetState()
 {
-	m_Mode = Mode::None;
+	m_Mode         = Mode::None;
 	m_CurrentFrame = 0;
-	m_EndFrame = 1;
-	m_OnComplete = nullptr;
+	m_EndFrame     = 1;
+	m_OnComplete   = nullptr;
 }
 
 void ScreenFade::StartFade(Mode mode, int frameCount, std::function<void()> onComplete, float startAlpha)
@@ -25,10 +25,10 @@ void ScreenFade::StartFade(Mode mode, int frameCount, std::function<void()> onCo
 		return;
 	}
 
-	m_Mode = mode;
+	m_Mode         = mode;
 	m_CurrentFrame = 0;
-	m_EndFrame = max(1, frameCount);
-	m_OnComplete = std::move(onComplete);
+	m_EndFrame     = max(1, frameCount);
+	m_OnComplete   = std::move(onComplete);
 	m_pSprite->SetColor(0.0f, 0.0f, 0.0f, startAlpha);
 }
 
@@ -81,7 +81,7 @@ void ScreenFade::Update(float deltaTime)
 		m_Mode = Mode::None;
 		if (m_OnComplete)
 		{
-			auto cb = std::move(m_OnComplete);
+			auto cb      = std::move(m_OnComplete);
 			m_OnComplete = nullptr;
 			cb();
 		}

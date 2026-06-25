@@ -12,8 +12,8 @@ class GameObject;
 class Component
 {
 protected:
-	GameObject* m_GameObject = nullptr;			 // 所有者
-	std::string m_ComponentName = "Component";   // コンポーネント名
+	GameObject* m_GameObject    = nullptr;     // 所有者
+	std::string m_ComponentName = "Component"; // コンポーネント名
 
 	friend class GameObject;
 

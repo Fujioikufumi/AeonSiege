@@ -12,15 +12,15 @@ class Camera;
 struct AllyAIParams
 {
 	float followStartDistance = 60.0f; // プレイヤーからこの距離以上離れている場合、追従を開始する
-	float followStopDistance = 45.0f;  // プレイヤーからこの距離以下になった場合、追従を停止する（待機状態に移行する）
+	float followStopDistance  = 45.0f; // プレイヤーからこの距離以下になった場合、追従を停止する（待機状態に移行する）
 
-	float waitTargetForwardDistance = 35.0f; // 待機状態の目標位置をプレイヤーの前方にこの距離だけオフセットして設定する
-	float waitTargetSideOffset = 20.0f;		 // 待機状態の目標位置をプレイヤーの横方向にこの距離だけオフセットして設定する（正の値で右側、負の値で左側）
-	float waitTargetArriveDistance = 3.0f;	 // 待機状態の目標位置にこの距離以内に近づいたら到着と判定する
+	float waitTargetForwardDistance       = 35.0f; // 待機状態の目標位置をプレイヤーの前方にこの距離だけオフセットして設定する
+	float waitTargetSideOffset            = 20.0f; // 待機状態の目標位置をプレイヤーの横方向にこの距離だけオフセットして設定する（正の値で右側、負の値で左側）
+	float waitTargetArriveDistance        = 3.0f;  // 待機状態の目標位置にこの距離以内に近づいたら到着と判定する
 	float maxWaitTargetDistanceFromPlayer = 60.0f; // 待機状態の目標位置がプレイヤーからこの距離以上離れている場合は、目標位置を再計算する
 
 	float enemyDetectRange = 160.0f; // 敵を索敵する範囲。プレイヤーを中心にこの距離以内にいる敵を攻撃対象として検出する
-	float targetKeepRange = 220.0f; // 攻撃対象を維持できる最大距離。攻撃対象がプレイヤーからこの距離以上離れた場合、攻撃対象を見失ったと判定して攻撃対象をクリアする
+	float targetKeepRange  = 220.0f; // 攻撃対象を維持できる最大距離。攻撃対象がプレイヤーからこの距離以上離れた場合、攻撃対象を見失ったと判定して攻撃対象をクリアする
 
 	float moveSpeed = 45.0f; // 移動速度
 	float turnSpeed = 10.0f; // 回転速度
@@ -76,30 +76,32 @@ public:
 
 	// 攻撃対象をのクリア
 	void ClearAttackTarget() { m_AttackTarget = nullptr; }
+
 private:
 	// プレイヤーが移動したかどうかの判定
 	bool IsPlayerMoving(const DirectX::XMFLOAT3& playerPos);
 
 	// プレイヤーが停止時に自身が待機する座標を作成
 	DirectX::XMFLOAT3 CreateWaitTargetPosition(Scene* pScene, Player* pPlayer, Camera* pCamera);
-	
+
 	// 待機目標の位置が有効かどうかの判定
 	bool IsValidWaitTarget(Camera* pCamera, const DirectX::XMFLOAT3& targetPos, const DirectX::XMFLOAT3& playerPos) const;
-	
+
 	// プレイヤーを中心に攻撃対象を索敵し、最も近い敵を返す
 	GameObject* FindNearestEnemy(Scene* pScene) const;
-	
+
 	// 攻撃対象が有効かどうかの判定
 	bool IsValidAttackTarget(GameObject* target) const;
+
 private:
 	AllyAIParams m_Params; // 味方AIの挙動パラメーター
 
 	GameObject* m_AttackTarget = nullptr; // 攻撃目標
 
-	DirectX::XMFLOAT3 m_LastPlayerPos = { 0.0f, 0.0f, 0.0f };
-	DirectX::XMFLOAT3 m_WaitTargetPos = { 0.0f, 0.0f, 0.0f };
+	DirectX::XMFLOAT3 m_LastPlayerPos = {0.0f, 0.0f, 0.0f};
+	DirectX::XMFLOAT3 m_WaitTargetPos = {0.0f, 0.0f, 0.0f};
 
 	bool m_HasLastPlayerPos = false;
-	bool m_HasWaitTarget = false;
-	bool m_IsFollowing = false;
+	bool m_HasWaitTarget    = false;
+	bool m_IsFollowing      = false;
 };

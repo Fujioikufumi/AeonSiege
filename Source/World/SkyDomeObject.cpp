@@ -13,11 +13,7 @@
 //      コンストラクタ
 //-----------------------------------------------------------------------------
 SkyDomeObject::SkyDomeObject()
-	: GameObject()
-	, m_TexturePath(L"Assets/Texture/Sky/4kHDR.dds")
-	, m_Radius(100.0f)
-	, m_Slices(32)
-	, m_Stacks(16)
+    : GameObject(), m_TexturePath(L"Assets/Texture/Sky/4kHDR.dds"), m_Radius(100.0f), m_Slices(32), m_Stacks(16)
 {
 }
 
@@ -37,8 +33,8 @@ bool SkyDomeObject::Init()
 	DLOG("SkyDomeObject::Init() called");
 
 	auto device = ResourceManager::GetInstance().GetDevice();
-	auto pool = ResourceManager::GetInstance().GetPool(POOL_TYPE_RES);
-	auto queue = ResourceManager::GetInstance().GetQueue();
+	auto pool   = ResourceManager::GetInstance().GetPool(POOL_TYPE_RES);
+	auto queue  = ResourceManager::GetInstance().GetQueue();
 
 	if (!device || !pool || !queue)
 	{
@@ -69,13 +65,13 @@ bool SkyDomeObject::Init()
 
 	// スカイドーム初期化
 	if (!m_SkyDome.Init(
-		device.Get(),
-		pool,
-		DXGI_FORMAT_R10G10B10A2_UNORM,
-		DXGI_FORMAT_D32_FLOAT,
-		m_Radius,
-		m_Slices,
-		m_Stacks))
+	        device.Get(),
+	        pool,
+	        DXGI_FORMAT_R10G10B10A2_UNORM,
+	        DXGI_FORMAT_D32_FLOAT,
+	        m_Radius,
+	        m_Slices,
+	        m_Stacks))
 	{
 		ELOG("Error : SkyDome::Init() Failed.");
 		return false;
@@ -103,9 +99,9 @@ void SkyDomeObject::Term()
 //-----------------------------------------------------------------------------
 void SkyDomeObject::Update(float deltaTime)
 {
-	Scene* scene = GameManager::GetScene();
+	Scene* scene   = GameManager::GetScene();
 	Camera* camera = scene->GetCamera();
-	m_Position = camera->GetPosition();
+	m_Position     = camera->GetPosition();
 	GameObject::Update(deltaTime);
 }
 
@@ -129,5 +125,5 @@ D3D12_GPU_DESCRIPTOR_HANDLE SkyDomeObject::GetTextureHandle() const
 	{
 		return m_Texture->GetHandleGPU();
 	}
-	return { 0 };
+	return {0};
 }

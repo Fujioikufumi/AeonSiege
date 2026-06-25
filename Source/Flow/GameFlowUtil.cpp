@@ -6,20 +6,20 @@
 
 namespace GameFlowUtil
 {
-	bool IsShopOpen()
+bool IsShopOpen()
+{
+	Scene* scene = GameManager::GetScene();
+	if (scene == nullptr)
 	{
-		Scene* scene = GameManager::GetScene();
-		if (scene == nullptr)
-		{
-			return false;
-		}
-
-		ShopManager* shopManager = scene->GetGameObjectByName<ShopManager>("ShopManager");
-		return shopManager != nullptr && shopManager->IsOpen();
+		return false;
 	}
 
-	bool IsMenuOpen()
-	{
-		return GameMenu::IsMenuOpen();
-	}
+	ShopManager* shopManager = scene->GetGameObjectByName<ShopManager>("ShopManager");
+	return shopManager != nullptr && shopManager->IsOpen();
 }
+
+bool IsMenuOpen()
+{
+	return GameMenu::IsMenuOpen();
+}
+} // namespace GameFlowUtil

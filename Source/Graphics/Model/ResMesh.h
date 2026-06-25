@@ -9,18 +9,17 @@
 #include <map>
 #include "Core/main.h"
 
-
 //-----------------------------------------------------------------------------
 //      ボーン情報
 //-----------------------------------------------------------------------------
 struct BoneInfo
 {
-	std::string name;                   // ボーン名
-	int parentIndex;                    // 親ボーンのインデックス
-	XMMATRIX localTransform;            // ローカル変換行列
+	std::string name;        // ボーン名
+	int parentIndex;         // 親ボーンのインデックス
+	XMMATRIX localTransform; // ローカル変換行列
 
 	XMMATRIX boneBindInv = XMMatrixIdentity();
-	bool hasBind = false;
+	bool hasBind         = false;
 
 	XMMATRIX boneBindGlobal = XMMatrixIdentity();
 
@@ -29,7 +28,6 @@ struct BoneInfo
 	// 追加：bindParent基準のローカル（bind pose）
 	XMMATRIX bindLocal = XMMatrixIdentity();
 };
-
 
 //-----------------------------------------------------------------------------
 // 	 行列キーフレーム
@@ -47,7 +45,7 @@ struct MatrixKeyFrame
 //-----------------------------------------------------------------------------
 struct AnimationChannel
 {
-	std::string boneName;               // ボーン名
+	std::string boneName;                   // ボーン名
 	std::vector<MatrixKeyFrame> matrixKeys; // 行列キーフレーム
 };
 
@@ -57,10 +55,10 @@ struct AnimationChannel
 //-----------------------------------------------------------------------------
 struct AnimationClip
 {
-	std::string name;                               // アニメーション名
-	float duration = 0.0f;                          // アニメーションの長さ
-	float ticksPerSecond = 0.0f;                    // ティック/秒
-	std::vector<AnimationChannel> channels;     // アニメーションチャンネル
+	std::string name;                       // アニメーション名
+	float duration       = 0.0f;            // アニメーションの長さ
+	float ticksPerSecond = 0.0f;            // ティック/秒
+	std::vector<AnimationChannel> channels; // アニメーションチャンネル
 };
 
 //-----------------------------------------------------------------------------
@@ -79,19 +77,13 @@ public:
 	SkinnedMeshVertex() = default;
 
 	SkinnedMeshVertex(
-		XMFLOAT3 const& position,
-		XMFLOAT3 const& normal,
-		XMFLOAT2 const& texcoord,
-		XMFLOAT4 const& tangent,
-		XMUINT4 const& boneIndices,
-		XMFLOAT4 const& boneWeights
-	)
-		: Position(position)
-		, Normal(normal)
-		, TexCoord(texcoord)
-		, Tangent(tangent)
-		, BoneIndices(boneIndices)
-		, BoneWeights(boneWeights)
+	    XMFLOAT3 const& position,
+	    XMFLOAT3 const& normal,
+	    XMFLOAT2 const& texcoord,
+	    XMFLOAT4 const& tangent,
+	    XMUINT4 const& boneIndices,
+	    XMFLOAT4 const& boneWeights)
+	    : Position(position), Normal(normal), TexCoord(texcoord), Tangent(tangent), BoneIndices(boneIndices), BoneWeights(boneWeights)
 	{
 	}
 
@@ -103,7 +95,6 @@ private:
 	static const int InputElementsCount = 6;
 	// 入力要素配列
 	static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementsCount];
-
 };
 
 //-----------------------------------------------------------------------------
@@ -120,15 +111,11 @@ public:
 	MeshVertex() = default;
 
 	MeshVertex(
-		XMFLOAT3 const& position,
-		XMFLOAT3 const& normal,
-		XMFLOAT2 const& texcoord,
-		XMFLOAT3 const& tangent
-	)
-		: Position(position)
-		, Normal(normal)
-		, TexCoord(texcoord)
-		, Tangent(tangent)
+	    XMFLOAT3 const& position,
+	    XMFLOAT3 const& normal,
+	    XMFLOAT2 const& texcoord,
+	    XMFLOAT3 const& tangent)
+	    : Position(position), Normal(normal), TexCoord(texcoord), Tangent(tangent)
 	{
 	}
 
@@ -148,7 +135,7 @@ struct SkeletonInfo
 	int rootBoneIndex = -1;                     // ルートボーンインデックス
 	std::map<std::string, int> boneNameToIndex; // ボーン名からインデックスへのマップ
 
-	XMMATRIX meshBind = XMMatrixIdentity();
+	XMMATRIX meshBind    = XMMatrixIdentity();
 	XMMATRIX meshBindInv = XMMatrixIdentity();
 };
 
@@ -163,7 +150,7 @@ struct ResMesh
 	uint32_t MaterialId;
 
 	// 後で削除
-	bool HasAnimation = false;                      // アニメーションがあるかどうか
+	bool HasAnimation = false; // アニメーションがあるかどうか
 };
 
 //-----------------------------------------------------------------------------
@@ -171,12 +158,12 @@ struct ResMesh
 //-----------------------------------------------------------------------------
 struct ResMaterial
 {
-	XMFLOAT3   Diffuse;        // 拡散反射成分です.
-	XMFLOAT3   Specular;       // 鏡面反射成分です.
-	float               Alpha;          // 透過成分です.
-	float               Shininess;      // 鏡面反射強度です.
-	std::wstring        DiffuseMap;     // ディフューズマップファイルパスです.
-	std::wstring        SpecularMap;    // スペキュラーマップファイルパスです.
-	std::wstring        ShininessMap;   // シャイネスマップファイルパスです.
-	std::wstring        NormalMap;      // 法線マップファイルパスです.
+	XMFLOAT3 Diffuse;          // 拡散反射成分です.
+	XMFLOAT3 Specular;         // 鏡面反射成分です.
+	float Alpha;               // 透過成分です.
+	float Shininess;           // 鏡面反射強度です.
+	std::wstring DiffuseMap;   // ディフューズマップファイルパスです.
+	std::wstring SpecularMap;  // スペキュラーマップファイルパスです.
+	std::wstring ShininessMap; // シャイネスマップファイルパスです.
+	std::wstring NormalMap;    // 法線マップファイルパスです.
 };

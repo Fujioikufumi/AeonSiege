@@ -7,7 +7,6 @@
 #include "Graphics/D3D12/VertexBuffer.h"
 #include "Graphics/D3D12/IndexBuffer.h"
 
-
 //-----------------------------------------------------------------------------
 //      メッシュクラス
 //-----------------------------------------------------------------------------
@@ -17,13 +16,13 @@ public:
 	Mesh();
 	virtual ~Mesh();
 
-	//　初期化処理
+	// 　初期化処理
 	bool Init(ID3D12Device* pDevice, const ResMesh& resource);
 
-	//　初期化処理(スキニングメッシュ用)
+	// 　初期化処理(スキニングメッシュ用)
 	bool InitSkinned(ID3D12Device* pDevice, const ResMesh& resource);
 
-	//　終了処理
+	// 　終了処理
 	void Term();
 
 	// 描画処理
@@ -45,12 +44,12 @@ public:
 	[[nodiscard]] bool IsSkinned() const { return m_IsSkinned; }
 
 private:
-	VertexBuffer    m_VertexBuffer;     // 頂点バッファ
-	IndexBuffer     m_IndexBuffer;      // インデックスバッファ
-	uint32_t        m_MaterialId;       // マテリアルID
-	uint32_t        m_IndexCount;       // インデックス数
-	bool 		    m_IsSkinned;        // スキニングメッシュかどうか
+	VertexBuffer m_VertexBuffer; // 頂点バッファ
+	IndexBuffer m_IndexBuffer;   // インデックスバッファ
+	uint32_t m_MaterialId;       // マテリアルID
+	uint32_t m_IndexCount;       // インデックス数
+	bool m_IsSkinned;            // スキニングメッシュかどうか
 
-	Mesh(const Mesh&) = delete;     // コピー禁止
-	void operator = (const Mesh&) = delete;
+	Mesh(const Mesh&)           = delete; // コピー禁止
+	void operator=(const Mesh&) = delete;
 };

@@ -8,6 +8,6 @@ class GameObject;
 // 将来プレイヤー／味方にも同じ形式を流用可能。
 namespace CharacterGrowth
 {
-	bool TryLoadEnemyGrowthTable(const std::wstring& path = L"Assets/AppData/EnemyGrowth.json");
-	bool ApplyEnemySpawnStats(GameObject* enemy, EnemyType type, int level);
-}
+bool TryLoadEnemyGrowthTable(const std::wstring& path = L"Assets/AppData/EnemyGrowth.json");
+bool ApplyEnemySpawnStats(GameObject* enemy, EnemyType type, int level);
+} // namespace CharacterGrowth

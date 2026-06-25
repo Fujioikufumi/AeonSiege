@@ -8,9 +8,9 @@
 
 // 静的メンバ変数の定義
 std::unique_ptr<Scene> GameManager::m_ActiveScene = nullptr;
-std::unique_ptr<Scene> GameManager::m_NextScene = nullptr;
-bool GameManager::m_IsChangeScene = false;
-GameStatus GameManager::m_Status = {};
+std::unique_ptr<Scene> GameManager::m_NextScene   = nullptr;
+bool GameManager::m_IsChangeScene                 = false;
+GameStatus GameManager::m_Status                  = {};
 
 //-----------------------------------------------------------------------------
 //		初期化処理
@@ -46,7 +46,7 @@ void GameManager::Update(float deltaTime)
 			m_ActiveScene->Term();
 		}
 
-		m_ActiveScene = std::move(m_NextScene);
+		m_ActiveScene   = std::move(m_NextScene);
 		m_IsChangeScene = false;
 
 		if (m_ActiveScene != nullptr)
@@ -93,7 +93,7 @@ void GameManager::Draw(const RenderContext& context, ID3D12GraphicsCommandList* 
 			if (obj->IsCulled() && camera != nullptr)
 			{
 				const DirectX::XMFLOAT3 center = obj->GetPosition();
-				const float radius = obj->GetBoundingRadius();
+				const float radius             = obj->GetBoundingRadius();
 
 				// 交差または内包している場合のみ描画 (0以外)
 				if (camera->CollisionViewFrus(center, radius) != 0)
@@ -109,13 +109,14 @@ void GameManager::Draw(const RenderContext& context, ID3D12GraphicsCommandList* 
 	}
 
 	// UIレイヤーの描画
-	static const eLayer kUiLayers[] = { eLayer::UI, eLayer::MENUUI };
+	static const eLayer kUiLayers[] = {eLayer::UI, eLayer::MENUUI};
 	for (eLayer uiLayer : kUiLayers)
 	{
 		const auto& uiObjects = m_ActiveScene->GetGameObjectsByLayer(uiLayer);
 		for (const auto& obj : uiObjects)
 		{
-			if (!obj || obj->IsDestroyed()) continue;
+			if (!obj || obj->IsDestroyed())
+				continue;
 			obj->Draw(context);
 		}
 	}

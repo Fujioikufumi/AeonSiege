@@ -6,7 +6,7 @@
 #include "imgui.h"
 
 HealthComponent::HealthComponent(GameObject* obj)
-	: Component(obj)
+    : Component(obj)
 {
 	m_ComponentName = "HealthComponent";
 }
@@ -28,7 +28,7 @@ void HealthComponent::ApplyDamage(int damage)
 	m_IsDamaged = true;
 	if (m_HP <= 0)
 	{
-		m_HP = 0;
+		m_HP     = 0;
 		m_IsDead = true;
 	}
 }
@@ -47,7 +47,6 @@ void HealthComponent::SetMaxHP(int maxHp)
 	{
 		m_HP = m_MaxHP;
 	}
-
 }
 
 void HealthComponent::SetHP(int hp)
@@ -73,7 +72,7 @@ float HealthComponent::GetHPRatio() const
 
 void HealthComponent::Serialize(nlohmann::json& json) const
 {
-	json["HP"] = m_HP;
+	json["HP"]    = m_HP;
 	json["MaxHP"] = m_MaxHP;
 }
 
@@ -92,7 +91,7 @@ void HealthComponent::OnDebugWindow()
 	{
 		SetMaxHP(maxHp);
 	}
-	int hp = m_HP;
+	int hp                 = m_HP;
 	const int hpMaxForDrag = std::max(kMinHp, m_MaxHP);
 	if (ImGui::DragInt("Current HP", &hp, 1.0f, 0, hpMaxForDrag))
 	{

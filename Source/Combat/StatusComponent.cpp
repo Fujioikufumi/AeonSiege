@@ -2,7 +2,7 @@
 #include <algorithm>
 
 StatusComponent::StatusComponent(GameObject* pObj)
-	: Component(pObj)
+    : Component(pObj)
 {
 	m_ComponentName = "StatusComponent";
 }
@@ -83,9 +83,9 @@ void StatusComponent::AddSkillCooldownReductionRate(float value)
 int StatusComponent::CalculateSkillDamage(float skillPowerRate) const
 {
 	const float damage =
-		static_cast<float>(GetAttackPower()) *
-		skillPowerRate *
-		m_Status.skillPowerRate;
+	    static_cast<float>(GetAttackPower()) *
+	    skillPowerRate *
+	    m_Status.skillPowerRate;
 	return static_cast<int>(damage);
 }
 
@@ -124,4 +124,3 @@ float StatusComponent::CalculateSkillDuration(float baseDuration) const
 {
 	return baseDuration * m_Status.skillDurationRate;
 }
-

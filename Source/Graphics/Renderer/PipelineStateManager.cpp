@@ -12,7 +12,7 @@ bool PipelineStateManager::Init()
 	ResourceManager& resourceManager = ResourceManager::GetInstance();
 
 	m_Device = resourceManager.GetDevice();
-	m_Pool = resourceManager.GetPool(POOL_TYPE_RES);
+	m_Pool   = resourceManager.GetPool(POOL_TYPE_RES);
 
 	// エラーチェック
 	if (!m_Device || !m_Pool)
@@ -32,23 +32,23 @@ RootSignatureConfig PipelineStateManager::CreateDefaultModelRootSignatureConfig(
 	RootSignatureConfig config;
 
 	// CBV設定
-	config.cbvConfigs.push_back({ ShaderStage::VS, 0, 0 }); // CbTransform
-	config.cbvConfigs.push_back({ ShaderStage::VS, 1, 1 }); // CbMesh
-	config.cbvConfigs.push_back({ ShaderStage::PS, 2, 1 }); // CbLight
-	config.cbvConfigs.push_back({ ShaderStage::PS, 3, 2 }); // CbCamera
-	config.cbvConfigs.push_back({ ShaderStage::PS, 4, 4 }); // CbMaterial
+	config.cbvConfigs.push_back({ShaderStage::VS, 0, 0}); // CbTransform
+	config.cbvConfigs.push_back({ShaderStage::VS, 1, 1}); // CbMesh
+	config.cbvConfigs.push_back({ShaderStage::PS, 2, 1}); // CbLight
+	config.cbvConfigs.push_back({ShaderStage::PS, 3, 2}); // CbCamera
+	config.cbvConfigs.push_back({ShaderStage::PS, 4, 4}); // CbMaterial
 
 	// SRV設定（インデックスを6から開始）
-	config.srvConfigs.push_back({ ShaderStage::PS, 6, 0 }); // BaseColor（ルートパラメータインデックス6）
-	config.srvConfigs.push_back({ ShaderStage::PS, 7, 1 }); // Metallic（ルートパラメータインデックス7）
-	config.srvConfigs.push_back({ ShaderStage::PS, 8, 2 }); // Roughness（ルートパラメータインデックス8）
-	config.srvConfigs.push_back({ ShaderStage::PS, 9, 3 }); // Normal（ルートパラメータインデックス9）
+	config.srvConfigs.push_back({ShaderStage::PS, 6, 0}); // BaseColor（ルートパラメータインデックス6）
+	config.srvConfigs.push_back({ShaderStage::PS, 7, 1}); // Metallic（ルートパラメータインデックス7）
+	config.srvConfigs.push_back({ShaderStage::PS, 8, 2}); // Roughness（ルートパラメータインデックス8）
+	config.srvConfigs.push_back({ShaderStage::PS, 9, 3}); // Normal（ルートパラメータインデックス9）
 
 	// サンプラー設定
-	config.samplerConfigs.push_back({ ShaderStage::PS, 0, SamplerState::LinearWrap });
-	config.samplerConfigs.push_back({ ShaderStage::PS, 1, SamplerState::LinearWrap });
-	config.samplerConfigs.push_back({ ShaderStage::PS, 2, SamplerState::LinearWrap });
-	config.samplerConfigs.push_back({ ShaderStage::PS, 3, SamplerState::LinearWrap });
+	config.samplerConfigs.push_back({ShaderStage::PS, 0, SamplerState::LinearWrap});
+	config.samplerConfigs.push_back({ShaderStage::PS, 1, SamplerState::LinearWrap});
+	config.samplerConfigs.push_back({ShaderStage::PS, 2, SamplerState::LinearWrap});
+	config.samplerConfigs.push_back({ShaderStage::PS, 3, SamplerState::LinearWrap});
 
 	config.allowIL = true;
 	config.allowSO = false;
@@ -73,7 +73,7 @@ bool PipelineStateManager::CreateRootSignature(const RootSignatureConfig& config
 		if (srv.index > maxIndex)
 			maxIndex = srv.index;
 	}
-	for(const auto& uav : config.uavConfigs)
+	for (const auto& uav : config.uavConfigs)
 	{
 		if (uav.index > maxIndex)
 			maxIndex = uav.index;
@@ -133,26 +133,24 @@ bool PipelineStateManager::CreateRootSignature(const RootSignatureConfig& config
 	}
 
 	return true;
-
 }
-
 
 //----------------------------------------------------------------------
 /// パイプラインステートを作成（簡易版）
 //----------------------------------------------------------------------
 bool PipelineStateManager::CreatePipelineState(
-	const std::wstring& pipelineName,
-	const std::wstring& shaderName,
-	const std::vector<D3D12_INPUT_ELEMENT_DESC>& inputLayout,
-	DXGI_FORMAT rtvFormat,
-	DXGI_FORMAT dsvFormat,
-	const RootSignatureConfig* rootSigConfig)
+    const std::wstring& pipelineName,
+    const std::wstring& shaderName,
+    const std::vector<D3D12_INPUT_ELEMENT_DESC>& inputLayout,
+    DXGI_FORMAT rtvFormat,
+    DXGI_FORMAT dsvFormat,
+    const RootSignatureConfig* rootSigConfig)
 {
 	// 既に作成されているか確認
 	if (IsPipelineStateCreated(pipelineName))
 	{
 		DLOG("Pipeline state already created : %ls", pipelineName.c_str())
-			return true;
+		return true;
 	}
 
 	// シェーダーを取得
@@ -167,28 +165,27 @@ bool PipelineStateManager::CreatePipelineState(
 	if (shader->pVSBlob.Get() == nullptr)
 	{
 		ELOG("Error : Vertex shader blob is null. shaderName = %ls, vsPath = %ls",
-			shaderName.c_str(), shader->vsPath.c_str());
+		     shaderName.c_str(), shader->vsPath.c_str());
 		return false;
 	}
 
 	if (shader->pPSBlob.Get() == nullptr)
 	{
 		ELOG("Error : Pixel shader blob is null. shaderName = %ls, psPath = %ls",
-			shaderName.c_str(), shader->psPath.c_str());
+		     shaderName.c_str(), shader->psPath.c_str());
 		return false;
 	}
 
 	// ルートシグネチャ設定（指定がない場合はデフォルト）
 	RootSignatureConfig config = (rootSigConfig != nullptr)
-		? *rootSigConfig
-		: CreateDefaultModelRootSignatureConfig();
-
+	                                 ? *rootSigConfig
+	                                 : CreateDefaultModelRootSignatureConfig();
 
 	// パイプラインステート情報を作成
 	PipelineStateInfo pipelineInfo;
-	pipelineInfo.shaderName = shaderName;
+	pipelineInfo.shaderName   = shaderName;
 	pipelineInfo.pipelineName = pipelineName;
-	pipelineInfo.isValid = false;
+	pipelineInfo.isValid      = false;
 
 	// ルートシグネチャを作成
 	if (!CreateRootSignature(config, pipelineInfo.rootSig))
@@ -199,45 +196,45 @@ bool PipelineStateManager::CreatePipelineState(
 
 	// パイプラインステートを作成
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC desc = {};
-	desc.InputLayout = { inputLayout.data(), static_cast<UINT>(inputLayout.size()) };
-	desc.pRootSignature = pipelineInfo.rootSig.GetPtr();
-	desc.VS = { shader->pVSBlob->GetBufferPointer(), shader->pVSBlob->GetBufferSize() };
-	desc.PS = { shader->pPSBlob->GetBufferPointer(), shader->pPSBlob->GetBufferSize() };
+	desc.InputLayout                        = {inputLayout.data(), static_cast<UINT>(inputLayout.size())};
+	desc.pRootSignature                     = pipelineInfo.rootSig.GetPtr();
+	desc.VS                                 = {shader->pVSBlob->GetBufferPointer(), shader->pVSBlob->GetBufferSize()};
+	desc.PS                                 = {shader->pPSBlob->GetBufferPointer(), shader->pPSBlob->GetBufferSize()};
 	if (shader->pGSBlob.Get() != nullptr)
 	{
-		desc.GS = { shader->pGSBlob->GetBufferPointer(), shader->pGSBlob->GetBufferSize() };
+		desc.GS = {shader->pGSBlob->GetBufferPointer(), shader->pGSBlob->GetBufferSize()};
 	}
-	desc.RasterizerState = DirectX::CommonStates::CullNone;
-	desc.BlendState = DirectX::CommonStates::AlphaBlend;
-	desc.DepthStencilState = DirectX::CommonStates::DepthDefault;
-	desc.SampleMask = UINT_MAX;
+	desc.RasterizerState       = DirectX::CommonStates::CullNone;
+	desc.BlendState            = DirectX::CommonStates::AlphaBlend;
+	desc.DepthStencilState     = DirectX::CommonStates::DepthDefault;
+	desc.SampleMask            = UINT_MAX;
 	desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	// RTVFormatがUNKNOWNの場合はNumRenderTargetsを0にする
 	if (rtvFormat == DXGI_FORMAT_UNKNOWN)
 	{
 		desc.NumRenderTargets = 0;
-		desc.RTVFormats[0] = DXGI_FORMAT_UNKNOWN;
+		desc.RTVFormats[0]    = DXGI_FORMAT_UNKNOWN;
 	}
 	else
 	{
 		desc.NumRenderTargets = 1;
-		desc.RTVFormats[0] = rtvFormat;
+		desc.RTVFormats[0]    = rtvFormat;
 	}
 
-	desc.DSVFormat = dsvFormat;
-	desc.SampleDesc.Count = 1;
+	desc.DSVFormat          = dsvFormat;
+	desc.SampleDesc.Count   = 1;
 	desc.SampleDesc.Quality = 0;
 
 	HRESULT hr = m_Device->CreateGraphicsPipelineState(&desc, IID_PPV_ARGS(pipelineInfo.pPSO.GetAddressOf()));
 	if (FAILED(hr))
 	{
 		ELOG("Error : ID3D12Device::CreateGraphicsPipelineState() Failed. pipelineName = %ls, hr = 0x%x",
-			pipelineName.c_str(), hr);
+		     pipelineName.c_str(), hr);
 		pipelineInfo.rootSig.Term();
 		return false;
 	}
 
-	pipelineInfo.isValid = true;
+	pipelineInfo.isValid           = true;
 	m_PipelineStates[pipelineName] = std::move(pipelineInfo);
 
 	DLOG("Pipeline state created successfully : %ls", pipelineName.c_str());
@@ -248,9 +245,9 @@ bool PipelineStateManager::CreatePipelineState(
 //		パイプラインステートを作成 (詳細版)
 //======================================================================
 bool PipelineStateManager::CreatePipelineState(
-	const std::wstring& pipelineName,
-	const PipelineStateDesc& desc,
-	const RootSignatureConfig* rootSigConfig)
+    const std::wstring& pipelineName,
+    const PipelineStateDesc& desc,
+    const RootSignatureConfig* rootSigConfig)
 {
 	// 既に作成されているか確認
 	if (IsPipelineStateCreated(pipelineName))
@@ -269,14 +266,14 @@ bool PipelineStateManager::CreatePipelineState(
 
 	// ルートシグネチャ設定（指定がない場合はデフォルト）
 	RootSignatureConfig config = (rootSigConfig != nullptr)
-		? *rootSigConfig
-		: CreateDefaultModelRootSignatureConfig();
+	                                 ? *rootSigConfig
+	                                 : CreateDefaultModelRootSignatureConfig();
 
 	// パイプラインステート情報を作成
 	PipelineStateInfo pipelineInfo;
-	pipelineInfo.shaderName = desc.shaderName;
+	pipelineInfo.shaderName   = desc.shaderName;
 	pipelineInfo.pipelineName = pipelineName;
-	pipelineInfo.isValid = false;
+	pipelineInfo.isValid      = false;
 
 	// ルートシグネチャを作成
 	if (!CreateRootSignature(config, pipelineInfo.rootSig))
@@ -287,36 +284,36 @@ bool PipelineStateManager::CreatePipelineState(
 
 	// パイプラインステートを作成
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
-	psoDesc.InputLayout = { desc.inputLayout.data(), static_cast<UINT>(desc.inputLayout.size()) };
-	psoDesc.pRootSignature = pipelineInfo.rootSig.GetPtr();
-	psoDesc.VS = { shader->pVSBlob->GetBufferPointer(), shader->pVSBlob->GetBufferSize() };
-	psoDesc.PS = { shader->pPSBlob->GetBufferPointer(), shader->pPSBlob->GetBufferSize() };
+	psoDesc.InputLayout                        = {desc.inputLayout.data(), static_cast<UINT>(desc.inputLayout.size())};
+	psoDesc.pRootSignature                     = pipelineInfo.rootSig.GetPtr();
+	psoDesc.VS                                 = {shader->pVSBlob->GetBufferPointer(), shader->pVSBlob->GetBufferSize()};
+	psoDesc.PS                                 = {shader->pPSBlob->GetBufferPointer(), shader->pPSBlob->GetBufferSize()};
 	if (shader->pGSBlob.Get() != nullptr)
 	{
-		psoDesc.GS = { shader->pGSBlob->GetBufferPointer(), shader->pGSBlob->GetBufferSize() };
+		psoDesc.GS = {shader->pGSBlob->GetBufferPointer(), shader->pGSBlob->GetBufferSize()};
 	}
-	
-	psoDesc.RasterizerState = desc.rasterizerState;
-	psoDesc.BlendState = desc.blendState;
-	psoDesc.DepthStencilState = desc.depthStencilState;
-	psoDesc.SampleMask = UINT_MAX;
+
+	psoDesc.RasterizerState       = desc.rasterizerState;
+	psoDesc.BlendState            = desc.blendState;
+	psoDesc.DepthStencilState     = desc.depthStencilState;
+	psoDesc.SampleMask            = UINT_MAX;
 	psoDesc.PrimitiveTopologyType = desc.primitiveTopology;
-	psoDesc.NumRenderTargets = 1;
-	psoDesc.RTVFormats[0] = desc.rtvFormat;
-	psoDesc.DSVFormat = desc.dsvFormat;
-	psoDesc.SampleDesc.Count = desc.sampleCount;
-	psoDesc.SampleDesc.Quality = desc.sampleQuality;
+	psoDesc.NumRenderTargets      = 1;
+	psoDesc.RTVFormats[0]         = desc.rtvFormat;
+	psoDesc.DSVFormat             = desc.dsvFormat;
+	psoDesc.SampleDesc.Count      = desc.sampleCount;
+	psoDesc.SampleDesc.Quality    = desc.sampleQuality;
 
 	HRESULT hr = m_Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(pipelineInfo.pPSO.GetAddressOf()));
 	if (FAILED(hr))
 	{
 		ELOG("Error : ID3D12Device::CreateGraphicsPipelineState() Failed. pipelineName = %ls, hr = 0x%x",
-			pipelineName.c_str(), hr);
+		     pipelineName.c_str(), hr);
 		pipelineInfo.rootSig.Term();
 		return false;
 	}
 
-	pipelineInfo.isValid = true;
+	pipelineInfo.isValid           = true;
 	m_PipelineStates[pipelineName] = std::move(pipelineInfo);
 
 	DLOG("Pipeline state created successfully: %ls", pipelineName.c_str());
@@ -329,7 +326,7 @@ bool PipelineStateManager::CreatePipelineState(
 bool PipelineStateManager::CreateComputePipelineState(const std::wstring& pipelineName, const std::wstring& computeShaderName, const RootSignatureConfig* rootSigConfig)
 {
 	// 既に作成されているか確認
-	if(IsPipelineStateCreated(pipelineName))
+	if (IsPipelineStateCreated(pipelineName))
 	{
 		return true;
 	}
@@ -350,9 +347,9 @@ bool PipelineStateManager::CreateComputePipelineState(const std::wstring& pipeli
 
 	// パイプライン構造体を作成
 	PipelineStateInfo pipelineInfo;
-	pipelineInfo.shaderName = computeShaderName;
+	pipelineInfo.shaderName   = computeShaderName;
 	pipelineInfo.pipelineName = pipelineName;
-	pipelineInfo.isValid = false;
+	pipelineInfo.isValid      = false;
 
 	// ルートシグネチャを作成
 	if (!CreateRootSignature(*rootSigConfig, pipelineInfo.rootSig))
@@ -363,9 +360,9 @@ bool PipelineStateManager::CreateComputePipelineState(const std::wstring& pipeli
 
 	// コンピュートパイプラインステートを作成
 	D3D12_COMPUTE_PIPELINE_STATE_DESC desc = {};
-	desc.pRootSignature = pipelineInfo.rootSig.GetPtr();
-	desc.CS.pShaderBytecode = pCsInfo->pCSBlob->GetBufferPointer();
-	desc.CS.BytecodeLength = pCsInfo->pCSBlob->GetBufferSize();
+	desc.pRootSignature                    = pipelineInfo.rootSig.GetPtr();
+	desc.CS.pShaderBytecode                = pCsInfo->pCSBlob->GetBufferPointer();
+	desc.CS.BytecodeLength                 = pCsInfo->pCSBlob->GetBufferSize();
 
 	HRESULT hr = m_Device->CreateComputePipelineState(&desc, IID_PPV_ARGS(pipelineInfo.pPSO.GetAddressOf()));
 	if (FAILED(hr))
@@ -375,7 +372,7 @@ bool PipelineStateManager::CreateComputePipelineState(const std::wstring& pipeli
 		return false;
 	}
 
-	pipelineInfo.isValid = true;
+	pipelineInfo.isValid           = true;
 	m_PipelineStates[pipelineName] = std::move(pipelineInfo);
 	DLOG("Compute pipeline created: %ls", pipelineName.c_str());
 

@@ -20,9 +20,9 @@ struct MouseState
 	int deltaY = 0;
 
 	// マウスボタン状態
-	bool leftButton		= false;
-	bool rightButton	= false;
-	bool middleButton	= false;
+	bool leftButton   = false;
+	bool rightButton  = false;
+	bool middleButton = false;
 };
 
 //-----------------------------------------------------------------------------
@@ -31,18 +31,19 @@ struct MouseState
 class Input : public SingletonManager<Input>
 {
 	friend class SingletonManager<Input>;
+
 public:
 	// XInput
-	static constexpr WORD PAD_UP	= 0x0001;
-	static constexpr WORD PAD_DOWN	= 0x0002;
-	static constexpr WORD PAD_LEFT	= 0x0004;
+	static constexpr WORD PAD_UP    = 0x0001;
+	static constexpr WORD PAD_DOWN  = 0x0002;
+	static constexpr WORD PAD_LEFT  = 0x0004;
 	static constexpr WORD PAD_RIGHT = 0x0008;
 
-	static constexpr WORD PAD_START = 0x0010;
-	static constexpr WORD PAD_BACK	= 0x0020;
-	static constexpr WORD PAD_LEFT_THUMB = 0x0040;
-	static constexpr WORD PAD_RIGHT_THUMB = 0x0080;
-	static constexpr WORD PAD_LEFT_SHOULDER = 0x0100;
+	static constexpr WORD PAD_START          = 0x0010;
+	static constexpr WORD PAD_BACK           = 0x0020;
+	static constexpr WORD PAD_LEFT_THUMB     = 0x0040;
+	static constexpr WORD PAD_RIGHT_THUMB    = 0x0080;
+	static constexpr WORD PAD_LEFT_SHOULDER  = 0x0100;
 	static constexpr WORD PAD_RIGHT_SHOULDER = 0x0200;
 
 	static constexpr WORD PAD_A = 0x1000;
@@ -55,10 +56,10 @@ public:
 
 	// ライフサイクル
 	HRESULT Init();
-	void    Term();
-	void    Update();
-	void    SetWindow(HWND hWnd);
-	void    LockMouse(bool lock);
+	void Term();
+	void Update();
+	void SetWindow(HWND hWnd);
+	void LockMouse(bool lock);
 
 	// キーボード
 	[[nodiscard]] bool IsKeyPress(BYTE key) const;
@@ -87,20 +88,20 @@ public:
 	[[nodiscard]] bool IsRTRelease() const;
 
 	// コントローラ（スティック）
-	[[nodiscard]] bool  IsLLeftStickPress() const;
-	[[nodiscard]] bool  IsLRightStickPress() const;
+	[[nodiscard]] bool IsLLeftStickPress() const;
+	[[nodiscard]] bool IsLRightStickPress() const;
 	[[nodiscard]] float IsLLeftStickForce() const;
 	[[nodiscard]] float IsLRightStickForce() const;
-	[[nodiscard]] bool  IsRLeftStickPress() const;
-	[[nodiscard]] bool  IsRRightStickPress() const;
+	[[nodiscard]] bool IsRLeftStickPress() const;
+	[[nodiscard]] bool IsRRightStickPress() const;
 	[[nodiscard]] float IsRLeftStickForce() const;
 	[[nodiscard]] float IsRRightStickForce() const;
 	[[nodiscard]] float GetLeftStickX() const;
 	[[nodiscard]] float GetLeftStickY() const;
 	[[nodiscard]] float GetRightStickX() const;
 	[[nodiscard]] float GetRightStickY() const;
-	[[nodiscard]] bool  IsLUpStickPress() const;
-	[[nodiscard]] bool  IsLDownStickPress() const;
+	[[nodiscard]] bool IsLUpStickPress() const;
+	[[nodiscard]] bool IsLDownStickPress() const;
 
 	// 振動
 	void Vibration(int controllerNum, int leftMotorSpeed, int rightMotorSpeed);
@@ -111,24 +112,23 @@ public:
 	[[nodiscard]] bool GetKeyBind() const;
 
 private:
-	Input() = default;
+	Input()  = default;
 	~Input() = default;
 
-	BYTE m_KeyTable[256]		= {}; // 現在のキー状態
-	BYTE m_KeyTablePrev[256]	= {}; // 前フレームのキー状態
+	BYTE m_KeyTable[256]     = {}; // 現在のキー状態
+	BYTE m_KeyTablePrev[256] = {}; // 前フレームのキー状態
 
-	MouseState m_MouseState		= {}; // マウス状態
+	MouseState m_MouseState     = {}; // マウス状態
 	MouseState m_MouseStatePrev = {}; // 前フレームのマウス状態
 
-	bool m_MouseInitialized = false; // マウス初期化済みフラグ
-	HWND m_hWnd				= nullptr; // 入力対象ウィンドウハンドル
-	bool m_MouseLocked = false; // マウスロック状態
+	bool m_MouseInitialized = false;   // マウス初期化済みフラグ
+	HWND m_hWnd             = nullptr; // 入力対象ウィンドウハンドル
+	bool m_MouseLocked      = false;   // マウスロック状態
 
-	XINPUT_STATE m_PadState{}; // コントローラ状態
-	XINPUT_STATE m_PadStatePrev{}; // 前フレームのコントローラ状態
-	bool m_PadConnected = false; // コントローラ接続状態
+	XINPUT_STATE m_PadState{};      // コントローラ状態
+	XINPUT_STATE m_PadStatePrev{};  // 前フレームのコントローラ状態
+	bool m_PadConnected = false;    // コントローラ接続状態
 	XINPUT_VIBRATION m_Vibration{}; // コントローラ振動状態
 
 	bool m_KeyBind = false; // キーバインドモード
-
 };

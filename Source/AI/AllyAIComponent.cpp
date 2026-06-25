@@ -15,11 +15,11 @@ using namespace DirectX;
 
 namespace
 {
-	constexpr float kFrustumMargin = 2.0f; // 視錐台内判定の余裕（半径）
+constexpr float kFrustumMargin = 2.0f; // 視錐台内判定の余裕（半径）
 } // namespace
 
 AllyAIComponent::AllyAIComponent(GameObject* pObj)
-	: Component(pObj)
+    : Component(pObj)
 {
 	m_ComponentName = "AllyAIComponent";
 }
@@ -40,22 +40,23 @@ void AllyAIComponent::Setup(const AllyAIParams& params)
 
 bool AllyAIComponent::UpdateFollowPlayer(float deltaTime, Scene* pScene, float moveSpeed)
 {
-	if (m_GameObject == nullptr || pScene == nullptr) return false;
+	if (m_GameObject == nullptr || pScene == nullptr)
+		return false;
 	Player* pPlayer = pScene->GetGameObjectByName<Player>("Player");
 	if (pPlayer == nullptr)
 	{
 		m_HasWaitTarget = false;
 		return false;
 	}
-	Camera* pCamera = pScene->GetGameObjectByName<Camera>("Camera");
-	const XMFLOAT3 playerPos = pPlayer->GetPosition();
-	const bool isPlayerMoving = IsPlayerMoving(playerPos);
+	Camera* pCamera              = pScene->GetGameObjectByName<Camera>("Camera");
+	const XMFLOAT3 playerPos     = pPlayer->GetPosition();
+	const bool isPlayerMoving    = IsPlayerMoving(playerPos);
 	const float distanceToPlayer = MathUtility::CalculateDistanceXZ(m_GameObject->GetPosition(), playerPos);
 	if (isPlayerMoving)
 	{
 		// プレイヤーが移動したら
 		m_HasWaitTarget = false;
-		m_IsFollowing = true;
+		m_IsFollowing   = true;
 		return MoveToTargetPosition(deltaTime, playerPos, m_Params.followStopDistance, m_Params.moveSpeed);
 	}
 	if (!m_IsFollowing && distanceToPlayer > m_Params.followStartDistance)
@@ -85,18 +86,18 @@ bool AllyAIComponent::UpdateFollowPlayer(float deltaTime, Scene* pScene, float m
 
 bool AllyAIComponent::MoveToTargetPosition(float deltaTime, const XMFLOAT3& targetPos, float arriveDistance, float moveSpeed)
 {
-	if (m_GameObject == nullptr) return false;
+	if (m_GameObject == nullptr)
+		return false;
 
 	// 距離を計算
-	XMFLOAT3 pos = m_GameObject->GetPosition();
-	const float dx = targetPos.x - pos.x;
-	const float dz = targetPos.z - pos.z;
+	XMFLOAT3 pos         = m_GameObject->GetPosition();
+	const float dx       = targetPos.x - pos.x;
+	const float dz       = targetPos.z - pos.z;
 	const float distance = MathUtility::CalculateDistanceXZ(pos, targetPos);
 
 	const float moveDistance = std::min(
-		distance - arriveDistance,
-		moveSpeed * deltaTime
-	);
+	    distance - arriveDistance,
+	    moveSpeed * deltaTime);
 
 	if (distance <= arriveDistance || distance <= 0.001f)
 	{
@@ -115,7 +116,8 @@ bool AllyAIComponent::MoveToTargetPosition(float deltaTime, const XMFLOAT3& targ
 
 void AllyAIComponent::FaceTarget(float deltaTime, const XMFLOAT3& targetPos)
 {
-	if (m_GameObject == nullptr) return;
+	if (m_GameObject == nullptr)
+		return;
 
 	const XMFLOAT3 pos = m_GameObject->GetPosition();
 
@@ -128,8 +130,8 @@ void AllyAIComponent::FaceTarget(float deltaTime, const XMFLOAT3& targetPos)
 	}
 
 	const float targetYaw = atan2f(dx, dz);
-	XMFLOAT3 rot = m_GameObject->GetRotation();
-	rot.y = MathUtility::SlerpYaw(rot.y, targetYaw, m_Params.turnSpeed, deltaTime);
+	XMFLOAT3 rot          = m_GameObject->GetRotation();
+	rot.y                 = MathUtility::SlerpYaw(rot.y, targetYaw, m_Params.turnSpeed, deltaTime);
 	m_GameObject->SetRotation(rot);
 }
 
@@ -137,13 +139,13 @@ bool AllyAIComponent::IsPlayerMoving(const XMFLOAT3& playerPos)
 {
 	if (!m_HasLastPlayerPos)
 	{
-		m_LastPlayerPos = playerPos;
+		m_LastPlayerPos    = playerPos;
 		m_HasLastPlayerPos = true;
 		return false;
 	}
 
 	const float distance = MathUtility::CalculateDistanceXZ(m_LastPlayerPos, playerPos);
-	m_LastPlayerPos = playerPos;
+	m_LastPlayerPos      = playerPos;
 
 	return distance > m_Params.playerMoveThreshold;
 }
@@ -158,27 +160,24 @@ XMFLOAT3 AllyAIComponent::CreateWaitTargetPosition(Scene* pScene, Player* pPlaye
 	}
 
 	const XMFLOAT3 forward = pCamera->GetViewForwardXZ();
-	const XMFLOAT3 right = pCamera->GetViewRightXZ();
+	const XMFLOAT3 right   = pCamera->GetViewRightXZ();
 
 	XMFLOAT3 candidates[3];
 
 	candidates[0] = {
-		playerPos.x + forward.x * m_Params.waitTargetForwardDistance + right.x * m_Params.waitTargetSideOffset,
-		playerPos.y,
-		playerPos.z + forward.z * m_Params.waitTargetForwardDistance + right.z * m_Params.waitTargetSideOffset
-	};
+	    playerPos.x + forward.x * m_Params.waitTargetForwardDistance + right.x * m_Params.waitTargetSideOffset,
+	    playerPos.y,
+	    playerPos.z + forward.z * m_Params.waitTargetForwardDistance + right.z * m_Params.waitTargetSideOffset};
 
 	candidates[1] = {
-		playerPos.x + forward.x * m_Params.waitTargetForwardDistance - right.x * m_Params.waitTargetSideOffset,
-		playerPos.y,
-		playerPos.z + forward.z * m_Params.waitTargetForwardDistance - right.z * m_Params.waitTargetSideOffset
-	};
+	    playerPos.x + forward.x * m_Params.waitTargetForwardDistance - right.x * m_Params.waitTargetSideOffset,
+	    playerPos.y,
+	    playerPos.z + forward.z * m_Params.waitTargetForwardDistance - right.z * m_Params.waitTargetSideOffset};
 
 	candidates[2] = {
-		playerPos.x + right.x * m_Params.waitTargetSideOffset,
-		playerPos.y,
-		playerPos.z + right.z * m_Params.waitTargetSideOffset
-	};
+	    playerPos.x + right.x * m_Params.waitTargetSideOffset,
+	    playerPos.y,
+	    playerPos.z + right.z * m_Params.waitTargetSideOffset};
 
 	Terrain* pTerrain = pScene->GetGameObjectByName<Terrain>("Terrain");
 
@@ -206,7 +205,8 @@ XMFLOAT3 AllyAIComponent::CreateWaitTargetPosition(Scene* pScene, Player* pPlaye
 
 bool AllyAIComponent::IsValidWaitTarget(Camera* pCamera, const XMFLOAT3& targetPos, const XMFLOAT3& playerPos) const
 {
-	if (pCamera == nullptr) return false;
+	if (pCamera == nullptr)
+		return false;
 
 	const float distanceFromPlayer = MathUtility::CalculateDistanceXZ(targetPos, playerPos);
 	if (distanceFromPlayer > m_Params.maxWaitTargetDistanceFromPlayer)
@@ -232,9 +232,9 @@ GameObject* AllyAIComponent::GetOrFindAttackTarget(Scene* pScene)
 		if (pScene != nullptr && pScene->ContainsGameObject(m_AttackTarget))
 		{
 			if (MathUtility::IsInRange(
-				m_GameObject->GetPosition(),
-				m_AttackTarget->GetPosition(),
-				m_Params.targetKeepRange))
+			        m_GameObject->GetPosition(),
+			        m_AttackTarget->GetPosition(),
+			        m_Params.targetKeepRange))
 			{
 				return m_AttackTarget;
 			}
@@ -251,11 +251,12 @@ GameObject* AllyAIComponent::GetOrFindAttackTarget(Scene* pScene)
 
 GameObject* AllyAIComponent::FindNearestEnemy(Scene* pScene) const
 {
-	if (pScene == nullptr || m_GameObject == nullptr) return nullptr;
+	if (pScene == nullptr || m_GameObject == nullptr)
+		return nullptr;
 
 	// プレイヤーを中心に敵を索敵し、最も近い敵を返す
 	GameObject* nearestEnemy = nullptr;
-	float nearestDistSq = m_Params.enemyDetectRange * m_Params.enemyDetectRange;
+	float nearestDistSq      = m_Params.enemyDetectRange * m_Params.enemyDetectRange;
 
 	const auto& enemyList = pScene->GetGameObjectsByLayer(eLayer::ENEMY);
 
@@ -267,17 +268,17 @@ GameObject* AllyAIComponent::FindNearestEnemy(Scene* pScene) const
 			continue;
 		}
 
-		const XMFLOAT3 selfPos = m_GameObject->GetPosition();
+		const XMFLOAT3 selfPos  = m_GameObject->GetPosition();
 		const XMFLOAT3 enemyPos = enemy->GetPosition();
 
-		const float dx = enemyPos.x - selfPos.x;
-		const float dz = enemyPos.z - selfPos.z;
+		const float dx     = enemyPos.x - selfPos.x;
+		const float dz     = enemyPos.z - selfPos.z;
 		const float distSq = dx * dx + dz * dz;
 
 		if (distSq < nearestDistSq)
 		{
 			nearestDistSq = distSq;
-			nearestEnemy = enemy;
+			nearestEnemy  = enemy;
 		}
 	}
 

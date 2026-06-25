@@ -7,10 +7,10 @@ class GameObject;
 /// </summary>
 struct DamageContext
 {
-	int damage = 0;					// 攻撃側の最終ダメージ
+	int damage           = 0;       // 攻撃側の最終ダメージ
 	GameObject* attacker = nullptr; // 攻撃側のオブジェクト
-	bool isCritical = false;		// クリティカルかどうか
-	bool isCombo = false;			// コンボかどうか
+	bool isCritical      = false;   // クリティカルかどうか
+	bool isCombo         = false;   // コンボかどうか
 };
 
 /// <summary>
@@ -18,8 +18,8 @@ struct DamageContext
 /// </summary>
 struct DamageResult
 {
-	bool hit = false;		// 命中したかどうか
-	bool evaded = false;	// 回避されたかどうか
-	bool critical = false;	// クリティカルかどうか
-	int finalDamage = 0;	// 最終ダメージ量
+	bool hit        = false; // 命中したかどうか
+	bool evaded     = false; // 回避されたかどうか
+	bool critical   = false; // クリティカルかどうか
+	int finalDamage = 0;     // 最終ダメージ量
 };

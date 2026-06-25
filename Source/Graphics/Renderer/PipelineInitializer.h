@@ -2,23 +2,24 @@
 #include <vector>
 #include <d3d12.h>
 
-enum class RootParamIndex : UINT {
-	TransformCB = 0,	// b0
-	LightCB = 1,		// b1
-	CameraCB = 2,		// b2
-	MaterialCB = 3,		// b4 (RootSignature上は3番目のディスクリプタ)
+enum class RootParamIndex : UINT
+{
+	TransformCB = 0, // b0
+	LightCB     = 1, // b1
+	CameraCB    = 2, // b2
+	MaterialCB  = 3, // b4 (RootSignature上は3番目のディスクリプタ)
 
 	// テクスチャ (通常のマテリアル用)
-	BaseColorMap = 4,	// t0
-	MetallicMap = 5,	// t1
-	RoughnessMap = 6,	// t2
-	NormalMap = 7,		// t3
+	BaseColorMap = 4, // t0
+	MetallicMap  = 5, // t1
+	RoughnessMap = 6, // t2
+	NormalMap    = 7, // t3
 
 	// 地形専用
-	FieldMap = 8,		// t4
-	GrassTexture = 9,	// t5
-	RockTexture = 10,	// t6
-	MacroTexture = 11,	// t10
+	FieldMap     = 8,  // t4
+	GrassTexture = 9,  // t5
+	RockTexture  = 10, // t6
+	MacroTexture = 11, // t10
 };
 
 //======================================================================
@@ -29,6 +30,7 @@ class PipelineInitializer
 public:
 	/// 全てのパイプラインを初期化
 	static bool InitializeAllPipelines();
+
 private:
 	//-----------------------------------------------------------------------------
 	// 	パイプライン初期化

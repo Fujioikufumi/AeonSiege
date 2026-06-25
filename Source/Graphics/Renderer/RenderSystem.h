@@ -34,46 +34,46 @@ public:
 
 	// モデル内の全メッシュを描画します。
 	[[nodiscard]] bool DrawModelAllMeshes(
-		const RenderContext& context,
-		const std::wstring& modelPath,
-		const XMMATRIX& worldMatrix,
-		D3D12_GPU_DESCRIPTOR_HANDLE meshCBHandle,
-		D3D12_GPU_DESCRIPTOR_HANDLE boneMatrixCBHandle = {});
+	    const RenderContext& context,
+	    const std::wstring& modelPath,
+	    const XMMATRIX& worldMatrix,
+	    D3D12_GPU_DESCRIPTOR_HANDLE meshCBHandle,
+	    D3D12_GPU_DESCRIPTOR_HANDLE boneMatrixCBHandle = {});
 
 	// メッシュを描画
 	[[nodiscard]] bool DrawMesh(
-		const RenderContext& context,
-		Mesh* mesh,
-		Material* material,
-		const XMMATRIX& worldMatrix,
-		int materialId,
-		D3D12_GPU_DESCRIPTOR_HANDLE meshCBHandle);
+	    const RenderContext& context,
+	    Mesh* mesh,
+	    Material* material,
+	    const XMMATRIX& worldMatrix,
+	    int materialId,
+	    D3D12_GPU_DESCRIPTOR_HANDLE meshCBHandle);
 
 	// マテリアルのテクスチャをバインド
 	[[nodiscard]] bool BindMaterialTextures(
-		ID3D12GraphicsCommandList* pCmdList,
-		Material* material,
-		int materialId);
+	    ID3D12GraphicsCommandList* pCmdList,
+	    Material* material,
+	    int materialId);
 
 	// パイプラインステートを設定
 	[[nodiscard]] bool SetPipelineState(
-		const RenderContext& context,
-		const std::wstring& pipelineName);
+	    const RenderContext& context,
+	    const std::wstring& pipelineName);
 
 	// モデルにパイプラインが設定されているか確認
 	[[nodiscard]] bool IsModelPipelineSetup(const std::wstring& modelPath) const;
 
 private:
-	ComPtr<ID3D12Device>		m_Device;
-	DescriptorPool*				m_Pool[POOL_COUNT] = { nullptr };
-	ComPtr<ID3D12CommandQueue>	m_Queue;
+	ComPtr<ID3D12Device> m_Device;
+	DescriptorPool* m_Pool[POOL_COUNT] = {nullptr};
+	ComPtr<ID3D12CommandQueue> m_Queue;
 
-	PipelineStateManager*		m_PipelineManager = nullptr;
-	ShaderManager*				m_ShaderManager = nullptr;
-	ModelManager*				m_ModelManager = nullptr;
+	PipelineStateManager* m_PipelineManager = nullptr;
+	ShaderManager* m_ShaderManager          = nullptr;
+	ModelManager* m_ModelManager            = nullptr;
 
 	std::map<std::wstring, std::wstring> m_ModelPipelineMap;
 
-	RenderSystem(const RenderSystem&) = delete;
+	RenderSystem(const RenderSystem&)   = delete;
 	void operator=(const RenderSystem&) = delete;
 };

@@ -12,7 +12,7 @@ class AnimationController;
 class CharacterBase : public GameObject
 {
 public:
-	CharacterBase() = default;
+	CharacterBase()           = default;
 	~CharacterBase() override = default;
 
 protected:
@@ -21,7 +21,7 @@ protected:
 
 	/// アニメーションクリップを切り替える（未初期化なら何もしない）
 	void ChangeAnimation(AnimationController* anim, const char* clipName,
-		bool loop, float speed = 1.0f);
+	                     bool loop, float speed = 1.0f);
 
 	//-------------------------------------------------------------
 	// 遅延近接ダメージ（アニメのヒットタイミングに合わせて発生させる）
@@ -43,8 +43,8 @@ protected:
 
 private:
 	// 遅延近接ダメージの内部状態
-	bool        m_HasPendingMeleeDamage = false;
-	float       m_MeleeDamageDelayTimer = 0.0f;
+	bool m_HasPendingMeleeDamage     = false;
+	float m_MeleeDamageDelayTimer    = 0.0f;
 	GameObject* m_PendingMeleeTarget = nullptr;
-	int         m_PendingMeleeDamage = 0;
+	int m_PendingMeleeDamage         = 0;
 };

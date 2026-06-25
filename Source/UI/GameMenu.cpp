@@ -13,43 +13,41 @@ bool GameMenu::s_MenuOpen = false;
 
 namespace
 {
-	// メニューの項目のテクスチャパス
-	const wchar_t* kMainItemTexturePaths[4] = {
-		L"Assets/Texture/Menu/QuitMenu.png",   // メニューを閉じる
-		L"Assets/Texture/Menu/ReturnTitle.png",// タイトルに戻る
-		L"Assets/Texture/Menu/ControlsHelp.png",// 操作方法
-		L"Assets/Texture/Menu/SkillInfo.png",   // スキル情報
-	};
+// メニューの項目のテクスチャパス
+const wchar_t* kMainItemTexturePaths[4] = {
+    L"Assets/Texture/Menu/QuitMenu.png",     // メニューを閉じる
+    L"Assets/Texture/Menu/ReturnTitle.png",  // タイトルに戻る
+    L"Assets/Texture/Menu/ControlsHelp.png", // 操作方法
+    L"Assets/Texture/Menu/SkillInfo.png",    // スキル情報
+};
 
-	const wchar_t* kControlsHelpTexturePath = L"Assets/Texture/Menu/HowtoOperate.png";  // 操作方法の画像
-	const wchar_t* kSkillInfoTexturePath = L"Assets/Texture/Menu/SkillData.png";		// スキル情報の画像
+const wchar_t* kControlsHelpTexturePath = L"Assets/Texture/Menu/HowtoOperate.png"; // 操作方法の画像
+const wchar_t* kSkillInfoTexturePath    = L"Assets/Texture/Menu/SkillData.png";    // スキル情報の画像
 
-	// メニューを開く/閉じるトリガー
-	bool MenuOpenOrCloseTrigger()
-	{
-		return Input::GetInstance().IsKeyTrigger(VK_ESCAPE)
-			|| Input::GetInstance().IsKeyTrigger('M')
-			|| Input::GetInstance().IsControllerTrigger(Input::PAD_BACK);
-	}
-
-	// メニューで決定するトリガー
-	bool MenuConfirmTrigger()
-	{
-		return Input::GetInstance().IsKeyTrigger(VK_SPACE) || Input::GetInstance().IsKeyTrigger(VK_RETURN) || Input::GetInstance().IsControllerTrigger(Input::PAD_A);
-	}
-
-	// メニューで上下に移動するトリガー
-	bool MenuUpTrigger()
-	{
-		return Input::GetInstance().IsKeyTrigger(VK_UP) || Input::GetInstance().IsKeyTrigger('W') || Input::GetInstance().IsControllerTrigger(Input::PAD_UP);
-	}
-
-	// メニューで下に移動するトリガー
-	bool MenuDownTrigger()
-	{
-		return Input::GetInstance().IsKeyTrigger(VK_DOWN) || Input::GetInstance().IsKeyTrigger('S') || Input::GetInstance().IsControllerTrigger(Input::PAD_DOWN);
-	}
+// メニューを開く/閉じるトリガー
+bool MenuOpenOrCloseTrigger()
+{
+	return Input::GetInstance().IsKeyTrigger(VK_ESCAPE) || Input::GetInstance().IsKeyTrigger('M') || Input::GetInstance().IsControllerTrigger(Input::PAD_BACK);
 }
+
+// メニューで決定するトリガー
+bool MenuConfirmTrigger()
+{
+	return Input::GetInstance().IsKeyTrigger(VK_SPACE) || Input::GetInstance().IsKeyTrigger(VK_RETURN) || Input::GetInstance().IsControllerTrigger(Input::PAD_A);
+}
+
+// メニューで上下に移動するトリガー
+bool MenuUpTrigger()
+{
+	return Input::GetInstance().IsKeyTrigger(VK_UP) || Input::GetInstance().IsKeyTrigger('W') || Input::GetInstance().IsControllerTrigger(Input::PAD_UP);
+}
+
+// メニューで下に移動するトリガー
+bool MenuDownTrigger()
+{
+	return Input::GetInstance().IsKeyTrigger(VK_DOWN) || Input::GetInstance().IsKeyTrigger('S') || Input::GetInstance().IsControllerTrigger(Input::PAD_DOWN);
+}
+} // namespace
 
 bool GameMenu::IsMenuOpen()
 {
@@ -112,9 +110,9 @@ bool GameMenu::Init()
 	m_SkillInfoRestPos = m_SkillInfoSprite->GetPosition();
 	SetSpriteVisible(m_SkillInfoSprite, false);
 
-	m_IsMenuOpen = false;
-	s_MenuOpen = false;
-	m_Panel = Panel::Main;
+	m_IsMenuOpen      = false;
+	s_MenuOpen        = false;
+	m_Panel           = Panel::Main;
 	m_MainSelectIndex = 0;
 
 	return true;
@@ -226,9 +224,9 @@ void GameMenu::Update(float deltaTime)
 
 void GameMenu::OpenMenu()
 {
-	m_IsMenuOpen = true;
-	s_MenuOpen = true;
-	m_Panel = Panel::Main;
+	m_IsMenuOpen      = true;
+	s_MenuOpen        = true;
+	m_Panel           = Panel::Main;
 	m_MainSelectIndex = 0;
 	ApplyPanelLayout();
 	RefreshSelectVisual();
@@ -237,9 +235,9 @@ void GameMenu::OpenMenu()
 
 void GameMenu::CloseMenu()
 {
-	m_IsMenuOpen = false;
-	s_MenuOpen = false;
-	m_Panel = Panel::Main;
+	m_IsMenuOpen       = false;
+	s_MenuOpen         = false;
+	m_Panel            = Panel::Main;
 	m_MenuIntroPlaying = false;
 	RestPositions();
 	SetSpriteVisible(m_Dim, false);
@@ -367,9 +365,10 @@ void GameMenu::UpdateMenuIntro(float deltaTime)
 	m_MenuIntroElapsed += deltaTime;
 	const float t = std::min(1.0f, m_MenuIntroElapsed / kMenuIntroDurationSec);
 
-	auto lerpX = [](float restX, float fromX, float tt) {
+	auto lerpX = [](float restX, float fromX, float tt)
+	{
 		return fromX + (restX - fromX) * tt;
-		};
+	};
 
 	switch (m_Panel)
 	{
@@ -377,9 +376,10 @@ void GameMenu::UpdateMenuIntro(float deltaTime)
 		for (int i = 0; i < static_cast<int>(MainItem::Count); ++i)
 		{
 			Sprite* spr = m_MainItemSprites[static_cast<size_t>(i)];
-			if (spr == nullptr) continue;
+			if (spr == nullptr)
+				continue;
 			const XMFLOAT2& rest = m_MainItemRestPos[static_cast<size_t>(i)];
-			const float fromX = rest.x - kMenuSlideOffsetPx;
+			const float fromX    = rest.x - kMenuSlideOffsetPx;
 			spr->SetPosition(lerpX(rest.x, fromX, t), rest.y);
 		}
 		break;
@@ -388,8 +388,8 @@ void GameMenu::UpdateMenuIntro(float deltaTime)
 		{
 			const float fromX = m_ControlsHelpRestPos.x + kMenuSlideOffsetPx;
 			m_ControlsHelpSprite->SetPosition(
-				lerpX(m_ControlsHelpRestPos.x, fromX, t),
-				m_ControlsHelpRestPos.y);
+			    lerpX(m_ControlsHelpRestPos.x, fromX, t),
+			    m_ControlsHelpRestPos.y);
 		}
 		break;
 	case Panel::SkillInfo:
@@ -397,8 +397,8 @@ void GameMenu::UpdateMenuIntro(float deltaTime)
 		{
 			const float fromX = m_SkillInfoRestPos.x + kMenuSlideOffsetPx;
 			m_SkillInfoSprite->SetPosition(
-				lerpX(m_SkillInfoRestPos.x, fromX, t),
-				m_SkillInfoRestPos.y);
+			    lerpX(m_SkillInfoRestPos.x, fromX, t),
+			    m_SkillInfoRestPos.y);
 		}
 		break;
 	default:
@@ -417,7 +417,8 @@ void GameMenu::RestPositions()
 	for (int i = 0; i < static_cast<int>(MainItem::Count); ++i)
 	{
 		Sprite* spr = m_MainItemSprites[static_cast<size_t>(i)];
-		if (spr == nullptr) continue;
+		if (spr == nullptr)
+			continue;
 		const XMFLOAT2& rest = m_MainItemRestPos[static_cast<size_t>(i)];
 		spr->SetPosition(rest.x, rest.y);
 	}

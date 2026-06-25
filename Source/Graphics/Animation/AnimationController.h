@@ -87,24 +87,24 @@ private:
 	void UpdateConstantBuffer();
 
 private:
-	bool m_IsInitialized = false;			// 初期化フラグ
-	bool m_IsPlaying = false;				// 再生中フラグ
-	bool m_IsLoop = true;					// ループ再生フラグ
-	bool m_HoldPaused = false;				// 一時停止フラグ
+	bool m_IsInitialized = false; // 初期化フラグ
+	bool m_IsPlaying     = false; // 再生中フラグ
+	bool m_IsLoop        = true;  // ループ再生フラグ
+	bool m_HoldPaused    = false; // 一時停止フラグ
 
 	// --- 再生パラメータ ---
-	float m_CurrentTime = 0.0f;				// 現在のアニメーション時間
-	float m_Speed = 1.0f;					// 再生速度
+	float m_CurrentTime = 0.0f; // 現在のアニメーション時間
+	float m_Speed       = 1.0f; // 再生速度
 
 	// --- リソース参照 ---
-	std::wstring m_ModelPath;						// 使用しているモデルのパス
-	std::string m_CurrentAnimationName;				// 現在再生中のアニメーション名
-	const AnimationClip* m_pCurrentClip = nullptr;	// 現在のアニメーションクリップ
-	const SkeletonInfo* m_pSkeleton = nullptr;		// スケルトン情報（ボーン構造）
+	std::wstring m_ModelPath;                      // 使用しているモデルのパス
+	std::string m_CurrentAnimationName;            // 現在再生中のアニメーション名
+	const AnimationClip* m_pCurrentClip = nullptr; // 現在のアニメーションクリップ
+	const SkeletonInfo* m_pSkeleton     = nullptr; // スケルトン情報（ボーン構造）
 
 	// --- 計算データ・バッファ ---
-	std::vector<DirectX::XMMATRIX> m_BoneMatrices;	// 計算されたボーン行列
-	ConstantBuffer m_BoneMatrixCB;					// ボーン行列用定数バッファ
+	std::vector<DirectX::XMMATRIX> m_BoneMatrices; // 計算されたボーン行列
+	ConstantBuffer m_BoneMatrixCB;                 // ボーン行列用定数バッファ
 
 	// ボーン名からアニメーションチャンネルへの検索を高速化するためのマップ
 	std::unordered_map<std::string, const AnimationChannel*> m_ChannelByBoneName;

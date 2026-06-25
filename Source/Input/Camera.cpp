@@ -11,35 +11,35 @@
 
 using namespace DirectX;
 
-namespace {
-	constexpr float kPi = 3.14159265f;
-	constexpr float kDefaultDistance	= 30.0f;      // カメラの初期距離
-	constexpr float kDefaultFovDeg		= 37.5f;      // 垂直視野角（度）
-	constexpr float kYawStickSpeed		= 2.0f;       // 右スティックによる旋回速度
-	constexpr float kPitchLimitDeg		= 89.9f;      // ピッチの上下限（度）
-	
-	// 角度を [-π, π] に収める
-	float NormalizeAnglePi(float a)
-	{
-		a = fmodf(a + kPi, 2.0f * kPi);
-		if (a < 0.0f)
-			a += 2.0f * kPi;
-		return a - kPi;
-	}
-	float DeltaAngle(float fromRad, float toRad)
-	{
-		return NormalizeAnglePi(toRad - fromRad);
-	}
+namespace
+{
+constexpr float kPi              = 3.14159265f;
+constexpr float kDefaultDistance = 30.0f; // カメラの初期距離
+constexpr float kDefaultFovDeg   = 37.5f; // 垂直視野角（度）
+constexpr float kYawStickSpeed   = 2.0f;  // 右スティックによる旋回速度
+constexpr float kPitchLimitDeg   = 89.9f; // ピッチの上下限（度）
+
+// 角度を [-π, π] に収める
+float NormalizeAnglePi(float a)
+{
+	a = fmodf(a + kPi, 2.0f * kPi);
+	if (a < 0.0f)
+		a += 2.0f * kPi;
+	return a - kPi;
+}
+float DeltaAngle(float fromRad, float toRad)
+{
+	return NormalizeAnglePi(toRad - fromRad);
+}
 } // namespace
 
 //-----------------------------------------------------------------------------
 //		コンストラクタ
 //-----------------------------------------------------------------------------
 Camera::Camera()
-	: m_CameraDistance(kDefaultDistance)
-	, m_RotationSpeed(0.0025f)
+    : m_CameraDistance(kDefaultDistance), m_RotationSpeed(0.0025f)
 {
-	m_FovY = DirectX::XMConvertToRadians(kDefaultFovDeg);
+	m_FovY   = DirectX::XMConvertToRadians(kDefaultFovDeg);
 	m_Aspect = static_cast<float>(SCREEN_WIDTH) / static_cast<float>(SCREEN_HEIGHT);
 
 	// 視錐台の作成
@@ -59,8 +59,8 @@ Camera::~Camera()
 bool Camera::Init()
 {
 	Scene* scene = GameManager::GetScene();
-	auto player = scene->GetGameObjectByName("Player");
-	if(player != nullptr)
+	auto player  = scene->GetGameObjectByName("Player");
+	if (player != nullptr)
 	{
 		m_Position = player->GetPosition();
 	}
@@ -118,18 +118,18 @@ void Camera::UpdateGameView(float deltaTime, MouseState mouseState)
 	//----------------------------------------------------------------------
 	if (m_HasLookOnTarget)
 	{
-		const float dx = m_LookOnTarget.x - m_TrackingTarget.x;
-		const float dz = m_LookOnTarget.z - m_TrackingTarget.z;
+		const float dx     = m_LookOnTarget.x - m_TrackingTarget.x;
+		const float dz     = m_LookOnTarget.z - m_TrackingTarget.z;
 		const float distSq = dx * dx + dz * dz;
 
 		if (distSq > 1.0f) // ほぼ同一点では atan2 を避ける
 		{
 			const float targetYaw = std::atan2(dx, dz);
-			const float diff = DeltaAngle(m_Rotation.y, targetYaw);
+			const float diff      = DeltaAngle(m_Rotation.y, targetYaw);
 
 			const float maxStep = m_LookOnTurnSpeed * deltaTime;
-			const float step = std::clamp(diff, -maxStep, maxStep);
-			m_Rotation.y = NormalizeAnglePi(m_Rotation.y + step);
+			const float step    = std::clamp(diff, -maxStep, maxStep);
+			m_Rotation.y        = NormalizeAnglePi(m_Rotation.y + step);
 		}
 	}
 
@@ -139,11 +139,11 @@ void Camera::UpdateGameView(float deltaTime, MouseState mouseState)
 	const float pitchMinRad = XMConvertToRadians(m_PitchMin);
 	const float pitchMaxRad = XMConvertToRadians(m_PitchMax);
 
-	m_Rotation.x += mouseState.deltaY * m_RotationSpeed; // マウス
+	m_Rotation.x += mouseState.deltaY * m_RotationSpeed;                      // マウス
 	m_Rotation.x -= Input::GetInstance().GetRightStickY() * 1.5f * deltaTime; // スティック
 	m_Rotation.x = std::clamp(m_Rotation.x, pitchMinRad, pitchMaxRad);
 
-	const float yaw = m_Rotation.y;
+	const float yaw   = m_Rotation.y;
 	const float pitch = m_Rotation.x;
 
 	// 中心点となる追いかける座標（プレイヤー位置など）
@@ -179,7 +179,7 @@ void Camera::UpdateGameView(float deltaTime, MouseState mouseState)
 	m_Position.z = std::lerp(m_Position.z, targetCamPos.z, t);
 
 	// 地形があるなら一定の高さ以上下げれないようにする
-	Scene* scene = GameManager::GetScene();
+	Scene* scene     = GameManager::GetScene();
 	Terrain* terrain = (scene != nullptr) ? scene->GetGameObject<Terrain>() : nullptr;
 	if (terrain != nullptr)
 	{
@@ -197,14 +197,13 @@ void Camera::UpdateGameView(float deltaTime, MouseState mouseState)
 	m_Target = lookAtTarget;
 
 	XMFLOAT3 camPosShake = {
-		m_Position.x + m_Shake.offset.x,
-		m_Position.y + m_Shake.offset.y,
-		m_Position.z + m_Shake.offset.z 
-	};
+	    m_Position.x + m_Shake.offset.x,
+	    m_Position.y + m_Shake.offset.y,
+	    m_Position.z + m_Shake.offset.z};
 
-	XMVECTOR posVec = XMLoadFloat3(&camPosShake);
+	XMVECTOR posVec    = XMLoadFloat3(&camPosShake);
 	XMVECTOR targetVec = XMLoadFloat3(&m_Target);
-	XMVECTOR upVec = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	XMVECTOR upVec     = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
 	m_View = XMMatrixLookAtLH(posVec, targetVec, upVec);
 	m_Proj = XMMatrixPerspectiveFovLH(m_FovY, m_Aspect, m_Near, m_Far);
@@ -212,24 +211,26 @@ void Camera::UpdateGameView(float deltaTime, MouseState mouseState)
 
 void Camera::StartHitImpactShake(float maxOffset, float durationSec)
 {
-	m_Shake.maxMag = maxOffset;
+	m_Shake.maxMag   = maxOffset;
 	m_Shake.duration = durationSec;
-	m_Shake.time = durationSec;
+	m_Shake.time     = durationSec;
 	// 初期オフセットをゼロに
-	m_Shake.offset = { 0.0f, 0.0f, 0.0f };
+	m_Shake.offset = {0.0f, 0.0f, 0.0f};
 }
 
 void Camera::UpdateHitShake(float deltaTime)
 {
-	if (m_Shake.time <= 0.0f) {
-		m_Shake.offset = { 0.0f, 0.0f, 0.0f };
+	if (m_Shake.time <= 0.0f)
+	{
+		m_Shake.offset = {0.0f, 0.0f, 0.0f};
 		return;
 	}
 
 	m_Shake.time -= deltaTime;
-	if (m_Shake.time < 0.0f) {
-		m_Shake.time = 0.0f;
-		m_Shake.offset = { 0.0f, 0.0f, 0.0f };
+	if (m_Shake.time < 0.0f)
+	{
+		m_Shake.time   = 0.0f;
+		m_Shake.offset = {0.0f, 0.0f, 0.0f};
 		return;
 	}
 
@@ -250,16 +251,15 @@ void Camera::UpdateHitShake(float deltaTime)
 void Camera::UpdateFixedView()
 {
 	XMFLOAT3 camPosShake = {
-		m_Position.x + m_Shake.offset.x,
-		m_Position.y + m_Shake.offset.y,
-		m_Position.z + m_Shake.offset.z };
-	const XMVECTOR posVec = XMLoadFloat3(&camPosShake);
+	    m_Position.x + m_Shake.offset.x,
+	    m_Position.y + m_Shake.offset.y,
+	    m_Position.z + m_Shake.offset.z};
+	const XMVECTOR posVec    = XMLoadFloat3(&camPosShake);
 	const XMVECTOR targetVec = XMLoadFloat3(&m_Target);
-	const XMVECTOR upVec = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	m_View = XMMatrixLookAtLH(posVec, targetVec, upVec);
-	m_Proj = XMMatrixPerspectiveFovLH(m_FovY, m_Aspect, m_Near, m_Far);
+	const XMVECTOR upVec     = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	m_View                   = XMMatrixLookAtLH(posVec, targetVec, upVec);
+	m_Proj                   = XMMatrixPerspectiveFovLH(m_FovY, m_Aspect, m_Near, m_Far);
 }
-
 
 //------------------------------------------------------------------------------
 // 		視錐台の作成
@@ -268,8 +268,8 @@ void Camera::CreateViewFrustum()
 {
 	// 0:上, 1:下, 2:左, 3:右, 4:前, 5:後
 	float fTan = tanf(m_FovY * 0.5f);
-	m_Frus[0] = DirectX::XMFLOAT4(0.0f, -1.0f, fTan, 0.0f);
-	m_Frus[1] = DirectX::XMFLOAT4(0.0f, 1.0f, fTan, 0.0f);
+	m_Frus[0]  = DirectX::XMFLOAT4(0.0f, -1.0f, fTan, 0.0f);
+	m_Frus[1]  = DirectX::XMFLOAT4(0.0f, 1.0f, fTan, 0.0f);
 	fTan *= m_Aspect;
 	m_Frus[2] = DirectX::XMFLOAT4(1.0f, 0.0f, fTan, 0.0f);
 	m_Frus[3] = DirectX::XMFLOAT4(-1.0f, 0.0f, fTan, 0.0f);
@@ -279,7 +279,7 @@ void Camera::CreateViewFrustum()
 	for (int i = 0; i < 6; i++)
 	{
 		DirectX::XMStoreFloat4(&m_Frus[i],
-			DirectX::XMPlaneNormalize(DirectX::XMLoadFloat4(&m_Frus[i])));
+		                       DirectX::XMPlaneNormalize(DirectX::XMLoadFloat4(&m_Frus[i])));
 	}
 }
 
@@ -293,8 +293,8 @@ void Camera::UpdateViewFrustum()
 	for (int i = 0; i < 6; ++i)
 	{
 		DirectX::XMStoreFloat4(&m_Frus[i],
-			DirectX::XMPlaneTransform(
-				DirectX::XMLoadFloat4(&m_Frus[i]), mW));
+		                       DirectX::XMPlaneTransform(
+		                           DirectX::XMLoadFloat4(&m_Frus[i]), mW));
 	}
 }
 
@@ -306,10 +306,10 @@ XMFLOAT3 Camera::GetViewForwardXZ() const
 }
 XMFLOAT3 Camera::GetViewRightXZ() const
 {
-	XMFLOAT3 f = GetViewForwardXZ();
+	XMFLOAT3 f        = GetViewForwardXZ();
 	const XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	const XMVECTOR fv = XMLoadFloat3(&f);
-	XMVECTOR r = XMVector3Cross(up, fv);
+	XMVECTOR r        = XMVector3Cross(up, fv);
 
 	r = XMVector3Normalize(r);
 
@@ -323,19 +323,19 @@ XMFLOAT3 Camera::GetViewRightXZ() const
 //------------------------------------------------------------------------------
 int Camera::CollisionViewFrus(const DirectX::XMFLOAT3& vCenter, float fRadius) const
 {
-	bool bHit = false;
+	bool bHit             = false;
 	const XMVECTOR center = XMLoadFloat3(&vCenter);
 
 	for (int i = 0; i < 6; ++i)
 	{
 		const XMVECTOR planeVec = XMLoadFloat4(&m_Frus[i]);
-		const XMVECTOR dotVec = XMPlaneDotCoord(planeVec, center);
+		const XMVECTOR dotVec   = XMPlaneDotCoord(planeVec, center);
 
 		float fDot = 0.0f;
 		XMStoreFloat(&fDot, dotVec);
 
 		if (fDot < -fRadius)
-			return 0;   // 完全に外側
+			return 0; // 完全に外側
 		if (fDot <= fRadius)
 			bHit = true;
 	}
@@ -352,8 +352,10 @@ void Camera::UpdateDebugView(float deltaTime, MouseState mouseState)
 		// 回転角度の制限（上下の回転を制限）
 		auto maxRadX = DirectX::XMConvertToRadians(kPitchLimitDeg);
 		auto minRadX = -DirectX::XMConvertToRadians(kPitchLimitDeg);
-		if (m_Rotation.x > maxRadX) m_Rotation.x = maxRadX;
-		if (m_Rotation.x < minRadX) m_Rotation.x = minRadX;
+		if (m_Rotation.x > maxRadX)
+			m_Rotation.x = maxRadX;
+		if (m_Rotation.x < minRadX)
+			m_Rotation.x = minRadX;
 	}
 
 	// WASDキーでカメラ移動（カメラの向きに基づいて移動）
@@ -363,11 +365,10 @@ void Camera::UpdateDebugView(float deltaTime, MouseState mouseState)
 
 	// カメラの回転から前方ベクトルを計算
 	XMVECTOR forward = XMVectorSet(
-		sinf(m_Rotation.y) * cosf(m_Rotation.x),
-		-sinf(m_Rotation.x),
-		cosf(m_Rotation.y) * cosf(m_Rotation.x),
-		0.0f
-	);
+	    sinf(m_Rotation.y) * cosf(m_Rotation.x),
+	    -sinf(m_Rotation.x),
+	    cosf(m_Rotation.y) * cosf(m_Rotation.x),
+	    0.0f);
 	forward = XMVector3Normalize(forward);
 
 	// 右方向ベクトル（Y軸を上として、右方向を計算）
@@ -381,25 +382,25 @@ void Camera::UpdateDebugView(float deltaTime, MouseState mouseState)
 	if (Input::GetInstance().IsKeyPress('W') || Input::GetInstance().IsKeyPress(VK_UP))
 	{
 		XMVECTOR moveVec = XMVectorScale(forward, moveSpeed);
-		posVec = XMVectorAdd(posVec, moveVec);
+		posVec           = XMVectorAdd(posVec, moveVec);
 		XMStoreFloat3(&m_Position, posVec);
 	}
 	if (Input::GetInstance().IsKeyPress('S') || Input::GetInstance().IsKeyPress(VK_DOWN))
 	{
 		XMVECTOR moveVec = XMVectorScale(forward, moveSpeed);
-		posVec = XMVectorSubtract(posVec, moveVec);
+		posVec           = XMVectorSubtract(posVec, moveVec);
 		XMStoreFloat3(&m_Position, posVec);
 	}
 	if (Input::GetInstance().IsKeyPress('A') /*|| Input::GetInstance().IsKeyPress(VK_LEFT)*/)
 	{
 		XMVECTOR moveVec = XMVectorScale(right, moveSpeed);
-		posVec = XMVectorSubtract(posVec, moveVec);
+		posVec           = XMVectorSubtract(posVec, moveVec);
 		XMStoreFloat3(&m_Position, posVec);
 	}
 	if (Input::GetInstance().IsKeyPress('D') /*|| Input::GetInstance().IsKeyPress(VK_RIGHT)*/)
 	{
 		XMVECTOR moveVec = XMVectorScale(right, moveSpeed);
-		posVec = XMVectorAdd(posVec, moveVec);
+		posVec           = XMVectorAdd(posVec, moveVec);
 		XMStoreFloat3(&m_Position, posVec);
 	}
 
@@ -407,13 +408,13 @@ void Camera::UpdateDebugView(float deltaTime, MouseState mouseState)
 	if (Input::GetInstance().IsKeyPress('Q'))
 	{
 		XMVECTOR moveVec = XMVectorScale(upVec, moveSpeed);
-		posVec = XMVectorAdd(posVec, moveVec);
+		posVec           = XMVectorAdd(posVec, moveVec);
 		XMStoreFloat3(&m_Position, posVec);
 	}
 	if (Input::GetInstance().IsKeyPress('E'))
 	{
 		XMVECTOR moveVec = XMVectorScale(upVec, moveSpeed);
-		posVec = XMVectorSubtract(posVec, moveVec);
+		posVec           = XMVectorSubtract(posVec, moveVec);
 		XMStoreFloat3(&m_Position, posVec);
 	}
 
@@ -423,9 +424,9 @@ void Camera::UpdateDebugView(float deltaTime, MouseState mouseState)
 
 	// ビュー行列と投影行列を計算
 	{
-		XMVECTOR posVec = XMLoadFloat3(&m_Position);
+		XMVECTOR posVec    = XMLoadFloat3(&m_Position);
 		XMVECTOR targetVec = XMLoadFloat3(&m_Target);
-		XMVECTOR upVec = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		XMVECTOR upVec     = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
 		m_View = XMMatrixLookAtLH(posVec, targetVec, upVec);
 		m_Proj = XMMatrixPerspectiveFovLH(m_FovY, m_Aspect, m_Near, m_Far);

@@ -27,10 +27,10 @@ public:
 	void Sync(ID3D12CommandQueue* pQueue);
 
 private:
-	ComPtr<ID3D12Fence> m_Fence;           // フェンスです.
-	HANDLE              m_Event;            // イベントです.
-	UINT                m_Counter;          // 現在のカウンターです.
+	ComPtr<ID3D12Fence> m_Fence; // フェンスです.
+	HANDLE m_Event;              // イベントです.
+	UINT m_Counter;              // 現在のカウンターです.
 
-	Fence			(const Fence&) = delete;    // アクセス禁止.
-	void operator = (const Fence&) = delete;    // アクセス禁止.
+	Fence(const Fence&)          = delete; // アクセス禁止.
+	void operator=(const Fence&) = delete; // アクセス禁止.
 };

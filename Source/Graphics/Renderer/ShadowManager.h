@@ -17,11 +17,11 @@ using namespace DirectX;
 
 struct alignas(256) CbShadow
 {
-	XMFLOAT4X4 LightView;      // ライトのビュー行列
-	XMFLOAT4X4 LightProj;      // ライトのプロジェクション行列
-	float ShadowBias;          // シャドウバイアス
-	float ShadowMapSize;       // シャドウマップのサイズ
-	float PCFKernelSize;       // PCFカーネルサイズ（現在は未使用だが将来の拡張用）
+	XMFLOAT4X4 LightView; // ライトのビュー行列
+	XMFLOAT4X4 LightProj; // ライトのプロジェクション行列
+	float ShadowBias;     // シャドウバイアス
+	float ShadowMapSize;  // シャドウマップのサイズ
+	float PCFKernelSize;  // PCFカーネルサイズ（現在は未使用だが将来の拡張用）
 	float Padding;
 };
 
@@ -66,9 +66,9 @@ private:
 	bool m_IsFirstFrame = true;
 
 	// コンストラクタ・デストラクタ・コピー禁止
-	ShadowManager() = default;
-	~ShadowManager() = default;
-	ShadowManager(const ShadowManager&) = delete;
+	ShadowManager()                      = default;
+	~ShadowManager()                     = default;
+	ShadowManager(const ShadowManager&)  = delete;
 	void operator=(const ShadowManager&) = delete;
 
 public:
@@ -90,18 +90,18 @@ public:
 	/// ライトのビュー行列・プロジェクション行列・ビュー×プロジェクション行列の計算
 	/// </summary>
 	void CalculateLightMatrices(
-		const XMFLOAT3& lightDirection,
-		XMMATRIX& outLightView,
-		XMMATRIX& outLightProj,
-		XMMATRIX& outLightViewProj);
+	    const XMFLOAT3& lightDirection,
+	    XMMATRIX& outLightView,
+	    XMMATRIX& outLightProj,
+	    XMMATRIX& outLightViewProj);
 
 	/// <summary>
 	/// シャドウマップのレンダリング
 	/// </summary>
 	void RenderShadowMap(
-		ID3D12GraphicsCommandList* pCmdList,
-		const XMFLOAT3& lightDirection,
-		const std::list<GameObject*>& shadowCasters);
+	    ID3D12GraphicsCommandList* pCmdList,
+	    const XMFLOAT3& lightDirection,
+	    const std::list<GameObject*>& shadowCasters);
 
 	/// <summary>
 	/// シャドウマップ用定数バッファの更新
@@ -128,17 +128,17 @@ public:
 	DepthTarget* GetShadowMap() { return &m_ShadowMap; }
 
 	/// <summary>
-	///　シャドウマップのサイズの取得
+	/// 　シャドウマップのサイズの取得
 	/// </summary>
 	uint32_t GetShadowMapSize() const { return m_ShadowMapSize; }
 
 	/// <summary>
-	///　シャドウバイアスの設定
+	/// 　シャドウバイアスの設定
 	/// </summary>
 	void SetShadowBias(float bias) { m_ShadowData.ShadowBias = bias; }
 
 	/// <summary>
-	///　PCFカーネルサイズの設定
+	/// 　PCFカーネルサイズの設定
 	/// </summary>
 	void SetPCFKernelSize(float kernelSize) { m_ShadowData.PCFKernelSize = kernelSize; }
 };

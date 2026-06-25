@@ -11,15 +11,16 @@
 #include "Character/Player.h"
 #include "Core/NameSpace.h"
 
-namespace {
-	constexpr float kTargetHeightOffset = 10.0f; // 接地時の高さオフセット
-	constexpr float kMoveSpeed = 25.0f; // 移動速度
-}
+namespace
+{
+constexpr float kTargetHeightOffset = 10.0f; // 接地時の高さオフセット
+constexpr float kMoveSpeed          = 25.0f; // 移動速度
+} // namespace
 
 Mutant::Mutant()
 {
 	m_ModelPath = L"../Assets/Characters/Mutant.bmdl";
-	m_Scale = { 0.1f, 0.1f, 0.1f };
+	m_Scale     = {0.1f, 0.1f, 0.1f};
 }
 
 Mutant::~Mutant()
@@ -52,18 +53,18 @@ bool Mutant::Init()
 	ai->SetChaseMoveSpeed(kChaseMoveSpeed);
 	ai->SetMeleeCooldownSec(kMeleeCooldownSec);
 
-	m_Status = AddComponent<StatusComponent>();
+	m_Status        = AddComponent<StatusComponent>();
 	StatusData data = {};
 	{
-		data.maxHp = 250;
-		data.attackPower = 15;
+		data.maxHp              = 250;
+		data.attackPower        = 15;
 		data.autoAttackInterval = kMeleeCooldownSec;
 		data.criticalDamageRate = 1.5f;
-		data.criticalRate = 0.2f;
-		data.damageTakenRate = 1.0f;
-		data.defensePower = 8;
-		data.evasionRate = 0.05f;
-		data.moveSpeed = kMoveSpeed;
+		data.criticalRate       = 0.2f;
+		data.damageTakenRate    = 1.0f;
+		data.defensePower       = 8;
+		data.evasionRate        = 0.05f;
+		data.moveSpeed          = kMoveSpeed;
 	}
 	m_Status->Setup(data);
 
@@ -73,14 +74,12 @@ bool Mutant::Init()
 
 	// AIからのコールバック
 	// 状態が変わったときにアニメーションを変える
-	ai->SetAnimCallback([this](EnemyAIState newState) {
-		this->OnAIStateChanged(newState);
-		});
+	ai->SetAnimCallback([this](EnemyAIState newState)
+	                    { this->OnAIStateChanged(newState); });
 
 	// AIコンポーネントから攻撃距離に入ってクールダウンが明けたときに攻撃ロジックを実行してもらう
-	ai->SetAttackCallback([this](GameObject* target) {
-		this->OnAIAttack(target);
-		});
+	ai->SetAttackCallback([this](GameObject* target)
+	                      { this->OnAIAttack(target); });
 
 	Scene* scene = GameManager::GetScene();
 	if (scene)
@@ -104,9 +103,11 @@ void Mutant::Term()
 void Mutant::Update(float deltaTime)
 {
 	Scene* scene = GameManager::GetScene();
-	if (scene == nullptr) return;
+	if (scene == nullptr)
+		return;
 	Terrain* pTerrain = scene->GetGameObjectByName<Terrain>("Terrain");
-	if (pTerrain == nullptr) return;
+	if (pTerrain == nullptr)
+		return;
 	const float fGroundY = pTerrain->GetHeightAt(m_Position.x, m_Position.z);
 
 	// 死亡時は地面に接地させる
@@ -153,10 +154,11 @@ void Mutant::OnAIStateChanged(EnemyAIState newState)
 	if (m_JumpSkillState == MutantJumpSkillState::Executing && newState != EnemyAIState::Dead)
 		return;
 	AnimationController* anim = GetComponent<AnimationController>();
-	if (anim == nullptr || !anim->IsInitialized()) return;
+	if (anim == nullptr || !anim->IsInitialized())
+		return;
 	const char* clipName = kAnimIdle;
-	bool loop = true;
-	float speed = 1.0f;
+	bool loop            = true;
+	float speed          = 1.0f;
 	switch (newState)
 	{
 	case EnemyAIState::Idle:
@@ -170,11 +172,11 @@ void Mutant::OnAIStateChanged(EnemyAIState newState)
 		break;
 	case EnemyAIState::Attack:
 		clipName = kAnimSwiping;
-		loop = false;
+		loop     = false;
 		break;
 	case EnemyAIState::Dead:
 		clipName = kAnimDying;
-		loop = false;
+		loop     = false;
 		break;
 	}
 	ChangeAnimation(anim, clipName, loop, speed);
@@ -184,14 +186,13 @@ void Mutant::OnAIAttack(GameObject* target)
 {
 	if (target == nullptr)
 		return;
-	if (m_JumpSkillState == MutantJumpSkillState::WaitCurrentAnim
-		|| m_JumpSkillState == MutantJumpSkillState::Executing)
+	if (m_JumpSkillState == MutantJumpSkillState::WaitCurrentAnim || m_JumpSkillState == MutantJumpSkillState::Executing)
 	{
 		return;
 	}
 	SchedulePendingMeleeDamage(target, m_Status->GetAttackPower(), kMeleeDamageDelaySec);
 }
-	
+
 //-----------------------------------------------------------------------------
 // ジャンプ攻撃スキル
 //-----------------------------------------------------------------------------
@@ -217,15 +218,15 @@ void Mutant::UpdateJumpAttackSkill(float deltaTime)
 	if (!isEnraged)
 	{
 		m_JumpSkillState = MutantJumpSkillState::Disabled;
-		m_WasEnraged = false;
+		m_WasEnraged     = false;
 		return;
 	}
 	// 初めて HP 50% 以下になった瞬間に CD を開始
 	if (!m_WasEnraged)
 	{
-		m_JumpSkillState = MutantJumpSkillState::Cooldown;
+		m_JumpSkillState         = MutantJumpSkillState::Cooldown;
 		m_JumpAttackCooldownTime = kJumpAttackCooldownSec;
-		m_WasEnraged = true;
+		m_WasEnraged             = true;
 	}
 	switch (m_JumpSkillState)
 	{
@@ -251,8 +252,8 @@ void Mutant::StartJumpAttack()
 	if (EnemyAIComponent* ai = GetComponent<EnemyAIComponent>())
 		ai->SetAIActive(false);
 	ChangeAnimation(GetComponent<AnimationController>(), kAnimJumpAttack, false, 1.0f);
-	m_JumpSkillState = MutantJumpSkillState::Executing;
-	m_JumpLandTimer = kJumpAttackDamageDelaySec;
+	m_JumpSkillState    = MutantJumpSkillState::Executing;
+	m_JumpLandTimer     = kJumpAttackDamageDelaySec;
 	m_JumpDamageApplied = false;
 }
 void Mutant::UpdateJumpAttackExecution(float deltaTime)
@@ -267,7 +268,7 @@ void Mutant::UpdateJumpAttackExecution(float deltaTime)
 			ApplyJumpAttackDamageToAllAllies();
 			m_JumpDamageApplied = true;
 		}
-		return;  // ダメージ前はアニメ終了判定しない
+		return; // ダメージ前はアニメ終了判定しない
 	}
 	// ② ジャンプアニメ終了待ち
 	if (anim == nullptr || !anim->IsInitialized())
@@ -285,16 +286,16 @@ void Mutant::ApplyJumpAttackDamageToAllAllies()
 		return;
 	DamageContext context{};
 	context.attacker = this;
-	context.damage = static_cast<int>(m_Status->GetAttackPower() * kJumpAttackDamageRate);
-	auto applyTo = [&](GameObject* obj)
-		{
-			if (obj == nullptr || obj->IsDestroyed())
-				return;
-			HealthComponent* hp = obj->GetComponent<HealthComponent>();
-			if (hp == nullptr || !hp->IsAlive())
-				return;
-			obj->ApplyDamage(context);
-		};
+	context.damage   = static_cast<int>(m_Status->GetAttackPower() * kJumpAttackDamageRate);
+	auto applyTo     = [&](GameObject* obj)
+	{
+		if (obj == nullptr || obj->IsDestroyed())
+			return;
+		HealthComponent* hp = obj->GetComponent<HealthComponent>();
+		if (hp == nullptr || !hp->IsAlive())
+			return;
+		obj->ApplyDamage(context);
+	};
 	applyTo(scene->GetGameObjectByName<Player>("Player"));
 	const auto& allyList = scene->GetGameObjectsByLayer(eLayer::ALLY);
 	for (const auto& allyPtr : allyList)
@@ -306,7 +307,7 @@ void Mutant::FinishJumpAttack()
 	if (EnemyAIComponent* ai = GetComponent<EnemyAIComponent>())
 		ai->SetAIActive(true);
 	m_JumpAttackCooldownTime = kJumpAttackCooldownSec;
-	m_JumpSkillState = MutantJumpSkillState::Cooldown;
+	m_JumpSkillState         = MutantJumpSkillState::Cooldown;
 	ResumeAutoAttackAnimation();
 }
 

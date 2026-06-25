@@ -3,14 +3,15 @@
 #include "Core/Scene.h"
 #include "Graphics/Sprite/Sprite.h"
 
-namespace {
-	constexpr float kMissSpriteWidth	= 96.0f; // MISS表示スプライトの幅
-	constexpr float kMissSpriteHeight	= 36.0f; // MISS表示スプライトの高さ
-	constexpr float kScale				= 0.5f; // 数字のスケール
-	constexpr float kFadeStartTime		= 0.5f; // フェード開始時間（秒）
-	constexpr XMFLOAT4 kDefaultColor	= { 1.0f, 1.0f, 1.0f, 1.0f }; // デフォルトの色（白）
-	constexpr XMFLOAT4 kFadeColor		= { 1.0f, 1.0f, 1.0f, 0.0f }; // フェードアウト時の色（透明）
-}
+namespace
+{
+constexpr float kMissSpriteWidth  = 96.0f;                    // MISS表示スプライトの幅
+constexpr float kMissSpriteHeight = 36.0f;                    // MISS表示スプライトの高さ
+constexpr float kScale            = 0.5f;                     // 数字のスケール
+constexpr float kFadeStartTime    = 0.5f;                     // フェード開始時間（秒）
+constexpr XMFLOAT4 kDefaultColor  = {1.0f, 1.0f, 1.0f, 1.0f}; // デフォルトの色（白）
+constexpr XMFLOAT4 kFadeColor     = {1.0f, 1.0f, 1.0f, 0.0f}; // フェードアウト時の色（透明）
+} // namespace
 
 static std::wstring GetNumberTexturePath(FloatingDamageType type)
 {
@@ -35,7 +36,8 @@ static std::wstring GetNumberTexturePath(FloatingDamageType type)
 
 bool FloatingDamage::Init()
 {
-	if (!GameObject::Init()) return false;
+	if (!GameObject::Init())
+		return false;
 
 	// 自身の子オブジェクトとして NumberUI を生成（UIレイヤーに配置）
 	m_NumberUI = GameManager::GetScene()->AddGameObject<NumberUI>(eLayer::UI, "DamageUI");
@@ -45,8 +47,8 @@ bool FloatingDamage::Init()
 
 void FloatingDamage::Setup(int damage, float screenX, float screenY, FloatingDamageType type)
 {
-	m_PosX = screenX;
-	m_PosY = screenY;
+	m_PosX   = screenX;
+	m_PosY   = screenY;
 	m_IsMiss = (type == FloatingDamageType::Miss);
 	if (m_IsMiss)
 	{
@@ -85,7 +87,7 @@ void FloatingDamage::Update(float deltaTime)
 	m_PosY -= kMoveSpeed * deltaTime;
 
 	// 寿命が近づくと徐々にフェードする
-	float alpha = 1.0f;
+	float alpha               = 1.0f;
 	const float fadeStartTime = kMaxLifeTime * kFadeStartTime;
 	if (m_LifeTime > fadeStartTime)
 	{

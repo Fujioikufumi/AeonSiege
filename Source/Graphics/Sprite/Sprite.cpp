@@ -10,14 +10,7 @@
 //		2Dスプライトコンポーネント
 //----------------------------------------------------------------------
 Sprite::Sprite(GameObject* obj)
-	: Component(obj)
-	, m_Position({ 0.0f, 0.0f })
-	, m_Size({ 100.0f, 100.0f })
-	, m_Scale({ 1.0f, 1.0f })
-	, m_Rotation(0.0f)
-	, m_UVMin({ 0.0f, 0.0f })
-	, m_UVMax({ 1.0f, 1.0f })
-	, m_Color({ 1.0f, 1.0f, 1.0f, 1.0f })
+    : Component(obj), m_Position({0.0f, 0.0f}), m_Size({100.0f, 100.0f}), m_Scale({1.0f, 1.0f}), m_Rotation(0.0f), m_UVMin({0.0f, 0.0f}), m_UVMax({1.0f, 1.0f}), m_Color({1.0f, 1.0f, 1.0f, 1.0f})
 {
 	m_ComponentName = "Sprite";
 }
@@ -50,8 +43,8 @@ bool Sprite::Init(const std::wstring& texturePath)
 
 	// リソースの取得
 	auto device = GetDevice();
-	auto pool = GetPool(POOL_TYPE_RES);
-	auto queue = GetQueue();
+	auto pool   = GetPool(POOL_TYPE_RES);
+	auto queue  = GetQueue();
 
 	if (!device || !pool || !queue)
 	{
@@ -90,8 +83,8 @@ bool Sprite::Init(const std::wstring& texturePath)
 	{
 		DLOG("ConstantBuffer after Init and UpdateConstantBuffer:");
 		DLOG("  Size_Padding = (%f, %f, %f, %f)",
-			pBuffer->Size_Padding.x, pBuffer->Size_Padding.y,
-			pBuffer->Size_Padding.z, pBuffer->Size_Padding.w);
+		     pBuffer->Size_Padding.x, pBuffer->Size_Padding.y,
+		     pBuffer->Size_Padding.z, pBuffer->Size_Padding.w);
 	}
 
 	return true;
@@ -179,10 +172,10 @@ void Sprite::CreateVertexBuffer()
 
 	// 頂点データの定義
 	Vertex vertices[4] = {
-		{ { -1.0f,  1.0f }, {m_UVMin.x, m_UVMax.y}}, // 左上
-		{ {  1.0f,  1.0f }, {m_UVMax.x, m_UVMax.y}}, // 右上
-		{ { -1.0f, -1.0f }, {m_UVMin.x, m_UVMin.y}}, // 左下
-		{ {  1.0f, -1.0f }, {m_UVMax.x, m_UVMin.y}}  // 右下
+	    {{-1.0f, 1.0f}, {m_UVMin.x, m_UVMax.y}},  // 左上
+	    {{1.0f, 1.0f}, {m_UVMax.x, m_UVMax.y}},   // 右上
+	    {{-1.0f, -1.0f}, {m_UVMin.x, m_UVMin.y}}, // 左下
+	    {{1.0f, -1.0f}, {m_UVMax.x, m_UVMin.y}}   // 右下
 	};
 
 	auto device = GetDevice();
@@ -212,10 +205,10 @@ void Sprite::SetUV(const XMFLOAT2& uvMin, const XMFLOAT2& uvMax)
 	if (vertices)
 	{
 		// 頂点のUV座標だけを書き換える (Positionはシェーダーで計算されるためそのまま)
-		vertices[0].TexCoord = { m_UVMin.x, m_UVMax.y }; // 左上
-		vertices[1].TexCoord = { m_UVMax.x, m_UVMax.y }; // 右上
-		vertices[2].TexCoord = { m_UVMin.x, m_UVMin.y }; // 左下
-		vertices[3].TexCoord = { m_UVMax.x, m_UVMin.y }; // 右下
+		vertices[0].TexCoord = {m_UVMin.x, m_UVMax.y}; // 左上
+		vertices[1].TexCoord = {m_UVMax.x, m_UVMax.y}; // 右上
+		vertices[2].TexCoord = {m_UVMin.x, m_UVMin.y}; // 左下
+		vertices[3].TexCoord = {m_UVMax.x, m_UVMin.y}; // 右下
 		// 参考コードの Unmap() と同じ
 		m_VertexBuffer.Unmap();
 	}
@@ -226,7 +219,7 @@ void Sprite::SetUV(const XMFLOAT2& uvMin, const XMFLOAT2& uvMax)
 //----------------------------------------------------------------------
 void Sprite::UpdateConstantBuffer()
 {
-	XMFLOAT2 screenSize = { SCREEN_WIDTH, SCREEN_HEIGHT };
+	XMFLOAT2 screenSize = {SCREEN_WIDTH, SCREEN_HEIGHT};
 
 	SpriteBuffer* pBuffer = m_ConstantBuffer.GetPtr<SpriteBuffer>();
 	if (!pBuffer)
@@ -235,10 +228,10 @@ void Sprite::UpdateConstantBuffer()
 		return;
 	}
 
-	pBuffer->Position_Padding = XMFLOAT4(m_Position.x, m_Position.y, 0.0f, 0.0f);
-	pBuffer->Size_Padding = XMFLOAT4(m_Size.x, m_Size.y, 0.0f, 0.0f);
-	pBuffer->Scale_Padding = XMFLOAT4(m_Scale.x, m_Scale.y, 0.0f, 0.0f);
+	pBuffer->Position_Padding        = XMFLOAT4(m_Position.x, m_Position.y, 0.0f, 0.0f);
+	pBuffer->Size_Padding            = XMFLOAT4(m_Size.x, m_Size.y, 0.0f, 0.0f);
+	pBuffer->Scale_Padding           = XMFLOAT4(m_Scale.x, m_Scale.y, 0.0f, 0.0f);
 	pBuffer->Rotation_Anchor_Padding = XMFLOAT4(m_Rotation, 0.0f, 0.0f, 0.0f);
-	pBuffer->ScreenSize_Padding = XMFLOAT4(screenSize.x, screenSize.y, 0.0f, 0.0f);
-	pBuffer->Color = m_Color;
+	pBuffer->ScreenSize_Padding      = XMFLOAT4(screenSize.x, screenSize.y, 0.0f, 0.0f);
+	pBuffer->Color                   = m_Color;
 }

@@ -4,13 +4,13 @@
 
 namespace PartyGrowth
 {
-	bool TryLoadPartyGrowth(const std::wstring& path = L"Assets/AppData/PartyGrowth.json");
+bool TryLoadPartyGrowth(const std::wstring& path = L"Assets/AppData/PartyGrowth.json");
 
-	bool BuildMemberStatus(const char* memberJsonKey, int partyLevel, StatusData& out);
+bool BuildMemberStatus(const char* memberJsonKey, int partyLevel, StatusData& out);
 
-	int GetExpNeededForNextLevel(int currentPartyLevel);
+int GetExpNeededForNextLevel(int currentPartyLevel);
 
-	int GetMaxPartyLevelFromTable();
+int GetMaxPartyLevelFromTable();
 
-	bool IsLoaded();
-}
+bool IsLoaded();
+} // namespace PartyGrowth

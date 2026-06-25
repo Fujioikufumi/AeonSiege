@@ -16,15 +16,15 @@
 
 struct ShaderInfo
 {
-	ComPtr<ID3DBlob> pVSBlob  = nullptr;	// 頂点シェーダー
-	ComPtr<ID3DBlob> pPSBlob  = nullptr;	// ピクセルシェーダー
-	ComPtr<ID3DBlob> pGSBlob = nullptr;		// ジオメトリシェーダー
-	ComPtr<ID3DBlob> pCSBlob = nullptr;		// コンピュートシェーダー
-	std::wstring vsPath = {};				// 頂点シェーダーのパス
-	std::wstring psPath = {};				// ピクセルシェーダ―のパス
-	std::wstring gsPath = {};				// ジオメトリシェーダーのパス
-	std::wstring csPath = {};				// コンピュートシェーダーのパス
-	bool isValid = false;					// 有効かどうか
+	ComPtr<ID3DBlob> pVSBlob = nullptr; // 頂点シェーダー
+	ComPtr<ID3DBlob> pPSBlob = nullptr; // ピクセルシェーダー
+	ComPtr<ID3DBlob> pGSBlob = nullptr; // ジオメトリシェーダー
+	ComPtr<ID3DBlob> pCSBlob = nullptr; // コンピュートシェーダー
+	std::wstring vsPath      = {};      // 頂点シェーダーのパス
+	std::wstring psPath      = {};      // ピクセルシェーダ―のパス
+	std::wstring gsPath      = {};      // ジオメトリシェーダーのパス
+	std::wstring csPath      = {};      // コンピュートシェーダーのパス
+	bool isValid             = false;   // 有効かどうか
 };
 
 //----------------------------------------------------------------------
@@ -37,9 +37,9 @@ private:
 
 	std::map<std::wstring, ShaderInfo> m_LoadedShaders;
 
-	ShaderManager() = default;
-	~ShaderManager() = default;
-	ShaderManager(const ShaderManager&) = delete;
+	ShaderManager()                      = default;
+	~ShaderManager()                     = default;
+	ShaderManager(const ShaderManager&)  = delete;
 	void operator=(const ShaderManager&) = delete;
 
 	/// <summary>
@@ -48,30 +48,29 @@ private:
 	bool LoadShaderFile(const std::wstring& shaderPath, ComPtr<ID3DBlob>& pBlob);
 
 public:
-
 	/// <summary>
 	// シェーダーを読み込む
 	/// </summary>
 	bool LoadShader(
-		const std::wstring& shaderName,
-		const std::wstring& vsPath,
-		const std::wstring& psPath);
+	    const std::wstring& shaderName,
+	    const std::wstring& vsPath,
+	    const std::wstring& psPath);
 
 	/// <summary>
 	/// ジオメトリシェーダーも含めてシェーダーを読み込む
 	/// </summary>
 	bool LoadShader(
-		const std::wstring& shaderName,
-		const std::wstring& vsPath,
-		const std::wstring& psPath,
-		const std::wstring& gsPath);
+	    const std::wstring& shaderName,
+	    const std::wstring& vsPath,
+	    const std::wstring& psPath,
+	    const std::wstring& gsPath);
 
 	/// <summary>
 	/// コンピュートシェーダーを読み込む
 	/// </summary>
 	bool LoadComputeShader(
-		const std::wstring& shaderName, 
-		const std::wstring& csPath);
+	    const std::wstring& shaderName,
+	    const std::wstring& csPath);
 
 	/// <summary>
 	/// シェーダー情報を取得

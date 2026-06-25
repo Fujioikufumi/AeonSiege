@@ -18,10 +18,10 @@ class AnimationManager : public SingletonManager<AnimationManager>
 private:
 	friend class SingletonManager<AnimationManager>;
 
-	AnimationManager() = default;
-	~AnimationManager() = default;
+	AnimationManager()                        = default;
+	~AnimationManager()                       = default;
 	AnimationManager(const AnimationManager&) = delete;
-	void operator=(const AnimationManager&) = delete;
+	void operator=(const AnimationManager&)   = delete;
 
 	// ボーン階層情報
 	std::map<std::wstring, SkeletonInfo> m_Skeletons;
@@ -36,10 +36,10 @@ private:
 	std::map<std::string, std::set<std::string>> m_AnimationBoneNames;
 
 	std::mutex m_Mutex;
+
 public:
 	bool Init();
 	void Term();
-
 
 	/// <summary>
 	/// アニメーションファイルのロード(FBX)
@@ -48,8 +48,8 @@ public:
 	/// <param name="animationName">アニメーションの名前</param>
 	/// <returns>ロードに成功したかどうか</returns>
 	bool LoadAnimation(
-		const std::wstring& animationFilePath, 
-		const std::string& animationName);
+	    const std::wstring& animationFilePath,
+	    const std::string& animationName);
 
 	/// <summary>
 	/// 登録済みアニメーションを名前で取得

@@ -7,8 +7,8 @@ class Sprite;
 class MaskedSprite;
 class NumberUI;
 
-
-class AllyHudPanel {
+class AllyHudPanel
+{
 public:
 	AllyHudPanel(GameObject* owner, const AllyLayout& layout);
 	~AllyHudPanel() = default;
@@ -24,11 +24,11 @@ public:
 private:
 	AllyLayout m_Layout; // 味方のレイアウトデータ
 
-	Sprite* m_Panel = nullptr;         // キャラクターパネルの背景
-	MaskedSprite* m_HpGray = nullptr;  // HPバーの背景
-	MaskedSprite* m_HpCol = nullptr;   // HPバーのカラー部分
+	Sprite* m_Panel         = nullptr; // キャラクターパネルの背景
+	MaskedSprite* m_HpGray  = nullptr; // HPバーの背景
+	MaskedSprite* m_HpCol   = nullptr; // HPバーのカラー部分
 	MaskedSprite* m_ExpGray = nullptr; // EXPバーの背景
-	MaskedSprite* m_ExpCol = nullptr;  // EXPバーのカラー部分
-	NumberUI* m_HpNumber = nullptr;     // HP数値表示
-	NumberUI* m_LvNumber = nullptr;     // レベル表示
+	MaskedSprite* m_ExpCol  = nullptr; // EXPバーのカラー部分
+	NumberUI* m_HpNumber    = nullptr; // HP数値表示
+	NumberUI* m_LvNumber    = nullptr; // レベル表示
 };

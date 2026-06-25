@@ -12,9 +12,8 @@
 //		コンストラクタ
 //-----------------------------------------------------------------------------
 MovementComponent::MovementComponent(GameObject* obj)
-	: Component(obj)
+    : Component(obj)
 {
-
 }
 
 //-----------------------------------------------------------------------------
@@ -22,7 +21,6 @@ MovementComponent::MovementComponent(GameObject* obj)
 //-----------------------------------------------------------------------------
 MovementComponent::~MovementComponent()
 {
-
 }
 
 //-----------------------------------------------------------------------------
@@ -45,6 +43,4 @@ void MovementComponent::Term()
 //-----------------------------------------------------------------------------
 void MovementComponent::Update(float deltaTime)
 {
-	
 }
-

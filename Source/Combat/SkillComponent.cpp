@@ -3,7 +3,7 @@
 #include <algorithm>
 
 SkillComponent::SkillComponent(GameObject* owner)
-	: Component(owner)
+    : Component(owner)
 {
 	m_ComponentName = "SkillComponent";
 }
@@ -27,7 +27,7 @@ void SkillComponent::AddSkill(const SkillData& data)
 	}
 
 	SkillRuntime skill;
-	skill.Data = data;
+	skill.Data            = data;
 	skill.CurrentCooldown = 0.0f;
 	m_Skills.push_back(skill);
 }
@@ -36,7 +36,8 @@ bool SkillComponent::HasSkill(SkillId id) const
 {
 	// スキルIDが一致するものがあるかどうかを確認
 	return std::any_of(m_Skills.begin(), m_Skills.end(),
-		[id](const SkillRuntime& skill) { return skill.Data.id == id; });
+	                   [id](const SkillRuntime& skill)
+	                   { return skill.Data.id == id; });
 }
 
 const SkillRuntime* SkillComponent::GetSkillBySlot(int slotIndex) const

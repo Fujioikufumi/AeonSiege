@@ -14,7 +14,6 @@ public:
 	CommandList();
 	~CommandList();
 
-
 	/// <summary>
 	/// 初期化処理を行います.
 	/// </summary>
@@ -36,11 +35,10 @@ public:
 	[[nodiscard]] ID3D12GraphicsCommandList* Reset();
 
 private:
-	ComPtr<ID3D12GraphicsCommandList>			m_CmdList; // コマンドリスト
+	ComPtr<ID3D12GraphicsCommandList> m_CmdList;              // コマンドリスト
 	std::vector<ComPtr<ID3D12CommandAllocator>> m_Allocators; // コマンドアロケータです.
-	uint32_t                                    m_Index; // アロケータ番号です.
+	uint32_t m_Index;                                         // アロケータ番号です.
 
-	CommandList		(const CommandList&) = delete;
-	void operator = (const CommandList&) = delete;
+	CommandList(const CommandList&)    = delete;
+	void operator=(const CommandList&) = delete;
 };
-

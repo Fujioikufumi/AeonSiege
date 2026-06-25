@@ -9,30 +9,32 @@
 #include "Utility/Logger.h"
 #include "UI/HUD/CombatHud.h"
 
-namespace {
-	// パラダインの初期位置
-	constexpr XMFLOAT3 kpaladinStartPos = { -480.0f, 0.0f, -650.0f }; // 初期位置
+namespace
+{
+// パラダインの初期位置
+constexpr XMFLOAT3 kpaladinStartPos = {-480.0f, 0.0f, -650.0f}; // 初期位置
 
+// メンバーのステータスの更新
+void ApplyStatusTo(GameObject* obj, const StatusData& data, bool healToFull)
+{
+	if (obj == nullptr)
+		return;
 
+	StatusComponent* status = obj->GetComponent<StatusComponent>();
+	HealthComponent* health = obj->GetComponent<HealthComponent>();
 
-	// メンバーのステータスの更新
-	void ApplyStatusTo(GameObject* obj, const StatusData& data, bool healToFull)
-	{
-		if (obj == nullptr) return;
-		
-		StatusComponent* status = obj->GetComponent<StatusComponent>();
-		HealthComponent* health = obj->GetComponent<HealthComponent>();
-		
-		if (status == nullptr || health == nullptr) return;
-		if (!health->IsAlive()) return;
+	if (status == nullptr || health == nullptr)
+		return;
+	if (!health->IsAlive())
+		return;
 
-		const float ratio = healToFull ? 1.0f : health->GetHPRatio();
-		status->Setup(data);
-		const int maxHp = status->GetMaxHp();
-		health->SetMaxHP(maxHp);
-		health->SetHP(healToFull ? maxHp : max(1, static_cast<int>(maxHp * ratio)));
-	}
+	const float ratio = healToFull ? 1.0f : health->GetHPRatio();
+	status->Setup(data);
+	const int maxHp = status->GetMaxHp();
+	health->SetMaxHP(maxHp);
+	health->SetHP(healToFull ? maxHp : max(1, static_cast<int>(maxHp * ratio)));
 }
+} // namespace
 
 bool PartyManager::Init()
 {
@@ -74,7 +76,7 @@ void PartyManager::ProcessPartyLevelUps()
 			break;
 
 		m_PartyExpTowardNext -= need; // 経験値を減算して次のレベルに進む
-		m_PartyLevel++;				  // レベルアップ
+		m_PartyLevel++;               // レベルアップ
 		leveled = true;
 	}
 
@@ -87,7 +89,8 @@ void PartyManager::ProcessPartyLevelUps()
 
 void PartyManager::AddExpToAllies(int exp)
 {
-	if (exp <= 0) return;
+	if (exp <= 0)
+		return;
 	m_PartyExpTowardNext += exp;
 	ProcessPartyLevelUps();
 }
@@ -98,11 +101,11 @@ void PartyManager::RefreshAllMemberStats(bool healToFull)
 		return;
 
 	Scene* scene = GameManager::GetScene();
-	if (scene == nullptr) return;
+	if (scene == nullptr)
+		return;
 
 	StatusData data;
 
-	
 	// プレイヤーのステータス更新
 	if (Player* player = scene->GetGameObjectByName<Player>("Player"))
 	{

@@ -6,12 +6,13 @@
 
 bool NumberUI::Init()
 {
-	if (!GameObject::Init()) return false;
+	if (!GameObject::Init())
+		return false;
 
 	m_CurrentValue = -1;
-	m_PosX = 0.0f;
-	m_PosY = 0.0f;
-	m_Scale = 1.0f;
+	m_PosX         = 0.0f;
+	m_PosY         = 0.0f;
+	m_Scale        = 1.0f;
 
 	return true;
 }
@@ -76,7 +77,7 @@ void NumberUI::SetValue(int value)
 			// 1文字の幅を足す
 			float uvMaxX = uvMinX + kUVStep;
 
-			sprite->SetUV({ uvMinX, 0.0f }, { uvMaxX, 1.0f });
+			sprite->SetUV({uvMinX, 0.0f}, {uvMaxX, 1.0f});
 
 			// 位置とサイズを設定（左から順に並べる）
 			float dx = m_PosX - (i * kDigitWidth * m_Scale);
@@ -100,7 +101,7 @@ void NumberUI::SetPosition(float x, float y)
 	m_PosY = y;
 
 	// 位置が変わったら再配置するために強制更新
-	int tempValue = m_CurrentValue;
+	int tempValue  = m_CurrentValue;
 	m_CurrentValue = -1;
 	SetValue(tempValue);
 }
@@ -110,16 +111,16 @@ void NumberUI::SetScale(float scale)
 	m_Scale = scale;
 
 	// スケールが変わったら再配置するために強制更新
-	int tempValue = m_CurrentValue;
+	int tempValue  = m_CurrentValue;
 	m_CurrentValue = -1;
 	SetValue(tempValue);
 }
 
 void NumberUI::SetColor(float r, float g, float b, float a)
 {
-	m_Color.x = r; 
-	m_Color.y = g; 
-	m_Color.z = b; 
+	m_Color.x = r;
+	m_Color.y = g;
+	m_Color.z = b;
 	m_Color.w = a;
 
 	for (size_t i = 0; i < m_DigitSprites.size(); ++i)
@@ -157,6 +158,6 @@ void NumberUI::SetTexturePath(const std::wstring& texturePath)
 	m_DigitSprites.clear();
 
 	const int tempValue = m_CurrentValue;
-	m_CurrentValue = -1;
+	m_CurrentValue      = -1;
 	SetValue(tempValue);
 }

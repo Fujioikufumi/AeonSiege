@@ -3,34 +3,31 @@
 //-----------------------------------------------------------------------------
 #include "Core/App.h"
 #include <algorithm>
-#pragma comment( lib, "winmm.lib" )
-namespace /* anonymous */ {
+#pragma comment(lib, "winmm.lib")
+namespace /* anonymous */
+{
 
-	//-----------------------------------------------------------------------------
-	// Constant Values.
-	//-----------------------------------------------------------------------------
-	const auto ClassName = TEXT("SampleWindowClass");    // ウィンドウクラス名です.
+//-----------------------------------------------------------------------------
+// Constant Values.
+//-----------------------------------------------------------------------------
+const auto ClassName = TEXT("SampleWindowClass"); // ウィンドウクラス名です.
 
-	//-----------------------------------------------------------------------------
-	//      領域の交差を計算します.
-	//-----------------------------------------------------------------------------
-	inline int ComputeIntersectionArea
-	(
-		int ax1, int ay1,
-		int ax2, int ay2,
-		int bx1, int by1,
-		int bx2, int by2
-	)
-	{
-		return std::max(0, std::min(ax2, bx2) - std::max(ax1, bx1))
-			* std::max(0, std::min(ay2, by2) - std::max(ay1, by1));
-	}
-	constexpr float kTargetFPS = 60.0f;
-	constexpr float kDefaultDeltaTime = 1.0f / kTargetFPS;
-	constexpr float kMaxDeltaTimeSpike = 0.1f;
+//-----------------------------------------------------------------------------
+//      領域の交差を計算します.
+//-----------------------------------------------------------------------------
+inline int ComputeIntersectionArea(
+    int ax1, int ay1,
+    int ax2, int ay2,
+    int bx1, int by1,
+    int bx2, int by2)
+{
+	return std::max(0, std::min(ax2, bx2) - std::max(ax1, bx1)) * std::max(0, std::min(ay2, by2) - std::max(ay1, by1));
+}
+constexpr float kTargetFPS         = 60.0f;
+constexpr float kDefaultDeltaTime  = 1.0f / kTargetFPS;
+constexpr float kMaxDeltaTimeSpike = 0.1f;
 
-} // namespace /* anonymous */
-
+} // namespace
 
 ///////////////////////////////////////////////////////////////////////////////
 // App class
@@ -40,14 +37,7 @@ namespace /* anonymous */ {
 //      コンストラクタです.
 //-----------------------------------------------------------------------------
 App::App(uint32_t width, uint32_t height, DXGI_FORMAT format)
-	: m_hInst(nullptr)
-	, m_hWnd(nullptr)
-	, m_Width(width)
-	, m_Height(height)
-	, m_FrameIndex(0)
-	, m_BackBufferFormat(format)
-	, m_IsFirstFrame(true)
-	, m_DeltaTime(0.0f)
+    : m_hInst(nullptr), m_hWnd(nullptr), m_Width(width), m_Height(height), m_FrameIndex(0), m_BackBufferFormat(format), m_IsFirstFrame(true), m_DeltaTime(0.0f)
 { /* DO_NOTHING */
 	QueryPerformanceFrequency(&m_PerformanceFrequency);
 }
@@ -141,16 +131,16 @@ bool App::InitWnd()
 	}
 
 	// ウィンドウの設定.
-	WNDCLASSEX wc = {};
-	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = WndProc;
-	wc.hIcon = LoadIcon(hInst, IDI_APPLICATION);
-	wc.hCursor = LoadCursor(hInst, IDC_ARROW);
+	WNDCLASSEX wc    = {};
+	wc.cbSize        = sizeof(WNDCLASSEX);
+	wc.style         = CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc   = WndProc;
+	wc.hIcon         = LoadIcon(hInst, IDI_APPLICATION);
+	wc.hCursor       = LoadCursor(hInst, IDC_ARROW);
 	wc.hbrBackground = GetSysColorBrush(COLOR_BACKGROUND);
-	wc.lpszMenuName = nullptr;
+	wc.lpszMenuName  = nullptr;
 	wc.lpszClassName = ClassName;
-	wc.hIconSm = LoadIcon(hInst, IDI_APPLICATION);
+	wc.hIconSm       = LoadIcon(hInst, IDI_APPLICATION);
 
 	// ウィンドウの登録.
 	if (!RegisterClassEx(&wc))
@@ -162,8 +152,8 @@ bool App::InitWnd()
 	m_hInst = hInst;
 
 	// ウィンドウのサイズを設定.
-	RECT rc = {};
-	rc.right = static_cast<LONG>(m_Width);
+	RECT rc   = {};
+	rc.right  = static_cast<LONG>(m_Width);
 	rc.bottom = static_cast<LONG>(m_Height);
 
 	// ウィンドウサイズを調整.
@@ -172,18 +162,18 @@ bool App::InitWnd()
 
 	// ウィンドウを生成.
 	m_hWnd = CreateWindowEx(
-		0,
-		ClassName,
-		TEXT("フィールドレンダリング"),
-		style,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		rc.right - rc.left,
-		rc.bottom - rc.top,
-		nullptr,
-		nullptr,
-		m_hInst,
-		this);
+	    0,
+	    ClassName,
+	    TEXT("フィールドレンダリング"),
+	    style,
+	    CW_USEDEFAULT,
+	    CW_USEDEFAULT,
+	    rc.right - rc.left,
+	    rc.bottom - rc.top,
+	    nullptr,
+	    nullptr,
+	    m_hInst,
+	    this);
 
 	if (m_hWnd == nullptr)
 	{
@@ -205,7 +195,7 @@ void App::TermWnd()
 	}
 
 	m_hInst = nullptr;
-	m_hWnd = nullptr;
+	m_hWnd  = nullptr;
 }
 
 //-----------------------------------------------------------------------------
@@ -216,39 +206,47 @@ bool App::InitD3D()
 #if defined(DEBUG) || defined(_DEBUG)
 	{
 		ComPtr<ID3D12Debug> pDebug;
-		auto hr = D3D12GetDebugInterface( IID_PPV_ARGS(pDebug.GetAddressOf()) );
-		if ( SUCCEEDED( hr ) )
-		{ pDebug->EnableDebugLayer(); }
+		auto hr = D3D12GetDebugInterface(IID_PPV_ARGS(pDebug.GetAddressOf()));
+		if (SUCCEEDED(hr))
+		{
+			pDebug->EnableDebugLayer();
+		}
 	}
-	#endif
+#endif
 
 	// デバイスの生成.
-	auto hr = D3D12CreateDevice( nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_pDevice) );
-	if ( FAILED(hr) )
-	{ return false; }
+	auto hr = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_pDevice));
+	if (FAILED(hr))
+	{
+		return false;
+	}
 
 	// コマンドキューの生成.
 	{
 		D3D12_COMMAND_QUEUE_DESC desc = {};
-		desc.Type     = D3D12_COMMAND_LIST_TYPE_DIRECT;
-		desc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
-		desc.Flags    = D3D12_COMMAND_QUEUE_FLAG_NONE;
-		desc.NodeMask = 0;
+		desc.Type                     = D3D12_COMMAND_LIST_TYPE_DIRECT;
+		desc.Priority                 = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
+		desc.Flags                    = D3D12_COMMAND_QUEUE_FLAG_NONE;
+		desc.NodeMask                 = 0;
 
-		hr = m_pDevice->CreateCommandQueue( &desc, IID_PPV_ARGS(&m_pQueue) );
-		if ( FAILED(hr) )
-		{ return false; }
+		hr = m_pDevice->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_pQueue));
+		if (FAILED(hr))
+		{
+			return false;
+		}
 	}
 
 	// スワップチェインの生成.
 	{
 		// DXGIファクトリーの生成.
-		hr = CreateDXGIFactory2( 0, IID_PPV_ARGS(m_pFactory.GetAddressOf()) );
-		if ( FAILED(hr) )
-		{ return false; }
+		hr = CreateDXGIFactory2(0, IID_PPV_ARGS(m_pFactory.GetAddressOf()));
+		if (FAILED(hr))
+		{
+			return false;
+		}
 
 		// スワップチェインの設定.
-		DXGI_SWAP_CHAIN_DESC desc = {};
+		DXGI_SWAP_CHAIN_DESC desc               = {};
 		desc.BufferDesc.Width                   = m_Width;
 		desc.BufferDesc.Height                  = m_Height;
 		desc.BufferDesc.RefreshRate.Numerator   = 60;
@@ -267,14 +265,18 @@ bool App::InitD3D()
 
 		// スワップチェインの生成.
 		ComPtr<IDXGISwapChain> pSwapChain;
-		hr = m_pFactory->CreateSwapChain( m_pQueue.Get(), &desc, pSwapChain.GetAddressOf() );
-		if ( FAILED(hr) )
-		{ return false; }
+		hr = m_pFactory->CreateSwapChain(m_pQueue.Get(), &desc, pSwapChain.GetAddressOf());
+		if (FAILED(hr))
+		{
+			return false;
+		}
 
 		// IDXGISwapChain4 を取得.
 		hr = pSwapChain.As(&m_pSwapChain);
-		if ( FAILED(hr) )
-		{ return false; }
+		if (FAILED(hr))
+		{
+			return false;
+		}
 
 		// バックバッファ番号を取得.
 		m_FrameIndex = m_pSwapChain->GetCurrentBackBufferIndex();
@@ -292,64 +294,80 @@ bool App::InitD3D()
 		desc.NumDescriptors = 2048;
 		desc.Flags          = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 		if (!DescriptorPool::Create(m_pDevice.Get(), &desc, &m_pPool[POOL_TYPE_RES]))
-		{ return false; }
+		{
+			return false;
+		}
 
 		desc.Type           = D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;
 		desc.NumDescriptors = 2048;
 		desc.Flags          = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 		if (!DescriptorPool::Create(m_pDevice.Get(), &desc, &m_pPool[POOL_TYPE_SMP]))
-		{ return false; }
+		{
+			return false;
+		}
 
 		desc.Type           = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 		desc.NumDescriptors = 2048;
-		desc.Flags          =  D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+		desc.Flags          = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 		if (!DescriptorPool::Create(m_pDevice.Get(), &desc, &m_pPool[POOL_TYPE_RTV]))
-		{ return false; }
+		{
+			return false;
+		}
 
 		desc.Type           = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 		desc.NumDescriptors = 2048;
 		desc.Flags          = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 		if (!DescriptorPool::Create(m_pDevice.Get(), &desc, &m_pPool[POOL_TYPE_DSV]))
-		{ return false; }
+		{
+			return false;
+		}
 	}
 
 	// コマンドリストの生成.
 	{
 		if (!m_CommandList.Init(m_pDevice.Get(), D3D12_COMMAND_LIST_TYPE_DIRECT, FrameCount))
-		{ return false; }
+		{
+			return false;
+		}
 	}
 
 	// レンダーターゲットビューの生成.
 	{
-		for (auto i=0u; i<FrameCount; ++i)
+		for (auto i = 0u; i < FrameCount; ++i)
 		{
 			if (!m_ColorTarget[i].InitFromBackBuffer(
-				m_pDevice.Get(),
-				m_pPool[POOL_TYPE_RTV],
-				true,
-				i,
-				m_pSwapChain.Get()))
-			{ return false; }
+			        m_pDevice.Get(),
+			        m_pPool[POOL_TYPE_RTV],
+			        true,
+			        i,
+			        m_pSwapChain.Get()))
+			{
+				return false;
+			}
 		}
 	}
 
 	// 深度ステンシルバッファの生成
 	{
 		if (!m_DepthTarget.Init(
-			m_pDevice.Get(),
-			m_pPool[POOL_TYPE_DSV],
-			nullptr,
-			m_Width,
-			m_Height,
-			DXGI_FORMAT_D32_FLOAT,
-			1.0f,
-			0))
-		{ return false; }
+		        m_pDevice.Get(),
+		        m_pPool[POOL_TYPE_DSV],
+		        nullptr,
+		        m_Width,
+		        m_Height,
+		        DXGI_FORMAT_D32_FLOAT,
+		        1.0f,
+		        0))
+		{
+			return false;
+		}
 	}
 
 	// フェンスの生成.
 	if (!m_Fence.Init(m_pDevice.Get()))
-	{ return false; }
+	{
+		return false;
+	}
 
 	// ビューポートの設定.
 	{
@@ -440,7 +458,7 @@ void App::MainLoop()
 			// ======== デルタタイムの計算 ========
 			if (m_IsFirstFrame)
 			{
-				m_DeltaTime = kDefaultDeltaTime; // 初回は仮の値(約0.016秒)を入れておく
+				m_DeltaTime    = kDefaultDeltaTime; // 初回は仮の値(約0.016秒)を入れておく
 				m_IsFirstFrame = false;
 			}
 			else
@@ -565,10 +583,10 @@ void App::CheckSupportHDR()
 
 		// 領域が一致するかどうか調べる.
 		int intersectArea = ComputeIntersectionArea(
-			ax1, ay1, ax2, ay2, bx1, by1, bx2, by2);
+		    ax1, ay1, ax2, ay2, bx1, by1, bx2, by2);
 		if (intersectArea > bestIntersectArea)
 		{
-			bestOutput = currentOutput;
+			bestOutput        = currentOutput;
 			bestIntersectArea = intersectArea;
 		}
 
@@ -592,7 +610,7 @@ void App::CheckSupportHDR()
 	}
 
 	// 色空間が ITU-R BT.2100 PQをサポートしているかどうかチェック.
-	m_SupportHDR = (desc1.ColorSpace == DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020);
+	m_SupportHDR   = (desc1.ColorSpace == DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020);
 	m_MaxLuminance = desc1.MaxLuminance;
 	m_MinLuminance = desc1.MinLuminance;
 }
@@ -609,25 +627,32 @@ LRESULT CALLBACK App::WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 	case WM_CREATE:
 	{
 		auto pCreateStruct = reinterpret_cast<LPCREATESTRUCT>(lp);
-		auto pApp = reinterpret_cast<LONG_PTR>(pCreateStruct->lpCreateParams);
+		auto pApp          = reinterpret_cast<LONG_PTR>(pCreateStruct->lpCreateParams);
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, pApp);
 	}
 	break;
 
 	case WM_DESTROY:
-	{ PostQuitMessage(0); }
+	{
+		PostQuitMessage(0);
+	}
 	break;
 
 	case WM_MOVE:
-	{ instance->CheckSupportHDR(); }
+	{
+		instance->CheckSupportHDR();
+	}
 	break;
 
 	case WM_DISPLAYCHANGE:
-	{ instance->CheckSupportHDR(); }
+	{
+		instance->CheckSupportHDR();
+	}
 	break;
 
 	default:
-	{ /* DO_NOTHING */ }
+	{ /* DO_NOTHING */
+	}
 	break;
 	}
 

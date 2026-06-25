@@ -32,14 +32,14 @@ public:
 	/// <param name="format"><ピクセルフォーマットです./param>
 	/// <returns><true 初期化に成功 : false 初期化に失敗./returns>
 	bool Init(
-		ID3D12Device*   pDevice, 
-        DescriptorPool* pPoolDSV,
-        DescriptorPool* pPoolSRV,
-        uint32_t        width,
-        uint32_t        height,
-        DXGI_FORMAT     format,
-        float           clearDepth,
-        uint8_t         clearStencil);
+	    ID3D12Device* pDevice,
+	    DescriptorPool* pPoolDSV,
+	    DescriptorPool* pPoolSRV,
+	    uint32_t width,
+	    uint32_t height,
+	    DXGI_FORMAT format,
+	    float clearDepth,
+	    uint8_t clearStencil);
 
 	/// <summary>
 	/// 終了処理を行います.
@@ -86,19 +86,16 @@ public:
 	void ClearView(ID3D12GraphicsCommandList* pCmdList);
 
 private:
+	ComPtr<ID3D12Resource> m_pTarget;          // リソースです.
+	DescriptorHandle* m_pHandleDSV;            // ディスクリプタハンドル(DSV用)です.
+	DescriptorHandle* m_pHandleSRV;            // ディスクリプタハンドル(SRV用)です.
+	DescriptorPool* m_pPoolDSV;                // ディスクリプタプール(DSV用)です.
+	DescriptorPool* m_pPoolSRV;                // ディスクリプタプール(SRV用)です.
+	D3D12_DEPTH_STENCIL_VIEW_DESC m_DSVDesc;   // 深度ステンシルビューの設定です.
+	D3D12_SHADER_RESOURCE_VIEW_DESC m_SRVDesc; // シェーダリソースビューの設定.
+	float m_ClearDepth;
+	uint8_t m_ClearStencil;
 
-	ComPtr<ID3D12Resource>          m_pTarget;          // リソースです.
-    DescriptorHandle*               m_pHandleDSV;       // ディスクリプタハンドル(DSV用)です.
-    DescriptorHandle*               m_pHandleSRV;       // ディスクリプタハンドル(SRV用)です.
-    DescriptorPool*                 m_pPoolDSV;         // ディスクリプタプール(DSV用)です.
-    DescriptorPool*                 m_pPoolSRV;         // ディスクリプタプール(SRV用)です.
-    D3D12_DEPTH_STENCIL_VIEW_DESC   m_DSVDesc;          // 深度ステンシルビューの設定です.
-    D3D12_SHADER_RESOURCE_VIEW_DESC m_SRVDesc;          // シェーダリソースビューの設定.
-    float                           m_ClearDepth;
-    uint8_t                         m_ClearStencil;
-
-
-	DepthTarget		(const DepthTarget&) = delete;
-	void operator = (const DepthTarget&) = delete;
-
+	DepthTarget(const DepthTarget&)    = delete;
+	void operator=(const DepthTarget&) = delete;
 };

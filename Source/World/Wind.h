@@ -6,12 +6,12 @@
 /// </summary>
 struct alignas(256) CbWind
 {
-	float Time;			// 時間（秒）
-	float WindDirX;		// 風の方向X成分
-	float WindDirZ;		// 風の方向Z成分
-	float Amplitude;	// 振幅
-	float Frequency;	// 周波数
-	float Speed;		// 速度
+	float Time;      // 時間（秒）
+	float WindDirX;  // 風の方向X成分
+	float WindDirZ;  // 風の方向Z成分
+	float Amplitude; // 振幅
+	float Frequency; // 周波数
+	float Speed;     // 速度
 };
 
 /// <summary>
@@ -28,7 +28,11 @@ public:
 
 	//---------------------------------------------------------
 	// Setters
-	void SetWindXZ(float x, float z) { m_WindDirX = x; m_WindDirZ = z; }
+	void SetWindXZ(float x, float z)
+	{
+		m_WindDirX = x;
+		m_WindDirZ = z;
+	}
 	void SetAmplitude(float amplitude) { m_Amplitude = amplitude; }
 	void SetFrequency(float frequency) { m_Frequency = frequency; }
 	void SetSpeed(float speed) { m_Speed = speed; }
@@ -49,12 +53,12 @@ private:
 
 private:
 	// --- 風の状態パラメータ ---
-	float m_Time = 0.0f;
-	float m_WindDirX = 1.0f;
-	float m_WindDirZ = 0.0f;
+	float m_Time      = 0.0f;
+	float m_WindDirX  = 1.0f;
+	float m_WindDirZ  = 0.0f;
 	float m_Amplitude = 0.12f;
 	float m_Frequency = 0.4f;
-	float m_Speed = 1.5f;
+	float m_Speed     = 1.5f;
 
 	CbWind m_CbWind = {};
 };

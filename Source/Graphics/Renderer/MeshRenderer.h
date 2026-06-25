@@ -36,10 +36,11 @@ public:
 
 	/// モデルがスキニングアニメーションを持っているか取得します。
 	[[nodiscard]] bool HasAnimation() const { return m_HasAnimation; }
-private:
-	std::wstring m_ModelPath;					// ロードされたモデルのパス
-	RenderSystem* m_RenderSystem = nullptr;	// システム全体で共有されるレンダーシステムへの参照
-	ConstantBuffer m_MeshCB;					// このインスタンス固有のメッシュ定数バッファ
 
-	bool m_HasAnimation = false;				// アニメーション対応モデルかどうか
+private:
+	std::wstring m_ModelPath;               // ロードされたモデルのパス
+	RenderSystem* m_RenderSystem = nullptr; // システム全体で共有されるレンダーシステムへの参照
+	ConstantBuffer m_MeshCB;                // このインスタンス固有のメッシュ定数バッファ
+
+	bool m_HasAnimation = false; // アニメーション対応モデルかどうか
 };

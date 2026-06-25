@@ -9,7 +9,7 @@
 using namespace DirectX;
 
 BattleAreaObj::BattleAreaObj()
-	: GameObject()
+    : GameObject()
 {
 }
 
@@ -39,10 +39,12 @@ void BattleAreaObj::Setup(const XMFLOAT3& center, float radius)
 void BattleAreaObj::PlaceBoundaryTrees()
 {
 	Scene* pScene = GameManager::GetScene();
-	if (pScene == nullptr) return;
+	if (pScene == nullptr)
+		return;
 
 	Terrain* pTerrain = pScene->GetGameObjectByName<Terrain>("Terrain");
-	if (pTerrain == nullptr) return;
+	if (pTerrain == nullptr)
+		return;
 
 	const float minRadius = m_Radius + kInnerRadiusOffset;
 	const float maxRadius = m_Radius + kOuterRadiusOffset;
@@ -51,7 +53,7 @@ void BattleAreaObj::PlaceBoundaryTrees()
 	for (int i = 0; i < kTreeCount; ++i)
 	{
 		const float angle = angleStep * static_cast<float>(i) +
-			RandomRange(-kAngleRandomRange, kAngleRandomRange);
+		                    RandomRange(-kAngleRandomRange, kAngleRandomRange);
 
 		const float treeRadius = RandomRange(minRadius, maxRadius);
 
@@ -61,17 +63,17 @@ void BattleAreaObj::PlaceBoundaryTrees()
 		pos.y = pTerrain->GetHeightAt(pos.x, pos.z);
 
 		std::string treeName = "BoundaryTree_" + std::to_string(i);
-		Tree* tree = pScene->AddGameObject<Tree>(eLayer::DEFAULT , treeName);
+		Tree* tree           = pScene->AddGameObject<Tree>(eLayer::DEFAULT, treeName);
 		if (tree == nullptr)
 		{
 			continue;
 		}
 
 		tree->SetPosition(pos);
-		tree->SetRotation({ 0.0f, RandomRange(0.0f, XM_2PI), 0.0f });
+		tree->SetRotation({0.0f, RandomRange(0.0f, XM_2PI), 0.0f});
 
 		const float scale = RandomRange(kMinTreeScale, kMaxTreeScale);
-		tree->SetScale({ scale, -scale, scale });
+		tree->SetScale({scale, -scale, scale});
 		tree->SetIsCulled(true);
 	}
 }

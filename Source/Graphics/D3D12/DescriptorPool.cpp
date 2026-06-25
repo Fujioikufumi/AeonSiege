@@ -5,10 +5,7 @@
 //      コンストラクタ
 //-----------------------------------------------------------------------------
 DescriptorPool::DescriptorPool()
-	: m_RefCount(1)
-	, m_Pool()
-	, m_Heap()
-	, m_DescriptorSize(0)
+    : m_RefCount(1), m_Pool(), m_Heap(), m_DescriptorSize(0)
 {
 }
 
@@ -56,24 +53,24 @@ uint32_t DescriptorPool::GetCount() const
 DescriptorHandle* DescriptorPool::AllocHandle()
 {
 	auto func = [&](uint32_t index, DescriptorHandle* handle)
+	{
+		auto handleCPU = m_Heap->GetCPUDescriptorHandleForHeapStart();
+		handleCPU.ptr += static_cast<size_t>(m_DescriptorSize) * index;
+
+		D3D12_DESCRIPTOR_HEAP_DESC desc = m_Heap->GetDesc();
+		if (desc.Flags & D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE)
 		{
-			auto handleCPU = m_Heap->GetCPUDescriptorHandleForHeapStart();
-			handleCPU.ptr += static_cast<size_t>(m_DescriptorSize) * index;
+			auto handleGPU = m_Heap->GetGPUDescriptorHandleForHeapStart();
+			handleGPU.ptr += static_cast<size_t>(m_DescriptorSize) * index;
+			handle->HandleGPU = handleGPU;
+		}
+		else
+		{
+			handle->HandleGPU.ptr = 0;
+		}
 
-			D3D12_DESCRIPTOR_HEAP_DESC desc = m_Heap->GetDesc();
-			if (desc.Flags & D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE)
-			{
-				auto handleGPU = m_Heap->GetGPUDescriptorHandleForHeapStart();
-				handleGPU.ptr += static_cast<size_t>(m_DescriptorSize) * index;
-				handle->HandleGPU = handleGPU;
-			}
-			else
-			{
-				handle->HandleGPU.ptr = 0;
-			}
-
-			handle->HandleCPU = handleCPU;
-		};
+		handle->HandleCPU = handleCPU;
+	};
 
 	return m_Pool.Alloc(func);
 }
@@ -152,7 +149,7 @@ bool DescriptorPool::Create(ID3D12Device* device, const D3D12_DESCRIPTOR_HEAP_DE
 	}
 
 	instance->m_DescriptorSize = device->GetDescriptorHandleIncrementSize(desc->Type);
-	*poolOut = instance;
+	*poolOut                   = instance;
 
 	return true;
 }

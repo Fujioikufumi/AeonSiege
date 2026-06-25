@@ -33,9 +33,9 @@ struct ModelLoadData
 
 enum class ModelType
 {
-	Static,     // 静的メッシュ
-	Skinned,    // スキニングメッシュ
-	Animated,   // アニメーション付きスキニングメッシュ
+	Static,   // 静的メッシュ
+	Skinned,  // スキニングメッシュ
+	Animated, // アニメーション付きスキニングメッシュ
 };
 
 //-----------------------------------------------------------------------------
@@ -43,49 +43,56 @@ enum class ModelType
 //-----------------------------------------------------------------------------
 struct ModelInfo
 {
-	std::vector<Mesh*> meshes;      // メッシュ
-	Material material;              // マテリアル
-	std::wstring modelPath;         // モデルパス
-	std::wstring modelDirectory;    // モデルディレクトリパス
-	uint32_t referenceCount = 0;    // 参照カウント
-	bool isLoaded = false;          // ロード済みフラグ
+	std::vector<Mesh*> meshes;       // メッシュ
+	Material material;               // マテリアル
+	std::wstring modelPath;          // モデルパス
+	std::wstring modelDirectory;     // モデルディレクトリパス
+	uint32_t referenceCount = 0;     // 参照カウント
+	bool isLoaded           = false; // ロード済みフラグ
 
 	// モデルタイプ
 	ModelType modelType = ModelType::Static;
 
 	// アニメーション関連
-	std::optional<SkeletonInfo> skeleton;   // スケルトン情報
-	std::optional<std::vector<AnimationClip>> animations;  // アニメーションクリップ
+	std::optional<SkeletonInfo> skeleton;                 // スケルトン情報
+	std::optional<std::vector<AnimationClip>> animations; // アニメーションクリップ
 	std::optional<ConstantBuffer> m_DefaultBoneMatrixCB;
 
-	bool hasAnimation = false;              // アニメーションがあるかどうか
-
+	bool hasAnimation = false; // アニメーションがあるかどうか
 
 	// ヘルパーメソッド
-	[[nodiscard]] bool IsSkinned() const {
+	[[nodiscard]] bool IsSkinned() const
+	{
 		return modelType == ModelType::Skinned || modelType == ModelType::Animated;
 	}
-	[[nodiscard]] bool HasAnimation() const {
+	[[nodiscard]] bool HasAnimation() const
+	{
 		return modelType == ModelType::Animated;
 	}
 
 	// アクセサ
-	[[nodiscard]] const SkeletonInfo* GetSkeleton() const {
+	[[nodiscard]] const SkeletonInfo* GetSkeleton() const
+	{
 		return skeleton.has_value() ? &skeleton.value() : nullptr;
 	}
-	[[nodiscard]] SkeletonInfo* GetSkeleton() {
+	[[nodiscard]] SkeletonInfo* GetSkeleton()
+	{
 		return skeleton.has_value() ? &skeleton.value() : nullptr;
 	}
-	[[nodiscard]] const std::vector<AnimationClip>* GetAnimations() const {
+	[[nodiscard]] const std::vector<AnimationClip>* GetAnimations() const
+	{
 		return animations.has_value() ? &animations.value() : nullptr;
 	}
-	[[nodiscard]] std::vector<AnimationClip>* GetAnimations() {
+	[[nodiscard]] std::vector<AnimationClip>* GetAnimations()
+	{
 		return animations.has_value() ? &animations.value() : nullptr;
 	}
-	[[nodiscard]] ConstantBuffer* GetDefaultBoneMatrixCB() {
+	[[nodiscard]] ConstantBuffer* GetDefaultBoneMatrixCB()
+	{
 		return m_DefaultBoneMatrixCB.has_value() ? &m_DefaultBoneMatrixCB.value() : nullptr;
 	}
-	[[nodiscard]] const ConstantBuffer* GetDefaultBoneMatrixCB() const {
+	[[nodiscard]] const ConstantBuffer* GetDefaultBoneMatrixCB() const
+	{
 		return m_DefaultBoneMatrixCB.has_value() ? &m_DefaultBoneMatrixCB.value() : nullptr;
 	}
 };
@@ -99,18 +106,18 @@ private:
 	friend class SingletonManager<ModelManager>;
 
 	// D3D12リソース
-	ComPtr<ID3D12Device>		m_Device;
-	DescriptorPool*				m_Pool[POOL_COUNT];
-	ComPtr<ID3D12CommandQueue>	m_Queue;
+	ComPtr<ID3D12Device> m_Device;
+	DescriptorPool* m_Pool[POOL_COUNT];
+	ComPtr<ID3D12CommandQueue> m_Queue;
 
-	std::map<std::wstring, std::unique_ptr<ModelInfo>>	m_LoadedModels;
-	std::map<std::wstring, std::unique_ptr<Material>>	m_LoadedMaterials;
-	std::map<std::wstring, std::unique_ptr<Texture>>	m_LoadedTextures;
+	std::map<std::wstring, std::unique_ptr<ModelInfo>> m_LoadedModels;
+	std::map<std::wstring, std::unique_ptr<Material>> m_LoadedMaterials;
+	std::map<std::wstring, std::unique_ptr<Texture>> m_LoadedTextures;
 
-	ModelManager() = default; // 外部からの作成を禁止
-	~ModelManager() = default;
-	ModelManager(const ModelManager&) = delete;      // コピー禁止
-	void operator = (const ModelManager&) = delete;  // 代入禁止
+	ModelManager()                      = default; // 外部からの作成を禁止
+	~ModelManager()                     = default;
+	ModelManager(const ModelManager&)   = delete; // コピー禁止
+	void operator=(const ModelManager&) = delete; // 代入禁止
 
 public:
 	bool Init();
@@ -197,21 +204,21 @@ private:
 	/// モデルタイプの判定
 	/// </summary>
 	ModelType DetermineModelType(
-		const std::vector<ResMesh>& resMesh,
-		bool hasAnimation,
-		const std::optional<SkeletonInfo>& skeleton) const;
+	    const std::vector<ResMesh>& resMesh,
+	    bool hasAnimation,
+	    const std::optional<SkeletonInfo>& skeleton) const;
 
 	/// <summary>
 	/// デフォルトボーンマトリックスCBVの初期化と計算
 	/// </summary>
 	bool InitializeDefaultBoneMatrixCB(
-		ModelInfo& modelInfo,
-		bool hasSkinnedMesh);
+	    ModelInfo& modelInfo,
+	    bool hasSkinnedMesh);
 
 	/// <summary>
 	/// メッシュの生成（ResMesh → Meshオブジェクト）
 	/// </summary>
 	bool CreateMeshes(
-		const std::vector<ResMesh>& resMesh,
-		std::vector<Mesh*>& outMeshes);
+	    const std::vector<ResMesh>& resMesh,
+	    std::vector<Mesh*>& outMeshes);
 };

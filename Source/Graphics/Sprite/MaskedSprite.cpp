@@ -12,7 +12,7 @@
 using namespace DirectX;
 
 MaskedSprite::MaskedSprite(GameObject* obj)
-	: Component(obj)
+    : Component(obj)
 {
 	m_ComponentName = "MaskedSprite";
 }
@@ -39,8 +39,8 @@ bool MaskedSprite::Init(const std::wstring& texturePath)
 	}
 
 	auto device = GetDevice();
-	auto pool = GetPool(POOL_TYPE_RES);
-	auto queue = GetQueue();
+	auto pool   = GetPool(POOL_TYPE_RES);
+	auto queue  = GetQueue();
 
 	if (!device || !pool || !queue)
 	{
@@ -119,7 +119,7 @@ void MaskedSprite::Draw(const RenderContext& context)
 	}
 
 	D3D12_GPU_DESCRIPTOR_HANDLE spriteCb = m_SpriteCB.GetHandleGPU();
-	D3D12_GPU_DESCRIPTOR_HANDLE maskCb = m_MaskCB.GetHandleGPU();
+	D3D12_GPU_DESCRIPTOR_HANDLE maskCb   = m_MaskCB.GetHandleGPU();
 	if (spriteCb.ptr == 0 || maskCb.ptr == 0)
 	{
 		ELOG("MaskedSprite: ConstantBuffer handle invalid");
@@ -164,12 +164,12 @@ void MaskedSprite::CreateVertexBuffer()
 	};
 
 	Vertex vertices[4] =
-	{
-		{ { -1.0f,  1.0f }, { m_UVMin.x, m_UVMax.y } }, // 左上
-		{ {  1.0f,  1.0f }, { m_UVMax.x, m_UVMax.y } }, // 右上
-		{ { -1.0f, -1.0f }, { m_UVMin.x, m_UVMin.y } }, // 左下
-		{ {  1.0f, -1.0f }, { m_UVMax.x, m_UVMin.y } }, // 右下
-	};
+	    {
+	        {{-1.0f, 1.0f}, {m_UVMin.x, m_UVMax.y}},  // 左上
+	        {{1.0f, 1.0f}, {m_UVMax.x, m_UVMax.y}},   // 右上
+	        {{-1.0f, -1.0f}, {m_UVMin.x, m_UVMin.y}}, // 左下
+	        {{1.0f, -1.0f}, {m_UVMax.x, m_UVMin.y}},  // 右下
+	    };
 
 	auto device = GetDevice();
 	if (!device)
@@ -183,7 +183,7 @@ void MaskedSprite::CreateVertexBuffer()
 
 void MaskedSprite::UpdateConstantBuffers()
 {
-	const XMFLOAT2 screenSize = { static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT) };
+	const XMFLOAT2 screenSize = {static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT)};
 
 	// SpriteCB (b0)
 	SpriteBuffer* sb = m_SpriteCB.GetPtr<SpriteBuffer>();
@@ -194,12 +194,12 @@ void MaskedSprite::UpdateConstantBuffers()
 	}
 
 	// 定数バッファに値をセット
-	sb->Position_Padding = XMFLOAT4(m_Position.x, m_Position.y, 0.0f, 0.0f);
-	sb->Size_Padding = XMFLOAT4(m_Size.x, m_Size.y, 0.0f, 0.0f);
-	sb->Scale_Padding = XMFLOAT4(m_Scale.x, m_Scale.y, 0.0f, 0.0f);
+	sb->Position_Padding        = XMFLOAT4(m_Position.x, m_Position.y, 0.0f, 0.0f);
+	sb->Size_Padding            = XMFLOAT4(m_Size.x, m_Size.y, 0.0f, 0.0f);
+	sb->Scale_Padding           = XMFLOAT4(m_Scale.x, m_Scale.y, 0.0f, 0.0f);
 	sb->Rotation_Anchor_Padding = XMFLOAT4(m_Rotation, 0.0f, 0.0f, 0.0f);
-	sb->ScreenSize_Padding = XMFLOAT4(screenSize.x, screenSize.y, 0.0f, 0.0f);
-	sb->Color = m_Color;
+	sb->ScreenSize_Padding      = XMFLOAT4(screenSize.x, screenSize.y, 0.0f, 0.0f);
+	sb->Color                   = m_Color;
 
 	// MaskCB (b1)
 	MaskBuffer* maskBuffer = m_MaskCB.GetPtr<MaskBuffer>();
@@ -219,5 +219,5 @@ void MaskedSprite::UpdateConstantBuffers()
 	const float mode = static_cast<float>(static_cast<int>(m_MaskMode));
 
 	maskBuffer->MaskRectUV = m_MaskRectUV;
-	maskBuffer->Params = XMFLOAT4(progress, feather, mode, 0.0f);
+	maskBuffer->Params     = XMFLOAT4(progress, feather, mode, 0.0f);
 }

@@ -11,29 +11,30 @@
 
 using namespace DirectX;
 
-namespace {
-	
-	constexpr int   kAngleDegMax = 360;			// ランダム角度の上限（度）
-	constexpr int   kDistanceResol = 100;		// 距離正規化の分解能
-	constexpr int   kIdleWaitRandSec = 3;       // 待機時間のランダム加算上限（0?2秒）
-	constexpr float kRotationSpeed = 10.0f;		// 旋回速度
-	constexpr float kSomeBias = -3000.0f;		// 
-	
-	// 指定した中心点と半径の範囲内のランダムな座標を作成する
-	XMFLOAT3 GetRandomPointInRadius(const XMFLOAT3& center, float radius)
-	{
-		float angle = (rand() % kAngleDegMax) * (XM_PI / 180.0f);
-		const float distance = (rand() % kDistanceResol) / static_cast<float>(kDistanceResol) * radius;
+namespace
+{
 
-		XMFLOAT3 result = center;
-		result.x += cosf(angle) * distance;
-		result.z += sinf(angle) * distance;
-		return result;
-	}
+constexpr int kAngleDegMax     = 360;      // ランダム角度の上限（度）
+constexpr int kDistanceResol   = 100;      // 距離正規化の分解能
+constexpr int kIdleWaitRandSec = 3;        // 待機時間のランダム加算上限（0?2秒）
+constexpr float kRotationSpeed = 10.0f;    // 旋回速度
+constexpr float kSomeBias      = -3000.0f; //
+
+// 指定した中心点と半径の範囲内のランダムな座標を作成する
+XMFLOAT3 GetRandomPointInRadius(const XMFLOAT3& center, float radius)
+{
+	float angle          = (rand() % kAngleDegMax) * (XM_PI / 180.0f);
+	const float distance = (rand() % kDistanceResol) / static_cast<float>(kDistanceResol) * radius;
+
+	XMFLOAT3 result = center;
+	result.x += cosf(angle) * distance;
+	result.z += sinf(angle) * distance;
+	return result;
 }
+} // namespace
 
 EnemyAIComponent::EnemyAIComponent(GameObject* pObj)
-	: Component(pObj) 
+    : Component(pObj)
 {
 	m_ComponentName = "EnemyAIComponent";
 }
@@ -57,11 +58,14 @@ bool EnemyAIComponent::Init()
 
 void EnemyAIComponent::Update(float deltaTime)
 {
-	if (GameFlowUtil::IsShopOpen()) return;
+	if (GameFlowUtil::IsShopOpen())
+		return;
 
-	if (!m_IsAIActive) return;
+	if (!m_IsAIActive)
+		return;
 
-	if (m_GameObject == nullptr || m_GameObject->IsDestroyed()) return;
+	if (m_GameObject == nullptr || m_GameObject->IsDestroyed())
+		return;
 
 	HealthComponent* pHealth = m_GameObject->GetComponent<HealthComponent>();
 	// 死亡判定（死亡したらステートを Dead にして即リターン）
@@ -75,7 +79,8 @@ void EnemyAIComponent::Update(float deltaTime)
 		return;
 	}
 
-	if (m_CurrentState == EnemyAIState::Dead) return;
+	if (m_CurrentState == EnemyAIState::Dead)
+		return;
 
 	// -------------------------------------------------
 	// クールダウンの更新
@@ -87,15 +92,15 @@ void EnemyAIComponent::Update(float deltaTime)
 	// -------------------------------------------------
 	Scene* pScene = GameManager::GetScene();
 
-	GameObject* pTarget			= FindAttackTarget(pScene);
-	HealthComponent* targetHp	= pTarget ? pTarget->GetComponent<HealthComponent>() : nullptr;
+	GameObject* pTarget       = FindAttackTarget(pScene);
+	HealthComponent* targetHp = pTarget ? pTarget->GetComponent<HealthComponent>() : nullptr;
 
 	const bool targetIsAlive = targetHp && targetHp->IsAlive();
-	bool canSeeTarget		 = false;
+	bool canSeeTarget        = false;
 
 	if (targetIsAlive)
 	{
-		const bool isDamaged	= pHealth && (pHealth->GetHP() < pHealth->GetMaxHP());
+		const bool isDamaged    = pHealth && (pHealth->GetHP() < pHealth->GetMaxHP());
 		const bool inAggroRange = MathUtility::IsInRange(m_GameObject->GetPosition(), pTarget->GetPosition(), m_AggroRadius);
 
 		canSeeTarget = m_AlwaysAggro || isDamaged || inAggroRange;
@@ -149,19 +154,20 @@ void EnemyAIComponent::Update(float deltaTime)
 
 void EnemyAIComponent::UpdateChaseAndAttack(float deltaTime, GameObject* target)
 {
-	if (target == nullptr) return;
+	if (target == nullptr)
+		return;
 
-	const XMFLOAT3 pos = m_GameObject->GetPosition();
+	const XMFLOAT3 pos       = m_GameObject->GetPosition();
 	const XMFLOAT3 targetPos = target->GetPosition();
 
-	const float dx = targetPos.x - pos.x;
-	const float dz = targetPos.z - pos.z;
+	const float dx       = targetPos.x - pos.x;
+	const float dz       = targetPos.z - pos.z;
 	const bool isInMelee = MathUtility::IsInRange(pos, targetPos, m_MeleeRange);
 
 	// 回転処理 (ターゲットを睨む)
 	const float targetYaw = atan2f(dx, dz);
-	XMFLOAT3 rot = m_GameObject->GetRotation();
-	rot.y = MathUtility::SlerpYaw(rot.y, targetYaw, kRotationSpeed, deltaTime);
+	XMFLOAT3 rot          = m_GameObject->GetRotation();
+	rot.y                 = MathUtility::SlerpYaw(rot.y, targetYaw, kRotationSpeed, deltaTime);
 	m_GameObject->SetRotation(rot);
 
 	if (m_CurrentState == EnemyAIState::Attack)
@@ -254,7 +260,7 @@ void EnemyAIComponent::UpdatePatrol(float deltaTime)
 	XMFLOAT3 pos = m_GameObject->GetPosition();
 
 	float dist = MathUtility::CalculateDistanceXZ(m_GameObject->GetPosition(), m_TargetPatrolPos);
-	
+
 	// 目的地に十分近づいたら再び待機
 	if (dist < 1.0f)
 	{
@@ -269,8 +275,8 @@ void EnemyAIComponent::UpdatePatrol(float deltaTime)
 	// 目的地を向く
 
 	float targetYaw = atan2f(dx, dz);
-	XMFLOAT3 rot = m_GameObject->GetRotation();
-	rot.y = MathUtility::SlerpYaw(rot.y, targetYaw, kRotationSpeed, deltaTime);
+	XMFLOAT3 rot    = m_GameObject->GetRotation();
+	rot.y           = MathUtility::SlerpYaw(rot.y, targetYaw, kRotationSpeed, deltaTime);
 	m_GameObject->SetRotation(rot);
 
 	// 移動
@@ -283,38 +289,39 @@ void EnemyAIComponent::UpdatePatrol(float deltaTime)
 
 GameObject* EnemyAIComponent::FindAttackTarget(Scene* pScene) const
 {
-	if (pScene == nullptr || m_GameObject == nullptr) return nullptr;
-	
+	if (pScene == nullptr || m_GameObject == nullptr)
+		return nullptr;
+
 	GameObject* bestTarget = nullptr;
-	
+
 	// ターゲット切り替えのスコア
 	float bestScore = FLT_MAX;
 
 	// ターゲットの候補
 	auto checkTarget = [&](GameObject* target, float scoreBias)
+	{
+		if (target == nullptr || target->IsDestroyed())
 		{
-			if (target == nullptr || target->IsDestroyed())
-			{
-				return;
-			}
-			HealthComponent* hp = target->GetComponent<HealthComponent>();
-			if (hp == nullptr || !hp->IsAlive())
-			{
-				return;
-			}
-			// 距離が近いほどスコアが低いようにする(優先的に狙う)
-			const XMFLOAT3 selfPos = m_GameObject->GetPosition();
-			const XMFLOAT3 targetPos = target->GetPosition();
-			const float dx = targetPos.x - selfPos.x;
-			const float dz = targetPos.z - selfPos.z;
-			const float distSq = dx * dx + dz * dz;
-			const float score = distSq + scoreBias;
-			if (score < bestScore)
-			{
-				bestScore = score;
-				bestTarget = target;
-			}
-		};
+			return;
+		}
+		HealthComponent* hp = target->GetComponent<HealthComponent>();
+		if (hp == nullptr || !hp->IsAlive())
+		{
+			return;
+		}
+		// 距離が近いほどスコアが低いようにする(優先的に狙う)
+		const XMFLOAT3 selfPos   = m_GameObject->GetPosition();
+		const XMFLOAT3 targetPos = target->GetPosition();
+		const float dx           = targetPos.x - selfPos.x;
+		const float dz           = targetPos.z - selfPos.z;
+		const float distSq       = dx * dx + dz * dz;
+		const float score        = distSq + scoreBias;
+		if (score < bestScore)
+		{
+			bestScore  = score;
+			bestTarget = target;
+		}
+	};
 
 	checkTarget(pScene->GetGameObjectByName<Player>("Player"), 0.0f);
 	const auto& allyList = pScene->GetGameObjectsByLayer(eLayer::ALLY);

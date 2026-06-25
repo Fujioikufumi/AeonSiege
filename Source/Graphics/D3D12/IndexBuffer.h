@@ -52,10 +52,10 @@ public:
 	[[nodiscard]] size_t GetCount() const;
 
 private:
-	ComPtr<ID3D12Resource>  m_IndexBuffer; // インデックスバッファリソース
-	D3D12_INDEX_BUFFER_VIEW m_View;        // インデックスバッファビュー
-	size_t                  m_IndexCount;  // インデックス数
+	ComPtr<ID3D12Resource> m_IndexBuffer; // インデックスバッファリソース
+	D3D12_INDEX_BUFFER_VIEW m_View;       // インデックスバッファビュー
+	size_t m_IndexCount;                  // インデックス数
 
-	IndexBuffer(const IndexBuffer&) = delete;
+	IndexBuffer(const IndexBuffer&)    = delete;
 	void operator=(const IndexBuffer&) = delete;
 };

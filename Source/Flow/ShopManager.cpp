@@ -10,158 +10,159 @@
 #include <array>
 #include <cstdlib>
 
-namespace {
-		// レアリティ確率テーブルを切り替えるフェーズしきい値
-		constexpr int kRarityPhaseTier1 = 10; // これ以上で kRarityRates[1]
-		constexpr int kRarityPhaseTier2 = 30; // これ以上で kRarityRates[2]
-		constexpr int kRarityPhaseTier3 = 50; // これ以上で kRarityRates[3]
+namespace
+{
+// レアリティ確率テーブルを切り替えるフェーズしきい値
+constexpr int kRarityPhaseTier1 = 10; // これ以上で kRarityRates[1]
+constexpr int kRarityPhaseTier2 = 30; // これ以上で kRarityRates[2]
+constexpr int kRarityPhaseTier3 = 50; // これ以上で kRarityRates[3]
 
-		constexpr int kRollMax = 100; // 抽選の母数（rand() % kRollMax）
-		constexpr int kSkillOfferMinPhase = 2;  // スキルオファーが出始めるフェーズ
-		constexpr int kSkillOfferChance = 30; // スキルオファー出現確率（%）
+constexpr int kRollMax            = 100; // 抽選の母数（rand() % kRollMax）
+constexpr int kSkillOfferMinPhase = 2;   // スキルオファーが出始めるフェーズ
+constexpr int kSkillOfferChance   = 30;  // スキルオファー出現確率（%）
 
-	// 強化内容のメタ情報
-	struct UpgradeKindMeta
+// 強化内容のメタ情報
+struct UpgradeKindMeta
+{
+	UpgradeStatType statType;   // 強化するステータスの種類
+	const char* name;           // 強化内容の名前
+	const wchar_t* textureFile; // 強化内容のアイコンテクスチャファイル名
+	float valuePerRarity;       // レアリティ1あたりの強化値の倍率 (例: 0.05f = レアリティ1で5%強化)
+};
+
+// 強化内容の種類ごとのメタ情報を定義
+constexpr std::array<UpgradeKindMeta, kUpgradeKindCount> kUpgradeKindMeta = {{
+    {UpgradeStatType::AttackRate, "AttackUp", L"Atk.png", 0.15f},
+    {UpgradeStatType::MoveSpeedRate, "MoveSpeedUp", L"Spd.png", 0.05f},
+    {UpgradeStatType::DamageTakenRate, "DamageReduction", L"Def.png", 0.05f},
+    {UpgradeStatType::SkillPowerRate, "SkillPowerUp", L"SkillAtk.png", 0.15f},
+    {UpgradeStatType::SkillCooldownReduction, "SkillCooldownUp", L"SkillCul.png", 0.05f},
+    {UpgradeStatType::SkillDurationRate, "SkillDurationUp", L"SkillTime.png", 0.05f},
+    {UpgradeStatType::CriticalRate, "CriticalRateUp", L"CritRate.png", 0.05f},
+    {UpgradeStatType::CriticalDamageRate, "CriticalDamageUp", L"CritDmg.png", 0.10f},
+    {UpgradeStatType::EvasionRate, "EvasionUp", L"Evasion.png", 0.03f},
+    {UpgradeStatType::SkillChainDamageRate, "SkillChainDamageUp", L"Combo.png", 0.10f},
+    {UpgradeStatType::SkillRangeRate, "SkillRangeUp", L"SkillRange.png", 0.08f},
+}};
+
+// 強化のレアリティに対応するテクスチャパス
+constexpr std::array<const wchar_t*, kUpgradeRarityCount> kRarityTexturePaths = {{
+    L"Assets/Texture/Shop/Rarity1.png",
+    L"Assets/Texture/Shop/Rarity2.png",
+    L"Assets/Texture/Shop/Rarity3.png",
+}};
+
+// スキルのテクスチャファイル名 (SkillId::PlayerSlash1 から順に対応させる)
+constexpr std::array<const wchar_t*, 6> kSkillTextureFiles = {{
+    L"Skill1.png",
+    L"Skill2.png",
+    L"Skill3.png",
+    L"Skill4.png",
+    L"Skill5.png",
+    L"Skill6.png",
+}};
+
+// 強化内容のメタ情報を取得する関数
+const UpgradeKindMeta& GetUpgradeMeta(UpgradeKind kind)
+{
+	return kUpgradeKindMeta[static_cast<int>(kind)];
+}
+
+// スキルのテクスチャパスをスキルIDに基づいて取得する関数
+std::wstring GetSkillTexturePath(SkillId skillId)
+{
+	const int index = static_cast<int>(skillId) - static_cast<int>(SkillId::PlayerSlash1);
+	if (index < 0 || index >= static_cast<int>(kSkillTextureFiles.size()))
 	{
-		UpgradeStatType statType;	// 強化するステータスの種類
-		const char* name;			// 強化内容の名前
-		const wchar_t* textureFile; // 強化内容のアイコンテクスチャファイル名
-		float valuePerRarity;		// レアリティ1あたりの強化値の倍率 (例: 0.05f = レアリティ1で5%強化)
-	};
-
-	// 強化内容の種類ごとのメタ情報を定義
-	constexpr std::array<UpgradeKindMeta, kUpgradeKindCount> kUpgradeKindMeta = { {
-		{ UpgradeStatType::AttackRate,            "AttackUp",           L"Atk.png",       0.15f },
-		{ UpgradeStatType::MoveSpeedRate,         "MoveSpeedUp",        L"Spd.png",       0.05f },
-		{ UpgradeStatType::DamageTakenRate,       "DamageReduction",    L"Def.png",       0.05f },
-		{ UpgradeStatType::SkillPowerRate,        "SkillPowerUp",       L"SkillAtk.png",  0.15f },
-		{ UpgradeStatType::SkillCooldownReduction,"SkillCooldownUp",    L"SkillCul.png",  0.05f },
-		{ UpgradeStatType::SkillDurationRate,     "SkillDurationUp",    L"SkillTime.png", 0.05f },
-		{ UpgradeStatType::CriticalRate,          "CriticalRateUp",     L"CritRate.png",  0.05f },
-		{ UpgradeStatType::CriticalDamageRate,     "CriticalDamageUp",  L"CritDmg.png",   0.10f },
-		{ UpgradeStatType::EvasionRate,           "EvasionUp",          L"Evasion.png",   0.03f },
-		{ UpgradeStatType::SkillChainDamageRate,  "SkillChainDamageUp", L"Combo.png",     0.10f },
-		{ UpgradeStatType::SkillRangeRate,        "SkillRangeUp",       L"SkillRange.png",0.08f },
-	} };
-
-	// 強化のレアリティに対応するテクスチャパス
-	constexpr std::array<const wchar_t*, kUpgradeRarityCount> kRarityTexturePaths = { {
-		L"Assets/Texture/Shop/Rarity1.png",
-		L"Assets/Texture/Shop/Rarity2.png",
-		L"Assets/Texture/Shop/Rarity3.png",
-	} };
-
-	// スキルのテクスチャファイル名 (SkillId::PlayerSlash1 から順に対応させる)
-	constexpr std::array<const wchar_t*, 6> kSkillTextureFiles = { {
-		L"Skill1.png",
-		L"Skill2.png",
-		L"Skill3.png",
-		L"Skill4.png",
-		L"Skill5.png",
-		L"Skill6.png",
-	} };
-
-	// 強化内容のメタ情報を取得する関数
-	const UpgradeKindMeta& GetUpgradeMeta(UpgradeKind kind)
-	{
-		return kUpgradeKindMeta[static_cast<int>(kind)];
+		return L"Assets/Texture/Shop/Upgrade/Skill1.png";
 	}
 
-	// スキルのテクスチャパスをスキルIDに基づいて取得する関数
-	std::wstring GetSkillTexturePath(SkillId skillId)
-	{
-		const int index = static_cast<int>(skillId) - static_cast<int>(SkillId::PlayerSlash1);
-		if (index < 0 || index >= static_cast<int>(kSkillTextureFiles.size()))
-		{
-			return L"Assets/Texture/Shop/Upgrade/Skill1.png";
-		}
+	const std::wstring basePath = L"Assets/Texture/Shop/Upgrade/";
+	return basePath + kSkillTextureFiles[index];
+}
 
-		const std::wstring basePath = L"Assets/Texture/Shop/Upgrade/";
-		return basePath + kSkillTextureFiles[index];
+// スキルのレアリティをスキルIDに基づいて決定する関数
+UpgradeRarity GetSkillOfferRarity(SkillId skillId)
+{
+	switch (skillId)
+	{
+	case SkillId::PlayerSlash1:
+	case SkillId::PlayerSlash2:
+		return UpgradeRarity::Rarity1;
+
+	case SkillId::PlayerSlash3:
+	case SkillId::PlayerSlash4:
+		return UpgradeRarity::Rarity2;
+
+	case SkillId::PlayerSlash5:
+	case SkillId::PlayerSlash6:
+		return UpgradeRarity::Rarity3;
+
+	default:
+		return UpgradeRarity::Rarity1;
 	}
+}
 
-	// スキルのレアリティをスキルIDに基づいて決定する関数
-	UpgradeRarity GetSkillOfferRarity(SkillId skillId)
-	{
-		switch (skillId)
-		{
-		case SkillId::PlayerSlash1:
-		case SkillId::PlayerSlash2:
-			return UpgradeRarity::Rarity1;
-
-		case SkillId::PlayerSlash3:
-		case SkillId::PlayerSlash4:
-			return UpgradeRarity::Rarity2;
-
-		case SkillId::PlayerSlash5:
-		case SkillId::PlayerSlash6:
-			return UpgradeRarity::Rarity3;
-
-		default:
-			return UpgradeRarity::Rarity1;
-		}
-	}
-
-	// スキルのID順に、プレイヤーがまだ持っていない最初のスキルを返す関数
-	static SkillId GetNextUnownedSkill(const SkillComponent* skills)
-	{
-		if (skills == nullptr)
-			return SkillId::None;
-
-		static const SkillId kOrder[] =
-		{
-			SkillId::PlayerSlash2,
-			SkillId::PlayerSlash3,
-			SkillId::PlayerSlash4,
-			SkillId::PlayerSlash5,
-			SkillId::PlayerSlash6,
-		};
-
-		for (SkillId id : kOrder)
-		{
-			if (!skills->HasSkill(id))
-				return id;
-		}
+// スキルのID順に、プレイヤーがまだ持っていない最初のスキルを返す関数
+static SkillId GetNextUnownedSkill(const SkillComponent* skills)
+{
+	if (skills == nullptr)
 		return SkillId::None;
-	}
 
-	// フェーズごとのレアリティ出現率を表す構造体
-	struct RarityRate
+	static const SkillId kOrder[] =
+	    {
+	        SkillId::PlayerSlash2,
+	        SkillId::PlayerSlash3,
+	        SkillId::PlayerSlash4,
+	        SkillId::PlayerSlash5,
+	        SkillId::PlayerSlash6,
+	    };
+
+	for (SkillId id : kOrder)
 	{
-		int rarity1;
-		int rarity2;
-		int rarity3;
-	};
-
-	constexpr std::array<RarityRate, 4> kRarityRates = { {
-		// レアリティ1,レアリティ2,レアリティ3の出現率
-		{ 80, 18,  2 },  
-		{ 65, 28,  7 },  
-		{ 50, 35, 15 }, 
-		{ 35, 40, 25 }, 
-	} };
-
-	// フェーズ番号に応じたレアリティ出現率を取得する関数
-	const RarityRate& GetRarityRate(int phaseNo)
-	{
-		if (phaseNo >= kRarityPhaseTier3)
-		{
-			return kRarityRates[3];
-		}
-		if (phaseNo >= kRarityPhaseTier2)
-		{
-			return kRarityRates[2];
-		}
-		if (phaseNo >= kRarityPhaseTier1)
-		{
-			return kRarityRates[1];
-		}
-		return kRarityRates[0];
+		if (!skills->HasSkill(id))
+			return id;
 	}
+	return SkillId::None;
+}
+
+// フェーズごとのレアリティ出現率を表す構造体
+struct RarityRate
+{
+	int rarity1;
+	int rarity2;
+	int rarity3;
+};
+
+constexpr std::array<RarityRate, 4> kRarityRates = {{
+    // レアリティ1,レアリティ2,レアリティ3の出現率
+    {80, 18, 2},
+    {65, 28, 7},
+    {50, 35, 15},
+    {35, 40, 25},
+}};
+
+// フェーズ番号に応じたレアリティ出現率を取得する関数
+const RarityRate& GetRarityRate(int phaseNo)
+{
+	if (phaseNo >= kRarityPhaseTier3)
+	{
+		return kRarityRates[3];
+	}
+	if (phaseNo >= kRarityPhaseTier2)
+	{
+		return kRarityRates[2];
+	}
+	if (phaseNo >= kRarityPhaseTier1)
+	{
+		return kRarityRates[1];
+	}
+	return kRarityRates[0];
+}
 } // namespace
 
 ShopManager::ShopManager()
-	: GameObject()
+    : GameObject()
 {
 	m_SkillOffersPool.reserve(5);
 }
@@ -192,7 +193,7 @@ void ShopManager::SelectOffer(int index)
 	ApplyOffer(m_CurrentOffers[index]);
 	m_CurrentOffers.clear();
 	m_SelectedIndex = 0;
-	m_IsOpen = false;
+	m_IsOpen        = false;
 }
 
 void ShopManager::OpenShop(int phaseNo)
@@ -204,7 +205,7 @@ void ShopManager::OpenShop(int phaseNo)
 
 	RollOffers(phaseNo);
 	m_SelectedIndex = 0;
-	m_IsOpen = true;
+	m_IsOpen        = true;
 }
 
 void ShopManager::RollOffers(int phaseNo)
@@ -324,7 +325,8 @@ void ShopManager::ApplyUpgradeToTeam(const UpgradeData& upgrade)
 void ShopManager::ApplyUpgradeToLayer(eLayer layer, const UpgradeData& upgrade)
 {
 	Scene* pScene = GetScene();
-	if (pScene == nullptr) return;
+	if (pScene == nullptr)
+		return;
 
 	const auto& objects = pScene->GetGameObjectsByLayer(layer);
 
@@ -405,9 +407,9 @@ ShopOffer ShopManager::CreateStatusOffer(UpgradeKind kind, UpgradeRarity rarity)
 
 	// ショップに表示する情報をセット
 	ShopOffer offer;
-	offer.type = ShopOfferType::StatusUpgrade;
-	offer.upgrade = upgrade;
-	offer.rarityTexturePath = upgrade.rarityTexturePath;
+	offer.type               = ShopOfferType::StatusUpgrade;
+	offer.upgrade            = upgrade;
+	offer.rarityTexturePath  = upgrade.rarityTexturePath;
 	offer.contentTexturePath = upgrade.contentTexturePath;
 	return offer;
 }
@@ -415,14 +417,14 @@ ShopOffer ShopManager::CreateStatusOffer(UpgradeKind kind, UpgradeRarity rarity)
 ShopOffer ShopManager::CreateJoinAllyOffer(AllyId allyId) const
 {
 	ShopOffer offer;
-	offer.type = ShopOfferType::JoinAlly;
+	offer.type   = ShopOfferType::JoinAlly;
 	offer.allyId = allyId;
 
 	switch (allyId)
 	{
 	case AllyId::Oscar:
 		offer.contentTexturePath = L"Assets/Texture/Shop/OfferAlly_Oscar.png";
-		offer.rarityTexturePath = GetRarityTexturePath(UpgradeRarity::Rarity3);
+		offer.rarityTexturePath  = GetRarityTexturePath(UpgradeRarity::Rarity3);
 		break;
 
 		// 時間があれば他の味方も追加したい…
@@ -436,10 +438,10 @@ ShopOffer ShopManager::CreateJoinAllyOffer(AllyId allyId) const
 ShopOffer ShopManager::CreateUnlockSkillOffer(SkillId skillId) const
 {
 	ShopOffer offer;
-	offer.type = ShopOfferType::UnlockSkill;
-	offer.skillId = skillId;
+	offer.type               = ShopOfferType::UnlockSkill;
+	offer.skillId            = skillId;
 	offer.contentTexturePath = GetSkillTexturePath(skillId);
-	offer.rarityTexturePath = GetRarityTexturePath(GetSkillOfferRarity(skillId));
+	offer.rarityTexturePath  = GetRarityTexturePath(GetSkillOfferRarity(skillId));
 	return offer;
 }
 
@@ -484,14 +486,14 @@ UpgradeData ShopManager::CreateUpgradeData(UpgradeKind kind, UpgradeRarity rarit
 {
 	// UpgradeDataに引数の値をもとに必要な情報をセットして返す
 	UpgradeData data;
-	data.kind = kind;
-	data.rarity = rarity;
-	data.statType = GetStatType(kind);
-	data.value = GetUpgradeValue(kind, rarity);
-	data.name = GetUpgradeName(kind);
-	data.rarityTexturePath = GetRarityTexturePath(rarity);
+	data.kind               = kind;
+	data.rarity             = rarity;
+	data.statType           = GetStatType(kind);
+	data.value              = GetUpgradeValue(kind, rarity);
+	data.name               = GetUpgradeName(kind);
+	data.rarityTexturePath  = GetRarityTexturePath(rarity);
 	data.contentTexturePath = GetContentTexturePath(kind);
-	data.id = data.name + "_" + std::to_string(static_cast<int>(rarity));
+	data.id                 = data.name + "_" + std::to_string(static_cast<int>(rarity));
 
 	return data;
 }
@@ -506,7 +508,7 @@ UpgradeRarity ShopManager::RollRarity(int phaseNo) const
 {
 	// レアリティごとの出現率をフェーズ番号に応じて取得
 	const RarityRate& rate = GetRarityRate(phaseNo);
-	const int roll = rand() % kRollMax;
+	const int roll         = rand() % kRollMax;
 
 	if (roll < rate.rarity1)
 	{

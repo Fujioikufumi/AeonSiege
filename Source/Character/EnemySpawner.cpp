@@ -13,16 +13,17 @@
 
 using namespace DirectX;
 
-namespace {
-	constexpr int   kAngleDegMax = 360;     // ランダム角度の上限（度）
-	constexpr int   kDistanceResol = 100;     // 距離正規化の分解能
-	constexpr float kCenterEpsilonSq = 0.0001f; // 中心一致とみなす距離の二乗閾値
-	constexpr float kSpreadStep = 0.45f;   // 敵を散らす際の角度ステップ（ラジアン）
-	constexpr float kDegtoRad = XM_PI / 180.0f; // ラジアンを度に変換するための係数
-}
+namespace
+{
+constexpr int kAngleDegMax       = 360;            // ランダム角度の上限（度）
+constexpr int kDistanceResol     = 100;            // 距離正規化の分解能
+constexpr float kCenterEpsilonSq = 0.0001f;        // 中心一致とみなす距離の二乗閾値
+constexpr float kSpreadStep      = 0.45f;          // 敵を散らす際の角度ステップ（ラジアン）
+constexpr float kDegtoRad        = XM_PI / 180.0f; // ラジアンを度に変換するための係数
+} // namespace
 
 EnemySpawner::EnemySpawner()
-	: GameObject()
+    : GameObject()
 {
 }
 
@@ -41,7 +42,8 @@ void EnemySpawner::Update(float deltaTime)
 void EnemySpawner::SpawnPhase(const PhaseData& phaseData)
 {
 	Scene* scene = GameManager::GetScene();
-	if (scene == nullptr) return;
+	if (scene == nullptr)
+		return;
 	BattleArea* battleArea = scene->GetGameObjectByName<BattleArea>("BattleArea");
 	if (battleArea == nullptr)
 	{
@@ -54,11 +56,11 @@ void EnemySpawner::SpawnPhase(const PhaseData& phaseData)
 		ELOG("EnemySpawner: Player not found");
 		return;
 	}
-	
-	const XMFLOAT3	center		= battleArea->GetCenter();
-	const float		radius		= battleArea->GetRadius();
-	const XMFLOAT3	playerPos	= player->GetPosition();
-	
+
+	const XMFLOAT3 center    = battleArea->GetCenter();
+	const float radius       = battleArea->GetRadius();
+	const XMFLOAT3 playerPos = player->GetPosition();
+
 	// フェーズ内の総出現数
 	int totalCount = 0;
 	for (const PhaseEnemyEntry& entry : phaseData.enemies)
@@ -71,9 +73,9 @@ void EnemySpawner::SpawnPhase(const PhaseData& phaseData)
 			// プレイヤーの位置を考慮してスポーン位置を決定
 			// バトルエリアは円などで、エネミーが出現させる座標はプレイヤーから一番離れている円周上に出現させる
 			const XMFLOAT3 spawnPosition = CreateSpawnPosition(
-				center, radius, playerPos, spawnIndex, totalCount);
+			    center, radius, playerPos, spawnIndex, totalCount);
 			GameObject* enemy = SpawnEnemy(
-				entry.type, spawnPosition, m_TotalSpawnedCount, entry.level, entry.expReward);
+			    entry.type, spawnPosition, m_TotalSpawnedCount, entry.level, entry.expReward);
 			if (enemy != nullptr)
 				++m_TotalSpawnedCount;
 			++spawnIndex;
@@ -83,11 +85,11 @@ void EnemySpawner::SpawnPhase(const PhaseData& phaseData)
 
 XMFLOAT3 EnemySpawner::CreateRandomSpawnPosition(const XMFLOAT3& center, float radius) const
 {
-	Scene* pScene		= GameManager::GetScene();
-	Terrain* pTerrain   = (pScene != nullptr) ? pScene->GetGameObjectByName<Terrain>("Terrain") : nullptr;
+	Scene* pScene     = GameManager::GetScene();
+	Terrain* pTerrain = (pScene != nullptr) ? pScene->GetGameObjectByName<Terrain>("Terrain") : nullptr;
 
-	const float angle		= (rand() % kAngleDegMax) * kDegtoRad;
-	const float distance	= (rand() % kDistanceResol) / static_cast<float>(kDistanceResol) * radius;
+	const float angle    = (rand() % kAngleDegMax) * kDegtoRad;
+	const float distance = (rand() % kDistanceResol) / static_cast<float>(kDistanceResol) * radius;
 
 	XMFLOAT3 position = center;
 	position.x += cosf(angle) * distance;
@@ -103,10 +105,10 @@ XMFLOAT3 EnemySpawner::CreateRandomSpawnPosition(const XMFLOAT3& center, float r
 
 DirectX::XMFLOAT3 EnemySpawner::CreateSpawnPosition(const DirectX::XMFLOAT3& center, float radius, const DirectX::XMFLOAT3& playerPos, int spreadIndex, int spreadCount) const
 {
-	const float dx = playerPos.x - center.x;
-	const float dz = playerPos.z - center.z;
+	const float dx     = playerPos.x - center.x;
+	const float dz     = playerPos.z - center.z;
 	const float distSq = dx * dx + dz * dz;
-	float angle = 0.0f;
+	float angle        = 0.0f;
 
 	// プレイヤーが中心とほぼ一致する場合はランダムな境界上
 	if (distSq < kCenterEpsilonSq)
@@ -119,10 +121,10 @@ DirectX::XMFLOAT3 EnemySpawner::CreateSpawnPosition(const DirectX::XMFLOAT3& cen
 		const float baseAngle = atan2f(-dz, -dx);
 		// 複数体の重なり防止
 		const float spreadStep = kSpreadStep; // 一定角度ずらす
-		const float offset = (spreadCount <= 1)
-			? 0.0f
-			: (static_cast<float>(spreadIndex) - (spreadCount - 1) * 0.5f) * spreadStep;
-		angle = baseAngle + offset;
+		const float offset     = (spreadCount <= 1)
+		                             ? 0.0f
+		                             : (static_cast<float>(spreadIndex) - (spreadCount - 1) * 0.5f) * spreadStep;
+		angle                  = baseAngle + offset;
 	}
 
 	XMFLOAT3 position{};
@@ -130,9 +132,9 @@ DirectX::XMFLOAT3 EnemySpawner::CreateSpawnPosition(const DirectX::XMFLOAT3& cen
 	position.z = center.z + sinf(angle) * radius;
 
 	// 地形の高さに合わせる
-	Scene* scene = GameManager::GetScene();
+	Scene* scene     = GameManager::GetScene();
 	Terrain* terrain = scene->GetGameObjectByName<Terrain>("Terrain");
-	position.y = terrain->GetHeightAt(position.x, position.z);
+	position.y       = terrain->GetHeightAt(position.x, position.z);
 
 	return position;
 }
@@ -140,7 +142,8 @@ DirectX::XMFLOAT3 EnemySpawner::CreateSpawnPosition(const DirectX::XMFLOAT3& cen
 GameObject* EnemySpawner::SpawnEnemy(EnemyType type, const XMFLOAT3& position, int index, int level, int expReward)
 {
 	Scene* pScene = GameManager::GetScene();
-	if (pScene == nullptr) return nullptr;
+	if (pScene == nullptr)
+		return nullptr;
 
 	GameObject* enemy = nullptr;
 
@@ -160,7 +163,8 @@ GameObject* EnemySpawner::SpawnEnemy(EnemyType type, const XMFLOAT3& position, i
 		break;
 	}
 
-	if (enemy == nullptr) return nullptr;
+	if (enemy == nullptr)
+		return nullptr;
 
 	enemy->SetIsCulled(true);
 	enemy->SetPosition(position);

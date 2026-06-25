@@ -8,8 +8,8 @@
 /// </summary>
 struct GameStatus
 {
-	int killCount = 0;
-	int totalDamage = 0;
+	int killCount    = 0;
+	int totalDamage  = 0;
 	int currentPhase = 0;
 };
 
@@ -24,6 +24,7 @@ private:
 	static std::unique_ptr<Scene> m_NextScene;
 	static bool m_IsChangeScene;
 	static GameStatus m_Status;
+
 public:
 	static void Init();
 	static void Term();

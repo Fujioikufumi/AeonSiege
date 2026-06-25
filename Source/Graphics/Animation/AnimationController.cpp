@@ -4,34 +4,35 @@
 #include "Core/GameObject.h"
 #include <algorithm>
 
-namespace {
-	/// <summary>
-	/// 指定した時間に最も近いキーフレームの行列を取得します。
-	/// </summary>
-	DirectX::XMMATRIX SampleGlobalMatrixNearest(const AnimationChannel& ch, float tickTime)
+namespace
+{
+/// <summary>
+/// 指定した時間に最も近いキーフレームの行列を取得します。
+/// </summary>
+DirectX::XMMATRIX SampleGlobalMatrixNearest(const AnimationChannel& ch, float tickTime)
+{
+	int best       = 0;
+	float bestDiff = FLT_MAX;
+
+	for (int i = 0; i < (int)ch.matrixKeys.size(); ++i)
 	{
-		int best = 0;
-		float bestDiff = FLT_MAX;
-
-		for (int i = 0; i < (int)ch.matrixKeys.size(); ++i)
+		float d = fabsf(ch.matrixKeys[i].time - tickTime);
+		if (d < bestDiff)
 		{
-			float d = fabsf(ch.matrixKeys[i].time - tickTime);
-			if (d < bestDiff)
-			{
-				bestDiff = d;
-				best = i;
-			}
+			bestDiff = d;
+			best     = i;
 		}
-
-		return DirectX::XMLoadFloat4x4(&ch.matrixKeys[best].matrix);
 	}
+
+	return DirectX::XMLoadFloat4x4(&ch.matrixKeys[best].matrix);
 }
+} // namespace
 
 //-----------------------------------------------------------------------------
 // 		コンストラクタ
 //-----------------------------------------------------------------------------
 AnimationController::AnimationController(GameObject* obj)
-	: Component(obj)
+    : Component(obj)
 {
 	m_ComponentName = "AnimationController";
 }
@@ -45,11 +46,12 @@ AnimationController::~AnimationController()
 }
 
 //-----------------------------------------------------------------------------
-// 		初期化処理 
+// 		初期化処理
 //-----------------------------------------------------------------------------
 bool AnimationController::Init()
 {
-	if (!m_GameObject) return false;
+	if (!m_GameObject)
+		return false;
 	return Init(m_GameObject->GetModelPath());
 }
 
@@ -81,9 +83,9 @@ bool AnimationController::Init(const std::wstring& modelPath)
 	}
 
 	m_CurrentTime = 0.0f;
-	m_IsPlaying = false;
-	m_IsLoop = true;
-	m_Speed = 1.0f;
+	m_IsPlaying   = false;
+	m_IsLoop      = true;
+	m_Speed       = 1.0f;
 
 	// 初期姿勢の計算とバッファ更新
 	CalculateBoneMatrices();
@@ -101,8 +103,8 @@ void AnimationController::Term()
 	m_BoneMatrixCB.Term();
 	m_BoneMatrices.clear();
 	m_ChannelByBoneName.clear();
-	m_pCurrentClip = nullptr;
-	m_pSkeleton = nullptr;
+	m_pCurrentClip  = nullptr;
+	m_pSkeleton     = nullptr;
 	m_IsInitialized = false;
 }
 
@@ -111,7 +113,8 @@ void AnimationController::Term()
 //-----------------------------------------------------------------------------
 void AnimationController::Update(float deltaTime)
 {
-	if (!m_IsInitialized) return;
+	if (!m_IsInitialized)
+		return;
 
 	// アニメーション時間の更新
 	if (m_IsPlaying && m_pCurrentClip != nullptr)
@@ -132,7 +135,7 @@ void AnimationController::Update(float deltaTime)
 		else if (m_CurrentTime >= duration)
 		{
 			m_CurrentTime = duration;
-			m_IsPlaying = false;
+			m_IsPlaying   = false;
 		}
 	}
 
@@ -145,7 +148,8 @@ void AnimationController::Update(float deltaTime)
 //-----------------------------------------------------------------------------
 bool AnimationController::Play(const std::string& animationName)
 {
-	if (!m_IsInitialized) return false;
+	if (!m_IsInitialized)
+		return false;
 
 	const AnimationClip* clip = AnimationManager::GetInstance().GetAnimationByName(animationName);
 	if (!clip)
@@ -154,11 +158,11 @@ bool AnimationController::Play(const std::string& animationName)
 		return false;
 	}
 
-	m_HoldPaused = false;
-	m_pCurrentClip = clip;
+	m_HoldPaused           = false;
+	m_pCurrentClip         = clip;
 	m_CurrentAnimationName = animationName;
-	m_CurrentTime = 0.0f;
-	m_IsPlaying = true;
+	m_CurrentTime          = 0.0f;
+	m_IsPlaying            = true;
 
 	RebuildChannelLookup();
 
@@ -173,9 +177,9 @@ bool AnimationController::Play(const std::string& animationName)
 //-----------------------------------------------------------------------------
 void AnimationController::Stop()
 {
-	m_HoldPaused = false;
-	m_IsPlaying = false;
-	m_CurrentTime = 0.0f;
+	m_HoldPaused   = false;
+	m_IsPlaying    = false;
+	m_CurrentTime  = 0.0f;
 	m_pCurrentClip = nullptr;
 	m_CurrentAnimationName.clear();
 	m_ChannelByBoneName.clear();
@@ -189,7 +193,7 @@ void AnimationController::Stop()
 //-----------------------------------------------------------------------------
 void AnimationController::Pause()
 {
-	m_IsPlaying = false;
+	m_IsPlaying  = false;
 	m_HoldPaused = true;
 }
 
@@ -199,7 +203,8 @@ void AnimationController::Pause()
 void AnimationController::Resume()
 {
 	m_HoldPaused = false;
-	if (m_pCurrentClip) m_IsPlaying = true;
+	if (m_pCurrentClip)
+		m_IsPlaying = true;
 }
 
 //-----------------------------------------------------------------------------
@@ -207,7 +212,7 @@ void AnimationController::Resume()
 //-----------------------------------------------------------------------------
 void AnimationController::SetAnimationClip(const std::wstring& modelPath, const std::string& clipName)
 {
-	m_ModelPath = modelPath;
+	m_ModelPath    = modelPath;
 	m_pCurrentClip = AnimationManager::GetInstance().GetAnimationClip(modelPath, clipName);
 
 	RebuildChannelLookup();
@@ -219,7 +224,8 @@ void AnimationController::SetAnimationClip(const std::wstring& modelPath, const 
 //-----------------------------------------------------------------------------
 void AnimationController::CalculateBoneMatrices()
 {
-	if (!m_pSkeleton) return;
+	if (!m_pSkeleton)
+		return;
 
 	// アニメーションがない場合はバインドポーズ
 	if (m_pCurrentClip == nullptr)
@@ -240,16 +246,18 @@ void AnimationController::CalculateBoneMatrices()
 	for (size_t i = 0; i < m_pSkeleton->bones.size(); ++i)
 	{
 		const auto& bone = m_pSkeleton->bones[i];
-		if (!bone.hasBind) continue;
+		if (!bone.hasBind)
+			continue;
 
 		const AnimationChannel* ch = nullptr;
-		auto it = m_ChannelByBoneName.find(bone.name);
-		if (it != m_ChannelByBoneName.end()) ch = it->second;
+		auto it                    = m_ChannelByBoneName.find(bone.name);
+		if (it != m_ChannelByBoneName.end())
+			ch = it->second;
 
 		if (ch && !ch->matrixKeys.empty())
 		{
 			DirectX::XMMATRIX currentMatrixKey = SampleGlobalMatrixNearest(*ch, tickTime);
-			m_BoneMatrices[i] = DirectX::XMMatrixTranspose(bone.boneBindInv * currentMatrixKey);
+			m_BoneMatrices[i]                  = DirectX::XMMatrixTranspose(bone.boneBindInv * currentMatrixKey);
 		}
 		else
 		{
@@ -264,7 +272,8 @@ void AnimationController::CalculateBoneMatrices()
 void AnimationController::RebuildChannelLookup()
 {
 	m_ChannelByBoneName.clear();
-	if (!m_pCurrentClip) return;
+	if (!m_pCurrentClip)
+		return;
 
 	for (const auto& c : m_pCurrentClip->channels)
 	{
@@ -283,7 +292,7 @@ void AnimationController::UpdateConstantBuffer()
 	};
 
 	BoneMatrixBufferInternal buffer = {};
-	size_t count = min(m_BoneMatrices.size(), kMaxBones);
+	size_t count                    = min(m_BoneMatrices.size(), kMaxBones);
 
 	for (size_t i = 0; i < count; ++i)
 	{

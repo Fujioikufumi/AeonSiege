@@ -17,7 +17,7 @@ bool LightManager::Init()
 	m_pPool = resourceManager.GetPool(POOL_TYPE_RES);
 	m_pPool->AddRef();
 
-	// ライト定数バッファの初期化(フレームごと)   
+	// ライト定数バッファの初期化(フレームごと)
 	for (uint32_t i = 0; i < m_FrameCount; ++i)
 	{
 		if (!m_LightCB[i].Init(m_pDevice.Get(), m_pPool, sizeof(CbLight)))
@@ -28,11 +28,11 @@ bool LightManager::Init()
 		}
 	}
 
-	// ライトデフォルト値の設定  
-	m_LightData.LightColor = XMFLOAT3(1.0f, 1.0f, 1.0f);
-	m_LightData.LightIntensity = 1.0f;
-	m_LightData.LightForward = XMFLOAT3(0.0f, -1.0f, 0.0f);
-	m_LightData.AmbientColor = XMFLOAT3(1.0f, 0.2f, 0.2f);
+	// ライトデフォルト値の設定
+	m_LightData.LightColor       = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	m_LightData.LightIntensity   = 1.0f;
+	m_LightData.LightForward     = XMFLOAT3(0.0f, -1.0f, 0.0f);
+	m_LightData.AmbientColor     = XMFLOAT3(1.0f, 0.2f, 0.2f);
 	m_LightData.AmbientIntensity = 0.9f;
 
 	for (uint32_t i = 0; i < m_FrameCount; ++i)
@@ -60,7 +60,7 @@ void LightManager::Term()
 		m_pDevice = nullptr;
 	}
 
-	if(m_pPool != nullptr)
+	if (m_pPool != nullptr)
 	{
 		m_pPool->Release();
 		m_pPool = nullptr;
@@ -139,7 +139,7 @@ void LightManager::Update(uint32_t frameIndex)
 	auto ptr = m_LightCB[frameIndex].GetPtr<CbLight>();
 	if (ptr != nullptr)
 	{
-		
+
 		*ptr = m_LightData;
 	}
 }
@@ -159,7 +159,7 @@ D3D12_GPU_DESCRIPTOR_HANDLE LightManager::GetHandleGPU(uint32_t frameIndex) cons
 	if (frameIndex >= m_FrameCount)
 	{
 		ELOG("Error : Invalid frame index: %d", frameIndex);
-		return D3D12_GPU_DESCRIPTOR_HANDLE{ 0 };
+		return D3D12_GPU_DESCRIPTOR_HANDLE{0};
 	}
 
 	return m_LightCB[frameIndex].GetHandleGPU();

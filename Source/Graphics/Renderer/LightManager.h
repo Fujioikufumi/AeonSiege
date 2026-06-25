@@ -34,9 +34,9 @@ private:
 	const uint32_t m_FrameCount = 2;
 
 	// コンストラクタ・デストラクタ (シングルトン)
-	LightManager() = default;
-	~LightManager() = default;
-	LightManager(const LightManager&) = delete;
+	LightManager()                      = default;
+	~LightManager()                     = default;
+	LightManager(const LightManager&)   = delete;
 	void operator=(const LightManager&) = delete;
 
 public:
@@ -49,7 +49,6 @@ public:
 	/// 終了処理
 	/// </summary>
 	void Term();
-
 
 	/// <summary>
 	/// ライトの色を設定

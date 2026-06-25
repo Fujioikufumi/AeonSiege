@@ -22,36 +22,36 @@
 #include "Component/TargetComponent.h"
 #include "Combat/StatusComponent.h"
 
-namespace {
-	constexpr float kLockMaxDist = 400.0f;	// ロックオン可能な最大距離
-	constexpr float kViewDotMin = 0.5f;		// ロックオン可能な視界の最低dot値（約60度）
-	constexpr float kAShortTapMaxSec = 0.2f;// Aボタンの短押しと判定する最大時間
-	constexpr float kALongPressSec = 0.8f;  // Aボタンの長押しと判定する時間
-	constexpr float kStickRunThreshold = 0.85f; // スティックの入力が走りと判定される閾値（0.0f～1.0f、1.0fが最大入力）
-	constexpr float kJumpPower = 3.0f; // ジャンプの初速
-	constexpr float kGravity = -9.8f;	// 重力の強さ
+namespace
+{
+constexpr float kLockMaxDist       = 400.0f; // ロックオン可能な最大距離
+constexpr float kViewDotMin        = 0.5f;   // ロックオン可能な視界の最低dot値（約60度）
+constexpr float kAShortTapMaxSec   = 0.2f;   // Aボタンの短押しと判定する最大時間
+constexpr float kALongPressSec     = 0.8f;   // Aボタンの長押しと判定する時間
+constexpr float kStickRunThreshold = 0.85f;  // スティックの入力が走りと判定される閾値（0.0f～1.0f、1.0fが最大入力）
+constexpr float kJumpPower         = 3.0f;   // ジャンプの初速
+constexpr float kGravity           = -9.8f;  // 重力の強さ
 
-	constexpr float kRotationSpeed = 10.0f;
-	constexpr float kMoveEpsilon = 1.0e-6f;
+constexpr float kRotationSpeed = 10.0f;
+constexpr float kMoveEpsilon   = 1.0e-6f;
 
-	constexpr XMFLOAT3 kStartPos = { -497.0f, 0.0f, -650.0f };
+constexpr XMFLOAT3 kStartPos = {-497.0f, 0.0f, -650.0f};
 
-	static constexpr WORD BTN_LOCK_ON = Input::PAD_X;   // ロックオン（仕様に合わせて後で変更可）
-	static constexpr WORD BTN_ACTION  = Input::PAD_B;   // 戦闘入り短押し等（T / Input::PAD_B）
-	static constexpr WORD BTN_SKILL_1 = Input::PAD_Y;   // スキル1
-	static constexpr WORD BTN_SKILL_2 = Input::PAD_X;   // スキル2
-}
-
+static constexpr WORD BTN_LOCK_ON = Input::PAD_X; // ロックオン（仕様に合わせて後で変更可）
+static constexpr WORD BTN_ACTION  = Input::PAD_B; // 戦闘入り短押し等（T / Input::PAD_B）
+static constexpr WORD BTN_SKILL_1 = Input::PAD_Y; // スキル1
+static constexpr WORD BTN_SKILL_2 = Input::PAD_X; // スキル2
+} // namespace
 
 //-----------------------------------------------------------------------------
 // 	    コンストラクタ
 //-----------------------------------------------------------------------------
 Player::Player()
 {
-	m_ModelPath = L"../Assets/Characters/MariaWProp.bmdl";
+	m_ModelPath    = L"../Assets/Characters/MariaWProp.bmdl";
 	m_PipelineName = L"SkinnedFBXPipeline";
-	m_Position = kStartPos;
-	m_Scale = { 0.05f, 0.05f, 0.05f };
+	m_Position     = kStartPos;
+	m_Scale        = {0.05f, 0.05f, 0.05f};
 }
 
 //-----------------------------------------------------------------------------
@@ -67,14 +67,14 @@ Player::~Player()
 //-----------------------------------------------------------------------------
 bool Player::Init()
 {
-	if(!GameObject::Init())
+	if (!GameObject::Init())
 	{
 		ELOG("Error : GameObject::Init() Failed in Player.cpp");
 		return false;
 	}
 
 	// 初期状態は待機
-	m_State = PlayerState::Idle;
+	m_State     = PlayerState::Idle;
 	m_PrevState = PlayerState::Idle;
 
 	// メッシュレンダラー
@@ -217,11 +217,10 @@ void Player::SyncCameraTarget(Camera* camera)
 	}
 }
 
-
 XMMATRIX Player::GetWorldMatrix() const
 {
 	XMMATRIX scale = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
-	XMMATRIX rot = XMMatrixRotationQuaternion(m_Quaternion);
+	XMMATRIX rot   = XMMatrixRotationQuaternion(m_Quaternion);
 	XMMATRIX trans = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	return scale * rot * trans;
 }
@@ -242,9 +241,9 @@ float Player::GetSkillCooldownRatioBySlot(int slotIndex) const
 StatusData Player::CreateStatusData() const
 {
 	StatusData data;
-	data.maxHp = kDefaultPlayerHP;
-	data.moveSpeed = kMoveSpeed;
-	data.attackPower = kAttackDamage;
+	data.maxHp              = kDefaultPlayerHP;
+	data.moveSpeed          = kMoveSpeed;
+	data.attackPower        = kAttackDamage;
 	data.autoAttackInterval = kAutoAttackInterval;
 	return data;
 }
@@ -282,10 +281,12 @@ void Player::UpdateCombatAnim()
 	m_PlayingCombatAnim = false;
 
 	// 攻撃が終わった瞬間に、現在の m_IsCombat に基づいた最新の状態をセット
-	if (m_IsCombat) {
+	if (m_IsCombat)
+	{
 		m_State = PlayerState::Combat;
 	}
-	else if (m_State == PlayerState::Combat) {
+	else if (m_State == PlayerState::Combat)
+	{
 		m_State = PlayerState::Idle;
 	}
 
@@ -301,10 +302,18 @@ void Player::ResumeLocomotionAnim()
 	const char* clip = kAnimIdle;
 	switch (m_State)
 	{
-	case PlayerState::Walk:   clip = kAnimWalk; break;
-	case PlayerState::Run:    clip = kAnimRun; break;
-	case PlayerState::Jump:   clip = kAnimJump; break;
-	case PlayerState::Combat: clip = kAnimCombatIdle; break;
+	case PlayerState::Walk:
+		clip = kAnimWalk;
+		break;
+	case PlayerState::Run:
+		clip = kAnimRun;
+		break;
+	case PlayerState::Jump:
+		clip = kAnimJump;
+		break;
+	case PlayerState::Combat:
+		clip = kAnimCombatIdle;
+		break;
 	case PlayerState::Idle:
 	default:
 		clip = kAnimIdle;
@@ -331,29 +340,29 @@ void Player::ChangeAnimation()
 	}
 
 	const char* clipName = kAnimIdle;
-	bool loop = true;
+	bool loop            = true;
 
 	switch (m_State)
 	{
 	case PlayerState::Idle:
 		clipName = kAnimIdle;
-		loop = true;
+		loop     = true;
 		break;
 	case PlayerState::Walk:
 		clipName = kAnimWalk;
-		loop = true;
+		loop     = true;
 		break;
 	case PlayerState::Run:
 		clipName = kAnimRun;
-		loop = true;
+		loop     = true;
 		break;
 	case PlayerState::Jump:
 		clipName = kAnimJump;
-		loop = false; // ジャンプはループさせない
+		loop     = false; // ジャンプはループさせない
 		break;
 	case PlayerState::Combat:
 		clipName = kAnimCombatIdle;
-		loop = true;
+		loop     = true;
 		break;
 	}
 	m_AnimController->SetLoop(loop);
@@ -367,11 +376,11 @@ void Player::ChangeAnimation()
 bool Player::IsInSight(const Camera* camera, const GameObject* enemy) const
 {
 	const XMFLOAT3 playerPos = m_Position;
-	DirectX::XMFLOAT3 ep = enemy->GetPosition();
+	DirectX::XMFLOAT3 ep     = enemy->GetPosition();
 
 	// 水平方向の距離を計算
-	float dx = ep.x - playerPos.x;
-	float dz = ep.z - playerPos.z;
+	float dx          = ep.x - playerPos.x;
+	float dz          = ep.z - playerPos.z;
 	const float lenSq = dx * dx + dz * dz;
 
 	// 至近距離の視界には入っているとみなす
@@ -385,8 +394,8 @@ bool Player::IsInSight(const Camera* camera, const GameObject* enemy) const
 
 	// カメラの前方向ベクトル（XZ平面）との内積を計算
 	DirectX::XMFLOAT3 cf = camera->GetViewForwardXZ();
-	const float dot = cf.x * dx + cf.z * dz;
-	
+	const float dot      = cf.x * dx + cf.z * dz;
+
 	// dotがkViewDotMin以上なら視界に入っているとみなす
 	return dot >= kViewDotMin;
 }
@@ -412,7 +421,7 @@ void Player::UpdateLockOnTarget(float deltaTime, Scene* scene, Camera* camera)
 		{
 			// 最も近い候補をロックオン対象にする
 			m_LockTarget = candidates[0];
-			m_IsCombat = true;
+			m_IsCombat   = true;
 		}
 		else
 		{
@@ -437,7 +446,7 @@ void Player::CheckLockTarget(Scene* scene)
 	if (!isInvalid)
 	{
 		HealthComponent* hp = m_LockTarget->GetComponent<HealthComponent>();
-		isInvalid = (hp == nullptr || !hp->IsAlive());
+		isInvalid           = (hp == nullptr || !hp->IsAlive());
 	}
 
 	if (isInvalid)
@@ -481,7 +490,7 @@ void Player::HandleCombatInput(float deltaTime, Scene* scene, Camera* camera)
 {
 	// Aボタン又はTキーの入力判定
 	const bool aHeld = Input::GetInstance().IsControllerPress(BTN_ACTION) || Input::GetInstance().IsKeyPress('T');
-	
+
 	if (aHeld)
 	{
 		m_AHoldTime += deltaTime;
@@ -489,7 +498,7 @@ void Player::HandleCombatInput(float deltaTime, Scene* scene, Camera* camera)
 		// 戦闘中かつAボタンが長押しされた場合、戦闘状態から抜ける
 		if (m_IsCombat && !m_ExitCombat && m_AHoldTime >= kALongPressSec)
 		{
-			m_IsCombat = false;
+			m_IsCombat   = false;
 			m_ExitCombat = true;
 		}
 	}
@@ -504,7 +513,7 @@ void Player::HandleCombatInput(float deltaTime, Scene* scene, Camera* camera)
 			}
 		}
 
-		m_AHoldTime = 0.0f;
+		m_AHoldTime  = 0.0f;
 		m_ExitCombat = false;
 	}
 
@@ -531,7 +540,7 @@ std::vector<GameObject*> Player::CollectLockCandidates(const Scene* scene, const
 
 		// ターゲットコンポーネントと体力コンポーネントを保持しているか、体力が残っているかの確認
 		TargetComponent* targetComp = obj->GetComponent<TargetComponent>();
-		HealthComponent* hp = obj->GetComponent<HealthComponent>();
+		HealthComponent* hp         = obj->GetComponent<HealthComponent>();
 
 		if (targetComp == nullptr || hp == nullptr || !hp->IsAlive())
 			continue;
@@ -550,13 +559,14 @@ std::vector<GameObject*> Player::CollectLockCandidates(const Scene* scene, const
 
 	// 最後に距離の近い順にソート
 	std::sort(out.begin(), out.end(),
-		[this](GameObject* a, GameObject* b) {
-			auto da = a->GetPosition();
-			auto db = b->GetPosition();
-			const float ax = da.x - m_Position.x, az = da.z - m_Position.z;
-			const float bx = db.x - m_Position.x, bz = db.z - m_Position.z;
-			return (ax * ax + az * az) < (bx * bx + bz * bz);
-		});
+	          [this](GameObject* a, GameObject* b)
+	          {
+		          auto da        = a->GetPosition();
+		          auto db        = b->GetPosition();
+		          const float ax = da.x - m_Position.x, az = da.z - m_Position.z;
+		          const float bx = db.x - m_Position.x, bz = db.z - m_Position.z;
+		          return (ax * ax + az * az) < (bx * bx + bz * bz);
+	          });
 
 	return out;
 }
@@ -580,13 +590,14 @@ void Player::SwitchTarget(const Scene* scene, const Camera* camera, int directio
 
 	// 現在のロックオン候補数を取得
 	const int n = static_cast<int>(candidates.size());
-	
+
 	if (n > 0)
 	{
 		// 次のインデックスの計算
 		int nextIdx = (idx < 0) ? 0 : (idx + direction) % n;
 
-		if (nextIdx < 0) nextIdx += n;
+		if (nextIdx < 0)
+			nextIdx += n;
 		m_LockTarget = candidates[nextIdx];
 	}
 }
@@ -618,14 +629,14 @@ void Player::UpdateAutoAttack(float deltaTime)
 		return; // クールダウン中なら何もしない
 
 	if (m_PlayingCombatAnim)
-		return;// 戦闘アニメーション再生中なら何もしない
+		return; // 戦闘アニメーション再生中なら何もしない
 
 	m_DamageDelayTime = kAttackDamageDelay;
-	m_PendingDamage = m_Status->GetAttackPower();
+	m_PendingDamage   = m_Status->GetAttackPower();
 
 	// 攻撃アニメーションの開始
 	StartCombatAnim(kAnimAttackAuto);
-	
+
 	m_CurrentAutoAtkCd = m_Status->GetAutoAttackInterval();
 }
 
@@ -640,18 +651,23 @@ void Player::UpdateSkills(float deltaTime)
 		return;
 	}
 
-
 	if (!m_IsCombat || m_LockTarget == nullptr)
 	{
 		return;
 	}
 
-	if (Input::GetInstance().IsKeyTrigger('1')) TryStartSkillSlot(0);
-	if (Input::GetInstance().IsKeyTrigger('2')) TryStartSkillSlot(1);
-	if (Input::GetInstance().IsKeyTrigger('3')) TryStartSkillSlot(2);
-	if (Input::GetInstance().IsKeyTrigger('4')) TryStartSkillSlot(3);
-	if (Input::GetInstance().IsKeyTrigger('5')) TryStartSkillSlot(4);
-	if (Input::GetInstance().IsKeyTrigger('6')) TryStartSkillSlot(5);
+	if (Input::GetInstance().IsKeyTrigger('1'))
+		TryStartSkillSlot(0);
+	if (Input::GetInstance().IsKeyTrigger('2'))
+		TryStartSkillSlot(1);
+	if (Input::GetInstance().IsKeyTrigger('3'))
+		TryStartSkillSlot(2);
+	if (Input::GetInstance().IsKeyTrigger('4'))
+		TryStartSkillSlot(3);
+	if (Input::GetInstance().IsKeyTrigger('5'))
+		TryStartSkillSlot(4);
+	if (Input::GetInstance().IsKeyTrigger('6'))
+		TryStartSkillSlot(5);
 }
 
 void Player::UpdateSkillState(float deltaTime)
@@ -701,16 +717,16 @@ bool Player::TryStartSkillSlot(int slotIndex)
 		return false;
 	}
 
-	m_DamageDelayTime = 0.0f;	// ダメージタイマーのリセット 
-	m_PendingDamage = 0;		// 与えるスキルのダメージをリセット
+	m_DamageDelayTime = 0.0f; // ダメージタイマーのリセット
+	m_PendingDamage   = 0;    // 与えるスキルのダメージをリセット
 
 	// スキルのアニメーションを再生
 	StartCombatAnim(skill->Data.animationName);
 
-	m_HasActiveSkill = true;		// 発動中にする
-	m_ActiveSkill = skill->Data;	// 発動するスキルのデータを保存
-	m_SkillTarget = m_LockTarget; // スキルの対象を設定
-	m_ActiveSkillTime = skill->Data.effectDelaySec;
+	m_HasActiveSkill      = true;         // 発動中にする
+	m_ActiveSkill         = skill->Data;  // 発動するスキルのデータを保存
+	m_SkillTarget         = m_LockTarget; // スキルの対象を設定
+	m_ActiveSkillTime     = skill->Data.effectDelaySec;
 	m_ActiveSkillHitCount = 0;
 
 	// スキルの攻撃倍率を初期化（チェインダメージがない場合は1.0fで後にチェイン判定で使用する）
@@ -754,7 +770,7 @@ void Player::UpdateActiveSkill(float deltaTime)
 	if (m_ActiveSkillHitCount >= m_ActiveSkill.hitCount)
 	{
 		m_HasActiveSkill = false;
-		m_SkillTarget = nullptr;
+		m_SkillTarget    = nullptr;
 		return;
 	}
 
@@ -781,7 +797,7 @@ bool Player::ApplySkillDamage(GameObject* target, const DamageContext& context)
 
 	DamageResult result = target->ApplyDamage(context);
 
-	if(result.hit)
+	if (result.hit)
 	{
 		GameManager::GetStatus().totalDamage += result.finalDamage;
 	}
@@ -799,10 +815,10 @@ std::vector<GameObject*> Player::CollectSkillTargets(const SkillData& skill) con
 		return targets;
 	}
 
-	const auto& enemies = scene->GetGameObjectsByLayer(eLayer::ENEMY);
+	const auto& enemies        = scene->GetGameObjectsByLayer(eLayer::ENEMY);
 	const float skillRangeRate = m_Status->GetSkillRangeRate();
-	const float areaRadius = skill.areaRadius * skillRangeRate;
-	const float range = skill.range * skillRangeRate;
+	const float areaRadius     = skill.areaRadius * skillRangeRate;
+	const float range          = skill.range * skillRangeRate;
 	for (const auto& enemy : enemies)
 	{
 		GameObject* obj = enemy.get();
@@ -827,7 +843,7 @@ std::vector<GameObject*> Player::CollectSkillTargets(const SkillData& skill) con
 			break;
 
 		case SkillTargetType::AroundSelf:
-			if (MathUtility::IsInRange(m_Position, obj->GetPosition(),	areaRadius))
+			if (MathUtility::IsInRange(m_Position, obj->GetPosition(), areaRadius))
 			{
 				targets.push_back(obj);
 			}
@@ -835,7 +851,7 @@ std::vector<GameObject*> Player::CollectSkillTargets(const SkillData& skill) con
 
 		case SkillTargetType::AroundTarget:
 			if (m_SkillTarget != nullptr &&
-				MathUtility::IsInRange(m_SkillTarget->GetPosition(), obj->GetPosition(), areaRadius))
+			    MathUtility::IsInRange(m_SkillTarget->GetPosition(), obj->GetPosition(), areaRadius))
 			{
 				targets.push_back(obj);
 			}
@@ -861,9 +877,9 @@ bool Player::IsInForwardCone(const GameObject* target, float range, float angleD
 	}
 
 	const XMFLOAT3 targetPos = target->GetPosition();
-	const float dx = targetPos.x - m_Position.x;
-	const float dz = targetPos.z - m_Position.z;
-	const float distSq = dx * dx + dz * dz;
+	const float dx           = targetPos.x - m_Position.x;
+	const float dz           = targetPos.z - m_Position.z;
+	const float distSq       = dx * dx + dz * dz;
 	if (distSq > range * range || distSq <= 0.0001f)
 	{
 		return false;
@@ -882,9 +898,9 @@ bool Player::IsInForwardCone(const GameObject* target, float range, float angleD
 	const float tx = dx / tLen;
 	const float tz = dz / tLen;
 
-	const float dot = fx * tx + fz * tz;
+	const float dot     = fx * tx + fz * tz;
 	const float halfRad = DirectX::XMConvertToRadians(angleDeg * 0.5f);
-	const float minDot = std::cos(halfRad);
+	const float minDot  = std::cos(halfRad);
 
 	return dot >= minDot;
 }
@@ -917,8 +933,7 @@ void Player::CalculateAttackDamage(bool isAutoAttack, Camera* camera)
 	{
 		// クリティカルヒットの場合、ダメージにクリティカル倍率を適応
 		context.damage = static_cast<int>(
-			static_cast<float>(context.damage) * m_Status->GetCriticalDamageRate()
-			);
+		    static_cast<float>(context.damage) * m_Status->GetCriticalDamageRate());
 		context.isCritical = true;
 	}
 	if (isAutoAttack && camera != nullptr)
@@ -937,7 +952,7 @@ void Player::CalculateAttackDamage(bool isAutoAttack, Camera* camera)
 			GameManager::GetStatus().totalDamage += result.finalDamage;
 			// ここでヒットエフェクトを発動
 			TriggerEnemyHitEffect(camera,
-				kEnemyHitImpactHoldAuto, kEnemyHitShakeMag, kEnemyHitShakeDuration);
+			                      kEnemyHitImpactHoldAuto, kEnemyHitShakeMag, kEnemyHitShakeDuration);
 			m_CurrentChainTime = kChainSec;
 		}
 		return;
@@ -947,7 +962,7 @@ void Player::CalculateAttackDamage(bool isAutoAttack, Camera* camera)
 	//	スキル攻撃
 
 	std::vector<GameObject*> targets = CollectSkillTargets(m_ActiveSkill);
-	bool hitAny = false;
+	bool hitAny                      = false;
 	for (GameObject* target : targets)
 	{
 		if (ApplySkillDamage(target, context))
@@ -958,7 +973,7 @@ void Player::CalculateAttackDamage(bool isAutoAttack, Camera* camera)
 	if (hitAny)
 	{
 		TriggerEnemyHitEffect(camera,
-			kEnemyHitImpactHoldAuto, kEnemyHitShakeMag, kEnemyHitShakeDuration);
+		                      kEnemyHitImpactHoldAuto, kEnemyHitShakeMag, kEnemyHitShakeDuration);
 		m_CurrentChainTime = kChainSec;
 	}
 }
@@ -996,27 +1011,27 @@ void Player::UpdateMovement(float deltaTime, Camera* camera, Terrain* terrain)
 	{
 		// 現在の再生中のアニメーションがスキルかどうかを名前で判定
 		const std::string clipName = m_AnimController->GetCurrentAnimationName();
-		isPlayingSkill = std::string_view(clipName).starts_with("Player_Skill");
+		isPlayingSkill             = std::string_view(clipName).starts_with("Player_Skill");
 
 		// オートアタック中は移動入力でキャンセル可能にする
-		const float stickMagSq = Input::GetInstance().GetLeftStickX() * Input::GetInstance().GetLeftStickX() + Input::GetInstance().GetLeftStickY() * Input::GetInstance().GetLeftStickY();
+		const float stickMagSq  = Input::GetInstance().GetLeftStickX() * Input::GetInstance().GetLeftStickX() + Input::GetInstance().GetLeftStickY() * Input::GetInstance().GetLeftStickY();
 		const bool hasMoveInput = Input::GetInstance().IsKeyPress('W') || Input::GetInstance().IsKeyPress('S') || Input::GetInstance().IsKeyPress('A') || Input::GetInstance().IsKeyPress('D') || (stickMagSq > 0.01f);
 
 		if (hasMoveInput && clipName == kAnimAttackAuto)
 		{
 			m_PlayingCombatAnim = false;
-			m_PrevState = PlayerState::Idle;
+			m_PrevState         = PlayerState::Idle;
 		}
 	}
 
 	// --------------------------------------------------------
 	// 1. 入力ベクトルの計算
 	// --------------------------------------------------------
-	XMFLOAT3 fwd = { 0.0f, 0.0f, 1.0f };
-	XMFLOAT3 right = { 1.0f, 0.0f, 0.0f };
+	XMFLOAT3 fwd   = {0.0f, 0.0f, 1.0f};
+	XMFLOAT3 right = {1.0f, 0.0f, 0.0f};
 	if (camera != nullptr)
 	{
-		fwd = camera->GetViewForwardXZ();
+		fwd   = camera->GetViewForwardXZ();
 		right = camera->GetViewRightXZ();
 	}
 
@@ -1026,10 +1041,26 @@ void Player::UpdateMovement(float deltaTime, Camera* camera, Terrain* terrain)
 	// スキルアニメション中は移動不可
 	if (!isPlayingSkill)
 	{
-		if (Input::GetInstance().IsKeyPress('W')) { mx += fwd.x; mz += fwd.z; }
-		if (Input::GetInstance().IsKeyPress('S')) { mx -= fwd.x; mz -= fwd.z; }
-		if (Input::GetInstance().IsKeyPress('D')) { mx += right.x; mz += right.z; }
-		if (Input::GetInstance().IsKeyPress('A')) { mx -= right.x; mz -= right.z; }
+		if (Input::GetInstance().IsKeyPress('W'))
+		{
+			mx += fwd.x;
+			mz += fwd.z;
+		}
+		if (Input::GetInstance().IsKeyPress('S'))
+		{
+			mx -= fwd.x;
+			mz -= fwd.z;
+		}
+		if (Input::GetInstance().IsKeyPress('D'))
+		{
+			mx += right.x;
+			mz += right.z;
+		}
+		if (Input::GetInstance().IsKeyPress('A'))
+		{
+			mx -= right.x;
+			mz -= right.z;
+		}
 
 		mx += Input::GetInstance().GetLeftStickX() * right.x + Input::GetInstance().GetLeftStickY() * fwd.x;
 		mz += Input::GetInstance().GetLeftStickX() * right.z + Input::GetInstance().GetLeftStickY() * fwd.z;
@@ -1037,14 +1068,12 @@ void Player::UpdateMovement(float deltaTime, Camera* camera, Terrain* terrain)
 
 	// 入力があるかどうかの判定
 	const float rawLenSq = mx * mx + mz * mz;
-	const bool bMove = (rawLenSq > kMoveEpsilon);
+	const bool bMove     = (rawLenSq > kMoveEpsilon);
 
 	const float stickMagSq = Input::GetInstance().GetLeftStickX() * Input::GetInstance().GetLeftStickX() + Input::GetInstance().GetLeftStickY() * Input::GetInstance().GetLeftStickY();
 
 	// ダッシュの判定:Shiftキー、スティックが一定以上倒している場合
-	const bool bRun = Input::GetInstance().IsKeyPress(VK_SHIFT)
-		|| Input::GetInstance().IsControllerPress(Input::PAD_RIGHT_SHOULDER)
-		|| (stickMagSq >= kStickRunThreshold * kStickRunThreshold);
+	const bool bRun = Input::GetInstance().IsKeyPress(VK_SHIFT) || Input::GetInstance().IsControllerPress(Input::PAD_RIGHT_SHOULDER) || (stickMagSq >= kStickRunThreshold * kStickRunThreshold);
 
 	// --------------------------------------------------------
 	// 2. 移動と回転の適用
@@ -1056,13 +1085,13 @@ void Player::UpdateMovement(float deltaTime, Camera* camera, Terrain* terrain)
 	if (bMove)
 	{
 		const float rawLen = std::sqrt(rawLenSq);
-		const float nx = mx / rawLen;
-		const float nz = mz / rawLen;
+		const float nx     = mx / rawLen;
+		const float nz     = mz / rawLen;
 		const float analog = std::min(rawLen, 1.0f);
 
 		const float baseMoveSpeed = m_Status ? m_Status->GetMoveSpeed() : kMoveSpeed;
-		const float speed = baseMoveSpeed * (bRun ? kRunMoveRate : 1.0f);
-		const float step = speed * analog * deltaTime;
+		const float speed         = baseMoveSpeed * (bRun ? kRunMoveRate : 1.0f);
+		const float step          = speed * analog * deltaTime;
 
 		m_Position.x += nx * step;
 		m_Position.z += nz * step;
@@ -1074,9 +1103,9 @@ void Player::UpdateMovement(float deltaTime, Camera* camera, Terrain* terrain)
 	if (!isPlayingSkill)
 	{
 		const float currentYaw = std::atan2(GetForward().x, GetForward().z);
-		const float newYaw = MathUtility::SlerpYaw(currentYaw, targetYaw, kRotationSpeed, deltaTime);
-		m_Quaternion = XMQuaternionRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), newYaw);
-		m_Quaternion = XMQuaternionNormalize(m_Quaternion);
+		const float newYaw     = MathUtility::SlerpYaw(currentYaw, targetYaw, kRotationSpeed, deltaTime);
+		m_Quaternion           = XMQuaternionRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), newYaw);
+		m_Quaternion           = XMQuaternionNormalize(m_Quaternion);
 	}
 
 	// --------------------------------------------------------
@@ -1093,16 +1122,16 @@ void Player::UpdateMovement(float deltaTime, Camera* camera, Terrain* terrain)
 
 	// 戦闘中はジャンプを無効化
 	const bool bJump = !m_IsCombat && (Input::GetInstance().IsKeyTrigger(VK_SPACE) || Input::GetInstance().IsControllerTrigger(Input::PAD_A));
-	
+
 	// ジャンプの開始
 	if (m_IsGrounded && bJump)
 	{
-		m_VelocityY = kJumpPower;
+		m_VelocityY  = kJumpPower;
 		m_IsGrounded = false;
 	}
 
 	if (!m_IsGrounded || m_VelocityY > 0.0f)
-	{	
+	{
 		// ジャンプ中の重力の適用
 		m_VelocityY += kGravity * deltaTime;
 		m_Position.y += m_VelocityY * deltaTime;
@@ -1112,7 +1141,7 @@ void Player::UpdateMovement(float deltaTime, Camera* camera, Terrain* terrain)
 	{
 		// 地形に接地している場合
 		m_Position.y = fGroundY;
-		m_VelocityY = 0.0f;
+		m_VelocityY  = 0.0f;
 		m_IsGrounded = true;
 	}
 	else

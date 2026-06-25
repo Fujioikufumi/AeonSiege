@@ -34,8 +34,8 @@ bool ShaderManager::LoadShaderFile(const std::wstring& shaderPath, ComPtr<ID3DBl
 /// シェーダーを読み込む
 //----------------------------------------------------------------------
 bool ShaderManager::LoadShader(const std::wstring& shaderName,
-	const std::wstring& vsPath,
-	const std::wstring& psPath)
+                               const std::wstring& vsPath,
+                               const std::wstring& psPath)
 {
 
 	// 既に読み込まれているか確認
@@ -43,20 +43,20 @@ bool ShaderManager::LoadShader(const std::wstring& shaderName,
 	if (it != m_LoadedShaders.end())
 	{
 		DLOG("Shader already loaded: %ls", shaderName.c_str());
-		return true;  // 既に読み込まれている
+		return true; // 既に読み込まれている
 	}
 
 	// 新しいシェーダー情報を作成
 	ShaderInfo shaderInfo;
-	shaderInfo.vsPath = vsPath;
-	shaderInfo.psPath = psPath;
+	shaderInfo.vsPath  = vsPath;
+	shaderInfo.psPath  = psPath;
 	shaderInfo.isValid = false;
 
 	// 頂点シェーダーを読み込む
 	if (!LoadShaderFile(vsPath, shaderInfo.pVSBlob))
 	{
 		ELOG("Error : Failed to load vertex shader. name = %ls, path = %ls",
-			shaderName.c_str(), vsPath.c_str());
+		     shaderName.c_str(), vsPath.c_str());
 		return false;
 	}
 
@@ -64,12 +64,12 @@ bool ShaderManager::LoadShader(const std::wstring& shaderName,
 	if (!LoadShaderFile(psPath, shaderInfo.pPSBlob))
 	{
 		ELOG("Error : Failed to load pixel shader. name = %ls, path = %ls",
-			shaderName.c_str(), psPath.c_str());
+		     shaderName.c_str(), psPath.c_str());
 		return false;
 	}
 
 	// 読み込み成功
-	shaderInfo.isValid = true;
+	shaderInfo.isValid          = true;
 	m_LoadedShaders[shaderName] = std::move(shaderInfo);
 
 	DLOG("Shader loaded successfully: %ls", shaderName.c_str());
@@ -83,7 +83,7 @@ bool ShaderManager::LoadShader(const std::wstring& shaderName, const std::wstrin
 {
 	// 既に読み込まれているか確認
 	auto it = m_LoadedShaders.find(shaderName);
-	if(it != m_LoadedShaders.end())
+	if (it != m_LoadedShaders.end())
 	{
 		DLOG("Shader already loaded: %ls", shaderName.c_str());
 		return true;
@@ -91,37 +91,37 @@ bool ShaderManager::LoadShader(const std::wstring& shaderName, const std::wstrin
 
 	// シェーダー情報を作成
 	ShaderInfo shaderInfo;
-	shaderInfo.vsPath = vsPath;
-	shaderInfo.psPath = psPath;
-	shaderInfo.gsPath = gsPath;
+	shaderInfo.vsPath  = vsPath;
+	shaderInfo.psPath  = psPath;
+	shaderInfo.gsPath  = gsPath;
 	shaderInfo.isValid = false;
 
 	// 頂点シェーダーを読み込む
-	if(!LoadShaderFile(vsPath, shaderInfo.pVSBlob))
+	if (!LoadShaderFile(vsPath, shaderInfo.pVSBlob))
 	{
 		ELOG("Error : Failed to load vertex shader. name = %ls, path = %ls",
-			shaderName.c_str(), vsPath.c_str());
+		     shaderName.c_str(), vsPath.c_str());
 		return false;
 	}
 
 	// ピクセルシェーダーを読み込む
-	if(!LoadShaderFile(psPath, shaderInfo.pPSBlob))
+	if (!LoadShaderFile(psPath, shaderInfo.pPSBlob))
 	{
 		ELOG("Error : Failed to load pixel shader. name = %ls, path = %ls",
-			shaderName.c_str(), psPath.c_str());
+		     shaderName.c_str(), psPath.c_str());
 		return false;
 	}
 
 	// ジオメトリシェーダーを読み込む
-	if(!LoadShaderFile(gsPath, shaderInfo.pGSBlob))
+	if (!LoadShaderFile(gsPath, shaderInfo.pGSBlob))
 	{
 		ELOG("Error : Failed to load geometry shader. name = %ls, path = %ls",
-			shaderName.c_str(), gsPath.c_str());
+		     shaderName.c_str(), gsPath.c_str());
 		return false;
 	}
-	
+
 	// 読み込み成功
-	shaderInfo.isValid = true;
+	shaderInfo.isValid          = true;
 	m_LoadedShaders[shaderName] = std::move(shaderInfo);
 
 	DLOG("Shader (VS/GS/PS) loaded successfully: %ls", shaderName.c_str());
@@ -145,7 +145,7 @@ bool ShaderManager::LoadComputeShader(const std::wstring& shaderName, const std:
 
 	// 新規作成
 	ShaderInfo info;
-	info.csPath = csPath;
+	info.csPath  = csPath;
 	info.isValid = true;
 
 	// コンピュートシェーダーを読み込む

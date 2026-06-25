@@ -39,7 +39,10 @@ public:
 	};
 
 private:
-	struct ChunkInfo { DirectX::XMFLOAT2 BasePos; };
+	struct ChunkInfo
+	{
+		DirectX::XMFLOAT2 BasePos;
+	};
 
 public:
 	Meadow();
@@ -54,13 +57,14 @@ public:
 private:
 	// GPUリソース（バッファ、UAV、シグネチャ）の生成
 	bool CreateGPUResources();
+
 private:
-	class Scene* m_Scene = nullptr;
+	class Scene* m_Scene     = nullptr;
 	class Terrain* m_Terrain = nullptr;
 
 	// --- 定数バッファ ---
-	ConstantBuffer m_CbGrassNear;   // 草揺れアニメーション用
-	ConstantBuffer m_CbGeneration;  // 草生成CS用
+	ConstantBuffer m_CbGrassNear;  // 草揺れアニメーション用
+	ConstantBuffer m_CbGeneration; // 草生成CS用
 
 	// --- GPU-Driven Rendering リソース ---
 	ComPtr<ID3D12Resource> m_VisibleGrassBuffer; // 生成された草データ
@@ -68,11 +72,11 @@ private:
 	ComPtr<ID3D12Resource> m_ArgsResetBuffer;    // 引数リセット用バッファ
 
 	class DescriptorHandle* m_VisibleGrassUAV = nullptr;
-	class DescriptorHandle* m_DrawArgsUAV = nullptr;
+	class DescriptorHandle* m_DrawArgsUAV     = nullptr;
 
 	ComPtr<ID3D12CommandSignature> m_CommandSignature;
 
 	// --- 管理パラメータ ---
-	uint32_t m_MaxGrassCapacity = 2000000;                // 最大草本数
-	std::vector<ChunkInfo> m_VisibleChunks;               // 可視チャンクリスト
+	uint32_t m_MaxGrassCapacity = 2000000;  // 最大草本数
+	std::vector<ChunkInfo> m_VisibleChunks; // 可視チャンクリスト
 };

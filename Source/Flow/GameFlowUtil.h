@@ -2,6 +2,6 @@
 
 namespace GameFlowUtil
 {
-	bool IsShopOpen();
-	bool IsMenuOpen();
-}
+bool IsShopOpen();
+bool IsMenuOpen();
+} // namespace GameFlowUtil

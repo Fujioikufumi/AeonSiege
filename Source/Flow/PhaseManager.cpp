@@ -11,72 +11,85 @@
 #include <fstream>
 #include <string>
 
-namespace {
+namespace
+{
 
-	static constexpr wchar_t kPhasesJsonPath[] = L"Assets/AppData/Phases.json";
+static constexpr wchar_t kPhasesJsonPath[] = L"Assets/AppData/Phases.json";
 
-	// JSON の type 文字列を EnemyType に変換する
-	static bool ParseEnemyTypeString(const std::string& key, EnemyType& outType)
+// JSON の type 文字列を EnemyType に変換する
+static bool ParseEnemyTypeString(const std::string& key, EnemyType& outType)
+{
+	if (key == "Zombie")
 	{
-		if (key == "Zombie") { outType = EnemyType::Zombie; return true; }
-		if (key == "SkeletonZombie") { outType = EnemyType::SkeletonZombie; return true; }
-		if (key == "Mutant") { outType = EnemyType::Mutant; return true; }
-		return false;
+		outType = EnemyType::Zombie;
+		return true;
 	}
-
-	// Jsonに書かれたフェーズの情報を PhaseData に変換する
-	static PhaseData ParsePhaseJson(const nlohmann::json& jp, int defaultMaxSpawn)
+	if (key == "SkeletonZombie")
 	{
-		PhaseData p{};
+		outType = EnemyType::SkeletonZombie;
+		return true;
+	}
+	if (key == "Mutant")
+	{
+		outType = EnemyType::Mutant;
+		return true;
+	}
+	return false;
+}
 
-		// フェーズ番号を取得。指定がない場合は1とする
-		p.phaseNo = jp.value("phaseNo", 1);
+// Jsonに書かれたフェーズの情報を PhaseData に変換する
+static PhaseData ParsePhaseJson(const nlohmann::json& jp, int defaultMaxSpawn)
+{
+	PhaseData p{};
 
-		int remaining = max(0, defaultMaxSpawn);
+	// フェーズ番号を取得。指定がない場合は1とする
+	p.phaseNo = jp.value("phaseNo", 1);
 
-		// enemies 配列を取得。存在しない、または配列でない場合は nullptr とする
-		const nlohmann::json* enemiesJson = nullptr;
-		if (jp.contains("enemies") && jp["enemies"].is_array())
-			enemiesJson = &jp["enemies"];
+	int remaining = max(0, defaultMaxSpawn);
 
-		if (enemiesJson != nullptr)
+	// enemies 配列を取得。存在しない、または配列でない場合は nullptr とする
+	const nlohmann::json* enemiesJson = nullptr;
+	if (jp.contains("enemies") && jp["enemies"].is_array())
+		enemiesJson = &jp["enemies"];
+
+	if (enemiesJson != nullptr)
+	{
+		for (const auto& je : *enemiesJson)
 		{
-			for (const auto& je : *enemiesJson)
+			if (!je.contains("type") || !je["type"].is_string())
+				continue;
+
+			EnemyType t{};
+			if (!ParseEnemyTypeString(je["type"].get<std::string>(), t))
 			{
-				if (!je.contains("type") || !je["type"].is_string())
-					continue;
-
-				EnemyType t{};
-				if (!ParseEnemyTypeString(je["type"].get<std::string>(), t))
-				{
-					ELOG("Phases.json: unknown enemy type '%s'", je["type"].get<std::string>().c_str());
-					continue;
-				}
-
-				int count = je.value("count", 1);
-				if (count <= 0)
-					continue;
-				// maxEnemiesPerPhase を超えないよう、フェーズ内の合計出現数で打ち切り
-				count = min(count, remaining);
-				if (count <= 0)
-					break;
-
-				// フェーズ内のエネミー情報を作成
-				PhaseEnemyEntry e{};
-				e.type = t;
-				e.count = count;
-				e.level = je.value("level", 1);
-				e.expReward = je.value("expReward", 0);
-
-				p.enemies.push_back(e);
-				remaining -= count;
-				if (remaining <= 0)
-					break;
+				ELOG("Phases.json: unknown enemy type '%s'", je["type"].get<std::string>().c_str());
+				continue;
 			}
-		}
 
-		return p;
+			int count = je.value("count", 1);
+			if (count <= 0)
+				continue;
+			// maxEnemiesPerPhase を超えないよう、フェーズ内の合計出現数で打ち切り
+			count = min(count, remaining);
+			if (count <= 0)
+				break;
+
+			// フェーズ内のエネミー情報を作成
+			PhaseEnemyEntry e{};
+			e.type      = t;
+			e.count     = count;
+			e.level     = je.value("level", 1);
+			e.expReward = je.value("expReward", 0);
+
+			p.enemies.push_back(e);
+			remaining -= count;
+			if (remaining <= 0)
+				break;
+		}
 	}
+
+	return p;
+}
 
 } // namespace
 
@@ -128,7 +141,7 @@ void PhaseManager::LoadPhaseData()
 }
 
 PhaseManager::PhaseManager()
-	: GameObject()
+    : GameObject()
 {
 }
 
@@ -143,12 +156,12 @@ bool PhaseManager::Init()
 	if (scene != nullptr)
 	{
 		m_EnemySpawner = scene->GetGameObjectByName<EnemySpawner>("EnemySpawner");
-		m_ShopManager = scene->GetGameObjectByName<ShopManager>("ShopManager");
+		m_ShopManager  = scene->GetGameObjectByName<ShopManager>("ShopManager");
 	}
 
-	m_State = PhaseState::Spawning;
+	m_State             = PhaseState::Spawning;
 	m_CurrentPhaseIndex = 0; // ゲーム開始時のフェーズ番号
-	m_PhaseClearTimer = 0.0f;
+	m_PhaseClearTimer   = 0.0f;
 
 	BeginSpawnPhase();
 
@@ -169,7 +182,7 @@ void PhaseManager::Update(float deltaTime)
 			break;
 
 		StartCurrentPhase();
-		m_State = PhaseState::Fighting;
+		m_State           = PhaseState::Fighting;
 		m_SpawnDelayTimer = 0.0f;
 		break;
 
@@ -177,7 +190,7 @@ void PhaseManager::Update(float deltaTime)
 		if (AreAllEnemiesDefeated())
 		{
 			m_PhaseClearTimer = kPhaseClearWaitSec;
-			m_State = PhaseState::PhaseClear;
+			m_State           = PhaseState::PhaseClear;
 		}
 		break;
 
@@ -207,7 +220,7 @@ int PhaseManager::GetCurrentPhaseNumber() const
 
 	// インデックスが範囲外の場合は最終フェーズの番号を返す
 	if (m_CurrentPhaseIndex < 0 ||
-		m_CurrentPhaseIndex >= static_cast<int>(m_Phases.size()))
+	    m_CurrentPhaseIndex >= static_cast<int>(m_Phases.size()))
 	{
 		return m_Phases.back().phaseNo;
 	}
@@ -219,11 +232,12 @@ void PhaseManager::StartCurrentPhase()
 {
 	if (m_EnemySpawner == nullptr)
 	{
-		Scene* scene = GameManager::GetScene();
+		Scene* scene   = GameManager::GetScene();
 		m_EnemySpawner = (scene != nullptr) ? scene->GetGameObjectByName<EnemySpawner>("EnemySpawner") : nullptr;
 	}
 
-	if (m_EnemySpawner == nullptr) return;
+	if (m_EnemySpawner == nullptr)
+		return;
 
 	if (m_CurrentPhaseIndex < 0 || m_CurrentPhaseIndex >= static_cast<int>(m_Phases.size()))
 	{
@@ -242,7 +256,8 @@ void PhaseManager::StartCurrentPhase()
 bool PhaseManager::AreAllEnemiesDefeated() const
 {
 	Scene* scene = GameManager::GetScene();
-	if (scene == nullptr) return false;
+	if (scene == nullptr)
+		return false;
 
 	// シーン内にeLayer::ENEMYのゲームオブジェクトが存在しない場合は、全て倒されたとみなす
 	const auto& enemies = scene->GetGameObjectsByLayer(eLayer::ENEMY);
@@ -297,27 +312,25 @@ bool PhaseManager::ShouldOpenShop() const
 
 void PhaseManager::BeginSpawnPhase()
 {
-	m_State = PhaseState::Spawning;
+	m_State           = PhaseState::Spawning;
 	m_SpawnDelayTimer = kSpawnDelaySec;
 }
-
 
 void PhaseManager::StartShopping()
 {
 	m_HasOpenedShop = false;
-	m_State = PhaseState::Shopping;
+	m_State         = PhaseState::Shopping;
 }
-
 
 void PhaseManager::UpdateShopping(float deltaTime)
 {
 
 	if (m_ShopManager == nullptr)
 	{
-		Scene* scene = GameManager::GetScene();
+		Scene* scene  = GameManager::GetScene();
 		m_ShopManager = (scene != nullptr)
-			? scene->GetGameObjectByName<ShopManager>("ShopManager")
-			: nullptr;
+		                    ? scene->GetGameObjectByName<ShopManager>("ShopManager")
+		                    : nullptr;
 	}
 	if (m_ShopManager == nullptr)
 	{

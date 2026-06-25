@@ -58,6 +58,7 @@ public:
 	[[nodiscard]] int CalculateTakenDamage(int baseDamage) const;
 	[[nodiscard]] int CalculateSkillDamage(float skillPowerRate) const;
 	[[nodiscard]] float CalculateSkillDuration(float baseDuration) const;
+
 private:
 	// クランプ処理
 	static void ClampMin(float& value, float minValue);

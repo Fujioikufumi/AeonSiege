@@ -27,6 +27,6 @@ public:
 	/// 更新処理
 	/// </summary>
 	void Update(float deltaTime) override;
-private:
 
+private:
 };

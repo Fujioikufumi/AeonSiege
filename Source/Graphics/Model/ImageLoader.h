@@ -13,18 +13,17 @@
 /// <param name="outPixels">出力: 生ピクセルデータ。サイズは width*height*bytesPerPixel（Gray=1, RGBA=4）</param>
 /// <returns>成功時 true、失敗時 false </returns>
 bool LoadImageWithWIC(
-	const wchar_t* fullPath,
-	REFGUID targetFormat,
-	UINT& outWidth,
-	UINT& outHeight,
-	std::vector<uint8_t>& outPixels
-);
+    const wchar_t* fullPath,
+    REFGUID targetFormat,
+    UINT& outWidth,
+    UINT& outHeight,
+    std::vector<uint8_t>& outPixels);
 
 /// <summary>
 /// WIC で画像を読み込み、16bit Gray フォーマットの生ピクセルデータを取得する。
 /// </summary>
 bool LoadImageWithWIC16(
-	const wchar_t* fullPath,
-	UINT& outWidth,
-	UINT& outHeight,
-	std::vector<uint16_t>& outPixels);
+    const wchar_t* fullPath,
+    UINT& outWidth,
+    UINT& outHeight,
+    std::vector<uint16_t>& outPixels);

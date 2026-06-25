@@ -11,7 +11,7 @@ class ShopManager;
 class ShopUI : public GameObject
 {
 public:
-	ShopUI() = default;
+	ShopUI()           = default;
 	~ShopUI() override = default;
 
 	bool Init() override;
@@ -20,13 +20,13 @@ public:
 private:
 	// ショップUIのスプライトを初期化
 	void SetupSprites();
-	
+
 	// レアリティを表すスプライトを初期化
 	void SetupRaritySprites();
-	
+
 	// 強化内容を表すスプライトを初期化
 	void SetupContentSprites();
-	
+
 	// 味方加入やスキル解放のオファー用スプライトを初期化
 	void SetupOfferSprites();
 
@@ -63,9 +63,9 @@ private:
 
 private:
 	Sprite* m_pBackground = nullptr; // ショップの背景
-	Sprite* m_pEffectA = nullptr;	 // ショップの背景エフェクトA
-	Sprite* m_pEffectB = nullptr;	 // ショップの背景エフェクトB
-	Sprite* m_pRedPanel = nullptr;
+	Sprite* m_pEffectA    = nullptr; // ショップの背景エフェクトA
+	Sprite* m_pEffectB    = nullptr; // ショップの背景エフェクトB
+	Sprite* m_pRedPanel   = nullptr;
 
 	// レアリティスプライト
 	std::array<std::array<Sprite*, kShopOfferCount>, kUpgradeRarityCount> m_RaritySprites = {};
@@ -75,23 +75,23 @@ private:
 
 	// 味方加入スプライト
 	std::array<Sprite*, kShopOfferCount> m_AllySprites = {};
-	
+
 	// スキル解放スプライト
 	std::array<Sprite*, kShopOfferCount> m_SkillSprites = {};
 
 	// ShopManager が設定した ShopOffer.contentTexturePath をコンテンツ用スプライトに適用するためのパスのキャッシュ
 	std::array<std::wstring, kShopOfferCount> m_LastOfferContentPaths{};
 
-	float m_EffectScrollX = 0.0f;
-	static constexpr float kEffectScrollSpeed = 80.0f; // エフェクトのスクロール速度
-	static constexpr float kSelectedCardScale = 1.08f; // 選択中のカードのスケール
-	static constexpr float kUnselectedCardScale = 1.0f;// 選択中のカードのスケール	
-	static constexpr float kSelectedCardAlpha = 1.0f;  // 選択中のカードのアルファ値
+	float m_EffectScrollX                       = 0.0f;
+	static constexpr float kEffectScrollSpeed   = 80.0f; // エフェクトのスクロール速度
+	static constexpr float kSelectedCardScale   = 1.08f; // 選択中のカードのスケール
+	static constexpr float kUnselectedCardScale = 1.0f;  // 選択中のカードのスケール
+	static constexpr float kSelectedCardAlpha   = 1.0f;  // 選択中のカードのアルファ値
 	static constexpr float kUnselectedCardAlpha = 0.85f; // 選択されていないカードのアルファ値
 
-	static constexpr float kCardYRatio = 0.43f;		// screenH に対するカードのY座標
-	static constexpr float kCardSizeRatio = 0.2f;   // screenH に対するカードサイズ
-	static constexpr float kCardXRatios[kShopOfferCount] = { 0.20f, 0.50f, 0.80f }; // screenW に対する各カードのX座標
-	static constexpr float kPanelSizeRatioW = 0.5f;	// screenW に対するパネルの幅の割合
-	static constexpr float kPanelSizeRatioH = 0.5f;	// screenH に対するパネルの高さの割合
+	static constexpr float kCardYRatio                   = 0.43f;                 // screenH に対するカードのY座標
+	static constexpr float kCardSizeRatio                = 0.2f;                  // screenH に対するカードサイズ
+	static constexpr float kCardXRatios[kShopOfferCount] = {0.20f, 0.50f, 0.80f}; // screenW に対する各カードのX座標
+	static constexpr float kPanelSizeRatioW              = 0.5f;                  // screenW に対するパネルの幅の割合
+	static constexpr float kPanelSizeRatioH              = 0.5f;                  // screenH に対するパネルの高さの割合
 };
