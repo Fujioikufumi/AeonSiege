@@ -59,11 +59,15 @@ PSOutput main(VSOutput input)
     // Specular
     float3 specular = ComputeGGX(F0, roughness, NdotH, NdotV, NdotL);
 
-    float3 indirect = AmbientColor * AmbientIntensity * albedo.rgb;
-    float3 direct = (diffuse + specular) * LightColor * LightIntensity * NdotL;
+    // 半球アンビエント：上(空)は明るく、下(地面側)は暗く落として立体感を出す
+	float3 ambient = HemisphereAmbient(N, AmbientColor, AmbientColor * 0.3f);
+	float3 indirect = ambient * AmbientIntensity * albedo.rgb;
+	float3 direct = (diffuse + specular) * LightColor * LightIntensity * NdotL;
 
-    output.Color.rgb = direct + indirect;
-    output.Color.a = albedo.a;
+    // HDRリニアで合成 → ACESトーンマップ → sRGBガンマ補正
+	float3 hdr = direct + indirect;
+	output.Color.rgb = FinishHDR(hdr);
+	output.Color.a = albedo.a;
 
     return output;
 }

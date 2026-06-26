@@ -18,55 +18,57 @@ SamplerState LinearWrapSmp : register(s0);
 
 float3 SampleTerrainLayers(float2 uv, float mask)
 {
-    float3 grass = GrassTexture.Sample(LinearWrapSmp, uv).rgb;
-    float3 rock = RockTexture.Sample(LinearWrapSmp, uv).rgb;
-    return lerp(grass, rock, mask);
+	float3 grass = GrassTexture.Sample(LinearWrapSmp, uv).rgb;
+	float3 rock = RockTexture.Sample(LinearWrapSmp, uv).rgb;
+	return lerp(grass, rock, mask);
 }
 
 PSOutput main(VSOutput input)
 {
-    PSOutput output = (PSOutput) 0;
+	PSOutput output = (PSOutput) 0;
 
-    float dist = distance(input.WorldPos, CameraPosition);
+	float dist = distance(input.WorldPos, CameraPosition);
   
-    float farBlend = saturate((dist - TERRAIN_TILE_FAR_START) / TERRAIN_TILE_FAR_RANGE);
+	float farBlend = saturate((dist - TERRAIN_TILE_FAR_START) / TERRAIN_TILE_FAR_RANGE);
 
-    float2 nearUV = input.WorldPos.xz * TERRAIN_TILE_SCALE_NEAR;
-    float2 farUV = input.WorldPos.xz * TERRAIN_TILE_SCALE_FAR;
+	float2 nearUV = input.WorldPos.xz * TERRAIN_TILE_SCALE_NEAR;
+	float2 farUV = input.WorldPos.xz * TERRAIN_TILE_SCALE_FAR;
 
-    // ÉxÅ[ÉXÉJÉâÅ[
-    float mask = saturate(FieldMap.Sample(LinearWrapSmp, input.TexCoord).r);
-    float3 nearColor = SampleTerrainLayers(nearUV, mask);
-    
-    float3 macroColor = MacroTexture.Sample(LinearWrapSmp, input.TexCoord).rgb;
-    float3 farRockDetail = RockTexture.Sample(LinearWrapSmp, farUV).rgb;
-    float3 farColor = lerp(macroColor, macroColor * farRockDetail * 1.5f, mask);
+	// „Éô„Éº„Çπ„Ç´„É©„Éº
+	float mask = saturate(FieldMap.Sample(LinearWrapSmp, input.TexCoord).r);
+	float3 nearColor = SampleTerrainLayers(nearUV, mask);
+	
+	float3 macroColor = MacroTexture.Sample(LinearWrapSmp, input.TexCoord).rgb;
+	float3 farRockDetail = RockTexture.Sample(LinearWrapSmp, farUV).rgb;
+	float3 farColor = lerp(macroColor, macroColor * farRockDetail * 1.5f, mask);
 
-    float3 albedo = lerp(nearColor, farColor, farBlend);
+	float3 albedo = lerp(nearColor, farColor, farBlend);
 
-    // PBRÉpÉâÉÅÅ[É^
-    float metallic = lerp(Metallic, 0.0f, farBlend);
-    float roughness = lerp(Roughness, 0.8f, farBlend);
+	// PBR„Éë„É©„É°„Éº„Çø
+	float metallic = lerp(Metallic, 0.0f, farBlend);
+	float roughness = lerp(Roughness, 0.8f, farBlend);
 
-    // ñ@ê¸
-    float3 N = normalize(input.InvTangentBasis[2]);
-    if (HasNormalMap != 0)
-    {
-        float3 nSample = T_NormalMap.Sample(LinearWrapSmp, input.TexCoord).xyz * 2.0f - 1.0f;
-        N = normalize(mul(nSample, input.InvTangentBasis));
-    }
+	// Ê≥ïÁ∑ö
+	float3 N = normalize(input.InvTangentBasis[2]);
+	if (HasNormalMap != 0)
+	{
+		float3 nSample = T_NormalMap.Sample(LinearWrapSmp, input.TexCoord).xyz * 2.0f - 1.0f;
+		N = normalize(mul(nSample, input.InvTangentBasis));
+	}
 
-    float3 L = normalize(-LightForward);
-    float3 V = normalize(CameraPosition - input.WorldPos);
-    float NL = saturate(dot(N, L));
+	float3 L = normalize(-LightForward);
+	float3 V = normalize(CameraPosition - input.WorldPos);
+	float NL = saturate(dot(N, L));
 
-    float3 diffuse = ComputeLambert(albedo * (1.0f - metallic));
-    float3 ambient = AmbientColor * AmbientIntensity * albedo;
-    float3 direct = diffuse * NL * LightColor * LightIntensity;
+	// Ê≥ïÁ∑öÊñπÂêë„Å´Âøú„Åò„ÅüÂçäÁêÉ„Ç¢„É≥„Éì„Ç®„É≥„Éà
+	float3 ambient = HemisphereAmbient(N, AmbientColor, AmbientColor * 0.3f) * AmbientIntensity * albedo;
+	float3 diffuse = ComputeLambert(albedo * (1.0f - metallic));
+	float3 direct = diffuse * NL * LightColor * LightIntensity;
 
-    output.Color.rgb = saturate(ambient + direct);
-    output.Color.rgb *= 2.0f; // ëeÇ≥Ç…ÇÊÇÈå∏êä
-    output.Color.a = Alpha;
+	// ACES„Éà„Éº„É≥„Éû„ÉÉ„Éó + „Ç¨„É≥„ÉûË£úÊ≠£
+	float3 hdr = direct + ambient;
+	output.Color.rgb = FinishHDR(hdr);
+	output.Color.a = Alpha;
 
-    return output;
+	return output;
 }

@@ -49,14 +49,14 @@ PSOutput main(VSOutput input)
 {
     PSOutput o = (PSOutput) 0;
     
-    // ƒx[ƒXƒJƒ‰[
+    // ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼
     float3 base = BaseColor;
     if (HasBaseColorMap != 0)
     {
         base = BaseColorMap.Sample(BaseColorSmp, input.TexCoord).rgb * BaseColor;
     }
 
-    // –@üŒvZ
+    // æ³•ç·šè¨ˆç®—
     float3 T0 = input.InvTangentBasis[0];
     float3 B0 = input.InvTangentBasis[1];
     float3 N0 = input.InvTangentBasis[2];
@@ -70,7 +70,7 @@ PSOutput main(VSOutput input)
 
     float3x3 Basis = float3x3(T, B, N);
 
-    // –@üƒ}ƒbƒv‚ª‚ ‚éê‡‚Í–@üƒ}ƒbƒv‚ğ“K—p
+    // æ³•ç·šãƒãƒƒãƒ—ãŒã‚ã‚‹å ´åˆã¯æ³•ç·šãƒãƒƒãƒ—ã‚’é©ç”¨
     if (HasNormalMap != 0)
     {
         float3 nTS = NormalMap.Sample(NormalSmp, input.TexCoord).xyz * 2.0f - 1.0f;
@@ -80,14 +80,31 @@ PSOutput main(VSOutput input)
         N = normalize(mul(nTS, Basis));
     }
 
-    // ƒ‰ƒCƒeƒBƒ“ƒOŒvZ
-    float3 L = normalize(-LightForward);
-    float NL = saturate(dot(N, L));
+    // ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°è¨ˆç®—ï¼ˆPBRï¼‰
+	float3 L = normalize(-LightForward);
+	float3 V = normalize(CameraPosition - input.WorldPos);
+	float3 H = normalize(L + V);
 
-    // ’Pƒ‚ÈLambertŠgU”½Ë
-    float3 ambient = base * AmbientColor * AmbientIntensity;
-    float3 direct = base * LightColor * LightIntensity * NL;
+	float NdotL = saturate(dot(N, L));
+	float NdotV = saturate(dot(N, V));
+	float NdotH = saturate(dot(N, H));
 
-    o.Color = float4(saturate(ambient + direct), 1.0f);
-    return o;
+	float roughness = max(Roughness, 0.08f); // 0ã ã¨é¡é¢ãŒé‹­ã™ãã‚‹ãŸã‚ä¸‹é™ã‚’è¨­å®š
+	float3 F0 = lerp(float3(0.04f, 0.04f, 0.04f), base, Metallic);
+
+	float3 diffuse = ComputeLambert(base * (1.0f - Metallic));
+	float3 specular = ComputeGGX(F0, roughness, NdotH, NdotV, NdotL);
+
+    // åŠçƒã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆ
+	float3 ambient = HemisphereAmbient(N, AmbientColor, AmbientColor * 0.3f) * AmbientIntensity * base;
+
+    // ãƒ•ãƒ¬ãƒãƒ«ãƒªãƒ ãƒ©ã‚¤ãƒˆï¼šè¼ªéƒ­ã‚’æ·¡ãå…‰ã‚‰ã›ã€èƒŒæ™¯ã‹ã‚‰ã‚­ãƒ£ãƒ©ã‚’åˆ†é›¢ã—ã¦è¦‹ã›ã‚‹
+	float rim = pow(1.0f - NdotV, 4.0f);
+	float3 rimLight = rim * LightColor * 0.4f * NdotL;
+
+	float3 direct = (diffuse + specular) * LightColor * LightIntensity * NdotL;
+	float3 hdr = direct + ambient + rimLight;
+
+	o.Color = float4(FinishHDR(hdr), 1.0f);
+	return o;
 }
