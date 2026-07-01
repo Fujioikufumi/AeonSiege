@@ -76,7 +76,7 @@ bool AnimationController::Init(const std::wstring& modelPath)
 	m_BoneMatrices.assign(boneCount, DirectX::XMMatrixIdentity());
 
 	// 定数バッファの初期化
-	if (!m_BoneMatrixCB.Init(GetDevice().Get(), GetPool(POOL_TYPE_RES), sizeof(BoneMatrixBuffer)))
+	if (!m_BoneMatrixCB.Init(GetDevice().Get(), GetPool(POOL_TYPE_RES), sizeof(BoneMatrixBuffer),kFrameCount))
 	{
 		ELOG("Failed to initialize bone matrix constant buffer");
 		return false;
@@ -89,7 +89,6 @@ bool AnimationController::Init(const std::wstring& modelPath)
 
 	// 初期姿勢の計算とバッファ更新
 	CalculateBoneMatrices();
-	UpdateConstantBuffer();
 
 	m_IsInitialized = true;
 	return true;
@@ -140,7 +139,6 @@ void AnimationController::Update(float deltaTime)
 	}
 
 	CalculateBoneMatrices();
-	UpdateConstantBuffer();
 }
 
 //-----------------------------------------------------------------------------
@@ -167,7 +165,7 @@ bool AnimationController::Play(const std::string& animationName)
 	RebuildChannelLookup();
 
 	CalculateBoneMatrices();
-	UpdateConstantBuffer();
+	// UpdateConstantBuffer();
 
 	return true;
 }
@@ -185,7 +183,6 @@ void AnimationController::Stop()
 	m_ChannelByBoneName.clear();
 
 	CalculateBoneMatrices();
-	UpdateConstantBuffer();
 }
 
 //-----------------------------------------------------------------------------
@@ -284,7 +281,7 @@ void AnimationController::RebuildChannelLookup()
 //-----------------------------------------------------------------------------
 // 		定数バッファの更新
 //-----------------------------------------------------------------------------
-void AnimationController::UpdateConstantBuffer()
+void AnimationController::UpdateConstantBuffer(uint32_t frameIndex)
 {
 	struct alignas(128) BoneMatrixBufferInternal
 	{
@@ -292,14 +289,14 @@ void AnimationController::UpdateConstantBuffer()
 	};
 
 	BoneMatrixBufferInternal buffer = {};
-	size_t count                    = min(m_BoneMatrices.size(), kMaxBones);
+	size_t count = min(m_BoneMatrices.size(), kMaxBones);
 
 	for (size_t i = 0; i < count; ++i)
 	{
 		DirectX::XMStoreFloat4x4(&buffer.matrices[i], m_BoneMatrices[i]);
 	}
 
-	if (void* ptr = m_BoneMatrixCB.GetPtr())
+	if (void* ptr = m_BoneMatrixCB.GetPtr(frameIndex))
 	{
 		memcpy(ptr, &buffer, sizeof(BoneMatrixBufferInternal));
 	}

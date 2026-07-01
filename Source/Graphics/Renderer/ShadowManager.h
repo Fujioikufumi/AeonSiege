@@ -46,7 +46,7 @@ private:
 	CbShadow m_ShadowData;
 
 	// フレームカウント
-	const uint32_t m_FrameCount = 2;
+	const uint32_t m_FrameCount = 3;
 
 	// シャドウマップのサイズ
 	const uint32_t m_ShadowMapSize = 2048;

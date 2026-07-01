@@ -1,5 +1,5 @@
 ﻿#include "Graphics/D3D12/VertexBuffer.h"
-
+#include "Graphics/D3D12/ResourceManager.h"
 //-----------------------------------------------------------------------------
 //      コンストラクタ
 //-----------------------------------------------------------------------------
@@ -93,7 +93,7 @@ bool VertexBuffer::Init(
 //-----------------------------------------------------------------------------
 void VertexBuffer::Term()
 {
-	m_VertexBuffer.Reset();
+	ResourceManager::GetInstance().RetireResource(m_VertexBuffer);
 	std::memset(&m_View, 0, sizeof(m_View));
 }
 

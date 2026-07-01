@@ -40,21 +40,33 @@ bool Meadow::Init(Scene* scene, Terrain* terrain)
 	m_Terrain = terrain;
 
 	if (!ModelManager::GetInstance().LoadModel(m_ModelPath))
+	{
 		return false;
+	}
 
 	auto pDevice = ResourceManager::GetInstance().GetDevice();
 	auto pPool   = ResourceManager::GetInstance().GetPool(POOL_TYPE_RES);
 
-	if (!m_CbGrassNear.Init(pDevice.Get(), pPool, sizeof(CbWind)))
+	if (!m_CbGrassNear.Init(pDevice.Get(), pPool, sizeof(CbWind), kFrameCount))
+	{
 		return false;
+	}
 
-	// チャンクごとに定数バッファを切り替えてCSを呼ぶため、多めにスロット(100個)を確保
-	if (!m_CbGeneration.Init(pDevice.Get(), pPool, sizeof(CbGenerationParams), 100))
-		return false;
+	// チャンクごとに定数バッファを切り替えてCSを呼ぶため100スロット確保。
+	// さらにフレーム多重化のため kFrameCount 分用意する
+	for (auto f = 0u; f < kFrameCount; ++f)
+	{
+		if (!m_CbGeneration[f].Init(pDevice.Get(), pPool, sizeof(CbGenerationParams), 100))
+		{
+			return false;
+		}
+	}
 
 	// 代わりに、最大表示数分の空っぽのGPUバッファだけを用意する
 	if (!CreateGPUResources())
+	{
 		return false;
+	}
 
 	return true;
 }
@@ -70,7 +82,8 @@ void Meadow::Term()
 			pPool->FreeHandle(m_DrawArgsUAV);
 	}
 	m_CbGrassNear.Term();
-	m_CbGeneration.Term();
+	for (auto f = 0u; f < kFrameCount; ++f)
+		m_CbGeneration[f].Term();
 }
 
 bool Meadow::CreateGPUResources()
@@ -164,11 +177,11 @@ void Meadow::Update(float deltaTime)
 		}
 	}
 
-	// 風の更新
-	CbWind* pCbWind = m_CbGrassNear.GetPtr<CbWind>();
-	Wind* pWind     = m_Scene->GetGameObjectByName<Wind>("Wind");
-	if (pCbWind)
-		*pCbWind = (pWind) ? pWind->GetCbWind() : CbWind{};
+	//// 風の更新
+	//CbWind* pCbWind = m_CbGrassNear.GetPtr<CbWind>();
+	//Wind* pWind     = m_Scene->GetGameObjectByName<Wind>("Wind");
+	//if (pCbWind)
+	//	*pCbWind = (pWind) ? pWind->GetCbWind() : CbWind{};
 }
 
 void Meadow::Draw(const RenderContext& context)
@@ -176,6 +189,15 @@ void Meadow::Draw(const RenderContext& context)
 	if (m_VisibleChunks.empty() || !context.pCmdList)
 		return;
 	auto pCmd = context.pCmdList;
+
+	const uint32_t frame = context.frameIndex;
+
+	CbWind* pCbWind = m_CbGrassNear.GetPtr<CbWind>(frame);
+	if (pCbWind)
+	{
+		Wind* pWind = m_Scene->GetGameObjectByName<Wind>("Wind");
+		*pCbWind    = (pWind) ? pWind->GetCbWind() : CbWind{};
+	}
 
 	// ==========================================
 	// 1. 引数バッファをリセット
@@ -217,7 +239,7 @@ void Meadow::Draw(const RenderContext& context)
 	{
 		if (i >= kMaxVisibleChunks)
 			break; // スロット上限安全装置
-		CbGenerationParams* pParams = m_CbGeneration.GetPtr<CbGenerationParams>(static_cast<uint32_t>(i));
+		CbGenerationParams* pParams = m_CbGeneration[frame].GetPtr<CbGenerationParams>(static_cast<uint32_t>(i));
 		if (pParams)
 		{
 			pParams->ViewProj    = viewProj;
@@ -235,7 +257,7 @@ void Meadow::Draw(const RenderContext& context)
 			pParams->HeightOffset   = 1.0f;
 		}
 
-		pCmd->SetComputeRootDescriptorTable(0, m_CbGeneration.GetHandleGPU(static_cast<uint32_t>(i)));
+		pCmd->SetComputeRootDescriptorTable(0, m_CbGeneration[frame].GetHandleGPU(static_cast<uint32_t>(i)));
 		pCmd->SetComputeRootDescriptorTable(1, m_Terrain->GetHeightMapSRV());
 		pCmd->SetComputeRootDescriptorTable(2, m_Terrain->GetFieldMapSRV());
 		pCmd->SetComputeRootDescriptorTable(3, m_VisibleGrassUAV->HandleGPU);
@@ -261,13 +283,12 @@ void Meadow::Draw(const RenderContext& context)
 		ELOG("Error: Failed to set pipeline state for GrassNear");
 	}
 
-	pCmd->SetGraphicsRootDescriptorTable(0, m_CbGeneration.GetHandleGPU(0));
+	pCmd->SetGraphicsRootDescriptorTable(0, m_CbGeneration[frame].GetHandleGPU(0));
 
 	auto mat = &ModelManager::GetInstance().GetModel(m_ModelPath)->material;
 	if (mat->GetTextureHandle(0, TU_BASE_COLOR).ptr)
 		pCmd->SetGraphicsRootDescriptorTable(1, mat->GetTextureHandle(0, TU_BASE_COLOR)); // インデックス1
-
-	pCmd->SetGraphicsRootDescriptorTable(2, m_CbGrassNear.GetHandleGPU()); // インデックス2
+	pCmd->SetGraphicsRootDescriptorTable(2, m_CbGrassNear.GetHandleGPU(frame));
 
 	if (m_Terrain->GetMacroTextureHandle().ptr)
 		pCmd->SetGraphicsRootDescriptorTable(3, m_Terrain->GetMacroTextureHandle()); // インデックス3

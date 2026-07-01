@@ -256,6 +256,7 @@ bool GameApp::OnInit()
 //-----------------------------------------------------------------------------
 void GameApp::OnTerm()
 {
+	m_Fence.Sync(m_pQueue.Get());
 	// ImGuiの終了処理
 	m_ImGuiUtil.Term();
 
@@ -295,6 +296,12 @@ void GameApp::OnUpdate()
 	float deltaTime = GetDeltaTime();
 	m_DebugUI.Update(deltaTime, m_FrameIndex, m_Width, m_Height);
 	m_DebugUI.SetScene(GameManager::GetScene()); // シーンが変更される可能性を考慮
+
+	// シーン遷移が保留中なら、旧シーン破棄前にGPUの処理が完了するまで待機
+	if (GameManager::IsScenePending())
+	{
+		m_Fence.Sync(m_pQueue.Get());
+	}
 
 	// ゲームオブジェクト更新
 	GameManager::Update(deltaTime);
@@ -358,8 +365,17 @@ void GameApp::OnRender()
 	ID3D12CommandList* pLists[] = {pCmd};
 	m_pQueue->ExecuteCommandLists(1, pLists);
 
-	// 6. 画面に表示（スワップチェーンをフリップ）
-	Present(1);
+	const uint64_t submittedFenceValue = Present(1);
+
+	ResourceManager::GetInstance().SetCurrentFenceValue(submittedFenceValue);
+
+	if (Scene* scene = GameManager::GetScene())
+	{
+		scene->SetPendingDeletionFenceValue(submittedFenceValue);
+		scene->ReleasePendingDeletion(GetCompletedFenceValue());
+	}
+
+	ResourceManager::GetInstance().ReleaseRetiredResources(GetCompletedFenceValue());
 }
 
 //-----------------------------------------------------------------------------
@@ -398,6 +414,7 @@ RenderContext GameApp::CreateRenderContext(ID3D12GraphicsCommandList* pCmdList)
 	// 定数バッファのGPUハンドル取得
 	RenderContext context;
 	context.pCmdList    = pCmdList;
+	context.frameIndex  = m_FrameIndex;
 	context.transformCB = m_TransformCB[m_FrameIndex].GetHandleGPU();
 	context.lightCB     = LightManager::GetInstance().GetHandleGPU(m_FrameIndex);
 	context.cameraCB    = m_CameraCB[m_FrameIndex].GetHandleGPU();

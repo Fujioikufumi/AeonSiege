@@ -89,11 +89,11 @@ private:
 	// 描画に必要な頂点バッファを生成
 	void CreateVertexBuffer();
 
-	// 各種定数バッファを最新の状態に更新
-	void UpdateConstantBuffers();
+	// 定数バッファの更新
+	void UpdateConstantBuffers(uint32_t frameIndex);
 
 private:
-	std::unique_ptr<Texture> m_Texture; // テクスチャリソース
+	std::shared_ptr<Texture> m_Texture; // テクスチャリソース
 	std::wstring m_TexturePath;         // テクスチャパス
 	VertexBuffer m_VertexBuffer;        // 頂点バッファ
 	ConstantBuffer m_SpriteCB;          // トランスフォーム用定数バッファ

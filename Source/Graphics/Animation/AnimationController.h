@@ -30,6 +30,9 @@ public:
 	bool Init(const std::wstring& modelPath);
 	void Term() override;
 
+	// 行列計算の結果をGPUの定数バッファに書き込みます。
+	void UpdateConstantBuffer(uint32_t frameIndex);
+
 	// アニメーションを再生
 	bool Play(const std::string& animationName);
 
@@ -55,8 +58,10 @@ public:
 	void SetLoop(bool loop) { m_IsLoop = loop; }
 
 	// ボーンマトリックス定数バッファのGPUハンドルを取得
-	[[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE GetBoneMatrixCBHandle() const { return m_BoneMatrixCB.GetHandleGPU(); }
-
+	[[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE GetBoneMatrixCBHandle(uint32_t frameIndex) const
+	{
+		return m_BoneMatrixCB.GetHandleGPU(frameIndex);
+	}
 	// ボーン数を取得
 	[[nodiscard]] size_t GetBoneCount() const { return m_BoneMatrices.size(); }
 
@@ -75,16 +80,12 @@ public:
 protected:
 	// 更新処理。アニメーション時間の進捗と行列計算を行います。
 	void Update(float deltaTime) override;
-
 private:
 	// ボーン行列を現在の時間に基づいて計算します。
 	void CalculateBoneMatrices();
 
 	// ボーン名からアニメーションチャンネルを高速に検索するためのルックアップを再構築します。
 	void RebuildChannelLookup();
-
-	// 行列計算の結果をGPUの定数バッファに書き込みます。
-	void UpdateConstantBuffer();
 
 private:
 	bool m_IsInitialized = false; // 初期化フラグ

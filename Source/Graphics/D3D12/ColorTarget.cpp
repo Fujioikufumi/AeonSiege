@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------
 #include "Graphics/D3D12/ColorTarget.h"
 #include "Graphics/D3D12/DescriptorPool.h"
+#include "Graphics/D3D12/ResourceManager.h"
 
 namespace
 {
@@ -251,18 +252,30 @@ bool ColorTarget::InitFromBackBuffer(
 //-----------------------------------------------------------------------------
 void ColorTarget::Term()
 {
-	m_pTarget.Reset();
+	auto& resourceManager = ResourceManager::GetInstance();
+
+	resourceManager.RetireResource(m_pTarget);
 
 	if (m_pPoolRTV != nullptr && m_pHandleRTV != nullptr)
 	{
-		m_pPoolRTV->FreeHandle(m_pHandleRTV);
-		m_pHandleRTV = nullptr;
+		resourceManager.RetireDescriptor(m_pPoolRTV, m_pHandleRTV);
 	}
 
 	if (m_pPoolRTV != nullptr)
 	{
 		m_pPoolRTV->Release();
 		m_pPoolRTV = nullptr;
+	}
+
+	if (m_pPoolSRV != nullptr && m_pHandleSRV != nullptr)
+	{
+		resourceManager.RetireDescriptor(m_pPoolSRV, m_pHandleSRV);
+	}
+
+	if (m_pPoolSRV != nullptr)
+	{
+		m_pPoolSRV->Release();
+		m_pPoolSRV = nullptr;
 	}
 }
 

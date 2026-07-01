@@ -24,16 +24,26 @@ class FloatingDamage : public GameObject
 public:
 	FloatingDamage()           = default;
 	~FloatingDamage() override = default;
+
 	bool Init() override;
 	void Update(float deltaTime) override;
-	// ダメージ量と初期のスクリーン座標、色を設定する
+	void Draw(const RenderContext& context) override;
+
 	void Setup(int damage, float screenX, float screenY, FloatingDamageType type);
 
+	[[nodiscard]] bool IsActive() const { return m_IsActive; }
+	void Deactivate();
+
 private:
+	void SetupMiss(float screenX, float screenY);
+	void SetupNumber(int damage, float screenX, float screenY, FloatingDamageType type);
+
+
 	Sprite* m_MissSprite = nullptr; // 回避時の表示UI
 	NumberUI* m_NumberUI = nullptr; // ダメージ数値表示用UI
 	float m_PosX         = 0.0f;
 	float m_PosY         = 0.0f;
+	bool m_IsActive      = false;
 	bool m_IsMiss        = false;
 
 	float m_LifeTime          = 0.0f;

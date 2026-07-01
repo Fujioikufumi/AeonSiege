@@ -20,4 +20,5 @@ struct RenderContext
 	DirectX::XMFLOAT3 cameraPos;              // カメラ位置
 	D3D12_VIEWPORT viewport;                  // ビューポート
 	D3D12_RECT scissorRect;                   // シザー矩形
+	uint32_t frameIndex = 0;                  // フレームインデックス
 };

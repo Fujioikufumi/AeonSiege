@@ -5,6 +5,7 @@
 #include <d3d12.h>
 #include "Core/RenderContext.h"
 #include "Graphics/D3D12/ConstantBuffer.h"
+#include "Core/NameSpace.h"
 
 /// <summary>
 /// GPU-Drivenを用いた大量の草（草原）の描画・生成を管理するクラス。
@@ -63,8 +64,8 @@ private:
 	class Terrain* m_Terrain = nullptr;
 
 	// --- 定数バッファ ---
-	ConstantBuffer m_CbGrassNear;  // 草揺れアニメーション用
-	ConstantBuffer m_CbGeneration; // 草生成CS用
+	ConstantBuffer m_CbGrassNear;               // 草揺れアニメーション用（多重化）
+	ConstantBuffer m_CbGeneration[kFrameCount]; // 草生成CS用
 
 	// --- GPU-Driven Rendering リソース ---
 	ComPtr<ID3D12Resource> m_VisibleGrassBuffer; // 生成された草データ

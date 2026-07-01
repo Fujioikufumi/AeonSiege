@@ -16,6 +16,9 @@ public:
 	bool Init() override;
 	void Update(float deltaTime) override;
 
+	void Hide();
+	void ResetDisplay();
+
 	// 表示設定
 	void SetValue(int value); // 既に設定している値と異なる桁の場合新たにスプライトを追加する
 	void SetPosition(float x, float y);

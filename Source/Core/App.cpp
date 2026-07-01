@@ -4,6 +4,7 @@
 #include "Core/App.h"
 #include <algorithm>
 #pragma comment(lib, "winmm.lib")
+#include "Utility/Logger.h"
 namespace /* anonymous */
 {
 
@@ -16,10 +17,10 @@ const auto ClassName = TEXT("SampleWindowClass"); // ウィンドウクラス名
 //      領域の交差を計算します.
 //-----------------------------------------------------------------------------
 inline int ComputeIntersectionArea(
-    int ax1, int ay1,
-    int ax2, int ay2,
-    int bx1, int by1,
-    int bx2, int by2)
+	int ax1, int ay1,
+	int ax2, int ay2,
+	int bx1, int by1,
+	int bx2, int by2)
 {
 	return std::max(0, std::min(ax2, bx2) - std::max(ax1, bx1)) * std::max(0, std::min(ay2, by2) - std::max(ay1, by1));
 }
@@ -37,7 +38,7 @@ constexpr float kMaxDeltaTimeSpike = 0.1f;
 //      コンストラクタです.
 //-----------------------------------------------------------------------------
 App::App(uint32_t width, uint32_t height, DXGI_FORMAT format)
-    : m_hInst(nullptr), m_hWnd(nullptr), m_Width(width), m_Height(height), m_FrameIndex(0), m_BackBufferFormat(format), m_IsFirstFrame(true), m_DeltaTime(0.0f)
+	: m_hInst(nullptr), m_hWnd(nullptr), m_Width(width), m_Height(height), m_FrameIndex(0), m_BackBufferFormat(format), m_IsFirstFrame(true), m_DeltaTime(0.0f)
 { /* DO_NOTHING */
 	QueryPerformanceFrequency(&m_PerformanceFrequency);
 }
@@ -162,18 +163,18 @@ bool App::InitWnd()
 
 	// ウィンドウを生成.
 	m_hWnd = CreateWindowEx(
-	    0,
-	    ClassName,
-	    TEXT("フィールドレンダリング"),
-	    style,
-	    CW_USEDEFAULT,
-	    CW_USEDEFAULT,
-	    rc.right - rc.left,
-	    rc.bottom - rc.top,
-	    nullptr,
-	    nullptr,
-	    m_hInst,
-	    this);
+		0,
+		ClassName,
+		TEXT("フィールドレンダリング"),
+		style,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		rc.right - rc.left,
+		rc.bottom - rc.top,
+		nullptr,
+		nullptr,
+		m_hInst,
+		this);
 
 	if (m_hWnd == nullptr)
 	{
@@ -203,16 +204,14 @@ void App::TermWnd()
 //-----------------------------------------------------------------------------
 bool App::InitD3D()
 {
-#if defined(DEBUG) || defined(_DEBUG)
 	{
-		ComPtr<ID3D12Debug> pDebug;
-		auto hr = D3D12GetDebugInterface(IID_PPV_ARGS(pDebug.GetAddressOf()));
-		if (SUCCEEDED(hr))
+		ComPtr<ID3D12DeviceRemovedExtendedDataSettings> pDredSettings;
+		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(pDredSettings.GetAddressOf()))))
 		{
-			pDebug->EnableDebugLayer();
+			pDredSettings->SetAutoBreadcrumbsEnablement(D3D12_DRED_ENABLEMENT_FORCED_ON);
+			pDredSettings->SetPageFaultEnablement(D3D12_DRED_ENABLEMENT_FORCED_ON);
 		}
 	}
-#endif
 
 	// デバイスの生成.
 	auto hr = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_pDevice));
@@ -336,11 +335,11 @@ bool App::InitD3D()
 		for (auto i = 0u; i < FrameCount; ++i)
 		{
 			if (!m_ColorTarget[i].InitFromBackBuffer(
-			        m_pDevice.Get(),
-			        m_pPool[POOL_TYPE_RTV],
-			        true,
-			        i,
-			        m_pSwapChain.Get()))
+					m_pDevice.Get(),
+					m_pPool[POOL_TYPE_RTV],
+					true,
+					i,
+					m_pSwapChain.Get()))
 			{
 				return false;
 			}
@@ -350,14 +349,14 @@ bool App::InitD3D()
 	// 深度ステンシルバッファの生成
 	{
 		if (!m_DepthTarget.Init(
-		        m_pDevice.Get(),
-		        m_pPool[POOL_TYPE_DSV],
-		        nullptr,
-		        m_Width,
-		        m_Height,
-		        DXGI_FORMAT_D32_FLOAT,
-		        1.0f,
-		        0))
+				m_pDevice.Get(),
+				m_pPool[POOL_TYPE_DSV],
+				nullptr,
+				m_Width,
+				m_Height,
+				DXGI_FORMAT_D32_FLOAT,
+				1.0f,
+				0))
 		{
 			return false;
 		}
@@ -486,16 +485,18 @@ void App::MainLoop()
 //-----------------------------------------------------------------------------
 //      画面に表示し，次のフレームの準備を行います.
 //-----------------------------------------------------------------------------
-void App::Present(uint32_t interval)
+uint64_t App::Present(uint32_t interval)
 {
-	// 画面に表示.
 	m_pSwapChain->Present(interval, 0);
 
-	// 完了待ち.
-	m_Fence.Wait(m_pQueue.Get(), INFINITE);
+	const uint64_t submittedFenceValue = m_Fence.Signal(m_pQueue.Get());
+	m_FrameFenceValues[m_FrameIndex]   = submittedFenceValue;
 
-	// フレーム番号を更新.
 	m_FrameIndex = m_pSwapChain->GetCurrentBackBufferIndex();
+
+	m_Fence.WaitForValue(m_FrameFenceValues[m_FrameIndex], INFINITE);
+
+	return submittedFenceValue;
 }
 
 //-----------------------------------------------------------------------------
@@ -583,7 +584,7 @@ void App::CheckSupportHDR()
 
 		// 領域が一致するかどうか調べる.
 		int intersectArea = ComputeIntersectionArea(
-		    ax1, ay1, ax2, ay2, bx1, by1, bx2, by2);
+			ax1, ay1, ax2, ay2, bx1, by1, bx2, by2);
 		if (intersectArea > bestIntersectArea)
 		{
 			bestOutput        = currentOutput;

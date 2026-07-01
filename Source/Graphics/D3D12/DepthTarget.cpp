@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------
 #include "Graphics/D3D12/DepthTarget.h"
 #include "Graphics/D3D12/DescriptorPool.h"
+#include "Graphics/D3D12/ResourceManager.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // DepthTarget class
@@ -150,12 +151,13 @@ bool DepthTarget::Init(
 //-----------------------------------------------------------------------------
 void DepthTarget::Term()
 {
-	m_pTarget.Reset();
+	auto& resourceManager = ResourceManager::GetInstance();
+
+	resourceManager.RetireResource(m_pTarget);
 
 	if (m_pPoolDSV != nullptr && m_pHandleDSV != nullptr)
 	{
-		m_pPoolDSV->FreeHandle(m_pHandleDSV);
-		m_pHandleDSV = nullptr;
+		resourceManager.RetireDescriptor(m_pPoolDSV, m_pHandleDSV);
 	}
 
 	if (m_pPoolDSV != nullptr)
@@ -166,11 +168,10 @@ void DepthTarget::Term()
 
 	if (m_pPoolSRV != nullptr && m_pHandleSRV != nullptr)
 	{
-		m_pPoolSRV->FreeHandle(m_pHandleSRV);
-		m_pHandleSRV = nullptr;
+		resourceManager.RetireDescriptor(m_pPoolSRV, m_pHandleSRV);
 	}
 
-	if (m_pHandleSRV != nullptr)
+	if (m_pPoolSRV != nullptr)
 	{
 		m_pPoolSRV->Release();
 		m_pPoolSRV = nullptr;

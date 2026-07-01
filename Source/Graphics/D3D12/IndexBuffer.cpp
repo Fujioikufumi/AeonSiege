@@ -1,4 +1,5 @@
 ﻿#include "Graphics/D3D12/IndexBuffer.h"
+#include "Graphics/D3D12/ResourceManager.h"
 #include <cstring>
 
 //-----------------------------------------------------------------------------
@@ -95,7 +96,7 @@ bool IndexBuffer::Init(ID3D12Device* device, size_t indexCount, const uint32_t* 
 //-----------------------------------------------------------------------------
 void IndexBuffer::Term()
 {
-	m_IndexBuffer.Reset();
+	ResourceManager::GetInstance().RetireResource(m_IndexBuffer);
 	std::memset(&m_View, 0, sizeof(m_View));
 	m_IndexCount = 0;
 }

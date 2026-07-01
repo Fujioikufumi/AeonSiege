@@ -9,6 +9,7 @@
 #include "Core/GameObject.h"
 #include "d3d12.h"
 
+
 class Camera;
 
 class Scene
@@ -20,6 +21,14 @@ protected:
 	std::unordered_map<std::string, GameObject*> m_NameCache;
 	// nullptr チェック用のポインタ
 	std::unordered_set<const GameObject*> m_PointerCache;
+
+	struct PendingDeletion
+	{
+		std::unique_ptr<GameObject> Object;
+		uint64_t FenceValue = 0; // 0 はまだフェンス値未設定
+	};
+
+	std::vector<PendingDeletion> m_PendingDeletion;
 
 	// カメラはシーンにも直接持たせる (GetGameObjectでも取得可能)
 	Camera* m_Camera = nullptr;
@@ -120,4 +129,7 @@ public:
 
 	// 指定されたオブジェクトがシーン内に存在するか
 	[[nodiscard]] bool ContainsGameObject(const GameObject* obj) const;
+
+	void SetPendingDeletionFenceValue(uint64_t fenceValue);
+	void ReleasePendingDeletion(uint64_t completedFenceValue);
 };

@@ -263,7 +263,7 @@ bool SkyDome::Init(
 	}
 
 	{
-		for (auto i = 0; i < 2; ++i)
+		for (auto i = 0; i < ::FrameCount; ++i)
 		{
 			if (!m_CB[i].Init(pDevice, m_pPoolRes, sizeof(CbSkyDome)))
 			{
@@ -283,7 +283,7 @@ bool SkyDome::Init(
 //-----------------------------------------------------------------------------
 void SkyDome::Term()
 {
-	for (auto i = 0; i < 2; ++i)
+	for (auto i = 0; i < ::FrameCount; ++i)
 	{
 		m_CB[i].Term();
 	}
@@ -352,5 +352,5 @@ void SkyDome::Draw(
 	pCmd->IASetVertexBuffers(0, 1, &vbv);
 	pCmd->DrawIndexedInstanced(m_IndexCount, 1, 0, 0, 0);
 
-	m_Index = (m_Index + 1) % 2;
+	m_Index = (m_Index + 1) % ::FrameCount;
 }

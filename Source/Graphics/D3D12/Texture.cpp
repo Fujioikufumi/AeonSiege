@@ -5,6 +5,7 @@
 #include <DDSTextureLoader.h> // DDS
 #include <WICTextureLoader.h> // PNG, JPG
 #include "Graphics/D3D12/DescriptorPool.h"
+#include "Graphics/D3D12/ResourceManager.h"
 #include "Utility/Logger.h"
 #include <string>
 
@@ -292,16 +293,15 @@ bool Texture::Init(
 //-----------------------------------------------------------------------------
 void Texture::Term()
 {
-	m_Texture.Reset();
+	auto& resourceManager = ResourceManager::GetInstance();
 
-	// ディスクリプタハンドルを解放.
+	resourceManager.RetireResource(m_Texture);
+
 	if (m_Handle != nullptr && m_Pool != nullptr)
 	{
-		m_Pool->FreeHandle(m_Handle);
-		m_Handle = nullptr;
+		resourceManager.RetireDescriptor(m_Pool, m_Handle);
 	}
 
-	// ディスクリプタプールを解放.
 	if (m_Pool != nullptr)
 	{
 		m_Pool->Release();

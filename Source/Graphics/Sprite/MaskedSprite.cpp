@@ -49,33 +49,27 @@ bool MaskedSprite::Init(const std::wstring& texturePath)
 	}
 
 	// テクスチャの読み込み
-	m_Texture = std::make_unique<Texture>();
-	ResourceUploadBatch batch(device.Get());
-	batch.Begin();
-	if (!m_Texture->Init(device.Get(), pool, fullPath.c_str(), true, batch))
+	m_Texture = ResourceManager::GetInstance().LoadTexture(texturePath, true);
+	if (m_Texture == nullptr)
 	{
-		ELOG("MaskedSprite: Texture::Init failed: %ls", fullPath.c_str());
+		ELOG("MaskedSprite: LoadTexture failed: %ls", texturePath.c_str());
 		return false;
 	}
-	auto finish = batch.End(queue.Get());
-	finish.wait();
 
 	// 頂点バッファの作成
 	CreateVertexBuffer();
 
-	// 定数バッファの作成
-	if (!m_SpriteCB.Init(device.Get(), pool, sizeof(SpriteBuffer)))
+	if (!m_SpriteCB.Init(device.Get(), pool, sizeof(SpriteBuffer), kFrameCount))
 	{
 		ELOG("MaskedSprite: SpriteCB init failed");
 		return false;
 	}
-	if (!m_MaskCB.Init(device.Get(), pool, sizeof(MaskBuffer)))
+	if (!m_MaskCB.Init(device.Get(), pool, sizeof(MaskBuffer), kFrameCount))
 	{
 		ELOG("MaskedSprite: MaskCB init failed");
 		return false;
 	}
 
-	UpdateConstantBuffers();
 	return true;
 }
 
@@ -84,17 +78,12 @@ void MaskedSprite::Term()
 	m_MaskCB.Term();
 	m_SpriteCB.Term();
 	m_VertexBuffer.Term();
-
-	if (m_Texture)
-	{
-		m_Texture->Term();
-		m_Texture.reset();
-	}
+	m_Texture.reset();
 }
 
 void MaskedSprite::Update(float deltaTime)
 {
-	UpdateConstantBuffers();
+	// 何もしない
 }
 
 void MaskedSprite::Draw(const RenderContext& context)
@@ -102,7 +91,11 @@ void MaskedSprite::Draw(const RenderContext& context)
 	if (!m_Texture || !context.pCmdList)
 		return;
 
-	// MaskedUIPipelineの描画パイプラインを取得
+	const uint32_t frame = context.frameIndex;
+
+	// 現在のフレームスロットのCBを更新
+	UpdateConstantBuffers(frame);
+
 	auto* pipelineInfo = PipelineStateManager::GetInstance().GetPipelineState(L"MaskedUIPipeline");
 	if (!pipelineInfo || !pipelineInfo->isValid)
 	{
@@ -110,7 +103,6 @@ void MaskedSprite::Draw(const RenderContext& context)
 		return;
 	}
 
-	// GPUテクスチャハンドルの取得
 	D3D12_GPU_DESCRIPTOR_HANDLE texHandle = m_Texture->GetHandleGPU();
 	if (texHandle.ptr == 0)
 	{
@@ -118,8 +110,8 @@ void MaskedSprite::Draw(const RenderContext& context)
 		return;
 	}
 
-	D3D12_GPU_DESCRIPTOR_HANDLE spriteCb = m_SpriteCB.GetHandleGPU();
-	D3D12_GPU_DESCRIPTOR_HANDLE maskCb   = m_MaskCB.GetHandleGPU();
+	D3D12_GPU_DESCRIPTOR_HANDLE spriteCb = m_SpriteCB.GetHandleGPU(frame);
+	D3D12_GPU_DESCRIPTOR_HANDLE maskCb   = m_MaskCB.GetHandleGPU(frame);
 	if (spriteCb.ptr == 0 || maskCb.ptr == 0)
 	{
 		ELOG("MaskedSprite: ConstantBuffer handle invalid");
@@ -147,6 +139,8 @@ void MaskedSprite::SetUV(const XMFLOAT2& uvMin, const XMFLOAT2& uvMax)
 {
 	m_UVMin = uvMin;
 	m_UVMax = uvMax;
+
+	m_VertexBuffer.Term();
 	CreateVertexBuffer();
 }
 
@@ -181,12 +175,11 @@ void MaskedSprite::CreateVertexBuffer()
 	}
 }
 
-void MaskedSprite::UpdateConstantBuffers()
+void MaskedSprite::UpdateConstantBuffers(uint32_t frameIndex)
 {
 	const XMFLOAT2 screenSize = {static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT)};
 
-	// SpriteCB (b0)
-	SpriteBuffer* sb = m_SpriteCB.GetPtr<SpriteBuffer>();
+	SpriteBuffer* sb = m_SpriteCB.GetPtr<SpriteBuffer>(frameIndex);
 	if (!sb)
 	{
 		ELOG("MaskedSprite: SpriteCB GetPtr failed");
@@ -202,7 +195,7 @@ void MaskedSprite::UpdateConstantBuffers()
 	sb->Color                   = m_Color;
 
 	// MaskCB (b1)
-	MaskBuffer* maskBuffer = m_MaskCB.GetPtr<MaskBuffer>();
+	MaskBuffer* maskBuffer = m_MaskCB.GetPtr<MaskBuffer>(frameIndex);
 	if (!maskBuffer)
 	{
 		ELOG("MaskedSprite: MaskCB GetPtr failed");

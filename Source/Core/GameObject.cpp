@@ -18,6 +18,51 @@ namespace
 // ダメージテキストを表示する高さのオフセット
 static constexpr float kDamageTextOffsetY = 3.0f;
 
+static constexpr size_t kFloatingDamagePoolSize = 32;
+
+struct FloatingDamagePool
+{
+	Scene* ScenePtr = nullptr;
+	std::vector<FloatingDamage*> Items;
+};
+
+static FloatingDamagePool g_FloatingDamagePool;
+
+static FloatingDamage* AcquireFloatingDamage(Scene* scene)
+{
+	if (scene == nullptr)
+	{
+		return nullptr;
+	}
+
+	if (g_FloatingDamagePool.ScenePtr != scene)
+	{
+		g_FloatingDamagePool.ScenePtr = scene;
+		g_FloatingDamagePool.Items.clear();
+	}
+
+	for (FloatingDamage* item : g_FloatingDamagePool.Items)
+	{
+		if (item != nullptr && !item->IsActive())
+		{
+			return item;
+		}
+	}
+
+	if (g_FloatingDamagePool.Items.size() >= kFloatingDamagePoolSize)
+	{
+		return g_FloatingDamagePool.Items.front();
+	}
+
+	FloatingDamage* item = scene->AddGameObject<FloatingDamage>(eLayer::UI, "FloatingDamage");
+	if (item != nullptr)
+	{
+		g_FloatingDamagePool.Items.push_back(item);
+	}
+
+	return item;
+}
+
 // 表示するダメージテキストの種類を引数から判別する関数
 static FloatingDamageType ResolveFloatingDamageType(const DamageContext& context, const DamageResult& result)
 {

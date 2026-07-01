@@ -39,49 +39,63 @@ bool FloatingDamage::Init()
 	if (!GameObject::Init())
 		return false;
 
-	// 自身の子オブジェクトとして NumberUI を生成（UIレイヤーに配置）
 	m_NumberUI = GameManager::GetScene()->AddGameObject<NumberUI>(eLayer::UI, "DamageUI");
+	if (m_NumberUI != nullptr)
+	{
+		m_NumberUI->Hide();
+	}
 
+	m_MissSprite = AddComponent<Sprite>();
+	if (m_MissSprite != nullptr)
+	{
+		m_MissSprite->Init(L"Assets/Texture/CombatHud/Miss.png");
+		m_MissSprite->SetSize(kMissSpriteWidth, kMissSpriteHeight);
+		m_MissSprite->SetColor(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+
+	m_IsActive = false;
 	return true;
 }
 
 void FloatingDamage::Setup(int damage, float screenX, float screenY, FloatingDamageType type)
 {
-	m_PosX   = screenX;
-	m_PosY   = screenY;
-	m_IsMiss = (type == FloatingDamageType::Miss);
+	m_PosX     = screenX;
+	m_PosY     = screenY;
+	m_LifeTime = 0.0f;
+	m_IsMiss   = (type == FloatingDamageType::Miss);
+	m_IsActive = true;
+
+	if (m_NumberUI != nullptr)
+	{
+		m_NumberUI->Hide();
+	}
+
+	if (m_MissSprite != nullptr)
+	{
+		m_MissSprite->SetColor(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+
 	if (m_IsMiss)
 	{
-		if (m_NumberUI != nullptr)
-		{
-			m_NumberUI->SetColor(kFadeColor);
-		}
-		m_MissSprite = AddComponent<Sprite>();
-		m_MissSprite->Init(L"Assets/Texture/CombatHud/Miss.png");
-		m_MissSprite->SetPosition(m_PosX, m_PosY);
-		m_MissSprite->SetSize(kMissSpriteWidth, kMissSpriteHeight);
-		m_MissSprite->SetColor(kDefaultColor);
+		SetupMiss(screenX, screenY);
 		return;
 	}
-	const std::wstring texturePath = GetNumberTexturePath(type);
-	m_NumberUI->SetTexturePath(texturePath);
-	m_NumberUI->SetValue(damage);
-	m_NumberUI->SetPosition(m_PosX, m_PosY);
-	m_NumberUI->SetColor(kDefaultColor);
-	m_NumberUI->SetScale(kScale);
+
+	SetupNumber(damage, screenX, screenY, type);
 }
 
 void FloatingDamage::Update(float deltaTime)
 {
+	if (!m_IsActive)
+	{
+		return;
+	}
+
 	// 寿命の管理
 	m_LifeTime += deltaTime;
 	if (m_LifeTime >= kMaxLifeTime)
 	{
-		if (m_NumberUI != nullptr)
-		{
-			m_NumberUI->Destroy();
-		}
-		Destroy();
+		Deactivate();
 		return;
 	}
 	m_PosY -= kMoveSpeed * deltaTime;
@@ -113,4 +127,58 @@ void FloatingDamage::Update(float deltaTime)
 		}
 	}
 	GameObject::Update(deltaTime);
+}
+
+
+void FloatingDamage::Draw(const RenderContext& context)
+{
+	if (!m_IsActive)
+	{
+		return;
+	}
+
+	GameObject::Draw(context);
+}
+
+void FloatingDamage::Deactivate()
+{
+	m_IsActive = false;
+	m_LifeTime = 0.0f;
+
+	if (m_NumberUI != nullptr)
+	{
+		m_NumberUI->Hide();
+	}
+
+	if (m_MissSprite != nullptr)
+	{
+		m_MissSprite->SetColor(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+}
+
+void FloatingDamage::SetupMiss(float screenX, float screenY)
+{
+	if (m_MissSprite == nullptr)
+	{
+		return;
+	}
+
+	m_MissSprite->SetPosition(screenX, screenY);
+	m_MissSprite->SetSize(kMissSpriteWidth, kMissSpriteHeight);
+	m_MissSprite->SetColor(kDefaultColor);
+}
+
+void FloatingDamage::SetupNumber(int damage, float screenX, float screenY, FloatingDamageType type)
+{
+	if (m_NumberUI == nullptr)
+	{
+		return;
+	}
+
+	const std::wstring texturePath = GetNumberTexturePath(type);
+	m_NumberUI->SetTexturePath(texturePath);
+	m_NumberUI->SetValue(damage);
+	m_NumberUI->SetPosition(screenX, screenY);
+	m_NumberUI->SetColor(kDefaultColor);
+	m_NumberUI->SetScale(kScale);
 }

@@ -22,6 +22,25 @@ void NumberUI::Update(float deltaTime)
 	GameObject::Update(deltaTime);
 }
 
+void NumberUI::Hide()
+{
+	m_Color.w = 0.0f;
+
+	for (Sprite* sprite : m_DigitSprites)
+	{
+		if (sprite != nullptr)
+		{
+			sprite->SetColor(0.0f, 0.0f, 0.0f, 0.0f);
+		}
+	}
+}
+
+void NumberUI::ResetDisplay()
+{
+	m_CurrentValue = -1;
+	Hide();
+}
+
 void NumberUI::SetValue(int value)
 {
 	// 既に同じ値が設定されている場合は処理をスキップ
@@ -56,8 +75,11 @@ void NumberUI::SetValue(int value)
 	{
 		Sprite* sprite = AddComponent<Sprite>();
 
-		// 10分割で数字が並んでいるテクスチャ
-		sprite->Init(m_TexturePath);
+		if (!sprite->Init(m_TexturePath))
+		{
+			ELOG("Error : Sprite::Init() Failed. path = %ls", m_TexturePath.c_str());
+			return;
+		}
 
 		m_DigitSprites.push_back(sprite);
 	}
@@ -143,21 +165,10 @@ void NumberUI::SetTexturePath(const std::wstring& texturePath)
 	{
 		return;
 	}
-
-	m_TexturePath = texturePath;
-
-	for (Sprite* sprite : m_DigitSprites)
+	if (!m_DigitSprites.empty())
 	{
-		if (sprite != nullptr)
-		{
-			sprite->Term();
-			sprite->Init(m_TexturePath);
-		}
+		ELOG("Error : NumberUI::SetTexturePath() must be called before SetValue().");
+		return;
 	}
-
-	m_DigitSprites.clear();
-
-	const int tempValue = m_CurrentValue;
-	m_CurrentValue      = -1;
-	SetValue(tempValue);
+	m_TexturePath = texturePath;
 }

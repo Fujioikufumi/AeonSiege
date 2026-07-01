@@ -30,7 +30,17 @@ bool Sprite::Init()
 //----------------------------------------------------------------------
 bool Sprite::Init(const std::wstring& texturePath)
 {
-	Term(); // 既存のリソースを解放してから初期化
+	if (m_Texture != nullptr)
+	{
+		if (m_TexturePath == texturePath)
+		{
+			return true;
+		}
+		ELOG("Error : Sprite is already initialized. current = %ls, requested = %ls",
+		     m_TexturePath.c_str(),
+		     texturePath.c_str());
+		return false;
+	}
 	m_TexturePath = texturePath;
 
 	// ファイルパスの確認
@@ -53,38 +63,21 @@ bool Sprite::Init(const std::wstring& texturePath)
 	}
 
 	// テクスチャの作成
-	m_Texture = std::make_unique<Texture>();
-	DirectX::ResourceUploadBatch batch(device.Get());
-	batch.Begin();
-	if (!m_Texture->Init(device.Get(), pool, fullPath.c_str(), true, batch))
+	m_Texture = ResourceManager::GetInstance().LoadTexture(texturePath, true);
+	if (m_Texture == nullptr)
 	{
-		ELOG("Error : Texture::Init() Failed. path = %ls", fullPath.c_str());
+		ELOG("Error : ResourceManager::LoadTexture() Failed. path = %ls", texturePath.c_str());
 		return false;
 	}
-	auto finish = batch.End(queue.Get());
-	finish.wait();
 
 	// 頂点バッファの作成
 	CreateVertexBuffer();
 
-	// 定数バッファの作成
-	if (!m_ConstantBuffer.Init(device.Get(), pool, sizeof(SpriteBuffer)))
+	// 定数バッファの作成（多重化）
+	if (!m_ConstantBuffer.Init(device.Get(), pool, sizeof(SpriteBuffer), kFrameCount))
 	{
 		ELOG("Error : ConstantBuffer::Init() Failed.");
 		return false;
-	}
-
-	// 一度だけ更新処理を実行する。
-	UpdateConstantBuffer();
-
-	// スプライトの初期状態をログに出力
-	SpriteBuffer* pBuffer = m_ConstantBuffer.GetPtr<SpriteBuffer>();
-	if (pBuffer)
-	{
-		DLOG("ConstantBuffer after Init and UpdateConstantBuffer:");
-		DLOG("  Size_Padding = (%f, %f, %f, %f)",
-		     pBuffer->Size_Padding.x, pBuffer->Size_Padding.y,
-		     pBuffer->Size_Padding.z, pBuffer->Size_Padding.w);
 	}
 
 	return true;
@@ -96,13 +89,13 @@ bool Sprite::Init(const std::wstring& texturePath)
 void Sprite::Term()
 {
 	m_ConstantBuffer.Term();
-	m_VertexBuffer.Term();
 
-	if (m_Texture)
+	for (auto i = 0u; i < kFrameCount; ++i)
 	{
-		m_Texture->Term();
-		m_Texture.reset();
+		m_VertexBuffer[i].Term();
 	}
+
+	m_Texture.reset();
 }
 
 //----------------------------------------------------------------------
@@ -110,7 +103,7 @@ void Sprite::Term()
 //----------------------------------------------------------------------
 void Sprite::Update(float deltaTime)
 {
-	UpdateConstantBuffer();
+	// UpdateConstantBuffer();
 }
 
 //----------------------------------------------------------------------
@@ -121,16 +114,36 @@ void Sprite::Draw(const RenderContext& context)
 	if (!m_Texture || !context.pCmdList)
 		return;
 
-	// UIパイプラインの取得
-	auto* pipelineInfo = PipelineStateManager::GetInstance().GetPipelineState(L"UIPipeline");
+	const uint32_t frame = context.frameIndex;
 
+	// 現在のフレームスロットのCBを更新
+	UpdateConstantBuffers(frame);
+
+	// 現在のフレームスロットの頂点バッファにUVを反映
+	{
+		struct Vertex
+		{
+			XMFLOAT2 Position;
+			XMFLOAT2 TexCoord;
+		};
+		Vertex* v = m_VertexBuffer[frame].Map<Vertex>();
+		if (v)
+		{
+			v[0].TexCoord = {m_UVMin.x, m_UVMax.y}; // 左上
+			v[1].TexCoord = {m_UVMax.x, m_UVMax.y}; // 右上
+			v[2].TexCoord = {m_UVMin.x, m_UVMin.y}; // 左下
+			v[3].TexCoord = {m_UVMax.x, m_UVMin.y}; // 右下
+			m_VertexBuffer[frame].Unmap();
+		}
+	}
+
+	auto* pipelineInfo = PipelineStateManager::GetInstance().GetPipelineState(L"UIPipeline");
 	if (!pipelineInfo || !pipelineInfo->isValid)
 	{
 		ELOG("Error : UiPipeline not found or invalid");
 		return;
 	}
 
-	// テクスチャのGPUハンドルを取得
 	D3D12_GPU_DESCRIPTOR_HANDLE textureHandle = m_Texture->GetHandleGPU();
 	if (textureHandle.ptr == 0)
 	{
@@ -138,16 +151,14 @@ void Sprite::Draw(const RenderContext& context)
 		return;
 	}
 
-	// パイプラインステートとルートシグネチャの設定
 	context.pCmdList->SetPipelineState(pipelineInfo->pPSO.Get());
 	context.pCmdList->SetGraphicsRootSignature(pipelineInfo->rootSig.GetPtr());
 	context.pCmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	// 頂点バッファの設定
-	auto vertexBufferView = m_VertexBuffer.GetView();
+	auto vertexBufferView = m_VertexBuffer[frame].GetView();
 	context.pCmdList->IASetVertexBuffers(0, 1, &vertexBufferView);
 
-	D3D12_GPU_DESCRIPTOR_HANDLE cbHandle = m_ConstantBuffer.GetHandleGPU();
+	D3D12_GPU_DESCRIPTOR_HANDLE cbHandle = m_ConstantBuffer.GetHandleGPU(frame);
 	if (cbHandle.ptr == 0)
 	{
 		ELOG("Error : ConstantBuffer handle is invalid");
@@ -163,14 +174,12 @@ void Sprite::Draw(const RenderContext& context)
 //----------------------------------------------------------------------
 void Sprite::CreateVertexBuffer()
 {
-	// 頂点構造体
 	struct Vertex
 	{
 		XMFLOAT2 Position;
 		XMFLOAT2 TexCoord;
 	};
 
-	// 頂点データの定義
 	Vertex vertices[4] = {
 	    {{-1.0f, 1.0f}, {m_UVMin.x, m_UVMax.y}},  // 左上
 	    {{1.0f, 1.0f}, {m_UVMax.x, m_UVMax.y}},   // 右上
@@ -182,9 +191,10 @@ void Sprite::CreateVertexBuffer()
 	if (!device)
 		return;
 
-	if (!m_VertexBuffer.Init<Vertex>(device.Get(), 4, vertices))
+	for (auto i = 0u; i < kFrameCount; ++i)
 	{
-		ELOG("Error : VertexBuffer::Init() Failed.");
+		if (!m_VertexBuffer[i].Init<Vertex>(device.Get(), 4, vertices))
+			ELOG("Error : VertexBuffer::Init() Failed.");
 	}
 }
 
@@ -192,36 +202,17 @@ void Sprite::SetUV(const XMFLOAT2& uvMin, const XMFLOAT2& uvMax)
 {
 	m_UVMin = uvMin;
 	m_UVMax = uvMax;
-
-	if (m_VertexBuffer.GetView().SizeInBytes == 0)
-		return;
-	// 頂点構造体 (CreateVertexBuffer内の定義と同じもの)
-	struct Vertex
-	{
-		XMFLOAT2 Position;
-		XMFLOAT2 TexCoord;
-	};
-	Vertex* vertices = m_VertexBuffer.Map<Vertex>();
-	if (vertices)
-	{
-		// 頂点のUV座標だけを書き換える (Positionはシェーダーで計算されるためそのまま)
-		vertices[0].TexCoord = {m_UVMin.x, m_UVMax.y}; // 左上
-		vertices[1].TexCoord = {m_UVMax.x, m_UVMax.y}; // 右上
-		vertices[2].TexCoord = {m_UVMin.x, m_UVMin.y}; // 左下
-		vertices[3].TexCoord = {m_UVMax.x, m_UVMin.y}; // 右下
-		// 参考コードの Unmap() と同じ
-		m_VertexBuffer.Unmap();
-	}
+	// 頂点へのUV反映は Draw() で現在のフレームスロットに対して行う
 }
 
 //----------------------------------------------------------------------
 //		定数バッファの更新
 //----------------------------------------------------------------------
-void Sprite::UpdateConstantBuffer()
+void Sprite::UpdateConstantBuffers(uint32_t frameIndex)
 {
 	XMFLOAT2 screenSize = {SCREEN_WIDTH, SCREEN_HEIGHT};
 
-	SpriteBuffer* pBuffer = m_ConstantBuffer.GetPtr<SpriteBuffer>();
+	SpriteBuffer* pBuffer = m_ConstantBuffer.GetPtr<SpriteBuffer>(frameIndex);
 	if (!pBuffer)
 	{
 		ELOG("Error : ConstantBuffer::GetPtr() returned nullptr");

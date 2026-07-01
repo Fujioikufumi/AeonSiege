@@ -35,5 +35,6 @@ public:
 	static void ResetGameStatus() { m_Status = {}; }
 
 	static void ChangeScene(Scene* newScene);
+	static bool IsScenePending() { return m_IsChangeScene; }
 	static Scene* GetScene() { return m_ActiveScene.get(); }
 };

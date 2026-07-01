@@ -144,3 +144,51 @@ void Fence::Sync(ID3D12CommandQueue* pQueue)
 	// カウンターを増やす.
 	m_Counter++;
 }
+
+//-----------------------------------------------------------------------------
+//      シグナルだけ積み, フェンス値を返します(待機しない).
+//-----------------------------------------------------------------------------
+uint64_t Fence::Signal(ID3D12CommandQueue* pQueue)
+{
+	const uint64_t fenceValue = m_Counter;
+
+	if (FAILED(pQueue->Signal(m_Fence.Get(), fenceValue)))
+	{
+		return fenceValue;
+	}
+
+	m_Counter++;
+	return fenceValue;
+}
+
+//-----------------------------------------------------------------------------
+//      指定フェンス値にGPUが到達するまで待機します.
+//-----------------------------------------------------------------------------
+void Fence::WaitForValue(uint64_t value, UINT timeout)
+{
+	// 既に到達済みなら待たない(起動直後の値0でも安全にスルー)
+	if (m_Fence->GetCompletedValue() >= value)
+	{
+		return;
+	}
+
+	if (FAILED(m_Fence->SetEventOnCompletion(value, m_Event)))
+	{
+		return;
+	}
+
+	WaitForSingleObjectEx(m_Event, timeout, FALSE);
+}
+
+//-----------------------------------------------------------------------------
+//	  GPUが完了済みのフェンス値を取得します.
+//-----------------------------------------------------------------------------
+uint64_t Fence::GetCompletedValue() const
+{
+	if (m_Fence == nullptr)
+	{
+		return 0;
+	}
+
+	return m_Fence->GetCompletedValue();
+}

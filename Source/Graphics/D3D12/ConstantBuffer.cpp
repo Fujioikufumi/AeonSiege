@@ -4,6 +4,7 @@
 #include "Graphics/D3D12/ConstantBuffer.h"
 #include "Graphics/D3D12/DescriptorPool.h"
 #include "Graphics/D3D12/RootSignature.h"
+#include "Graphics/D3D12/ResourceManager.h"
 #include "Utility/Logger.h"
 
 //-----------------------------------------------------------------------------
@@ -213,20 +214,20 @@ bool ConstantBuffer::Init(ID3D12Device* pDevice, DescriptorPool* pPool, size_t s
 //-----------------------------------------------------------------------------
 //      終了処理を行います.
 //-----------------------------------------------------------------------------
-void ConstantBuffer::Term() // 単一と多フレーム両方の終了処理を行います.
+void ConstantBuffer::Term()
 {
-	// メモリマッピングを解除して，定数バッファを解放します.
+	auto& resourceManager = ResourceManager::GetInstance();
+
 	if (m_CB)
 	{
 		m_CB->Unmap(0, nullptr);
-		m_CB.Reset();
+		resourceManager.RetireResource(m_CB);
 	}
 	m_MappedPtr = nullptr;
 
 	if (m_Handle && m_Pool)
 	{
-		m_Pool->FreeHandle(m_Handle);
-		m_Handle = nullptr;
+		resourceManager.RetireDescriptor(m_Pool, m_Handle);
 	}
 
 	for (size_t i = 0; i < m_CBs.size(); ++i)
@@ -234,14 +235,15 @@ void ConstantBuffer::Term() // 単一と多フレーム両方の終了処理を�
 		if (m_CBs[i])
 		{
 			m_CBs[i]->Unmap(0, nullptr);
-			m_CBs[i].Reset();
+			resourceManager.RetireResource(m_CBs[i]);
 		}
+
 		if (m_Handles[i] && m_Pool)
 		{
-			m_Pool->FreeHandle(m_Handles[i]);
-			m_Handles[i] = nullptr;
+			resourceManager.RetireDescriptor(m_Pool, m_Handles[i]);
 		}
 	}
+
 	m_CBs.clear();
 	m_Handles.clear();
 	m_MappedPtrs.clear();
@@ -252,6 +254,7 @@ void ConstantBuffer::Term() // 単一と多フレーム両方の終了処理を�
 		m_Pool->Release();
 		m_Pool = nullptr;
 	}
+
 	m_MappedPtr = nullptr;
 }
 

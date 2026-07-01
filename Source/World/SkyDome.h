@@ -53,11 +53,11 @@ private:
 	DescriptorPool* m_pPoolRes;             // ディスクリプタプール
 	ComPtr<ID3D12RootSignature> m_pRootSig; // ルートシグネチャ
 	ComPtr<ID3D12PipelineState> m_pPSO;     // パイプラインステートオブジェクト
-	ConstantBuffer m_CB[2];                 // 定数バッファ（フレームごと）
+	ConstantBuffer m_CB[::FrameCount];         // 定数バッファ（フレームごと）
 	VertexBuffer m_VB;                      // 頂点バッファ
 	IndexBuffer m_IB;                       // インデックスバッファ
 	int m_Index;                            // 現在のフレームインデックス
 	uint32_t m_IndexCount;                  // インデックス数
 
-	float m_RatationY; // Y����]�p
+	float m_RatationY; // 回転
 };

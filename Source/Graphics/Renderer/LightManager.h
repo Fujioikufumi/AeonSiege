@@ -31,7 +31,7 @@ private:
 	CbLight m_LightData;
 
 	// フレームカウント
-	const uint32_t m_FrameCount = 2;
+	const uint32_t m_FrameCount = 3;
 
 	// コンストラクタ・デストラクタ (シングルトン)
 	LightManager()                      = default;

@@ -25,7 +25,6 @@ struct BoneInfo
 
 	int bindParentIndex = -1;
 
-	// 追加：bindParent基準のローカル（bind pose）
 	XMMATRIX bindLocal = XMMatrixIdentity();
 };
 

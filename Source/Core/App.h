@@ -20,6 +20,7 @@
 #include "Graphics/D3D12/Texture.h"
 #include "Utility/InlineUtil.h"
 #include "Core/NameSpace.h"
+#include "Core/main.h"
 
 //-----------------------------------------------------------------------------
 // Linker
@@ -72,7 +73,7 @@ protected:
 	//=========================================================================
 	// private variables.
 	//=========================================================================
-	static const uint32_t FrameCount = 2; // フレームバッファ数です.
+	static const uint32_t FrameCount = static_cast<uint32_t>(::FrameCount); // フレームバッファ数です.
 
 	HINSTANCE m_hInst; // インスタンスハンドルです.
 	HWND m_hWnd;       // ウィンドウハンドルです.
@@ -89,6 +90,7 @@ protected:
 	CommandList m_CommandList;             // コマンドリストです.
 	Fence m_Fence;                         // フェンスです.
 	uint32_t m_FrameIndex;                 // フレーム番号です.
+	uint64_t m_FrameFenceValues[FrameCount] = {}; // フェンス値です.
 	D3D12_VIEWPORT m_Viewport;             // ビューポートです.
 	D3D12_RECT m_Scissor;                  // シザー矩形です.
 	DXGI_FORMAT m_BackBufferFormat;        // バックバッファフォーマットです.
@@ -96,7 +98,8 @@ protected:
 	//=========================================================================
 	// protected methods.
 	//=========================================================================
-	void Present(uint32_t interval);
+	uint64_t Present(uint32_t interval);
+	[[nodiscard]] uint64_t GetCompletedFenceValue() const { return m_Fence.GetCompletedValue(); }
 	bool IsSupportHDR() const;
 	float GetMaxLuminance() const;
 	float GetMinLuminance() const;

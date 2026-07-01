@@ -154,6 +154,23 @@ bool Terrain::Init(
 	if (!CreateHeightMapTexture(pDevice.Get(), pCmdList))
 		return false;
 
+	// ハイトマップテクスチャの作成
+	if (!CreateHeightMapTexture(pDevice.Get(), pCmdList))
+		return false;
+
+	if (m_FieldMapTexture && m_FieldMapTexture->GetResource())
+	{
+		D3D12_RESOURCE_BARRIER fieldBarrier = {};
+		fieldBarrier.Type                   = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+		fieldBarrier.Flags                  = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+		fieldBarrier.Transition.pResource   = m_FieldMapTexture->GetResource();
+		fieldBarrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+		fieldBarrier.Transition.StateAfter  = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE |
+		                                     D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE;
+		fieldBarrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+		pCmdList->ResourceBarrier(1, &fieldBarrier);
+	}
+
 	// コマンドリストのクローズと実行
 	pCmdList->Close();
 	ID3D12CommandList* pLists[] = {pCmdList};
@@ -199,7 +216,7 @@ bool Terrain::Init(
 	}
 
 	// 定数バッファの作成
-	if (!m_TransformCB.Init(pDevice.Get(), pPool, sizeof(CbTerrainTransform)))
+	if (!m_TransformCB.Init(pDevice.Get(), pPool, sizeof(CbTerrainTransform), kFrameCount))
 		return false;
 	if (!m_MaterialCB.Init(pDevice.Get(), pPool, sizeof(CbMaterial)))
 		return false;
@@ -392,7 +409,7 @@ void Terrain::Draw(const RenderContext& context)
 	}
 
 	// レンダリングパスの設定
-	auto pCB = m_TransformCB.GetPtr<CbTerrainTransform>();
+	auto pCB = m_TransformCB.GetPtr<CbTerrainTransform>(context.frameIndex);
 	if (!pCB)
 		return;
 
@@ -410,7 +427,7 @@ void Terrain::Draw(const RenderContext& context)
 	pCmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// 各種リソースのデスクリプタテーブルをセット
-	pCmdList->SetGraphicsRootDescriptorTable(static_cast<UINT>(RootParamIndex::TransformCB), m_TransformCB.GetHandleGPU());
+	pCmdList->SetGraphicsRootDescriptorTable(static_cast<UINT>(RootParamIndex::TransformCB), m_TransformCB.GetHandleGPU(context.frameIndex));
 	pCmdList->SetGraphicsRootDescriptorTable(static_cast<UINT>(RootParamIndex::LightCB), context.lightCB);
 	pCmdList->SetGraphicsRootDescriptorTable(static_cast<UINT>(RootParamIndex::CameraCB), context.cameraCB);
 	pCmdList->SetGraphicsRootDescriptorTable(static_cast<UINT>(RootParamIndex::MaterialCB), m_MaterialCB.GetHandleGPU());

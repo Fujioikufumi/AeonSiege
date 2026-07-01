@@ -4,6 +4,7 @@
 #include "Core/Component.h"
 #include "Graphics/D3D12/VertexBuffer.h"
 #include "Graphics/D3D12/ConstantBuffer.h"
+#include "Core/NameSpace.h"
 #include <string>
 #include <memory>
 
@@ -77,17 +78,17 @@ public:
 	[[nodiscard]] Texture* GetTexture() const { return m_Texture.get(); }
 
 private:
-	/// 定数バッファの内容を現在のパラメータで更新します。
-	void UpdateConstantBuffer();
+	// 定数バッファの更新
+	void UpdateConstantBuffers(uint32_t frameIndex);
 
 	/// 描画に必要な頂点バッファを生成します。
 	void CreateVertexBuffer();
 
 private:
 	// 描画リソース
-	std::unique_ptr<Texture> m_Texture; // テクスチャリソース
+	std::shared_ptr<Texture> m_Texture; // テクスチャリソース
 	std::wstring m_TexturePath;         // テクスチャパス
-	VertexBuffer m_VertexBuffer;        // 頂点バッファ
+	VertexBuffer m_VertexBuffer[kFrameCount]; // 頂点バッファ
 	ConstantBuffer m_ConstantBuffer;    // スプライト用定数バッファ
 
 	// 配置・変形パラメータ

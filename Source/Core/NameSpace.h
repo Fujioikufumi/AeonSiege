@@ -6,6 +6,7 @@ const uint32_t SCREEN_WIDTH  = 1280; // 960;
 const uint32_t SCREEN_HEIGHT = 720;
 
 extern bool g_isDebugMode;
+constexpr uint32_t kFrameCount = 3;
 
 enum class eLayer
 {
